@@ -1,12 +1,15 @@
-import React from 'react'
-import './App.css';
+import React, { useState } from 'react'
+import './App.css'
+import Login from './Login'
+import Chat from './Chat'
 
-function App() {
+const App = () => {
+  const [currentPage, setCurrentPage] = useState('login')
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        front
-      </header>
+      {currentPage === 'login' ? <Login/>: <Chat />}
     </div>
   )
 }
