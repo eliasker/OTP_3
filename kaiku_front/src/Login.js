@@ -8,13 +8,13 @@ const Login = () => {
       <form className="form-login">
         <h3 className="mb-3">Kirjaudu sisään</h3>
 
-        <div className="sign-in-group">
+        <div className="login-form-group">
           <label htmlFor="inputUsername" className="sr-only">Käyttäjätunnus</label>
           <input type="text" id="inputUsername" className="form-control" placeholder="Käyttäjätunnus" 
              required/>
         </div>
         
-        <div className="sign-in-group">
+        <div className="login-form-group">
           <label htmlFor="inputPassword" className="sr-only">Salasana</label>
           <input type="password" id="inputPassword" className="form-control" placeholder="Salasana" 
              required/>

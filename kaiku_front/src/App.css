@@ -1,9 +1,13 @@
 .App {
-  text-align: center;
+  background-color: #0d1627;
 }
 
+/*
+* Login
+*/
+
 #login {
-  background-color: #0d1627;
+  text-align: center;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -20,6 +24,13 @@
   margin-top: 2.5rem;
 }
 
-.sign-in-group {
+.login-form-group {
   margin-bottom: 1rem;
+}
+
+/*
+* Chat
+*/
+
+#chat {
 }
