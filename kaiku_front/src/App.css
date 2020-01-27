@@ -33,4 +33,45 @@
 */
 
 #chat {
+  min-height: 100vh;
+}
+
+.chat-container {
+  padding-top: 5vh;
+  padding-left: 0;
+}
+
+.chat-col {
+  background-color: #1d2637;
+  border: solid 1px white;
+  height: 90vh;
+  padding: 0;
+}
+
+.chat-header {
+  height: 60px;
+  background-color: #9cacca;
+  margin: 0;
+  vertical-align: middle !important;
+}
+
+.chat-header img {
+  height: 45px;
+}
+
+.fa-ellipsis-v {
+  font-size: 22px;
+  margin: 1rem;
+}
+
+.read-field {
+  overflow-y: scroll;
+  height: 90%;
+  background-color: #a89cca;
+}
+
+.message-field {
+  background-color: #dcacca;
+  height: 10%;
+  min-height: 2rem;
 }

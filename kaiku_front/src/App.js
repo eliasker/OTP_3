@@ -9,7 +9,7 @@ const App = () => {
 
   return (
     <div className="App">
-      {currentPage === 'login' ? <Login/>: <Chat />}
+      {currentPage === 'a' ? <Login/>: <Chat />}
     </div>
   )
 }
