@@ -20,7 +20,7 @@ const Login = () => {
              required/>
         </div>
 
-        <button className="btn btn-md btn-outline-light btn-block" type="submit">Sign in</button>
+        <button className="btn btn-md btn-outline-light btn-block" type="submit">Kirjaudu sisään</button>
       </form>
 
       <p className="mt-5 mb-3 text-muted">&copy; 2020 Kaiku group Oy</p>
