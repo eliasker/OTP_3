@@ -46,6 +46,8 @@
   border: solid 1px white;
   height: 90vh;
   padding: 0;
+  overflow: hidden;
+  position: relative;
 }
 
 .chat-header {
@@ -57,21 +59,121 @@
 
 .chat-header img {
   height: 45px;
+  margin-top: 0.5rem !important;
 }
 
-.fa-ellipsis-v {
+.fa-ellipsis-v,
+.fa-search {
   font-size: 22px;
-  margin: 1rem;
+  margin-right: 1rem;
+  margin-top: 1.25rem;
+  margin-left: 1rem;
+}
+
+.find-user-input {
+  border-radius: 1px;
 }
 
 .read-field {
   overflow-y: scroll;
-  height: 90%;
   background-color: #a89cca;
+  position: absolute;
+  height: 100%;
+  width: 100%;
 }
 
 .message-field {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: 2;
   background-color: #dcacca;
-  height: 10%;
-  min-height: 2rem;
+  min-height: 4rem;
+  overflow: hidden;
+}
+
+.message-field div {
+  margin-left: 0;
+  margin-right: 0;
+  
+}
+
+.message-field button {
+  border-radius: 0 60px 60px 0;
+}
+
+.message-field input,
+.message-field button {
+  margin-top: 0.75rem;
+}
+
+.profile-list {
+  overflow-y: scroll;
+  position: absolute;
+  width: 100%;
+  height: 90%;
+}
+
+.profile-thumb {
+  max-width: 45px;
+  max-height: 45px;
+  margin: 1rem;
+  border-radius: 60px;
+}
+
+.profile {
+  border-bottom: 1px solid grey;
+  background-color: rgb(90, 105, 156);
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.profile p {
+  margin-top: 1.5rem;
+  font-weight: 600;
+}
+
+.chat-header p{
+  font-weight: 600;
+  margin-top: 1rem;
+}
+
+.message-date {
+  font-style: italic;
+}
+
+.out-container {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1rem;
+}
+
+.in-container {
+  display: flex;
+  justify-content: flex-start;
+  margin: 1rem;
+}
+
+.out-message,
+.in-message {
+  max-width: 70%;
+}
+
+.out-message p {
+  padding: 1rem;
+  margin-bottom: 0.25rem;
+  border-radius: 15px 0 15px 15px;
+  background-color: rgb(223, 233, 252);
+}
+
+.in-message p {
+  padding: 1rem;
+  margin-bottom: 0.25rem;
+  border-radius: 0 15px 15px 15px;
+  background-color: white;
+}
+
+.marginy-0 {
+  margin-left: 0;
+  margin-right: 0;
 }
