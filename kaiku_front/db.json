@@ -1,0 +1,66 @@
+{
+	"users": [
+		{
+			"name": "Marko",
+			"id": 1
+		},
+		{
+			"name": "Mirka",
+			"id": 2
+		},
+		{
+			"name": "Makedius",
+			"id": 3
+		},
+		{
+			"name": "markus",
+			"id": 4
+		},
+		{
+			"name": "Mikko",
+			"id": 5
+		}
+	],
+	"messages": [
+		{
+			"content": "hei",
+			"id": 1,
+			"type": "in"
+		},
+		{
+			"content": "vastaus1",
+			"id": 2,
+			"type": "out"
+		},
+		{
+			"content": "heippa",
+			"id": 3,
+			"type": "in"
+		},
+		{
+			"content": "moi taas",
+			"id": 4,
+			"type": "in"
+		},
+		{
+			"content": "vastaus2",
+			"id": 5,
+			"type": "out"
+		},
+		{
+			"content": "vastaus3",			
+			"id": 6,
+			"type": "out"
+		},
+		{
+			"content": "juuhjooh",
+			"id": 7,
+			"type": "in"
+		},
+		{
+			"content": "vastaus4",
+			"id": 8,
+			"type": "out"
+		}
+	]
+}
