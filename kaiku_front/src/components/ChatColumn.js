@@ -16,7 +16,7 @@ const ChatColumn = ({ messages }) => {
 		<div className="chat-col col-7">
 			<ChatHeader />
 			<div className="read-field">
-				<div class="brick"></div>
+				<div className="brick"></div>
 				{listMessages()}
 			</div>
 			<MessageForm />
