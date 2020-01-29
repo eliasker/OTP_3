@@ -74,13 +74,22 @@
 }
 
 .chat-header {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+}
+
+.chat-header,
+.user-header {
   height: 60px;
   background-color: #9cacca;
   margin: 0;
   vertical-align: middle !important;
 }
 
-.chat-header img {
+.chat-header img,
+.user-header img {
   height: 45px;
   margin-top: 0.5rem !important;
 }
@@ -94,6 +103,10 @@
   cursor: pointer;
 }
 
+.users-menu {
+  transform: translate3d(-160px, 43px, 0px) !important;
+}
+
 .find-user-input {
   border-radius: 1px;
 }
@@ -102,6 +115,8 @@
   overflow-y: scroll;
   background-color: #a89cca;
   position: absolute;
+  bottom: 0;
+  margin-bottom: 4rem;
   height: 100%;
   width: 100%;
 }
@@ -200,4 +215,8 @@
 .marginy-0 {
   margin-left: 0;
   margin-right: 0;
+}
+
+.brick {
+  height: 200px !important;
 }
