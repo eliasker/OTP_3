@@ -4,15 +4,15 @@ import ChatHeader from './ChatHeader'
 import InMessage from './InMessage'
 import OutMessage from './OutMessage'
 import MessageForm from './MessageForm'
+import keyGen from '../util/keyGen'
 
 const ChatColumn = ({ messages, setMessages }) => {
 	const messagesEndRef = useRef(null)
 	const newMessage = useField('text')
-	//const [newMessage, setNewMessage] = useState('Lähetä viesti (ei se kilpailu)...')
 	const listMessages = () => {
 		return messages.map(m => (m.type === 'in' ?
-			<InMessage key={m.id} content={m.content} /> :
-			<OutMessage key={m.id} content={m.content} />)
+			<InMessage key={keyGen.generateKey(m.content)} content={m.content} /> :
+			<OutMessage key={keyGen.generateKey(m.content)} content={m.content} />)
 		)
 	}
 

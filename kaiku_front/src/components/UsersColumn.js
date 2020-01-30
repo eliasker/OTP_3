@@ -2,17 +2,17 @@ import React, { useState } from 'react'
 import User from './User'
 import UsersHeader from './UsersHeader'
 import filterUtil from '../util/filterUtil'
+import keyGen from '../util/keyGen'
 
 const UsersColumn = ({ users }) => {
 	const [searchInput, setSearchInput] = useState('')
 
 	const handleSearchInput = (event) => setSearchInput(event.target.value)
 
-	// key:t vois muuttaa järkeviks 
 	const listUsers = () => {
 		return (
 			filterUtil(users.map(u => u.name), searchInput).map(name =>
-				<User key={name} name={name} />)
+				<User key={keyGen.generateKey(name)} name={name} />)
 		)
 	}
 
