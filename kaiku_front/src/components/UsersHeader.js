@@ -1,11 +1,11 @@
 import React from 'react'
 
-const UsersHeader = ({ serachInput, handleSearchInput }) => {
-  return(
+const UsersHeader = ({ searchInput, handleSearchInput }) => {
+  return (
     <>
       <div className="user-header row justify-content-between">
         <img src="https://bit.ly/38HOjG3" alt="profiili kuva" className="d-none d-lg-block profile-thumb" />
-        
+
         <div class="dropdown">
           <span role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i className="fas fa-ellipsis-v"></i>
@@ -18,7 +18,7 @@ const UsersHeader = ({ serachInput, handleSearchInput }) => {
         </div>
       </div>
       <input className="form-control find-user-input" placeholder="Etsi käyttäjä (ei huumeiden)"
-			value={serachInput} onChange={handleSearchInput} />
+        value={searchInput} onChange={handleSearchInput} />
     </>
   )
 }

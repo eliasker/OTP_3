@@ -21,7 +21,7 @@ const App = () => {
 
 	return (
 		<div className="App">
-			{currentPage === 'a' ? <Login /> : <Chat users={users} messages={messages} />}
+			{currentPage === 'a' ? <Login /> : <Chat users={users} messages={messages} setMessages={setMessages} />}
 		</div>
 	)
 }
