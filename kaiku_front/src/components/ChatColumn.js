@@ -34,7 +34,12 @@ const ChatColumn = ({ messages, setMessages }) => {
 
 	const handleSubmit = (event) => {
 		event.preventDefault()
-		console.log('submit message:', newMessage)
+		const newMessageObj = {
+			content: newMessage.value,
+			id: keyGen.generateId,
+			type: 'out'
+		}		
+		setMessages(messages.concat(newMessageObj))
 		newMessage.reset()
 	}
 

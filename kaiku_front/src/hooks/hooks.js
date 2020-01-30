@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+// custom hook to simplify fields in html form -elements
 const useField = (type) => {
   const [value, setValue] = useState('')
 

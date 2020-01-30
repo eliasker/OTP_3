@@ -12,6 +12,5 @@ const ChatHeader = ({ searchInput, handleSearchInput }) => {
     </div>
   )
 }
-//      <form id="search-message">
-//^^ iputin siläpuolella
+
 export default ChatHeader
