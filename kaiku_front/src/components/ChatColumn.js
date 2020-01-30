@@ -7,10 +7,15 @@ import MessageForm from './MessageForm'
 import keyGen from '../util/keyGen'
 
 const ChatColumn = ({ messages, setMessages }) => {
+	const [searchInput, setSearchInput] = useState('')
 	const messagesEndRef = useRef(null)
 	const newMessage = useField('text')
+
+	const handleSearchInput = (event) => setSearchInput(event.target.value)
+
 	const listMessages = () => {
-		return messages.map(m => (m.type === 'in' ?
+		const filteredMsgs = messages.filter(msg => msg.content.includes(searchInput))
+		return filteredMsgs.map(m => (m.type === 'in' ?
 			<InMessage key={keyGen.generateKey(m.content)} content={m.content} /> :
 			<OutMessage key={keyGen.generateKey(m.content)} content={m.content} />)
 		)
@@ -35,7 +40,7 @@ const ChatColumn = ({ messages, setMessages }) => {
 
 	return (
 		<div className="chat-col col-7">
-			<ChatHeader />
+			<ChatHeader searchInput={searchInput} handleSearchInput={handleSearchInput} />
 			<div className="read-field">
 				<div className="brick"></div>
 				{listMessages()}
