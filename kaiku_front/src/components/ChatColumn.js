@@ -30,7 +30,7 @@ const ChatColumn = ({ messages, setMessages }) => {
 		<div className="chat-col col-7">
 			<ChatHeader />
 			<div className="read-field">
-				<div class="brick"></div>
+				<div className="brick"></div>
 				{listMessages()}
 			</div>
 			<MessageForm newMessage={newMessage} removeReset={removeReset} handleSubmit={handleSubmit} />

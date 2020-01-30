@@ -21,6 +21,7 @@ const UsersColumn = ({ users }) => {
 			<UsersHeader searchInput={searchInput} handleSearchInput={handleSearchInput} />
 			<div className="profile-list">
 				{listUsers()}
+				<div className="brick"></div>
 			</div>
 		</div>
 	)

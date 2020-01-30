@@ -7,7 +7,9 @@ const ChatHeader = () => {
         <img src="https://bit.ly/2Rwb7mm" alt="profiili kuva" className="d-none d-lg-block profile-thumb" />
         <p>Mikko Mallikas</p>
       </div>
-      <i className="fas fa-search"></i>
+      <form id="search-message">
+        <input type="search" placeholder="Search" />
+      </form>
     </div>
   )
 }
