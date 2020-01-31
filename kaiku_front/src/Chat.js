@@ -7,7 +7,7 @@ const Chat = () => {
   <div id="chat" className="container">
     <div className="chat-container container row">
       <UsersColumn />
-      <ChatColumn />
+        <ChatColumn />
     </div>
   </div>
   )

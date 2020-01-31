@@ -15,7 +15,7 @@ const ChatColumn = () => {
         <InMessage />
         <OutMessage />
       </div>
-      <MessageForm />
+        <MessageForm />
     </div>
   )
 }
