@@ -1,6 +1,6 @@
 import React from 'react'
 
-const UsersHeader = ({ searchInput, handleSearchInput }) => {
+const UsersHeader = ({ users, searchInput, setSearchInput }) => {
   return (
     <>
       <div className="user-header row justify-content-between">
@@ -17,8 +17,9 @@ const UsersHeader = ({ searchInput, handleSearchInput }) => {
           </div>
         </div>
       </div>
+      <p className="users-online">Users online ({users.length})</p>
       <input className="form-control find-user-input" placeholder="Etsi käyttäjä (ei huumeiden)"
-        value={searchInput} onChange={handleSearchInput} />
+        value={searchInput} onChange={e => setSearchInput(e.target.value)} />
     </>
   )
 }

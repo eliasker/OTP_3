@@ -18,7 +18,7 @@ const UsersColumn = ({ users }) => {
 
 	return (
 		<div className="chat-col col-5 px-0">
-			<UsersHeader searchInput={searchInput} handleSearchInput={handleSearchInput} />
+			<UsersHeader users={users} searchInput={searchInput} setSearchInput={setSearchInput} />
 			<div className="profile-list">
 				{listUsers()}
 				<div className="brick"></div>
