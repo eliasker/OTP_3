@@ -212,17 +212,21 @@
 }
 
 .out-message p {
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   margin-bottom: 0.25rem;
   border-radius: 15px 0 15px 15px;
   background-color: rgb(223, 233, 252);
 }
 
 .in-message p {
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   margin-bottom: 0.25rem;
   border-radius: 0 15px 15px 15px;
   background-color: white;
+}
+
+.msg-senda {
+  font-weight: 500;
 }
 
 .marginy-0 {

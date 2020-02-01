@@ -4,7 +4,11 @@ const InMessage = ({ content, username }) => {
   return(
     <div className="in-container">
       <div className="in-message">
-        <p><small>{username}</small><br />{content}</p>
+        <p>
+          <span className="msg-senda">{username}</span>
+          <br/>
+          {content}
+        </p>
         <span className="message-date"> 12.42, Tänään</span>
       </div>
     </div>
