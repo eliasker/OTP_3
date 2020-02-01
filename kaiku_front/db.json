@@ -19,48 +19,52 @@
 		{
 			"name": "Mikko",
 			"id": 5
+		},
+		{
+			"name": "Make",
+			"id": 6
 		}
 	],
 	"messages": [
 		{
 			"content": "hei",
 			"id": 1,
-			"type": "in"
+			"user_id": 1
 		},
 		{
 			"content": "vastaus1",
 			"id": 2,
-			"type": "out"
+			"user_id": 6
 		},
 		{
 			"content": "heippa",
 			"id": 3,
-			"type": "in"
+			"user_id": 2
 		},
 		{
 			"content": "moi taas",
 			"id": 4,
-			"type": "in"
+			"user_id": 3
 		},
 		{
 			"content": "vastaus2",
 			"id": 5,
-			"type": "out"
+			"user_id": 6
 		},
 		{
 			"content": "vastaus3",			
 			"id": 6,
-			"type": "out"
+			"user_id": 6
 		},
 		{
 			"content": "juuhjooh",
 			"id": 7,
-			"type": "in"
+			"user_id": 4
 		},
 		{
 			"content": "vastaus4",
 			"id": 8,
-			"type": "out"
+			"user_id": 6
 		}
 	]
 }

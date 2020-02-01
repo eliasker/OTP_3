@@ -16,6 +16,3 @@ const ChatHeader = ({ searchInput, setSearchInput }) => {
 }
 
 export default ChatHeader
-
-/*<input className="form-control find-message-input" type="search" placeholder="Search"
-        value={searchInput} onChange={handleSearchInput} />*/
