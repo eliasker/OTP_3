@@ -35,7 +35,7 @@ const ChatColumn = ({ messages, setMessages, loggedUser }) => {
 		const newMessageObj = {
 			content: newMessage.value,
 			id: keyGen.generateId,
-			type: 'out'
+			user_id: loggedUser.id
 		}
 		setMessages(messages.concat(newMessageObj))
 		newMessage.reset()
