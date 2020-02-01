@@ -19,7 +19,7 @@ const ChatColumn = ({ messages, setMessages, loggedUser, users }) => {
 		const filteredMsgs = messages.filter(msg => msg.content.includes(searchInput))
 		return filteredMsgs.map(m =>
 			m.user_id === loggedUser.id ?
-				<OutMessage key={keyGen.generateKey(m.content)} content={m.content} username={loggedUser.name} /> :
+				<OutMessage key={keyGen.generateKey(m.content)} content={m.content} /> :
 				<InMessage key={keyGen.generateKey(m.content)} content={m.content} user={getUser(m.user_id)} />)
 	}
 
@@ -36,13 +36,15 @@ const ChatColumn = ({ messages, setMessages, loggedUser, users }) => {
 
 	const handleSubmit = (event) => {
 		event.preventDefault()
-		const newMessageObj = {
-			content: newMessage.value,
-			id: keyGen.generateId,
-			user_id: loggedUser.id
+		if (newMessage.value !== '') {
+			const newMessageObj = {
+				content: newMessage.value,
+				id: keyGen.generateId,
+				user_id: loggedUser.id
+			}
+			setMessages(messages.concat(newMessageObj))
+			newMessage.reset()
 		}
-		setMessages(messages.concat(newMessageObj))
-		newMessage.reset()
 	}
 
 	return (
@@ -50,12 +52,12 @@ const ChatColumn = ({ messages, setMessages, loggedUser, users }) => {
 			<ChatHeader searchInput={searchInput} setSearchInput={setSearchInput} />
 			<div className="read-container">
 				<div className="relative">
-				<div className="read-field">
-					{listMessages()}
-					<div id="beginning" ref={messagesEndRef}></div>
+					<div className="read-field">
+						{listMessages()}
+						<div id="beginning" ref={messagesEndRef}></div>
+					</div>
 				</div>
-				</div>
-				
+
 			</div>
 			<MessageForm newMessage={newMessage} removeReset={removeReset} handleSubmit={handleSubmit} />
 		</div>

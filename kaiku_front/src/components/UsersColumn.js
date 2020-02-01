@@ -6,15 +6,11 @@ import keyGen from '../util/keyGen'
 
 const UsersColumn = ({ users }) => {
 	const [searchInput, setSearchInput] = useState('')
-	//console.log(users)
-
-	
-	//console.log(newUsers)
 	const listUsers = () => {
 		const filteredUsers = filterUtil(users.map(u => u.name), searchInput)
 
 		return users
-			.map(u => filteredUsers.find(e => u.name === e) ? u: null)
+			.filter(u => filteredUsers.find(e => u.name === e))
 			.map(u => <User key={keyGen.generateKey(u.name)} user={u} />)
 	}
 
