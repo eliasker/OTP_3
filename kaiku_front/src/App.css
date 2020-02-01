@@ -442,3 +442,92 @@ input::-webkit-input-placeholder {
 .bg-none {
   background-color: #fff0;
 }
+
+/*
+*Profile page
+*
+*/
+
+.profile-page-container {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: #9cacca;
+  color: white;
+  display: flex;
+}
+
+.profile-page {
+  align-content: center;
+  width: 320px;
+  margin: auto;
+}
+
+.profile-page-thumb {
+  min-height: 150px;
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 90px;
+  overflow: hidden;
+}
+
+.profile-image-container {
+  height: 150px;
+  width: 150px;
+  margin: auto;
+}
+
+.profile-image-container div {
+  min-height: 150px;
+  position: relative;
+}
+
+.profile-image-container img {
+  position: absolute;
+}
+
+.profile-image-container span {
+  position: absolute;
+  bottom: 0;
+  left: 100px;
+  font-size: 14px;
+  background-color: #777;
+  padding: 15px 17px;
+  border-radius: 90px;
+}
+
+.exit-profile {
+  font-size: 20px;
+  background-color: rgb(168, 70, 70);
+  padding: 10px 17px;
+  border-radius: 90px;
+}
+
+.exit-profile-group {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+}
+
+.exit-profile-group p {
+  font-weight: 600;
+  color: #000;
+}
+
+.profile-update-form * {
+  margin-top: 0.5rem;
+}
+
+.profile-update-form div {
+  margin: 0;
+  padding: 0;
+}
+
+.profile-page-heading {
+  color: #000;
+  font-weight: 700;
+}
+
+.profile-page-heading h2 {
+  margin: 0;
+}

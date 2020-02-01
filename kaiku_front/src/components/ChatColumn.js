@@ -5,6 +5,7 @@ import InMessage from './InMessage'
 import OutMessage from './OutMessage'
 import MessageForm from './MessageForm'
 import keyGen from '../util/keyGen'
+import ProfilePage from './ProfilePage'
 
 const ChatColumn = ({ messages, setMessages, loggedUser, users }) => {
 	const [searchInput, setSearchInput] = useState('')
@@ -24,7 +25,7 @@ const ChatColumn = ({ messages, setMessages, loggedUser, users }) => {
 	}
 
 	const scrollToBottom = () => {
-		messagesEndRef.current.scrollIntoView({ behavior: "auto" })
+		if(messagesEndRef.current !== null) messagesEndRef.current.scrollIntoView({ behavior: "auto" })
 	}
 
 	useEffect(scrollToBottom, [messages])
@@ -46,6 +47,14 @@ const ChatColumn = ({ messages, setMessages, loggedUser, users }) => {
 			newMessage.reset()
 		}
 	}
+
+//Profiili sivun testausta varten
+/*
+	return(
+		<div className="chat-col col-7">
+			<ProfilePage />
+		</div>
+	)*/
 
 	return (
 		<div className="chat-col col-7">
