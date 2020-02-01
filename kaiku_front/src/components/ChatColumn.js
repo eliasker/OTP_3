@@ -11,8 +11,6 @@ const ChatColumn = ({ messages, setMessages }) => {
 	const messagesEndRef = useRef(null)
 	const newMessage = useField('text')
 
-	const handleSearchInput = (event) => setSearchInput(event.target.value)
-
 	const listMessages = () => {
 		const filteredMsgs = messages.filter(msg => msg.content.includes(searchInput))
 		return filteredMsgs.map(m => (m.type === 'in' ?
@@ -45,7 +43,7 @@ const ChatColumn = ({ messages, setMessages }) => {
 
 	return (
 		<div className="chat-col col-7">
-			<ChatHeader searchInput={searchInput} handleSearchInput={handleSearchInput} />
+			<ChatHeader searchInput={searchInput} setSearchInput={setSearchInput} />
 			<div className="read-field">
 				<div className="brick"></div>
 				{listMessages()}
