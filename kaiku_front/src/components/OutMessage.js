@@ -1,6 +1,6 @@
 import React from 'react'
 
-const OutMessage = ({ content }) => {
+const OutMessage = ({ content, username }) => {
 	return (
 		<div className="out-container">
 			<div className="out-message">

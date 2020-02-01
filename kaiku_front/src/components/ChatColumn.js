@@ -6,17 +6,21 @@ import OutMessage from './OutMessage'
 import MessageForm from './MessageForm'
 import keyGen from '../util/keyGen'
 
-const ChatColumn = ({ messages, setMessages, loggedUser }) => {
+const ChatColumn = ({ messages, setMessages, loggedUser, users }) => {
 	const [searchInput, setSearchInput] = useState('')
 	const messagesEndRef = useRef(null)
 	const newMessage = useField('text')
 
+	const getUsername = (user_id) => {
+		const user = users.find(user => user.id === user_id)
+		return user.name
+	}
 	const listMessages = () => {
 		const filteredMsgs = messages.filter(msg => msg.content.includes(searchInput))
 		return filteredMsgs.map(m =>
 			m.user_id === loggedUser.id ?
-				<OutMessage key={keyGen.generateKey(m.content)} content={m.content} /> :
-				<InMessage key={keyGen.generateKey(m.content)} content={m.content} />)
+				<OutMessage key={keyGen.generateKey(m.content)} content={m.content} username={loggedUser.name} /> :
+				<InMessage key={keyGen.generateKey(m.content)} content={m.content} username={getUsername(m.user_id)} />)
 	}
 
 	const scrollToBottom = () => {

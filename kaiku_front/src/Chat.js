@@ -7,7 +7,7 @@ const Chat = ({ users, messages, setMessages, loggedUser }) => {
 		<div id="chat" className="container">
 			<div className="chat-container container row">
 				<UsersColumn users={users} />
-				<ChatColumn messages={messages} setMessages={setMessages} loggedUser={loggedUser} />
+				<ChatColumn messages={messages} setMessages={setMessages} loggedUser={loggedUser} users={users} />
 			</div>
 		</div>
 	)
