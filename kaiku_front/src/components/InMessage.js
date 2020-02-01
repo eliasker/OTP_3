@@ -1,11 +1,11 @@
 import React from 'react'
 
-const InMessage = ({ content, username }) => {
+const InMessage = ({ content, user }) => {
   return(
     <div className="in-container">
       <div className="in-message">
         <p>
-          <span className="msg-senda">{username}</span>
+          <span className={`${user.color} msg-senda bg-none`}>{user.name}</span>
           <br/>
           {content}
         </p>

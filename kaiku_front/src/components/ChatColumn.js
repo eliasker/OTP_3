@@ -11,16 +11,16 @@ const ChatColumn = ({ messages, setMessages, loggedUser, users }) => {
 	const messagesEndRef = useRef(null)
 	const newMessage = useField('text')
 
-	const getUsername = (user_id) => {
+	const getUser = (user_id) => {
 		const user = users.find(user => user.id === user_id)
-		return user.name
+		return user
 	}
 	const listMessages = () => {
 		const filteredMsgs = messages.filter(msg => msg.content.includes(searchInput))
 		return filteredMsgs.map(m =>
 			m.user_id === loggedUser.id ?
 				<OutMessage key={keyGen.generateKey(m.content)} content={m.content} username={loggedUser.name} /> :
-				<InMessage key={keyGen.generateKey(m.content)} content={m.content} username={getUsername(m.user_id)} />)
+				<InMessage key={keyGen.generateKey(m.content)} content={m.content} user={getUser(m.user_id)} />)
 	}
 
 	const scrollToBottom = () => {
@@ -48,10 +48,14 @@ const ChatColumn = ({ messages, setMessages, loggedUser, users }) => {
 	return (
 		<div className="chat-col col-7">
 			<ChatHeader searchInput={searchInput} setSearchInput={setSearchInput} />
-			<div className="read-field">
-				<div className="brick"></div>
-				{listMessages()}
-				<div id="beginning" ref={messagesEndRef}></div>
+			<div className="read-container">
+				<div className="relative">
+				<div className="read-field">
+					{listMessages()}
+					<div id="beginning" ref={messagesEndRef}></div>
+				</div>
+				</div>
+				
 			</div>
 			<MessageForm newMessage={newMessage} removeReset={removeReset} handleSubmit={handleSubmit} />
 		</div>

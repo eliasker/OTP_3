@@ -5,6 +5,8 @@ import Chat from './Chat'
 import jsonService from '../src/services/jsonService'
 
 const App = () => {
+	//colors
+	const colors = ['red', 'navy', 'orange', 'blue', 'green', 'amber', 'turqoise', 'dark', 'pink', 'brown']
 	// placeholder logged in user for testing 
 	const loggedUser = {
 		name: 'Make',
@@ -16,7 +18,7 @@ const App = () => {
 
 	useEffect(() => {
 		jsonService.getUsers()
-			.then(users => setUsers(users))
+			.then(users => setUsers(users.map(u => u = {...u, color: colors[Math.floor(Math.random() * Math.floor(colors.length))]})))
 	}, [])
 
 	useEffect(() => {

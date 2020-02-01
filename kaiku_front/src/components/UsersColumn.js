@@ -6,22 +6,27 @@ import keyGen from '../util/keyGen'
 
 const UsersColumn = ({ users }) => {
 	const [searchInput, setSearchInput] = useState('')
+	//console.log(users)
 
-	const handleSearchInput = (event) => setSearchInput(event.target.value)
-
+	
+	//console.log(newUsers)
 	const listUsers = () => {
-		return (
-			filterUtil(users.map(u => u.name), searchInput).map(name =>
-				<User key={keyGen.generateKey(name)} name={name} />)
-		)
+		const filteredUsers = filterUtil(users.map(u => u.name), searchInput)
+
+		return users
+			.map(u => filteredUsers.find(e => u.name === e) ? u: null)
+			.map(u => <User key={keyGen.generateKey(u.name)} user={u} />)
 	}
 
 	return (
 		<div className="chat-col col-5 px-0">
 			<UsersHeader users={users} searchInput={searchInput} setSearchInput={setSearchInput} />
-			<div className="profile-list">
-				{listUsers()}
-				<div className="brick"></div>
+			<div className="profile-container">
+				<div className="relative">
+					<div className="profile-list">
+						{listUsers()}
+					</div>
+				</div>
 			</div>
 		</div>
 	)
