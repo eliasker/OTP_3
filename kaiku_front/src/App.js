@@ -12,7 +12,7 @@ const App = () => {
 		name: 'Make',
 		id: 6
 	}
-	const [currentPage, setCurrentPage] = useState('login')
+	const [currentPage, setCurrentPage] = useState('tähän login niin aloittaa login pagestä')
 	const [users, setUsers] = useState([])
 	const [messages, setMessages] = useState([])
 
@@ -28,7 +28,7 @@ const App = () => {
 
 	return (
 		<div className="App">
-			{currentPage === 'a' ? <Login /> : <Chat users={users} messages={messages} setMessages={setMessages} loggedUser={loggedUser} />}
+			{currentPage === 'login' ? <Login setCurrentPage={setCurrentPage}/> : <Chat users={users} messages={messages} setMessages={setMessages} loggedUser={loggedUser} setCurrentPage={setCurrentPage}/>}
 		</div>
 	)
 }

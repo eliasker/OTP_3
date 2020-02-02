@@ -7,7 +7,7 @@ import MessageForm from './MessageForm'
 import keyGen from '../util/keyGen'
 import ProfilePage from './ProfilePage'
 
-const ChatColumn = ({ messages, setMessages, loggedUser, users }) => {
+const ChatColumn = ({ messages, setMessages, loggedUser, users, displayProfile, setDisplayProfile }) => {
 	const [searchInput, setSearchInput] = useState('')
 	const messagesEndRef = useRef(null)
 	const newMessage = useField('text')
@@ -48,17 +48,10 @@ const ChatColumn = ({ messages, setMessages, loggedUser, users }) => {
 		}
 	}
 
-//Profiili sivun testausta varten
-/*
-	return(
-		<div className="chat-col col-7">
-			<ProfilePage />
-		</div>
-	)*/
-
 	return (
 		<div className="chat-col col-7">
-			<ChatHeader searchInput={searchInput} setSearchInput={setSearchInput} />
+			<ProfilePage displayProfile={displayProfile} setDisplayProfile={setDisplayProfile}/>
+			<ChatHeader searchInput={searchInput} setSearchInput={setSearchInput} setDisplayProfile={setDisplayProfile}/>
 			<div className="read-container">
 				<div className="relative">
 					<div className="read-field">

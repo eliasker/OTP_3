@@ -4,7 +4,7 @@ import UsersHeader from './UsersHeader'
 import filterUtil from '../util/filterUtil'
 import keyGen from '../util/keyGen'
 
-const UsersColumn = ({ users }) => {
+const UsersColumn = ({ users, setDisplayProfile, setCurrentPage }) => {
 	const [searchInput, setSearchInput] = useState('')
 	const listUsers = () => {
 		const filteredUsers = filterUtil(users.map(u => u.name), searchInput)
@@ -16,7 +16,7 @@ const UsersColumn = ({ users }) => {
 
 	return (
 		<div className="chat-col col-5 px-0">
-			<UsersHeader users={users} searchInput={searchInput} setSearchInput={setSearchInput} />
+			<UsersHeader users={users} searchInput={searchInput} setSearchInput={setSearchInput} setDisplayProfile={setDisplayProfile} setCurrentPage={setCurrentPage} />
 			<div className="profile-container">
 				<div className="relative">
 					<div className="profile-list">

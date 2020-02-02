@@ -1,11 +1,16 @@
 import React from 'react'
 
-const Login = () => {
+const Login = ({setCurrentPage}) => {
+  const handleSubmit = e => {
+    e.preventDefault()
+    setCurrentPage('chat')
+  }
+
   return(
     <div id="login">
     <div className="container text-center login-container">
     <img src="/kaiku-export-white.png" alt="Kaiku logo"/>
-      <form className="form-login">
+      <form className="form-login" onSubmit={handleSubmit}>
         <h3 className="mb-3">Kirjaudu sisään</h3>
 
         <div className="login-form-group">

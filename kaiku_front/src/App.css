@@ -162,6 +162,9 @@
   height: 100%;
   padding-top: 60px;
   padding-bottom: 60px;
+  background-image: url('kaiku-bg.png');
+  background-size: 10rem;
+  background-repeat: repeat;
 }
 
 .relative {
@@ -172,7 +175,7 @@
 
 .read-field {
   overflow-y: scroll;
-  background-color: #a89cca;
+  background-color: #a89ccaf5;
   position: absolute;
   bottom: 0;
   height: 100%;
@@ -455,6 +458,7 @@ input::-webkit-input-placeholder {
   background-color: #9cacca;
   color: white;
   display: flex;
+  z-index: 10;
 }
 
 .profile-page {
@@ -501,6 +505,16 @@ input::-webkit-input-placeholder {
   background-color: rgb(168, 70, 70);
   padding: 10px 17px;
   border-radius: 90px;
+}
+
+.exit-profile:hover{
+  font-size: 20px;
+  background-color: rgb(212, 37, 37);
+  padding: 10px 17px;
+  border-radius: 90px;
+  transition: ease-in-out;
+  transition-duration: .4s;
+  
 }
 
 .exit-profile-group {

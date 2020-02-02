@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 
-const ProfilePage = () => {
+const ProfilePage = ({displayProfile, setDisplayProfile}) => {
   const [name, setName] = useState('Testi kayttis')
 	return (
-		<div className="profile-page-container">
+		<div className={`${displayProfile} profile-page-container`}>
       <div className="exit-profile-group">
-        <span className="exit-profile">
+        <span className="exit-profile" onClick={() => setDisplayProfile('d-none')}>
           <i class="fas fa-times"></i>
         </span>
         <p className="text-center py-2">Esc</p>
