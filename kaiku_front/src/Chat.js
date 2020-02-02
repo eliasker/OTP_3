@@ -3,6 +3,7 @@ import UsersColumn from './components/UsersColumn'
 import ChatColumn from './components/ChatColumn'
 import useChat from "./hooks/useChat"
 
+
 const Chat = ({ users, messages, setMessages, loggedUser }) => {
 
   const { sendMessage } = useChat()

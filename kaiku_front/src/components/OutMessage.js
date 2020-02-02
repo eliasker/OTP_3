@@ -1,5 +1,6 @@
 import React from 'react'
 
+
 const OutMessage = ({ content }) => {
 	return (
 		<div className="out-container">
