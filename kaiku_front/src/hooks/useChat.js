@@ -3,7 +3,6 @@ import socketIOClient from "socket.io-client"
 
 const useChat = () => {
 
-  // const [messages, setMessages] = useState([]);
   const socketRef = useRef();
   
   useEffect(() => {
