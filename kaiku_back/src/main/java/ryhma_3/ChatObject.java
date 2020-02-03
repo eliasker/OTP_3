@@ -1,4 +1,4 @@
-package Ryhma_3.Kaiku_BE;
+package ryhma_3;
 
 import java.util.Date;
 

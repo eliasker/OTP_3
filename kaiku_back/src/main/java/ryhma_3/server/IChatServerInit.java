@@ -1,4 +1,4 @@
-package Ryhma_3.Kaiku_BE.server;
+package ryhma_3.server;
 
 import com.corundumstudio.socketio.SocketIOServer;
 
