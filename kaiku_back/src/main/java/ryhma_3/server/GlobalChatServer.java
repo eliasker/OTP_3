@@ -7,24 +7,24 @@ import com.corundumstudio.socketio.listener.ClientListeners;
 import com.corundumstudio.socketio.listener.DataListener;
 import com.mongodb.connection.Server;
 
-import Ryhma_3.Kaiku_BE.ChatObject;
+import ryhma_3.ChatObject;
 
 /**
  * @author Panu Lindqvist
- * This thread hadnles operations regarding the chat server
+ * This thread handles operations regarding the chat server
  *
  */
-public class GlobalChatServer {
+public class GlobalChatServer implements IServer {
 	
-	IChatServerInit init;
+	IServerInit init;
 	final SocketIOServer server;
 	private boolean running = true;
 	
 	/**
 	 * @param IChatServerInit: init
-	 * This thread requires a configuration object as a constructor parameter
+	 * This class requires a configuration object as a constructor parameter
 	 */
-	public GlobalChatServer(IChatServerInit init) {
+	public GlobalChatServer(IServerInit init) {
 		this.init = init;
 		server = init.getSocketServer();
 	}
@@ -37,7 +37,7 @@ public class GlobalChatServer {
 		server.addEventListener("chatevent", ChatObject.class, new DataListener<ChatObject>() {
 			public void onData(SocketIOClient client, ChatObject data, AckRequest ackSender) throws Exception {
 				server.getBroadcastOperations().sendEvent("chatevent", data);
-				System.out.println(data.getMessage());	//DEBUG
+				System.out.println(data.getContent());	//DEBUG
 			}
 		});
 		
