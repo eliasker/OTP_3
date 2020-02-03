@@ -15,7 +15,7 @@ public class ChatObject {
 	public ChatObject() {
 	}
 	
-	public ChatObject(String id, String user_id, String content) {
+	public ChatObject(String content, String id, String user_id) {
 		this.id = id;
 		this.user_id = user_id;
 		this.content = content;
