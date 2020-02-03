@@ -4,23 +4,26 @@ import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.DataListener;
+import com.mongodb.connection.Server;
+
 import ryhma_3.ChatObject;
+
 /**
  * @author Panu Lindqvist
- * This thread hadnles operations regarding the chat server
+ * This thread handles operations regarding the chat server
  *
  */
-public class GlobalChatServer {
+public class GlobalChatServer implements IServer {
 	
-	IChatServerInit init;
+	IServerInit init;
 	final SocketIOServer server;
 	private boolean running = true;
 	
 	/**
 	 * @param IChatServerInit: init
-	 * This thread requires a configuration object as a constructor parameter
+	 * This class requires a configuration object as a constructor parameter
 	 */
-	public GlobalChatServer(IChatServerInit init) {
+	public GlobalChatServer(IServerInit init) {
 		this.init = init;
 		server = init.getSocketServer();
 	}
