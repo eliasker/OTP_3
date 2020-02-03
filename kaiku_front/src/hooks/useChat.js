@@ -13,24 +13,17 @@ const useChat = () => {
     socketRef.current.on(
       "chatevent",
       ({ message }) => {
-
-
+        // stuff
       }
     )
-  
+    
     return () => {
       socketRef.current.disconnect()
     }
   }, [])
 
- 
-  const sendMessage = ({ message }) => {
-    
+  const sendMessage = ({ message }) => {    
     const jsonObj = JSON.stringify(message)
-    
-    console.log('send')
-    console.log({message})
-    console.log(jsonObj)
     socketRef.current.emit("chatevent", { jsonObj })
   }
   
