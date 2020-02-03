@@ -7,7 +7,7 @@ import MessageForm from './MessageForm'
 import keyGen from '../util/keyGen'
 import ProfilePage from './ProfilePage'
 
-const ChatColumn = ({ messages, setMessages, loggedUser, users, displayProfile, setDisplayProfile }) => {
+const ChatColumn = ({ messages, setMessages, loggedUser, users, displayProfile, setDisplayProfile, sendMessage }) => {
 	const [searchInput, setSearchInput] = useState('')
 	const messagesEndRef = useRef(null)
 	const newMessage = useField('text')
@@ -43,8 +43,9 @@ const ChatColumn = ({ messages, setMessages, loggedUser, users, displayProfile, 
 				id: keyGen.generateId,
 				user_id: loggedUser.id
 			}
-			setMessages(messages.concat(newMessageObj))
-			newMessage.reset()
+		    setMessages(messages.concat(newMessageObj))
+                    sendMessage(newMessageObj)
+		    newMessage.reset()
 		}
 	}
 
