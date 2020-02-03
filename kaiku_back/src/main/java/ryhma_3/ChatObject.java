@@ -8,9 +8,9 @@ import java.util.Date;
  *
  */
 public class ChatObject {
+	private String content;
 	private String id;
 	private String user_id;
-	private String content;
 	
 	public ChatObject() {
 	}
