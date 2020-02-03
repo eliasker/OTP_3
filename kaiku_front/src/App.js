@@ -17,13 +17,13 @@ const App = () => {
   const [messages, setMessages] = useState([])
 
   useEffect(() => {
-    jsonService.getUsers()
-      .then(users => setUsers(users.map(u => u = { ...u, color: colors[Math.floor(Math.random() * Math.floor(colors.length))] })))
+    jsonService.getMessages()
+      .then(messages => setMessages(messages))
   }, [])
 
   useEffect(() => {
-    jsonService.getMessages()
-      .then(messages => setMessages(messages))
+    jsonService.getUsers()
+      .then(users => setUsers(users.map(u => u = { ...u, color: colors[Math.floor(Math.random() * Math.floor(colors.length))] })))
   }, [])
 
   return (

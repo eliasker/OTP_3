@@ -13,7 +13,7 @@ const ChatColumn = ({ messages, setMessages, loggedUser, users, displayProfile, 
 	const newMessage = useField('text')
 
 	const getUser = (user_id) => {
-		const user = users.find(user => user.id === user_id)
+		const user = users.find(user => user.id === user_id) || { name: '', color: 'red'}
 		return user
 	}
 	const listMessages = () => {
