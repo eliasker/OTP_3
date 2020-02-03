@@ -8,64 +8,40 @@ import java.util.Date;
  *
  */
 public class ChatObject {
-	private String message;
-	private String user;
-	private Date date;
+	private String content;
+	private String id;
+	private String user_id;
 	
 	public ChatObject() {
 	}
 	
-	public ChatObject(String user, String message) {
-		this.message = message;
-		this.user = user;
-		this.date = null;
-	}
-	
-	/**
-	 * getter
-	 * @return message
-	 */
-	public String getMessage() {
-		return message;
+	public ChatObject(String content, String id, String user_id) {
+		this.id = id;
+		this.user_id = user_id;
+		this.content = content;
 	}
 
-	/**
-	 * setter
-	 * @param message
-	 */
-	public void setMessage(String message) {
-		this.message = message;
+	public String getId() {
+		return id;
 	}
 
-	/**
-	 * getter
-	 * @return user
-	 */
-	public String getUser() {
-		return user;
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	/**
-	 * setter
-	 * @param user
-	 */
-	public void setUser(String user) {
-		this.user = user;
+	public String getUser_id() {
+		return user_id;
 	}
 
-	/**
-	 * getter
-	 * @return date
-	 */
-	public Date getDate() {
-		return date;
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
 	}
 
-	/**
-	 * setter
-	 * @param date
-	 */
-	public void setDate(Date date) {
-		this.date = date;
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
 	}
 }
