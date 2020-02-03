@@ -1,10 +1,10 @@
 import React from 'react'
 
-const User = () => {
-  return(
+const User = ({ user }) => {
+  return (
     <div className="profile row">
-      <img src="https://bit.ly/2Rwb7mm" alt="profiili" className="profile-thumb" />
-      <p>Testi henkilö</p>
+      <img src="profile-thumb-nobg.png" alt="profiili" className={`${user.color} profile-thumb`} />
+      <p>{user.name}</p>
     </div>
   )
 }

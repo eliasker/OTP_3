@@ -74,19 +74,65 @@
 }
 
 .chat-header {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+}
+
+.user-header-container {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 120px;
+  z-index: 2;
+}
+
+.chat-header,
+.user-header {
   height: 60px;
   background-color: #9cacca;
   margin: 0;
   vertical-align: middle !important;
 }
 
-.chat-header img {
+.chat-header img,
+.user-header img {
   height: 45px;
   margin-top: 0.5rem !important;
 }
 
-.fa-ellipsis-v,
-.fa-search {
+.chat-type {
+  background-color: #9cacca;
+  margin: 0;
+  padding: 0;
+}
+
+.chat-type :hover {
+  cursor: pointer;
+  background-color: #5f77a1bb;
+  color: #fff;
+  border: 1px solid #0000;
+  transition: ease-in-out;
+  transition-duration: .4s;
+}
+
+.active-chat {
+  background-color: #5f77a1bb;
+  color: #fff;
+  border: 1px solid #0000 !important;
+}
+
+.chat-type p{
+  border: 1px solid #7777;
+  margin: 0;
+  padding: 0.5rem;
+  text-align: center;
+  border-radius: 2px;
+  font-weight: 600;
+}
+
+.fa-ellipsis-v {
   font-size: 22px;
   margin-right: 1rem;
   margin-top: 1.25rem;
@@ -94,14 +140,44 @@
   cursor: pointer;
 }
 
+.users-menu {
+  transform: translate3d(-160px, 43px, 0px) !important;
+}
+
 .find-user-input {
   border-radius: 1px;
 }
 
+.users-online {
+  background-color: #9cacca;
+  font-size: 85%;
+  font-style: italic;
+  margin: 0em;
+  padding-left: 1rem;
+}
+
+.read-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  background-image: url('kaiku-bg.png');
+  background-size: 10rem;
+  background-repeat: repeat;
+}
+
+.relative {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 .read-field {
   overflow-y: scroll;
-  background-color: #a89cca;
+  background-color: #a89ccaf5;
   position: absolute;
+  bottom: 0;
   height: 100%;
   width: 100%;
 }
@@ -114,12 +190,17 @@
   background-color: #dcacca;
   min-height: 4rem;
   overflow: hidden;
+  padding: 0 5px 0 5px;
 }
 
-.message-field div {
+.message-field form {
   margin-left: 0;
   margin-right: 0;
   
+}
+
+.message-field input {
+  border-radius: 5px 0 0 5px;
 }
 
 .message-field button {
@@ -135,7 +216,15 @@
   overflow-y: scroll;
   position: absolute;
   width: 100%;
-  height: 90%;
+  height: 100%;
+}
+
+.profile-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding-top: 160px;
+  z-index: 0;
 }
 
 .profile-thumb {
@@ -143,6 +232,10 @@
   max-height: 45px;
   margin: 1rem;
   border-radius: 60px;
+}
+
+.alpha-1 {
+  opacity: .75;
 }
 
 .profile {
@@ -155,6 +248,10 @@
 .profile p {
   margin-top: 1.5rem;
   font-weight: 600;
+}
+
+.bg-navy {
+  background-color: navy;
 }
 
 .chat-header p{
@@ -184,20 +281,267 @@
 }
 
 .out-message p {
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   margin-bottom: 0.25rem;
   border-radius: 15px 0 15px 15px;
   background-color: rgb(223, 233, 252);
 }
 
 .in-message p {
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   margin-bottom: 0.25rem;
   border-radius: 0 15px 15px 15px;
   background-color: white;
 }
 
+.msg-senda {
+  font-weight: 500;
+}
+
 .marginy-0 {
   margin-left: 0;
   margin-right: 0;
+}
+
+.brick {
+  height: 125px !important;
+}
+
+/*
+* Search
+*/
+#search-message input[type=search] {
+	width: 22px;
+	padding-left: 10px;
+	color: transparent;
+	cursor: pointer;
+}
+#search-message input[type=search]:hover {
+	background-color: #fff;
+}
+#search-message input[type=search]:focus {
+	width: 130px;
+	padding-left: 32px;
+	color: #000;
+	background-color: #fff;
+	cursor: auto;
+}
+#search-message input:-moz-placeholder {
+	color: transparent;
+}
+#search-message input::-webkit-input-placeholder {
+	color: transparent;
+}
+
+input {
+	outline: none;
+}
+input[type=search] {
+	-webkit-appearance: textfield;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+	font-family: inherit;
+	font-size: 100%;
+}
+input::-webkit-search-decoration,
+input::-webkit-search-cancel-button {
+	display: none; 
+}
+
+
+input[type=search] {
+	background: #9cacca url(https://static.tumblr.com/ftv85bp/MIXmud4tx/search-icon.png) no-repeat 11px center;
+	border: none;
+	padding: 9px 10px 9px 32px;
+	width: 55px;
+	
+	-webkit-border-radius: 10em;
+	-moz-border-radius: 10em;
+	border-radius: 10em;
+	
+	-webkit-transition: all .5s;
+	-moz-transition: all .5s;
+	transition: all .5s;
+}
+input[type=search]:focus {
+	width: 130px;
+	background-color: #fff;
+	border-color: rgb(102, 197, 204);
+	
+	-webkit-box-shadow: 0 0 5px rgba(109,207,246,.5);
+	-moz-box-shadow: 0 0 5px rgba(109,207,246,.5);
+	box-shadow: 0 0 5px rgba(109,207,246,.5);
+}
+
+input:-moz-placeholder {
+	color: #999;
+}
+input::-webkit-input-placeholder {
+	color: #999;
+}
+
+#search-message{
+  margin: 0.6rem 0.5rem 0 1rem;
+}
+
+#search-message input {
+  height: 24px;
+}
+
+/*
+* User themes
+*'red', 'navy', 'orange', 'blue', 'green', 'amber', 'turqoise', 'dark', 'pink', 'brown'
+*/
+.red {
+  background-color: orangered;
+  color: orangered;
+}
+
+.navy {
+  background-color: navy;
+  color: navy;
+}
+
+.orange {
+  background-color: orange;
+  color: orange;
+}
+
+.blue {
+  background-color: rgb(0, 132, 255);
+  color: rgb(0, 132, 255);
+}
+
+.green {
+  background-color: green;
+  color: green;
+}
+
+.amber {
+  background-color: rgb(184, 184, 0);
+  color: rgb(184, 184, 0);
+}
+
+.turqoise {
+  background-color: turquoise;
+  color: turquoise;
+}
+
+.dark {
+  background-color: #555;
+  color: #555;
+}
+
+.pink {
+  background-color: palevioletred;
+  color: palevioletred;
+}
+
+.brown {
+  background-color: brown;
+  color: brown;
+}
+
+.bg-none {
+  background-color: #fff0;
+}
+
+/*
+*Profile page
+*
+*/
+
+.profile-page-container {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: #9cacca;
+  color: white;
+  display: flex;
+  z-index: 10;
+}
+
+.profile-page {
+  align-content: center;
+  width: 320px;
+  margin: auto;
+}
+
+.profile-page-thumb {
+  min-height: 150px;
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 90px;
+  overflow: hidden;
+}
+
+.profile-image-container {
+  height: 150px;
+  width: 150px;
+  margin: auto;
+}
+
+.profile-image-container div {
+  min-height: 150px;
+  position: relative;
+}
+
+.profile-image-container img {
+  position: absolute;
+}
+
+.profile-image-container span {
+  position: absolute;
+  bottom: 0;
+  left: 100px;
+  font-size: 14px;
+  background-color: #777;
+  padding: 15px 17px;
+  border-radius: 90px;
+}
+
+.exit-profile {
+  font-size: 20px;
+  background-color: rgb(168, 70, 70);
+  padding: 10px 17px;
+  border-radius: 90px;
+}
+
+.exit-profile:hover{
+  font-size: 20px;
+  background-color: rgb(212, 37, 37);
+  padding: 10px 17px;
+  border-radius: 90px;
+  transition: ease-in-out;
+  transition-duration: .4s;
+  
+}
+
+.exit-profile-group {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+}
+
+.exit-profile-group p {
+  font-weight: 600;
+  color: #000;
+}
+
+.profile-update-form * {
+  margin-top: 0.5rem;
+}
+
+.profile-update-form div {
+  margin: 0;
+  padding: 0;
+}
+
+.profile-page-heading {
+  color: #000;
+  font-weight: 700;
+}
+
+.profile-page-heading h2 {
+  margin: 0;
 }

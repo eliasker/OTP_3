@@ -3,7 +3,6 @@ package ryhma_3.server;
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
-import com.corundumstudio.socketio.listener.ClientListeners;
 import com.corundumstudio.socketio.listener.DataListener;
 import com.mongodb.connection.Server;
 
