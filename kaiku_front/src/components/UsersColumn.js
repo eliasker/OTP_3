@@ -5,27 +5,27 @@ import filterUtil from '../util/filterUtil'
 import keyGen from '../util/keyGen'
 
 const UsersColumn = ({ users, setDisplayProfile, setCurrentPage }) => {
-	const [searchInput, setSearchInput] = useState('')
-	const listUsers = () => {
-		const filteredUsers = filterUtil(users.map(u => u.name), searchInput)
+  const [searchInput, setSearchInput] = useState('')
+  const listUsers = () => {
+    const filteredUsers = filterUtil(users.map(u => u.name), searchInput)
 
-		return users
-			.filter(u => filteredUsers.find(e => u.name === e))
-			.map(u => <User key={keyGen.generateKey(u.name)} user={u} />)
-	}
+    return users
+      .filter(u => filteredUsers.find(e => u.name === e))
+      .map(u => <User key={keyGen.generateKey(u.name)} user={u} />)
+  }
 
-	return (
-		<div className="chat-col col-5 px-0">
-			<UsersHeader users={users} searchInput={searchInput} setSearchInput={setSearchInput} setDisplayProfile={setDisplayProfile} setCurrentPage={setCurrentPage} />
-			<div className="profile-container">
-				<div className="relative">
-					<div className="profile-list">
-						{listUsers()}
-					</div>
-				</div>
-			</div>
-		</div>
-	)
+  return (
+    <div className="chat-col col-5 px-0">
+      <UsersHeader users={users} searchInput={searchInput} setSearchInput={setSearchInput} setDisplayProfile={setDisplayProfile} setCurrentPage={setCurrentPage} />
+      <div className="profile-container">
+        <div className="relative">
+          <div className="profile-list">
+            {listUsers()}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export default UsersColumn

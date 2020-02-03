@@ -8,9 +8,9 @@ const ChatHeader = ({ searchInput, setSearchInput }) => {
         <p>Ryhmäkeskustelu</p>
       </div>
       <form id="search-message" onSubmit={e => e.preventDefault()}>
-        <input type="search" placeholder="search" value={searchInput} onChange={e => setSearchInput(e.target.value)}/>
+        <input type="search" placeholder="search" value={searchInput} onChange={e => setSearchInput(e.target.value)} />
       </form>
-      
+
     </div>
   )
 }

@@ -1,70 +1,70 @@
 {
-	"users": [
-		{
-			"name": "Marko",
-			"id": 1
-		},
-		{
-			"name": "Mirka",
-			"id": 2
-		},
-		{
-			"name": "Makedius",
-			"id": 3
-		},
-		{
-			"name": "markus",
-			"id": 4
-		},
-		{
-			"name": "Mikko",
-			"id": 5
-		},
-		{
-			"name": "Make",
-			"id": 6
-		}
-	],
-	"messages": [
-		{
-			"content": "hei",
-			"id": 1,
-			"user_id": 1
-		},
-		{
-			"content": "vastaus1",
-			"id": 2,
-			"user_id": 6
-		},
-		{
-			"content": "heippa",
-			"id": 3,
-			"user_id": 2
-		},
-		{
-			"content": "moi taas",
-			"id": 4,
-			"user_id": 3
-		},
-		{
-			"content": "vastaus2",
-			"id": 5,
-			"user_id": 6
-		},
-		{
-			"content": "vastaus3",			
-			"id": 6,
-			"user_id": 6
-		},
-		{
-			"content": "juuhjooh",
-			"id": 7,
-			"user_id": 4
-		},
-		{
-			"content": "vastaus4",
-			"id": 8,
-			"user_id": 6
-		}
-	]
+  "users": [
+    {
+      "name": "Marko",
+      "id": 1
+    },
+    {
+      "name": "Mirka",
+      "id": 2
+    },
+    {
+      "name": "Makedius",
+      "id": 3
+    },
+    {
+      "name": "markus",
+      "id": 4
+    },
+    {
+      "name": "Mikko",
+      "id": 5
+    },
+    {
+      "name": "Make",
+      "id": 6
+    }
+  ],
+  "messages": [
+    {
+      "content": "hei",
+      "id": 1,
+      "user_id": 1
+    },
+    {
+      "content": "vastaus1",
+      "id": 2,
+      "user_id": 6
+    },
+    {
+      "content": "heippa",
+      "id": 3,
+      "user_id": 2
+    },
+    {
+      "content": "moi taas",
+      "id": 4,
+      "user_id": 3
+    },
+    {
+      "content": "vastaus2",
+      "id": 5,
+      "user_id": 6
+    },
+    {
+      "content": "vastaus3",
+      "id": 6,
+      "user_id": 6
+    },
+    {
+      "content": "juuhjooh",
+      "id": 7,
+      "user_id": 4
+    },
+    {
+      "content": "vastaus4",
+      "id": 8,
+      "user_id": 6
+    }
+  ]
 }

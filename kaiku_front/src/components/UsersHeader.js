@@ -5,7 +5,7 @@ const UsersHeader = ({ users, searchInput, setSearchInput, setDisplayProfile, se
     <div className="user-header-container">
       <div className="user-header row justify-content-between">
         <img src="https://bit.ly/38HOjG3" alt="profiili kuva" className="d-none d-lg-block profile-thumb" />
-        
+
         <div className="dropdown">
           <span role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i className="fas fa-ellipsis-v"></i>

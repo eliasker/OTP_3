@@ -25,7 +25,7 @@ const ChatColumn = ({ messages, setMessages, loggedUser, users, displayProfile, 
 	}
 
 	const scrollToBottom = () => {
-		if(messagesEndRef.current !== null) messagesEndRef.current.scrollIntoView({ behavior: "auto" })
+		if (messagesEndRef.current !== null) messagesEndRef.current.scrollIntoView({ behavior: "auto" })
 	}
 
 	useEffect(scrollToBottom, [messages])
@@ -50,8 +50,8 @@ const ChatColumn = ({ messages, setMessages, loggedUser, users, displayProfile, 
 
 	return (
 		<div className="chat-col col-7">
-			<ProfilePage displayProfile={displayProfile} setDisplayProfile={setDisplayProfile}/>
-			<ChatHeader searchInput={searchInput} setSearchInput={setSearchInput} setDisplayProfile={setDisplayProfile}/>
+			<ProfilePage displayProfile={displayProfile} setDisplayProfile={setDisplayProfile} />
+			<ChatHeader searchInput={searchInput} setSearchInput={setSearchInput} setDisplayProfile={setDisplayProfile} />
 			<div className="read-container">
 				<div className="relative">
 					<div className="read-field">
