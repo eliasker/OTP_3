@@ -14,13 +14,13 @@ const App = () => {
   }
   const [currentPage, setCurrentPage] = useState('tähän login niin aloittaa login pagestä')
   const [users, setUsers] = useState([])
-  const [messages, setMessages] = useState([])
-
+  //const [messages, setMessages] = useState([])
+/*
   useEffect(() => {
     jsonService.getMessages()
       .then(messages => setMessages(messages))
   }, [])
-
+*/
   useEffect(() => {
     jsonService.getUsers()
       .then(users => setUsers(users.map(u => u = { ...u, color: colors[Math.floor(Math.random() * Math.floor(colors.length))] })))
@@ -28,7 +28,7 @@ const App = () => {
 
   return (
     <div className="App">
-      {currentPage === 'login' ? <Login setCurrentPage={setCurrentPage} /> : <Chat users={users} messages={messages} setMessages={setMessages} loggedUser={loggedUser} setCurrentPage={setCurrentPage} />}
+      {currentPage === 'login' ? <Login setCurrentPage={setCurrentPage} /> : <Chat users={users} loggedUser={loggedUser} setCurrentPage={setCurrentPage} />}
     </div>
   )
 }

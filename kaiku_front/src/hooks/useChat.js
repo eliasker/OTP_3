@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react"
-import socketIOClient from "socket.io-client"
+import socketIOClient from 'socket.io-client'
+import jsonService from '../services/jsonService'
 
 const useChat = () => {
-
   const socketRef = useRef();
-  
+
   useEffect(() => {
     socketRef.current = socketIOClient(
       "http://localhost:9991"
@@ -12,21 +12,19 @@ const useChat = () => {
 
     socketRef.current.on(
       "chatevent",
-      ({ message }) => {
-        // stuff
+      (message) => {
+         
       }
     )
-    
+
     return () => {
       socketRef.current.disconnect()
     }
   }, [])
 
-  const sendMessage = ({ message }) => {    
-    const jsonObj = JSON.stringify(message)
-    socketRef.current.emit("chatevent", { jsonObj })
+  const sendMessage = (message) => {
+    socketRef.current.emit("chatevent", message)
   }
-  
   return { sendMessage }
 }
 
