@@ -7,10 +7,22 @@ import MessageForm from './MessageForm'
 import keyGen from '../util/keyGen'
 import ProfilePage from './ProfilePage'
 
-const ChatColumn = ({ messages, setMessages, loggedUser, users, displayProfile, setDisplayProfile }) => {
-	const [searchInput, setSearchInput] = useState('')
-	const messagesEndRef = useRef(null)
-	const newMessage = useField('text')
+const ChatColumn = ({ messages, setMessages, loggedUser, users, displayProfile, setDisplayProfile, sendMessage }) => {
+  const [searchInput, setSearchInput] = useState('')
+  const messagesEndRef = useRef(null)
+  const newMessage = useField('text')
+  
+  const getUser = (user_id) => {
+    const user = users.find(user => user.id === user_id)
+    return user
+  }
+  const listMessages = () => {
+    const filteredMsgs = messages.filter(msg => msg.content.includes(searchInput))
+    return filteredMsgs.map(m =>
+      m.user_id === loggedUser.id ?
+	<OutMessage key={keyGen.generateKey(m.content)} content={m.content} /> :
+      <InMessage key={keyGen.generateKey(m.content)} content={m.content} user={getUser(m.user_id)} />)
+  }
 
 	const getUser = (user_id) => {
 		const user = users.find(user => user.id === user_id) || { name: '', color: 'red'}
@@ -24,46 +36,43 @@ const ChatColumn = ({ messages, setMessages, loggedUser, users, displayProfile, 
 				<InMessage key={keyGen.generateKey(m.content)} content={m.content} user={getUser(m.user_id)} />)
 	}
 
-	const scrollToBottom = () => {
-		if (messagesEndRef.current !== null) messagesEndRef.current.scrollIntoView({ behavior: "auto" })
-	}
+  useEffect(scrollToBottom, [messages])
 
-	useEffect(scrollToBottom, [messages])
+  const removeReset = (object) => {
+    const { reset, ...newObject } = object
+    return newObject
+  }
 
-	const removeReset = (object) => {
-		const { reset, ...newObject } = object
-		return newObject
-	}
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    if (newMessage.value !== '') {
+      const newMessageObj = {
+	content: newMessage.value,
+	id: keyGen.generateId,
+	user_id: loggedUser.id
+      }
+      setMessages(messages.concat(newMessageObj))
+      sendMessage(newMessageObj)
+      newMessage.reset()
+    }
+  }
 
-	const handleSubmit = (event) => {
-		event.preventDefault()
-		if (newMessage.value !== '') {
-			const newMessageObj = {
-				content: newMessage.value,
-				id: keyGen.generateId,
-				user_id: loggedUser.id
-			}
-			setMessages(messages.concat(newMessageObj))
-			newMessage.reset()
-		}
-	}
+  return (
+    <div className="chat-col col-7">
+      <ProfilePage displayProfile={displayProfile} setDisplayProfile={setDisplayProfile} />
+      <ChatHeader searchInput={searchInput} setSearchInput={setSearchInput} setDisplayProfile={setDisplayProfile} />
+      <div className="read-container">
+	<div className="relative">
+	  <div className="read-field">
+	    {listMessages()}
+	    <div id="beginning" ref={messagesEndRef}></div>
+	  </div>
+	</div>
 
-	return (
-		<div className="chat-col col-7">
-			<ProfilePage displayProfile={displayProfile} setDisplayProfile={setDisplayProfile} />
-			<ChatHeader searchInput={searchInput} setSearchInput={setSearchInput} setDisplayProfile={setDisplayProfile} />
-			<div className="read-container">
-				<div className="relative">
-					<div className="read-field">
-						{listMessages()}
-						<div id="beginning" ref={messagesEndRef}></div>
-					</div>
-				</div>
-
-			</div>
-			<MessageForm newMessage={newMessage} removeReset={removeReset} handleSubmit={handleSubmit} />
-		</div>
-	)
+      </div>
+      <MessageForm newMessage={newMessage} removeReset={removeReset} handleSubmit={handleSubmit} />
+    </div>
+  )
 }
 
 export default ChatColumn
