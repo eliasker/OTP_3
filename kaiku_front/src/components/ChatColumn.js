@@ -10,13 +10,7 @@ import useChat from '../hooks/useChat'
 import jsonService from '../services/jsonService'
 
 const ChatColumn = ({ loggedUser, users, displayProfile, setDisplayProfile }) => {
-  const [messages, setMessages] = useState([])
-  useEffect(() => {
-    jsonService.getMessages()
-      .then(messages => setMessages(messages))
-  }, [])
-
-  const { sendMessage } = useChat()
+  const { messages, sendMessage } = useChat()
 
   const [searchInput, setSearchInput] = useState('')
   const messagesEndRef = useRef(null)
@@ -55,7 +49,6 @@ const ChatColumn = ({ loggedUser, users, displayProfile, setDisplayProfile }) =>
         message_id: keyGen.generateId(),
         user_id: loggedUser.id
       }
-      setMessages(messages.concat(newMessageObj))
       sendMessage(newMessageObj)
       newMessage.reset()
     }
