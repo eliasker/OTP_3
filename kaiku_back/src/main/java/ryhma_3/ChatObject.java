@@ -9,24 +9,24 @@ import java.util.Date;
  */
 public class ChatObject {
 	private String content;
-	private String id;
+	private String message_id;
 	private String user_id;
 	
 	public ChatObject() {
 	}
 	
-	public ChatObject(String content, String id, String user_id) {
-		this.id = id;
+	public ChatObject(String content, String message_id, String user_id) {
+		this.message_id = message_id;
 		this.user_id = user_id;
 		this.content = content;
 	}
 
-	public String getId() {
-		return id;
+	public String getMessage_id() {
+		return message_id;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setMessage_id(String message_id) {
+		this.message_id = message_id;
 	}
 
 	public String getUser_id() {

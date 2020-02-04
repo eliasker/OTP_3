@@ -45,6 +45,8 @@ public class ServerWithProfiles implements IServer{
 				
 			}
 		});
+		
+		server.start();
 	}
 
 	@Override
@@ -53,7 +55,7 @@ public class ServerWithProfiles implements IServer{
 	}
 	
 	private void logUsers() {
-		String users = null;
+		String users = "";
 		for (ProfileObject profileObject : profiles) {
 			users += profileObject.getName();
 			users += "  ---   ";
