@@ -10,7 +10,7 @@ const App = () => {
   // placeholder logged in user for testing 
   const loggedUser = {
     name: 'Make',
-    id: 6
+    id: "6"
   }
   const [currentPage, setCurrentPage] = useState('tähän login niin aloittaa login pagestä')
   const [users, setUsers] = useState([])

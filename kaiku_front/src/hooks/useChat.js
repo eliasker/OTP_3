@@ -19,14 +19,14 @@ const useChat = () => {
     socketRef.current.on(
       "chatevent",
       (message) => {
+        /*
         console.log(message)
         const object = {
-          content: message.message,
-          id: 4,
-          user_id: 3
-        }
-        console.log(messages)
-        setMessages(messages.concat(object))
+          content: message.content,
+          message_id: 4,
+          user_id: 6
+        }*/
+        setMessages(messages.concat(message))
       }
     )
 
@@ -36,7 +36,8 @@ const useChat = () => {
   }, [messages])
 
   const sendMessage = (message) => {
-    socketRef.current.emit("chatevent", { message: message.content, user: 'Minä' })
+    //    socketRef.current.emit("chatevent", { message: message.content, user: 'Minä' })
+    socketRef.current.emit("chatevent", message)
   }
   return { messages, sendMessage }
 }
