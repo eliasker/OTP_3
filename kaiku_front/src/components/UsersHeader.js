@@ -18,8 +18,14 @@ const UsersHeader = ({ users, searchInput, setSearchInput, setDisplayProfile, se
         </div>
       </div>
       <div className="container chat-type row">
-        <p className="col-6 active-chat"><i className="fas fa-users"></i> Ryhmäkeskustelu</p>
-        <p className="col-6"><i className="fas fa-user-friends"></i> Yksityiskeskustelu</p>
+        <p className="col-6 row justify-content-center active-chat">
+          <i className="fas fa-users"></i>
+          <span className="d-none d-lg-block"> Ryhmäkeskustelu</span>
+        </p>
+        <p className="col-6 row justify-content-center">
+          <i className="fas fa-user-friends"></i>
+          <span className="d-none d-lg-block"> YV</span>
+        </p>
       </div>
       <p className="users-online">Käyttäjiä paikalla - {users.length}</p>
       <input className="form-control find-user-input" placeholder="Etsi käyttäjä (ei huumeiden)"
