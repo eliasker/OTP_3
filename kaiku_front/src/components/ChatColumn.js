@@ -7,7 +7,7 @@ import MessageForm from './MessageForm'
 import keyGen from '../util/keyGen'
 import ProfilePage from './ProfilePage'
 import useChat from '../hooks/useChat'
-import jsonService from '../services/jsonService'
+import messageValidation from '../util/inputValidation'
 
 const ChatColumn = ({ loggedUser, users, displayProfile, setDisplayProfile }) => {
   const { messages, sendMessage } = useChat(loggedUser.id)
@@ -26,7 +26,6 @@ const ChatColumn = ({ loggedUser, users, displayProfile, setDisplayProfile }) =>
   }
 
   const listMessages = () => {
-    console.log('listmsgs', messages)
     const filteredMsgs = messages.filter(msg => msg.content.includes(searchInput))
     return filteredMsgs.map(m =>
       m.user_id === loggedUser.id ?
@@ -43,7 +42,8 @@ const ChatColumn = ({ loggedUser, users, displayProfile, setDisplayProfile }) =>
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    if (newMessage.value !== '') {
+
+    if (messageValidation(newMessage.value)) {
       const newMessageObj = {
         content: newMessage.value,
         message_id: keyGen.generateId(),

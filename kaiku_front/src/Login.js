@@ -4,7 +4,15 @@ const Login = ({ setCurrentPage, users, setLoggedUser }) => {
   const handleSubmit = e => {
     e.preventDefault()
     setCurrentPage('chat')
-    setLoggedUser(users[Math.floor(Math.random() * users.length)])
+    const rnd = Math.floor(Math.random() * users.length)
+    const user = users[rnd]
+    console.log(rnd)
+    
+    setLoggedUser(user)
+    window.localStorage.setItem(
+      'loggedKaikuUser', JSON.stringify(user)
+    )
+    
   }
   
   return (

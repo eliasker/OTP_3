@@ -1,6 +1,12 @@
 import React from 'react'
 
-const UsersHeader = ({ users, searchInput, setSearchInput, setDisplayProfile, setCurrentPage }) => {
+const UsersHeader = ({ users, setLoggedUser, searchInput, setSearchInput, setDisplayProfile, setCurrentPage }) => {
+  const handleLogout = () => {
+    window.localStorage.removeItem('loggedKaikuUser')
+    setLoggedUser(null)
+    setCurrentPage('login')
+  }
+
   return (
     <div className="user-header-container">
       <div className="user-header row justify-content-between">
@@ -13,7 +19,7 @@ const UsersHeader = ({ users, searchInput, setSearchInput, setDisplayProfile, se
 
           <div className="dropdown-menu users-menu" aria-labelledby="dropdownMenuLink">
             <span className="dropdown-item" onClick={() => setDisplayProfile('')}><i className="fas fa-user"></i> Profile</span>
-            <span className="dropdown-item" onClick={() => setCurrentPage('login')}><i className="fas fa-door-open"></i> Log out</span>
+            <span className="dropdown-item" onClick={handleLogout}><i className="fas fa-door-open"></i> Log out</span>
           </div>
         </div>
       </div>
