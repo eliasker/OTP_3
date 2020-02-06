@@ -45,7 +45,16 @@ public class AccountsDAO {
         document.append("fullname", fullname);
         document.append("password", password);
         collection.insertOne(document);
-        System.out.println("id on last added: "document.getObjectId("_id"));
+        System.out.println("id on last added: " + document.getObjectId("_id"));
+    }
+
+    public void createAccount(ProfileObject profile) {
+        Document document;
+        document = new Document("username", profile.getName());
+        document.append("fullname", profile.getName());
+        document.append("password", profile.getPassword());
+        collection.insertOne(document);
+        System.out.println("id on last added: " + document.getObjectId("_id"));
     }
 
     private String getMongoURI(String filename) {
