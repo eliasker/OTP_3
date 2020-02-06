@@ -1,7 +1,7 @@
 package ryhma_3;
 
 public class ProfileObject {
-	private String id;
+	private String user_id;
 	private String username;
 	private String password;
 	private String name;
@@ -10,18 +10,18 @@ public class ProfileObject {
 	
 	}
 	
-	public ProfileObject(String id, String username, String password, String name) {
-		this.id = id;
+	public ProfileObject(String user_id, String username, String password, String name) {
+		this.user_id = user_id;
 		this.username = username;
 		this.password = password;
 		this.name = name;
 	}
 	
 	public String getId() {
-		return id;
+		return user_id;
 	}
 	public void setId(String id) {
-		this.id = id;
+		this.user_id = id;
 	}
 	public String getUsername() {
 		return username;
