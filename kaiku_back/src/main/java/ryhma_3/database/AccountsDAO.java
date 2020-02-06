@@ -1,4 +1,4 @@
-package ryhma_3;
+package ryhma_3.database;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,6 +12,8 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
+
+import ryhma_3.castObject.ProfileObject;
 
 import org.bson.Document;
 
@@ -38,6 +40,13 @@ public class AccountsDAO {
 
         // System.out.println(getMongoURI("mongoCredentials.txt"));
     }
+    
+    public AccountsDAO(String URI) {
+    	this.connString = new ConnectionString(URI);
+        this.mongoClient = MongoClients.create(connString);
+        this.mongoDatabase = mongoClient.getDatabase("accounts");
+        this.collection = mongoDatabase.getCollection("accounts");
+    }
 
     public void createAccount(String username, String fullname, String password) {
         Document document;
@@ -50,7 +59,7 @@ public class AccountsDAO {
 
     public void createAccount(ProfileObject profile) {
         Document document;
-        document = new Document("username", profile.getName());
+        document = new Document("username", profile.getUsername());
         document.append("fullname", profile.getName());
         document.append("password", profile.getPassword());
         collection.insertOne(document);

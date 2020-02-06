@@ -6,7 +6,8 @@ import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.DataListener;
 import com.mongodb.connection.Server;
 
-import ryhma_3.ChatObject;
+import ryhma_3.castObject.ChatObject;
+import ryhma_3.init.IServerInit;
 
 /**
  * @author Panu Lindqvist

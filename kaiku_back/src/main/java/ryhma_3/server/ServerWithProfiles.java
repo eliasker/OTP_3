@@ -7,9 +7,10 @@ import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.DataListener;
 
-import ryhma_3.AuthObject;
-import ryhma_3.ChatObject;
-import ryhma_3.ProfileObject;
+import ryhma_3.castObject.AuthObject;
+import ryhma_3.castObject.ChatObject;
+import ryhma_3.castObject.ProfileObject;
+import ryhma_3.init.IServerInit;
 
 public class ServerWithProfiles implements IServer{
 	IServerInit init;

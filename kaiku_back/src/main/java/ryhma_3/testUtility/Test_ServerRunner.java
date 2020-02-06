@@ -1,8 +1,13 @@
-package ryhma_3.server;
+package ryhma_3.testUtility;
 
 import java.util.Scanner;
 
 import com.corundumstudio.socketio.SocketIOServer;
+
+import ryhma_3.init.ChatServerInit;
+import ryhma_3.server.GlobalChatServer;
+import ryhma_3.server.IServer;
+import ryhma_3.server.ServerWithProfiles;
 
 /**
  * @author Panu Lindqvist

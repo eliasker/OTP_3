@@ -1,4 +1,4 @@
-package ryhma_3;
+package ryhma_3.castObject;
 
 import java.util.Date;
 

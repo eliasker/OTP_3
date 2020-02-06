@@ -1,4 +1,4 @@
-package ryhma_3;
+package ryhma_3.castObject;
 
 public class ProfileObject {
 	private String user_id;
@@ -17,10 +17,10 @@ public class ProfileObject {
 		this.name = name;
 	}
 	
-	public String getId() {
+	public String get_Id() {
 		return user_id;
 	}
-	public void setId(String id) {
+	public void set_Id(String id) {
 		this.user_id = id;
 	}
 	public String getUsername() {

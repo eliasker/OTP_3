@@ -1,4 +1,4 @@
-package ryhma_3;
+package ryhma_3.database;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;

@@ -1,4 +1,4 @@
-package ryhma_3;
+package ryhma_3.castObject;
 
 public class AuthObject {
 	private String auth;

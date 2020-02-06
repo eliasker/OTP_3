@@ -1,4 +1,4 @@
-package ryhma_3.server;
+package ryhma_3.init;
 
 import com.corundumstudio.socketio.SocketIOServer;
 
