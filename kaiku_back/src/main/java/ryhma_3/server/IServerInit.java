@@ -4,10 +4,10 @@ import com.corundumstudio.socketio.SocketIOServer;
 
 /**
  * @author Panu Lindqvist
- * Interface to initialisation class. We use interface, so we can modularly switch initialisation class to in example testing mock class.
+ * Interface to initialization class. We use interface, so we can modularly switch initialization class to in example testing mock class.
  *
  */
-public interface IChatServerInit {
+public interface IServerInit {
 
 	/**
 	 * Give a configured SocketIOServer to requester.

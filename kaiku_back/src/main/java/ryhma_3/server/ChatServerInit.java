@@ -8,7 +8,7 @@ import com.corundumstudio.socketio.listener.ClientListeners;
  * @author Panu Lindqvist
  * This is a setup class for the server.
  */
-public class ChatServerInit implements IChatServerInit {
+public class ChatServerInit implements IServerInit {
 	
 	/*
 	 * Default port: 9991
