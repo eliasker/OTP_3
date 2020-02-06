@@ -1,11 +1,12 @@
 import React from 'react'
 
-const Login = ({ setCurrentPage }) => {
+const Login = ({ setCurrentPage, users, setLoggedUser }) => {
   const handleSubmit = e => {
     e.preventDefault()
     setCurrentPage('chat')
+    setLoggedUser(users[Math.floor(Math.random() * users.length)])
   }
-
+  
   return (
     <div id="login">
       <div className="container text-center login-container">

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import socketIOClient from 'socket.io-client'
 import jsonService from '../services/jsonService'
 
-const useChat = () => {
+const useChat = (loggedUser_id) => {
   const [messages, setMessages] = useState([])
   const socketRef = useRef();
 
@@ -19,14 +19,7 @@ const useChat = () => {
     socketRef.current.on(
       "chatevent",
       (message) => {
-        /*
-        console.log(message)
-        const object = {
-          content: message.content,
-          message_id: 4,
-          user_id: 6
-        }*/
-        setMessages(messages.concat(message))
+        if (message.user_id !== loggedUser_id) setMessages(messages.concat(message))
       }
     )
 
@@ -37,6 +30,7 @@ const useChat = () => {
 
   const sendMessage = (message) => {
     //    socketRef.current.emit("chatevent", { message: message.content, user: 'Minä' })
+    setMessages(messages.concat(message))
     socketRef.current.emit("chatevent", message)
   }
   return { messages, sendMessage }
