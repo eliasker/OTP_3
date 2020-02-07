@@ -1,16 +1,16 @@
 package ryhma_3.castObject;
 
-public class ProfileObject {
+public class AccountObject {
 	private String user_id;
 	private String username;
 	private String password;
 	private String name;
 	
-	public ProfileObject() {
+	public AccountObject() {
 	
 	}
 	
-	public ProfileObject(String user_id, String username, String password, String name) {
+	public AccountObject(String user_id, String username, String password, String name) {
 		this.user_id = user_id;
 		this.username = username;
 		this.password = password;

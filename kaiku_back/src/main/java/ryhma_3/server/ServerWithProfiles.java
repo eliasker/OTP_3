@@ -9,14 +9,14 @@ import com.corundumstudio.socketio.listener.DataListener;
 
 import ryhma_3.castObject.AuthObject;
 import ryhma_3.castObject.ChatObject;
-import ryhma_3.castObject.ProfileObject;
+import ryhma_3.castObject.AccountObject;
 import ryhma_3.init.IServerInit;
 
 public class ServerWithProfiles implements IServer{
 	IServerInit init;
 	final SocketIOServer server;
-	private ArrayList<ProfileObject> profiles = new ArrayList<>();
-	
+	private ArrayList<AccountObject> profiles = new ArrayList<>();
+
 	/**
 	 * @param IServerInit init
 	 * This class requires a configuration object as constructor parameter
@@ -28,9 +28,10 @@ public class ServerWithProfiles implements IServer{
 	
 	public void start() {
 		
-		server.addEventListener("loginevent", ProfileObject.class, new DataListener<ProfileObject>() {
+		server.addEventListener("loginevent", AccountObject.class, new DataListener<AccountObject>() {
 			@Override
-			public void onData(SocketIOClient client, ProfileObject data, AckRequest ackSender) throws Exception {
+			public void onData(SocketIOClient client, AccountObject data, AckRequest ackSender) throws Exception {
+				//TODO: Add confirmation that profile doesn't exist
 				profiles.add(data);
 				logUsers();
 				client.sendEvent("loginevent", new AuthObject("kaiku"));
@@ -41,6 +42,7 @@ public class ServerWithProfiles implements IServer{
 		server.addEventListener("chatevent", ChatObject.class, new DataListener<ChatObject>() {
 			@Override
 			public void onData(SocketIOClient client, ChatObject data, AckRequest ackSender) throws Exception {
+				
 				server.getBroadcastOperations().sendEvent("chatevent", data);
 				System.out.println(data.getContent());
 				
@@ -57,10 +59,11 @@ public class ServerWithProfiles implements IServer{
 	
 	private void logUsers() {
 		String users = "";
-		for (ProfileObject profileObject : profiles) {
-			users += profileObject.getName();
+		for (AccountObject profileObject : profiles) {
+			users += profileObject.getUsername() + "/" + profileObject.getPassword() + "/" + profileObject.getName() ;
 			users += "  ---   ";
 		}
 		System.out.println(users);
 	}
+	
 }

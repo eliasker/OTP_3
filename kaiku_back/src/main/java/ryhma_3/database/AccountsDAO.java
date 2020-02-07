@@ -13,7 +13,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 
-import ryhma_3.castObject.ProfileObject;
+import ryhma_3.castObject.AccountObject;
 
 import org.bson.Document;
 
@@ -57,7 +57,7 @@ public class AccountsDAO {
         System.out.println("id on last added: " + document.getObjectId("_id"));
     }
 
-    public void createAccount(ProfileObject profile) {
+    public void createAccount(AccountObject profile) {
         Document document;
         document = new Document("username", profile.getUsername());
         document.append("fullname", profile.getName());
