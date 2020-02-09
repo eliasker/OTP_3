@@ -4,7 +4,8 @@ import jsonService from '../services/jsonService'
 
 const useChat = (loggedUser_id) => {
   const [messages, setMessages] = useState([])
-  const socketRef = useRef();
+  const [users, setUsers] = useState([])
+  const socketRef = useRef()
 
   useEffect(() => {
     jsonService.getMessages()
@@ -20,6 +21,13 @@ const useChat = (loggedUser_id) => {
       "chatevent",
       (message) => {
         if (message.user_id !== loggedUser_id) setMessages(messages.concat(message))
+      }
+    )
+
+    socketRef.current.on(
+      "loginevent",
+      (user) => {
+        // Login and user status(?)
       }
     )
 
