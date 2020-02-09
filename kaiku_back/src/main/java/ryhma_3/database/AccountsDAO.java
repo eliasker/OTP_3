@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Scanner;
 
 import com.mongodb.ConnectionString;
@@ -13,17 +14,28 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 
+import com.mongodb.*;
+import com.mongodb.client.model.Sorts;
+import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
+import com.mongodb.connection.ClusterSettings;
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
+import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Projections.excludeId;
+import static com.mongodb.client.model.Projections.fields;
+import static com.mongodb.client.model.Projections.include;
+import static java.util.Arrays.asList;
+
 import ryhma_3.castObject.ProfileObject;
 
-import org.bson.Document;
-
 import com.mongodb.MongoClientSettings;
-
 
 /**
  * AccountsDAO
  */
-public class AccountsDAO {
+public class AccountsDAO implements IAccountsDAO {
 
     private ConnectionString connString;
     private MongoClientSettings mongoSettings;
@@ -37,33 +49,60 @@ public class AccountsDAO {
         this.mongoClient = MongoClients.create(connString);
         this.mongoDatabase = mongoClient.getDatabase("accounts");
         this.collection = mongoDatabase.getCollection("account");
-
-        // System.out.println(getMongoURI("mongoCredentials.txt"));
     }
     
+	@Override
+	public ProfileObject updateAccount(ProfileObject profileObject) {
+        Document document = new Document("username", profileObject.getUsername());
+        document.append("name", profileObject.getName());
+        document.append("password", profileObject.getPassword());
+		UpdateResult result = collection.updateOne(eq("_id", new ObjectId(profileObject.get_Id())),
+            new Document("$set", document));
+        System.out.println(document.getObjectId("_id"));
+        return new ProfileObject(document.getObjectId("_id").toString(),
+            profileObject.getUsername(), profileObject.getPassword(), profileObject.getName());
+	}
+
+    // TODO: refactor to use ObjectId for filtering instead of username
+	@Override
+	public boolean deleteAccount(ProfileObject profileObject) {
+		DeleteResult result = collection.deleteOne(eq("username", profileObject.getUsername()));
+        if (result.getDeletedCount() > 0) {
+            System.out.println("deleted");
+            return true;
+        } else {
+            System.out.println("not deleted");
+            return false;
+        }
+	}
+
+    @Override
+    public ProfileObject createAccount(ProfileObject profileObject) {
+        Document document = new Document("username", profileObject.getUsername());
+        document.append("fullname", profileObject.getName());
+        document.append("password", profileObject.getPassword());
+        collection.insertOne(document);
+        System.out.println("id on last added: " + document.getObjectId("_id"));
+        return new ProfileObject(document.getObjectId("_id").toString(),
+            profileObject.getUsername(), profileObject.getPassword(), profileObject.getName());
+    }
+
+    // TODO: refactor to use ObjectId for filtering instead of username
+	@Override
+	public ProfileObject getAccount(ProfileObject profileObject) {
+		Document document = (Document)collection
+            .find(eq("username", profileObject.getUsername())).first();
+        
+		return new ProfileObject(document.getObjectId("_id").toString(),
+            document.getString("username"), document.getString("password"),
+            document.getString("name"));
+	}
+
     public AccountsDAO(String URI) {
     	this.connString = new ConnectionString(URI);
         this.mongoClient = MongoClients.create(connString);
         this.mongoDatabase = mongoClient.getDatabase("accounts");
         this.collection = mongoDatabase.getCollection("accounts");
-    }
-
-    public void createAccount(String username, String fullname, String password) {
-        Document document;
-        document = new Document("username", username);
-        document.append("fullname", fullname);
-        document.append("password", password);
-        collection.insertOne(document);
-        System.out.println("id on last added: " + document.getObjectId("_id"));
-    }
-
-    public void createAccount(ProfileObject profile) {
-        Document document;
-        document = new Document("username", profile.getUsername());
-        document.append("fullname", profile.getName());
-        document.append("password", profile.getPassword());
-        collection.insertOne(document);
-        System.out.println("id on last added: " + document.getObjectId("_id"));
     }
 
     private String getMongoURI(String filename) {
@@ -95,4 +134,5 @@ public class AccountsDAO {
         }
         return null;
     }
+
 }
