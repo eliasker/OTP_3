@@ -2,26 +2,32 @@
   "users": [
     {
       "name": "Marko",
+      "username": "MarkoM",
       "id": "1"
     },
     {
       "name": "Mirka",
+      "username": "mirka-kissa",
       "id": "2"
     },
     {
       "name": "Makedius",
+      "username": "suidekaM",
       "id": "3"
     },
     {
       "name": "markus",
+      "username": "xXxmaRkUsxXx",
       "id": "4"
     },
     {
       "name": "Mikko",
+      "username": "mixu666",
       "id": "5"
     },
     {
       "name": "Make",
+      "username": "maKKKe",
       "id": "6"
     }
   ],

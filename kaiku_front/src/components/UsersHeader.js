@@ -1,6 +1,7 @@
 import React from 'react'
 
-const UsersHeader = ({ users, setLoggedUser, searchInput, setSearchInput, setDisplayProfile, setCurrentPage }) => {
+const UsersHeader = ({ users, setLoggedUser, searchInput, setSearchInput, setDisplayProfile, setCurrentPage, chatType, setChatType }) => {
+  
   const handleLogout = () => {
     window.localStorage.removeItem('loggedKaikuUser')
     setLoggedUser(null)
@@ -10,7 +11,7 @@ const UsersHeader = ({ users, setLoggedUser, searchInput, setSearchInput, setDis
   return (
     <div className="user-header-container">
       <div className="user-header row justify-content-between">
-        <img src="https://bit.ly/38HOjG3" alt="profiili kuva" className="d-none d-lg-block profile-thumb" />
+        <img src="profile-thumb-nobg.png" alt="profiili" className={`dark profile-thumb pointer`} onClick={() => setDisplayProfile('')}/>
 
         <div className="dropdown">
           <span role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -24,11 +25,11 @@ const UsersHeader = ({ users, setLoggedUser, searchInput, setSearchInput, setDis
         </div>
       </div>
       <div className="container chat-type row">
-        <p className="col-6 row justify-content-center active-chat">
+        <p className={`col-6 row justify-content-center ${chatType === 'group' ? 'active-chat': ''}`} onClick={() => setChatType('group')}>
           <i className="fas fa-users"></i>
           <span className="d-none d-lg-block"> Ryhmäkeskustelu</span>
         </p>
-        <p className="col-6 row justify-content-center">
+        <p className={`col-6 row justify-content-center ${chatType === 'direct' ? 'active-chat': ''}`} onClick={() => setChatType('direct')}>
           <i className="fas fa-user-friends"></i>
           <span className="d-none d-lg-block"> YV</span>
         </p>

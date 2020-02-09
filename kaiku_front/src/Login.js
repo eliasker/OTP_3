@@ -3,15 +3,14 @@ import React from 'react'
 const Login = ({ setCurrentPage, users, setLoggedUser }) => {
   const handleSubmit = e => {
     e.preventDefault()
-    setCurrentPage('chat')
     const rnd = Math.floor(Math.random() * users.length)
     const user = users[rnd]
-    console.log(rnd)
-    
+
+    //Sisäänkirjautuminen ei onnistu ilman testitietokantaa
+    if(!user) return
     setLoggedUser(user)
-    window.localStorage.setItem(
-      'loggedKaikuUser', JSON.stringify(user)
-    )
+    setCurrentPage('chat')
+    window.localStorage.setItem('loggedKaikuUser', JSON.stringify(user))
     
   }
   

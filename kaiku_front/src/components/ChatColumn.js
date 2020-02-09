@@ -57,7 +57,7 @@ const ChatColumn = ({ loggedUser, users, displayProfile, setDisplayProfile }) =>
 
   return (
     <div className="chat-col col-7">
-      <ProfilePage displayProfile={displayProfile} setDisplayProfile={setDisplayProfile} />
+      <ProfilePage user={loggedUser} displayProfile={displayProfile} setDisplayProfile={setDisplayProfile} />
       <ChatHeader searchInput={searchInput} setSearchInput={setSearchInput} setDisplayProfile={setDisplayProfile} />
       <div className="read-container">
         <div className="relative">
