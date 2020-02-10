@@ -47,8 +47,8 @@ public class AccountsDAO implements IAccountsDAO {
         this.connString = new ConnectionString(getMongoURI("mongoCredentials.txt"));
 
         this.mongoClient = MongoClients.create(connString);
-        this.mongoDatabase = mongoClient.getDatabase("accounts");
-        this.collection = mongoDatabase.getCollection("account");
+        this.mongoDatabase = mongoClient.getDatabase("accounts_db");
+        this.collection = mongoDatabase.getCollection("accounts");
     }
     
 	@Override
