@@ -9,8 +9,8 @@ import ProfilePage from './ProfilePage'
 import useChat from '../hooks/useChat'
 import messageValidation from '../util/inputValidation'
 
-const ChatColumn = ({ loggedUser, users, displayProfile, setDisplayProfile }) => {
-  const { messages, sendMessage } = useChat(loggedUser.id)
+const ChatColumn = ({ loggedUser, initialData, displayProfile, setDisplayProfile }) => {
+  const { messages, sendMessage } = useChat(loggedUser.id, initialData) 
 
   const [searchInput, setSearchInput] = useState('')
   const messagesEndRef = useRef(null)
@@ -21,11 +21,13 @@ const ChatColumn = ({ loggedUser, users, displayProfile, setDisplayProfile }) =>
   }
 
   const getUser = (user_id) => {
-    const user = users.find(user => user.id === user_id) || { name: '', color: 'red' }
+    const user = initialData.users.find(user => user.id === user_id) || { name: '', color: 'red' }
     return user
   }
 
   const listMessages = () => {
+    if (initialData.chats === undefined) return
+
     const filteredMsgs = messages.filter(msg => msg.content.includes(searchInput))
     return filteredMsgs.map(m =>
       m.user_id === loggedUser.id ?
@@ -33,7 +35,7 @@ const ChatColumn = ({ loggedUser, users, displayProfile, setDisplayProfile }) =>
         <InMessage key={keyGen.generateKey(m.content)} content={m.content} user={getUser(m.user_id)} />)
   }
 
-  useEffect(scrollToBottom, [messages])
+  useEffect(scrollToBottom, [initialData, messages])
 
   const removeReset = (object) => {
     const { reset, ...newObject } = object

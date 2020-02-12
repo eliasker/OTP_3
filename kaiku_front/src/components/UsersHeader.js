@@ -1,7 +1,8 @@
 import React from 'react'
 
-const UsersHeader = ({ users, setLoggedUser, searchInput, setSearchInput, setDisplayProfile, setCurrentPage, chatType, setChatType }) => {
-  
+const UsersHeader = ({ initialData, setLoggedUser, searchInput, setSearchInput, setDisplayProfile, setCurrentPage, chatType, setChatType }) => {
+  const onlineUsers = initialData.users ? initialData.users.length: 0
+
   const handleLogout = () => {
     window.localStorage.removeItem('loggedKaikuUser')
     setLoggedUser(null)
@@ -27,14 +28,14 @@ const UsersHeader = ({ users, setLoggedUser, searchInput, setSearchInput, setDis
       <div className="container chat-type row">
         <p className={`col-6 row justify-content-center ${chatType === 'group' ? 'active-chat': ''}`} onClick={() => setChatType('group')}>
           <i className="fas fa-users"></i>
-          <span className="d-none d-lg-block"> Ryhmäkeskustelu</span>
+          <span className="d-none d-lg-block">Ryhmät</span>
         </p>
         <p className={`col-6 row justify-content-center ${chatType === 'direct' ? 'active-chat': ''}`} onClick={() => setChatType('direct')}>
           <i className="fas fa-user-friends"></i>
-          <span className="d-none d-lg-block"> YV</span>
+          <span className="d-none d-lg-block">Käyttäjät</span>
         </p>
       </div>
-      <p className="users-online">Käyttäjiä paikalla - {users.length}</p>
+      <p className="users-online">Käyttäjiä paikalla - {onlineUsers}</p>
       <input className="form-control find-user-input" placeholder="Etsi käyttäjä (ei huumeiden)"
         value={searchInput} onChange={e => setSearchInput(e.target.value)} />
     </div>

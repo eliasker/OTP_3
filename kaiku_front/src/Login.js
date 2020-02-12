@@ -1,17 +1,17 @@
 import React from 'react'
 
-const Login = ({ setCurrentPage, users, setLoggedUser }) => {
+const Login = ({ setCurrentPage, initialData, setLoggedUser }) => {
   const handleSubmit = e => {
     e.preventDefault()
-    const rnd = Math.floor(Math.random() * users.length)
-    const user = users[rnd]
-
-    //Sisäänkirjautuminen ei onnistu ilman testitietokantaa
-    if(!user) return
-    setLoggedUser(user)
+    const loggedUser = {
+      name: initialData.name,
+      username: initialData.username,
+      token: 'kaiku',
+      id: initialData.user_id
+    }
+    setLoggedUser({ loggedUser })
     setCurrentPage('chat')
-    window.localStorage.setItem('loggedKaikuUser', JSON.stringify(user))
-    
+    window.localStorage.setItem('loggedKaikuUser', JSON.stringify(loggedUser))
   }
   
   return (

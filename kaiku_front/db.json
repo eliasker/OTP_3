@@ -1,76 +1,95 @@
 {
-  "users": [
-    {
-      "name": "Marko",
-      "username": "MarkoM",
-      "id": "1"
-    },
-    {
-      "name": "Mirka",
-      "username": "mirka-kissa",
-      "id": "2"
-    },
-    {
-      "name": "Makedius",
-      "username": "suidekaM",
-      "id": "3"
-    },
-    {
-      "name": "markus",
-      "username": "xXxmaRkUsxXx",
-      "id": "4"
-    },
-    {
-      "name": "Mikko",
-      "username": "mixu666",
-      "id": "5"
-    },
-    {
-      "name": "Make",
-      "username": "maKKKe",
-      "id": "6"
-    }
-  ],
-  "messages": [
-    {
-      "content": "hei",
-      "id": "1",
-      "user_id": "1"
-    },
-    {
-      "content": "vastaus1",
-      "id": "2",
-      "user_id": "6"
-    },
-    {
-      "content": "heippa",
-      "id": "3",
-      "user_id": "2"
-    },
-    {
-      "content": "moi taas",
-      "id": "4",
-      "user_id": "3"
-    },
-    {
-      "content": "vastaus2",
-      "id": "5",
-      "user_id": "6"
-    },
-    {
-      "content": "vastaus3",
-      "id": "6",
-      "user_id": "6"
-    },
-    {
-      "content": "juuhjooh",
-      "id": "7",
-      "user_id": "4"
-    },
-    {
-      "content": "vastaus4",
-      "id": "8",
-      "user_id": "6"
-    }
-  ]
+  "user": {
+    "name": "Marko",
+    "username": "MarkoM",
+    "user_id": "1",
+    "chats": [
+      {
+        "name": "Hissichat",
+        "id": "0",
+        "members": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6"
+        ],
+        "messages": [
+          {
+            "content": "hei",
+            "id": "1",
+            "user_id": "1"
+          },
+          {
+            "content": "vastaus1",
+            "id": "2",
+            "user_id": "6"
+          },
+          {
+            "content": "heippa",
+            "id": "3",
+            "user_id": "2"
+          },
+          {
+            "content": "moi taas",
+            "id": "4",
+            "user_id": "3"
+          },
+          {
+            "content": "vastaus2",
+            "id": "5",
+            "user_id": "6"
+          },
+          {
+            "content": "vastaus3",
+            "id": "6",
+            "user_id": "6"
+          },
+          {
+            "content": "juuhjooh",
+            "id": "7",
+            "user_id": "4"
+          },
+          {
+            "content": "vastaus4",
+            "id": "8",
+            "user_id": "6"
+          }
+        ]
+      }
+    ],
+    "users": [
+      {
+        "name": "Marko",
+        "username": "MarkoM",
+        "id": "1"
+      },
+      {
+        "name": "Mirka",
+        "username": "mirka-kissa",
+        "id": "2"
+      },
+      {
+        "name": "Makedius",
+        "username": "suidekaM",
+        "id": "3"
+      },
+      {
+        "name": "markus",
+        "username": "xXxmaRkUsxXx",
+        "id": "4"
+      },
+      {
+        "name": "Mikko",
+        "username": "mixu666",
+        "id": "5"
+      },
+      {
+        "name": "Make",
+        "username": "maKKKe",
+        "id": "6"
+      }
+    ]
+  }
 }
