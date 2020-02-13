@@ -1,12 +1,12 @@
 package com.ryhma_3.kaiku.model.cast_object;
 
-public class ChatObejct {
+public class ChatObject {
 	private String chat_id;
 	private String chatName;
 	private String type = "private";
 	private MessageObject[] messages;
 	
-	public ChatObejct(String chat_id, String chatName, String type, MessageObject[] messages) {
+	public ChatObject(String chat_id, String chatName, String type, MessageObject[] messages) {
 		super();
 		this.chat_id = chat_id;
 		this.chatName = chatName;
@@ -14,7 +14,7 @@ public class ChatObejct {
 		this.messages = messages;
 	}
 	
-	public ChatObejct() {}
+	public ChatObject() {}
 
 	public String getChat_id() {
 		return chat_id;

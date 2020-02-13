@@ -7,7 +7,7 @@ import java.util.Map;
  * Main container for initialization data
  */
 public class InitializationObject {
-	public InitializationObject(String user_id, String name, String username, String token, ChatObejct[] chats) {
+	public InitializationObject(String user_id, String name, String username, String token, ChatObject[] chats) {
 		super();
 		this.user_id = user_id;
 		this.name = name;
@@ -22,7 +22,8 @@ public class InitializationObject {
 	private String name;
 	private String username;
 	private String token = "kaiku";
-	private ChatObejct[] chats;
+	private ChatObject[] chats;
+	
 	public String getUser_id() {
 		return user_id;
 	}
@@ -55,11 +56,11 @@ public class InitializationObject {
 		this.token = token;
 	}
 
-	public ChatObejct[] getChats() {
+	public ChatObject[] getChats() {
 		return chats;
 	}
 
-	public void setChats(ChatObejct[] chats) {
+	public void setChats(ChatObject[] chats) {
 		this.chats = chats;
 	}
 
