@@ -6,7 +6,7 @@ const useChat = (loggedUser_id, initialData) => {
   const [messages, setMessages] = useState([])
   const [users, setUsers] = useState([])
   const socketRef = useRef()
-  
+
   useEffect(() => {
     jsonService.getMessages()
       .then(response => setMessages(response))
@@ -18,30 +18,45 @@ const useChat = (loggedUser_id, initialData) => {
     )
 
     socketRef.current.on(
-      "chatevent",
+      "chatEvent",
       (message) => {
         if (message.user_id !== loggedUser_id) setMessages(messages.concat(message))
       }
     )
 
     socketRef.current.on(
-      "loginevent",
+      "connect",
       (user) => {
-        // Login and user status(?)
+        // TODO
       }
     )
 
-    return () => {
-      socketRef.current.disconnect()
-    }
-  }, [messages])
+    socketRef.current.on(
+      "connectionEvent",
+      (user) => {
+        // TODO
+      }
+    )
 
-  const sendMessage = (message) => {
-    //    socketRef.current.emit("chatevent", { message: message.content, user: 'Minä' })
-    setMessages(messages.concat(message))
-    socketRef.current.emit("chatevent", message)
-  }
-  return { messages, sendMessage }
-}
+    socketRef.current.on(
+      "createchatEvent",
+      (chat) => {
+        // TODO
+      }
+    )
 
-export default useChat
+    socketRef.current.on{
+      return () => {
+        socketRef.current.disconnect()
+      }
+    }, [messages])
+
+            const sendMessage = (message) => {
+              //    socketRef.current.emit("chatevent", { message: message.content, user: 'Minä' })
+              setMessages(messages.concat(message))
+              socketRef.current.emit("chatevent", message)
+            }
+            return { messages, sendMessage }
+           }
+
+  export default useChat
