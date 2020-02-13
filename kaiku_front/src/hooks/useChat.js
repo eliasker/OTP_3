@@ -6,10 +6,8 @@ const useChat = (loggedUser_id, initialData) => {
   const [messages, setMessages] = useState([])
   const [users, setUsers] = useState([])
   const socketRef = useRef()
-  
-  
   useEffect(() => {
-    if(initialData.chats === undefined) return console.log('initialData pending...')
+    if (initialData.chats === undefined) return console.log('initialData pending...')
     setMessages(initialData.chats[0].messages)
   }, [initialData])
 
@@ -29,9 +27,23 @@ const useChat = (loggedUser_id, initialData) => {
     )
 
     socketRef.current.on(
-      "loginevent",
+      "connect",
       (user) => {
-        // Login and user status(?)
+        // TODO
+      }
+    )
+
+    socketRef.current.on(
+      "connectionEvent",
+      (user) => {
+        // TODO
+      }
+    )
+
+    socketRef.current.on(
+      "createchatEvent",
+      (chat) => {
+        // TODO
       }
     )
 
