@@ -8,20 +8,15 @@ const App = () => {
   const [loggedUser, setLoggedUser] = useState(null)
   const [currentPage, setCurrentPage] = useState('chat')
   const [initialData, setInitialData] = useState([])
-  
-  /*
-  useEffect(() => {
-    //profile theme colors
-    const colors = ['red', 'navy', 'orange', 'blue', 'green', 'amber', 'turqoise', 'pink', 'brown', 'dark']
-    jsonService.getUsers()
-    .then(users => setUsers(users.map(u => u = { ...u, color: colors[Math.floor(Math.random() * Math.floor(colors.length))] })))
-  }, [])
-  */
 
   useEffect(() => {
+    //profile theme color generator
+    const colors = ['red', 'navy', 'orange', 'blue', 'green', 'amber', 'turqoise', 'pink', 'brown', 'dark']
+    const generateColor = () => Math.floor(Math.random() * Math.floor(colors.length))
+
     jsonService.getInitialData()
       .then(response => {
-        setInitialData(response)
+        setInitialData({ ...response, users: response.users.map( u => u = { ...u, color: colors[generateColor()] }) })
       })
   }, [])
 

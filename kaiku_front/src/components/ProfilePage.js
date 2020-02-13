@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
-const ProfilePage = ({ user, displayProfile, setDisplayProfile }) => {
+const ProfilePage = ({ loggedUser, displayProfile, setDisplayProfile }) => {
   const [displayUpload, setDisplayUpload] = useState('d-none')
-  const [name, setName] = useState(user.name)
-
+  const [name, setName] = useState(loggedUser.name)
 
   return (
     <div className={`${displayProfile} profile-page-container`}>
@@ -15,7 +14,7 @@ const ProfilePage = ({ user, displayProfile, setDisplayProfile }) => {
       </div>
       <div className="profile-page">
         <h2 className="profile-page-heading text-center">Profiilisivu</h2>
-        <h5 className="profile-page-heading text-center">@{user.username}</h5>
+        <h5 className="profile-page-heading text-center">@{loggedUser.username}</h5>
         <div className="profile-image-container">
           <div>
             <img src="kaikuthumb.png" alt="profiili" className="profile-page-thumb" />

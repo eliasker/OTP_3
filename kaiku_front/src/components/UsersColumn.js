@@ -13,7 +13,7 @@ const UsersColumn = ({ initialData, setDisplayProfile, setCurrentPage, setLogged
   const listGroups = () => {
     if (initialData.chats === undefined) return
     //console.log('initialdata groups', initialData.chats)
-    return initialData.chats.map(chat => <Discussion key={keyGen.generateKey(chat.chatname)} chat={chat} initialData={initialData} />)
+    return initialData.chats.map(chat => <Discussion key={keyGen.generateKey(chat.name)} chat={chat} initialData={initialData} />)
   }
 
   const listMessages = () => {
