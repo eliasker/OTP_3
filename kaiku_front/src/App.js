@@ -35,19 +35,13 @@ const App = () => {
     setCurrentPage('chat')
   }, [])
 
-  if (loggedUser === null) {
     return (
       <div className="App">
-        <Login initialData={initialData} setCurrentPage={setCurrentPage} setLoggedUser={setLoggedUser} />
+        {(loggedUser === null) ?
+        <Login initialData={initialData} setCurrentPage={setCurrentPage} setLoggedUser={setLoggedUser} /> :
+        <Chat initialData={initialData} setLoggedUser={setLoggedUser} loggedUser={loggedUser} setCurrentPage={setCurrentPage} />}
       </div>
     )
-  }
-
-  return (
-    <div className="App">
-      {initialData === undefined ? <div>react on kivaa</div> : <Chat initialData={initialData} setLoggedUser={setLoggedUser} loggedUser={loggedUser} setCurrentPage={setCurrentPage} />}
-    </div>
-  )
 }
 
 export default App

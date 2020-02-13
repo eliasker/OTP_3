@@ -5,6 +5,8 @@ import ChatColumn from './components/ChatColumn'
 const Chat = ({ initialData, loggedUser, setCurrentPage, setLoggedUser }) => {
   const [displayProfile, setDisplayProfile] = useState('d-none')
 
+  if(initialData === undefined) return <></>
+  
   return (
     <div id="chat" className="container">
       <div className="chat-container container row">

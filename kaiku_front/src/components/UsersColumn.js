@@ -1,33 +1,29 @@
 import React, { useState } from 'react'
-import User from './User'
 import UsersHeader from './UsersHeader'
 import filterUtil from '../util/filterUtil'
 import keyGen from '../util/keyGen'
 import DirectUser from './DirectUser'
+import Discussion from './Discussion'
 
 const UsersColumn = ({ initialData, setDisplayProfile, setCurrentPage, setLoggedUser }) => {
   //chatti tyypit: direct, group, elevator
   const [chatType, setChatType] = useState('group')
   const [searchInput, setSearchInput] = useState('')
 
-  const listUsers = () => {
-    try {
-      const filteredUsers = filterUtil(initialData.users.map(u => u.name), searchInput)
-
-      return initialData.users
-        .filter(u => filteredUsers.find(e => u.name === e))
-        .map(u => <User key={keyGen.generateKey(u.name)} user={u} />)
-    } catch (e) { }
+  const listGroups = () => {
+    if (initialData.chats === undefined) return
+    //console.log('initialdata groups', initialData.chats)
+    return initialData.chats.map(chat => <Discussion key={keyGen.generateKey(chat.chatname)} chat={chat} initialData={initialData} />)
   }
 
   const listMessages = () => {
-    try {
-      const filteredUsers = filterUtil(initialData.users.map(u => u.name), searchInput)
+    if (initialData.users === undefined) return
 
-      return initialData.users
-        .filter(u => filteredUsers.find(e => u.name === e))
-        .map(u => <DirectUser key={keyGen.generateKey(u.name)} user={u} />)
-    } catch (e) { console.log(e) }
+    const filteredUsers = filterUtil(initialData.users.map(u => u.name), searchInput)
+
+    return initialData.users
+      .filter(u => filteredUsers.find(e => u.name === e))
+      .map(u => <DirectUser key={keyGen.generateKey(u.name)} user={u} />)
   }
 
   return (
@@ -37,7 +33,7 @@ const UsersColumn = ({ initialData, setDisplayProfile, setCurrentPage, setLogged
       <div className="profile-container">
         <div className="relative">
           <div className="profile-list">
-            {chatType === 'group' ? listUsers() : listMessages()}
+            {chatType === 'group' ? listGroups() : listMessages()}
           </div>
         </div>
       </div>

@@ -7,10 +7,11 @@ const useChat = (loggedUser_id, initialData) => {
   const [users, setUsers] = useState([])
   const socketRef = useRef()
   
+  
   useEffect(() => {
-    jsonService.getMessages()
-      .then(response => setMessages(response))
-  }, [])
+    if(initialData.chats === undefined) return console.log('initialData pending...')
+    setMessages(initialData.chats[0].messages)
+  }, [initialData])
 
   useEffect(() => {
     socketRef.current = socketIOClient(
@@ -20,7 +21,10 @@ const useChat = (loggedUser_id, initialData) => {
     socketRef.current.on(
       "chatevent",
       (message) => {
-        if (message.user_id !== loggedUser_id) setMessages(messages.concat(message))
+        if (message.user_id === loggedUser_id) return
+
+        //Toiminnot vastaanottajalle
+        setMessages(messages.concat(message))
       }
     )
 

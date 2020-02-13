@@ -7,7 +7,7 @@ const getInitialData = () => {
   return request.then(response => response.data)
 }
 
-// tää on karu, mutta toimii
+// voisi olla getMessagesByChatId
 const getMessages = () => {
   const request = axios.get(`${baseUrl}user`)
   return request.then(response => response.data.chats[0].messages)
