@@ -1,13 +1,13 @@
 package com.ryhma_3.kaiku.model.database;
 
-import com.ryhma_3.kaiku.model.castObject.ChatObject;
+import com.ryhma_3.kaiku.model.cast_object.MessageObject;
 
 /**
  * IMessageDAO
  */
 public interface IMessageDAO {
-    public ChatObject createConversation(ChatObject chatObject);
-    public ChatObject updateConversation(ChatObject chatObject);
-    public void deleteConversation(ChatObject chatObject);
-    public ChatObject getConversation(ChatObject chatObject);
+    public MessageObject createConversation(MessageObject chatObject);
+    public MessageObject updateConversation(MessageObject chatObject);
+    public void deleteConversation(MessageObject chatObject);
+    public MessageObject getConversation(MessageObject chatObject);
 }

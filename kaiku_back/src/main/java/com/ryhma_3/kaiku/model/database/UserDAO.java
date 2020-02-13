@@ -12,11 +12,10 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
-
-import com.ryhma_3.kaiku.model.castObject.UserObject;
-
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
+import com.ryhma_3.kaiku.model.cast_object.UserObject;
+
 import org.bson.Document;
 
 import static com.mongodb.client.model.Filters.*;

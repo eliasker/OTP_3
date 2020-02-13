@@ -1,4 +1,4 @@
-package com.ryhma_3.kaiku.model.castObject;
+package com.ryhma_3.kaiku.model.cast_object;
 
 import java.util.Date;
 
@@ -7,15 +7,15 @@ import java.util.Date;
  * Message object. Has a single sent message and metadata.
  *
  */
-public class ChatObject {
+public class MessageObject {
 	private String content;
 	private String message_id;
 	private String user_id;
 	
-	public ChatObject() {
+	public MessageObject() {
 	}
 	
-	public ChatObject(String content, String message_id, String user_id) {
+	public MessageObject(String content, String message_id, String user_id) {
 		this.message_id = message_id;
 		this.user_id = user_id;
 		this.content = content;

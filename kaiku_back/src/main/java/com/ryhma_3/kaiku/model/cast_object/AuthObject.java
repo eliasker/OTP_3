@@ -1,4 +1,4 @@
-package com.ryhma_3.kaiku.model.castObject;
+package com.ryhma_3.kaiku.model.cast_object;
 
 public class AuthObject {
 	private String auth;

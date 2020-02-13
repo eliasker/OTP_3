@@ -1,6 +1,6 @@
 package com.ryhma_3.kaiku.model.database;
 
-import com.ryhma_3.kaiku.model.castObject.UserObject;
+import com.ryhma_3.kaiku.model.cast_object.UserObject;
 
 /**
  * IAccountsDAO
