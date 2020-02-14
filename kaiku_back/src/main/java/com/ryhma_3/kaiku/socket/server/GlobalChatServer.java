@@ -5,8 +5,7 @@ import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.DataListener;
 import com.mongodb.connection.Server;
-
-import com.ryhma_3.kaiku.model.castObject.ChatObject;
+import com.ryhma_3.kaiku.model.cast_object.MessageObject;
 import com.ryhma_3.kaiku.socket.init.IServerInit;
 
 /**
@@ -34,8 +33,8 @@ public class GlobalChatServer implements IServer {
 	public void start() {
 		
 		//global namespace (= broadcast to all connected clients) listener
-		server.addEventListener("chatevent", ChatObject.class, new DataListener<ChatObject>() {
-			public void onData(SocketIOClient client, ChatObject data, AckRequest ackSender) throws Exception {
+		server.addEventListener("chatevent", MessageObject.class, new DataListener<MessageObject>() {
+			public void onData(SocketIOClient client, MessageObject data, AckRequest ackSender) throws Exception {
 				server.getBroadcastOperations().sendEvent("chatevent", data);
 				System.out.println(data.getContent());	//DEBUG
 			}

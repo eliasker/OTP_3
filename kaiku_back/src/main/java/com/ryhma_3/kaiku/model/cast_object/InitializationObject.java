@@ -1,19 +1,20 @@
 package com.ryhma_3.kaiku.model.cast_object;
 
-import java.util.Map;
 
 /**
  * @author Panu Lindqvist
  * Main container for initialization data
  */
 public class InitializationObject {
-	public InitializationObject(String user_id, String name, String username, String token, ChatObject[] chats) {
+	public InitializationObject(String user_id, String name, String username, String token, boolean online, ChatObject[] chats, UserObject[] users) {
 		super();
 		this.user_id = user_id;
 		this.name = name;
 		this.username = username;
 		this.token = token;
+		this.online = online;
 		this.chats = chats;
+		this.users = users;
 	}
 	
 	public InitializationObject() {}
@@ -22,7 +23,9 @@ public class InitializationObject {
 	private String name;
 	private String username;
 	private String token = "kaiku";
+	private boolean online;
 	private ChatObject[] chats;
+	private UserObject[] users;
 	
 	public String getUser_id() {
 		return user_id;
@@ -64,6 +67,21 @@ public class InitializationObject {
 		this.chats = chats;
 	}
 
+	public void setOnline(boolean online) {
+		this.online = online;
+	}
+	
+	public boolean getOnline() {
+		return online;
+	}
+
+	public UserObject[] getUsers() {
+		return users;
+	}
+
+	public void setUsers(UserObject[] users) {
+		this.users = users;
+	}
 	
 }
 

@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import com.ryhma_3.kaiku.model.castObject.UserObject;
+import com.ryhma_3.kaiku.model.cast_object.UserObject;
 import com.ryhma_3.kaiku.model.database.UserDAO;
 
 public class test_connectAtlasMongoDB {

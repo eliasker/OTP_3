@@ -6,10 +6,9 @@ import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DataListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
-
-import com.ryhma_3.kaiku.model.castObject.UserObject;
-import com.ryhma_3.kaiku.model.castObject.AuthObject;
-import com.ryhma_3.kaiku.model.castObject.ChatObject;
+import com.ryhma_3.kaiku.model.cast_object.AuthObject;
+import com.ryhma_3.kaiku.model.cast_object.MessageObject;
+import com.ryhma_3.kaiku.model.cast_object.UserObject;
 import com.ryhma_3.kaiku.model.database.UserDAO;
 import com.ryhma_3.kaiku.socket.init.IServerInit;
 
@@ -38,9 +37,9 @@ public class ServerWithProfilesAndDatabase implements IServer{
 		});
 		
 		//global chat listener
-		server.addEventListener("chatevent", ChatObject.class, new DataListener<ChatObject>() {
+		server.addEventListener("chatevent", MessageObject.class, new DataListener<MessageObject>() {
 			@Override
-			public void onData(SocketIOClient client, ChatObject data, AckRequest ackSender) throws Exception {
+			public void onData(SocketIOClient client, MessageObject data, AckRequest ackSender) throws Exception {
 				//data = DAO.createMessage(data);
 				server.getBroadcastOperations().sendEvent("chatevent", data);
 				System.out.println(data.getContent());
