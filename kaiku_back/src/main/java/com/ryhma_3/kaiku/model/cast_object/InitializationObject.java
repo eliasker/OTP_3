@@ -4,6 +4,27 @@ package com.ryhma_3.kaiku.model.cast_object;
 /**
  * @author Panu Lindqvist
  * Main container for initialization data
+ * - user_id
+	 *  - name
+	 *  - username
+	 *  - token
+	 *  - online
+	 *  -chats[{
+	 *   	- chat_id
+	 *   	- chatName
+	 *   	- type
+	 *   	- messages[{
+	 *   		- content
+	 *   		- message_id
+	 *   		- user_id
+	 *   	}]
+	 *   }]
+	 *  -users[{
+	 *  	- user_id
+	 *  	- username
+	 *  	- password
+	 *  	- name
+	 *  }]
  */
 public class InitializationObject {
 	public InitializationObject(String user_id, String name, String username, String token, boolean online, ChatObject[] chats, UserObject[] users) {
