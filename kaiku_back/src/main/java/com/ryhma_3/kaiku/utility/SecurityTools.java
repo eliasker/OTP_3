@@ -14,15 +14,17 @@ import org.jasypt.util.password.BasicPasswordEncryptor;
  * - Token operations
  */
 public class SecurityTools {
-	final static BasicPasswordEncryptor cryptor = new BasicPasswordEncryptor();
+	private final static BasicPasswordEncryptor cryptor = new BasicPasswordEncryptor();
 	
+	private final static Object lock = new Object();
 	
 	/**
 	 * Token store
 	 * <Session id: UUID, user_id: String, tokenString: String>
 	 */
-	static volatile ArrayList<Triple<UUID, String, String>> tokenDataStore = new ArrayList<>();
-	static volatile boolean operatingTokens = false;
+	private static volatile ArrayList<Token> tokenDataStore = new ArrayList<>();
+	
+	private static volatile boolean operatingTokens = false;
 	
 	
 	/**
@@ -49,40 +51,43 @@ public class SecurityTools {
 	
 	
 	/**
-	 * @param user_id
+	 * @param user_id || tokenString
+	 * @param tokenString
 	 * @return Triple<UUID, user_id, tokenString> token
-	 * Get a users token with user_id
+	 * Get a users token with user_id OR tokenString. 
+	 * Thread-safe
 	 */
-	@SuppressWarnings("rawtypes")
-	public synchronized Triple<UUID, String, String> getFullClonedToken(String user_id){
-		try {
-			//wait for monitor
-			while(operatingTokens) {
-				wait();
-			}
-			
-			Triple<UUID, String, String> searched = null;
-			
-			for (Triple<UUID, String, String> token : tokenDataStore) {
-				searched = new Triple(token);
-				
-				if(searched.getSecond() != user_id) {
-					searched = null;
-					continue;
+	public static Token getCloneOfToken(String searchInput){
+		synchronized (lock) {
+			try {
+				//wait for monitor
+				while(operatingTokens) {
+					lock.wait();
 				}
-				break;
+				
+				Token searched = null;
+				
+				for (Token token : tokenDataStore) {
+					searched = new Token(token);
+					
+					if(searched.getUser_id() != searchInput && searched.getTokenString() != searchInput) {
+						searched = null;
+						continue;
+					}
+					break;
+				}
+	
+				releaseObjectLock();;
+				return searched;
+				
+			} catch(Exception e) {
+				e.printStackTrace();
+				releaseObjectLock();
+				return null;
 			}
-
-			//release
-			operatingTokens = false;
-			notifyAll();
-			return searched;
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-			return null;
 		}
 	}
+	
 	
 	
 	/**
@@ -90,42 +95,45 @@ public class SecurityTools {
 	 * @param tokenString
 	 * Create or update a user specific token. On first connect user gets a new list-item, on consecutive connections a new token string 
 	 * is created.
+	 * Thread-safe
 	 */
-	public synchronized void createOrUpdateToken(String user_id, String tokenString) {
-		//wait for monitor
-		try {
-			while(operatingTokens) {
-				wait();
-			}
-			
-			Triple<UUID, String, String> searched = null;
-			
-			//update
-			for (Triple<UUID, String, String> token : tokenDataStore) {
-				searched = token;
-				
-				if(searched.getSecond() != user_id) {
-					searched = null;
-					continue;
+	public static Token createOrUpdateToken(String user_id, String tokenString) {
+		synchronized (lock) {
+			try {
+				while(operatingTokens) {
+					lock.wait();
 				}
 				
-				token = new Triple<>(null, user_id, tokenString);
+				Token searched = null;
 				
-				operatingTokens = false;
-				notifyAll();
-				return;
+				//update
+				for (Token token : tokenDataStore) {
+					searched = token;
+					
+					if(searched.getUser_id() != user_id) {
+						searched = null;
+						continue;
+					}
+					
+					token = new Token(null, user_id, tokenString);
+					
+					releaseObjectLock();
+					return new Token(token);
+				}
+				
+				
+				//create if update fails
+				Token tokenToAdd = new Token(null, user_id, tokenString);
+				tokenDataStore.add(tokenToAdd);
+				
+				releaseObjectLock();
+				return new Token(tokenToAdd);
+		
+			} catch(Exception e) {
+				e.printStackTrace();
+				releaseObjectLock();
+				return null;
 			}
-			
-			
-			//create if update fails
-			tokenDataStore.add(new Triple<>(null, user_id, tokenString));
-			
-			operatingTokens = false;
-			notifyAll();
-			return;
-	
-		} catch(Exception e) {
-			e.printStackTrace();
 		}
 	}
 	
@@ -134,37 +142,48 @@ public class SecurityTools {
 	 * @param tokenString
 	 * @param sessionID
 	 * @return boolean - did the operation succeed
-	 * Connect user session id to a token
+	 * Connect user session id to a token. Acts also as a verification of connecting user.
+	 * Thread-safe
 	 */
-	public synchronized boolean connectTokenToUUID(String tokenString, UUID sessionID) {
-		try {
-			//wait for monitor
-			while(operatingTokens){
-				wait();
-			}
-			
-			Triple<UUID, String, String> searched = null;
-			
-			for (Triple<UUID, String, String> token : tokenDataStore) {
-				searched = token;
-				if(searched.getThird() != tokenString) {
-					searched = null;
-					continue;
+	public static boolean connectTokenToUUID(String tokenString, UUID sessionID) {
+		synchronized (lock) {
+			try {
+				//wait for monitor
+				while(operatingTokens){
+					lock.wait();
 				}
 				
-				//task succeeded
-				token = new Triple<>(sessionID, token.getSecond(), token.getThird());
-				return true;
+				Token searched = null;
+				
+				for (Token token : tokenDataStore) {
+					searched = token;
+					if(searched.getTokenString() != tokenString) {
+						searched = null;
+						continue;
+					}
+					
+					//task succeeded
+					token = new Token(sessionID, token.getUser_id(), token.getTokenString());
+					
+					releaseObjectLock();
+					return true;
+				}
+							
+				//task failed / not found
+				releaseObjectLock();
+				return false;
+				
+			} catch(Exception e) {
+				e.printStackTrace();
+				//Task failed / exception
+				return false;
 			}
-						
-			//task failed / not found
-			return false;
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-			//Task failed / exception
-			return false;
 		}
 	}
+		
 	
+	private static void releaseObjectLock() {
+		operatingTokens = false;
+		lock.notifyAll();
+	}
 }

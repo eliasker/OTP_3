@@ -1,5 +1,7 @@
 package com.ryhma_3.kaiku.resource_controllers;
 
+import java.util.UUID;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,13 +13,14 @@ import com.ryhma_3.kaiku.model.cast_object.InitializationObject;
 import com.ryhma_3.kaiku.model.cast_object.MessageObject;
 import com.ryhma_3.kaiku.model.cast_object.UserObject;
 import com.ryhma_3.kaiku.model.database.UserDAO;
+import com.ryhma_3.kaiku.utility.SecurityTools;
+import com.ryhma_3.kaiku.utility.Token;
 
 /**
  * AccountController
  */
 @RestController
 public class UserResourceController {
-
 	// private UserDAO accountsDAO = new UserDAO();
 
 	/**
@@ -32,19 +35,29 @@ public class UserResourceController {
 		String password = user.getPassword();
 		// check user credentials
 
-		// get user
-//	    	UserObject user = UserDAO.getUser(username);
+		/*
+		 * Get user with matching username from database. COmpare encrypted password with one submitted
+		 */
+//	    UserObject userFromDb = UserDAO.getUser(username);
+//		boolean valid = SecurityTools.compare(userFromDb.getPassword(), password) ? true : false;
+
 		UserObject userFromDb = new UserObject("213132", username, password, "pena");
-
-		if (user.getUsername() == userFromDb.getUsername() && user.getPassword() == userFromDb.getPassword()) {
-
+		boolean valid = true;
+		
+		if (valid) {
 			/*
 			 * complete user info
 			 */
 			String user_id = userFromDb.get_Id();
 			String name = userFromDb.getName();
-			String token = "kaiku";
 			boolean online = true;
+
+			/*
+			 * Generate token, get token String
+			 */
+			String tokenString = SecurityTools.createOrUpdateToken(user_id, "kaiku").getTokenString();
+
+		
 
 			/*
 			 * CHATS don't have to have messages at this point!!!
@@ -86,7 +99,7 @@ public class UserResourceController {
 			/*
 			 * Construct a InitialObject
 			 */
-			InitializationObject init = new InitializationObject(user_id, name, username, token, online, chats, users);
+			InitializationObject init = new InitializationObject(user_id, name, username, tokenString, online, chats, users);
 
 			return init;
 
@@ -113,6 +126,11 @@ public class UserResourceController {
 		boolean valid = token=="kaiku" ? true : false;
 		
 		if(valid) {
+			
+			/*
+			 * enrcypt password
+			 */
+			userObject.setPassword(SecurityTools.encrypt(userObject.getPassword()));
 			
 			/*
 			 * post user to mongo

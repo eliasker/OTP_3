@@ -1,6 +1,7 @@
 package com.ryhma_3.kaiku.socket.server;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
@@ -10,6 +11,7 @@ import com.ryhma_3.kaiku.model.cast_object.AuthObject;
 import com.ryhma_3.kaiku.model.cast_object.MessageObject;
 import com.ryhma_3.kaiku.model.cast_object.UserObject;
 import com.ryhma_3.kaiku.socket.init.IServerInit;
+import com.ryhma_3.kaiku.utility.Token;
 
 public class ServerWithProfiles implements IServer{
 	IServerInit init;
@@ -17,6 +19,7 @@ public class ServerWithProfiles implements IServer{
 	private ArrayList<UserObject> profiles = new ArrayList<>();
 
 	/**
+	 * @deprecated
 	 * @param IServerInit init
 	 * This class requires a configuration object as constructor parameter
 	 */
@@ -64,5 +67,6 @@ public class ServerWithProfiles implements IServer{
 		}
 		System.out.println(users);
 	}
-	
+
+
 }

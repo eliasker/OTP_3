@@ -1,6 +1,9 @@
 package com.ryhma_3.kaiku.socket.server;
 
 import java.lang.reflect.Constructor;
+import java.util.UUID;
+
+import com.ryhma_3.kaiku.utility.Token;
 
 /**
  * @author Panu Lindqvist
@@ -19,4 +22,6 @@ public interface IServer {
 	 * Stop the servers
 	 */
 	void stopServer();
+	
+
 }
