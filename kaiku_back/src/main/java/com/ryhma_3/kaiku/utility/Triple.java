@@ -21,5 +21,15 @@ public class Triple<F, S, T> {
     public F getFirst() { return first; }
     public S getSecond() { return second; }
     public T getThird() { return third; }
+    
+    /**
+     * @param toClone
+     * This constructor clones another Triple
+     */
+    public Triple (Triple<F, S, T> toClone) {
+    	this.first = (F) toClone.first;
+    	this.second = (S) toClone.second;
+    	this.third = (T) toClone.third;
+    }
 }
 
