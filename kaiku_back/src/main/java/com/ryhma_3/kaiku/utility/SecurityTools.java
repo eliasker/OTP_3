@@ -64,6 +64,7 @@ public class SecurityTools {
 				while(operatingTokens) {
 					lock.wait();
 				}
+				operatingTokens = true;
 				
 				Token searched = null;
 				
@@ -103,6 +104,7 @@ public class SecurityTools {
 				while(operatingTokens) {
 					lock.wait();
 				}
+				operatingTokens = true;
 				
 				Token searched = null;
 				
@@ -152,6 +154,7 @@ public class SecurityTools {
 				while(operatingTokens){
 					lock.wait();
 				}
+				operatingTokens = true;
 				
 				Token searched = null;
 				
