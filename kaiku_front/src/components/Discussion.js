@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import keyGen from '../util/keyGen'
 import User from '../components/User'
 
-const Discussions = ({ initialData, chat }) => {
+const Discussions = ({ initialData, setDisplayProfile, chat }) => {
   const membersOnline = chat.members === undefined ? 0: chat.members.length;
   const [displayUsers, setDisplayUsers] = useState(false)
   const listUsers = () => {
@@ -10,7 +10,7 @@ const Discussions = ({ initialData, chat }) => {
       const filteredUsers = chat.members.map(m => initialData.users.find(u => u.id === m))
       //console.log("FILTER ", filteredUsers)
       return filteredUsers
-        .map(u => <User key={keyGen.generateKey(u.name)} user={u} />)
+        .map(u => <User key={keyGen.generateKey(u.name)} setDisplayProfile={setDisplayProfile} user={u} />)
   }
 
   const handleDiscussionClick = () => {

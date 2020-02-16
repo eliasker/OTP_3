@@ -10,7 +10,7 @@ import useChat from '../hooks/useChat'
 import messageValidation from '../util/inputValidation'
 
 const ChatColumn = ({ loggedUser, initialData, displayProfile, setDisplayProfile }) => {
-  const { messages, sendMessage } = useChat(loggedUser.id, initialData) 
+  const { messages, sendMessage } = useChat(loggedUser.id, initialData)
 
   const [searchInput, setSearchInput] = useState('')
   const messagesEndRef = useRef(null)
@@ -44,7 +44,6 @@ const ChatColumn = ({ loggedUser, initialData, displayProfile, setDisplayProfile
 
   const handleSubmit = (event) => {
     event.preventDefault()
-
     if (messageValidation(newMessage.value)) {
       const newMessageObj = {
         content: newMessage.value,
@@ -56,21 +55,25 @@ const ChatColumn = ({ loggedUser, initialData, displayProfile, setDisplayProfile
       newMessage.reset()
     }
   }
-
   return (
     <div className="chat-col col-7">
-      <ProfilePage loggedUser={loggedUser} displayProfile={displayProfile} setDisplayProfile={setDisplayProfile} />
-      <ChatHeader searchInput={searchInput} setSearchInput={setSearchInput} setDisplayProfile={setDisplayProfile} />
-      <div className="read-container">
-        <div className="relative">
-          <div className="read-field">
-            {listMessages()}
-            <div id="beginning" ref={messagesEndRef}></div>
-          </div>
-        </div>
+      {displayProfile !== undefined ?
+        <ProfilePage loggedUser={loggedUser} displayProfile={displayProfile} setDisplayProfile={setDisplayProfile} />
+        :
+        <div>
+          <ChatHeader searchInput={searchInput} setSearchInput={setSearchInput} setDisplayProfile={setDisplayProfile} />
+          <div className="read-container">
+            <div className="relative">
+              <div className="read-field">
+                {listMessages()}
+                <div id="beginning" ref={messagesEndRef}></div>
+              </div>
+            </div>
 
-      </div>
-      <MessageForm newMessage={newMessage} removeReset={removeReset} handleSubmit={handleSubmit} />
+          </div>
+          <MessageForm newMessage={newMessage} removeReset={removeReset} handleSubmit={handleSubmit} />
+        </div>
+      }
     </div>
   )
 }

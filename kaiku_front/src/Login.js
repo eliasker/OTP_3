@@ -9,7 +9,7 @@ const Login = ({ setCurrentPage, initialData, setLoggedUser }) => {
       token: 'kaiku',
       id: initialData.user_id
     }
-    setLoggedUser( loggedUser )
+    setLoggedUser(loggedUser)
     setCurrentPage('chat')
     window.localStorage.setItem('loggedKaikuUser', JSON.stringify(loggedUser))
   }

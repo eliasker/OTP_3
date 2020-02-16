@@ -1,18 +1,23 @@
 import React from 'react'
 
-const UsersHeader = ({ initialData, setLoggedUser, searchInput, setSearchInput, setDisplayProfile, setCurrentPage, chatType, setChatType }) => {
+const UsersHeader = ({ initialData, loggedUser, setLoggedUser, searchInput, setSearchInput, setDisplayProfile, setCurrentPage, chatType, setChatType }) => {
   const onlineUsers = initialData.users ? initialData.users.length: 0
-
+  console.log('loggedUser', loggedUser)
   const handleLogout = () => {
     window.localStorage.removeItem('loggedKaikuUser')
     setLoggedUser(null)
     setCurrentPage('login')
   }
 
+  const handleShowProfile = () => {
+    console.log('setting displayUser to \n', loggedUser)
+    setDisplayProfile(loggedUser)
+  }
+
   return (
     <div className="user-header-container">
       <div className="user-header row justify-content-between">
-        <img src="profile-thumb-nobg.png" alt="profiili" className={`dark profile-thumb pointer`} onClick={() => setDisplayProfile('')}/>
+        <img src="profile-thumb-nobg.png" alt="profiili" className={`dark profile-thumb pointer`} onClick={() => handleShowProfile()}/>
 
         <div className="dropdown">
           <span role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -20,8 +25,8 @@ const UsersHeader = ({ initialData, setLoggedUser, searchInput, setSearchInput, 
           </span>
 
           <div className="dropdown-menu users-menu" aria-labelledby="dropdownMenuLink">
-            <span className="dropdown-item" onClick={() => setDisplayProfile('')}><i className="fas fa-user"></i> Profile</span>
-            <span className="dropdown-item" onClick={handleLogout}><i className="fas fa-door-open"></i> Log out</span>
+            <span className="dropdown-item" onClick={() => handleShowProfile()}><i className="fas fa-user"></i> Profile</span>
+            <span className="dropdown-item" onClick={() => handleLogout()}><i className="fas fa-door-open"></i> Log out</span>
           </div>
         </div>
       </div>

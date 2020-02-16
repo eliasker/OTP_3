@@ -1,6 +1,10 @@
 import React from 'react'
 
-const User = ({ user }) => {
+const User = ({ user, setDisplayProfile }) => {
+  const handleShowProfile = () => {
+    console.log('setting displayUser to \n', user)
+    setDisplayProfile(user)
+  }
   return (
     <div className="dropdown pos-rel">
       <span role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -16,7 +20,7 @@ const User = ({ user }) => {
       <div className="dropdown-menu profile-menu" aria-labelledby="dropdownMenuLink">
         <span className="text-muted text-sm">Valikko: @{user.username}</span>
         <span className="dropdown-item" ><i className="fas fa-paper-plane"></i> Lähetä viesti</span>
-        <span className="dropdown-item"><i className="fas fa-user"></i> Katso profiili</span>
+        <span className="dropdown-item" onClick={handleShowProfile}><i className="fas fa-user"></i> Katso profiili</span>
       </div>
     </div>
   )

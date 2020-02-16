@@ -5,7 +5,7 @@ import keyGen from '../util/keyGen'
 import DirectUser from './DirectUser'
 import Discussion from './Discussion'
 
-const UsersColumn = ({ initialData, setDisplayProfile, setCurrentPage, setLoggedUser }) => {
+const UsersColumn = ({ initialData, setDisplayProfile, setCurrentPage, loggedUser, setLoggedUser }) => {
   //chatti tyypit: direct, group, elevator
   const [chatType, setChatType] = useState('group')
   const [searchInput, setSearchInput] = useState('')
@@ -13,7 +13,7 @@ const UsersColumn = ({ initialData, setDisplayProfile, setCurrentPage, setLogged
   const listGroups = () => {
     if (initialData.chats === undefined) return
     //console.log('initialdata groups', initialData.chats)
-    return initialData.chats.map(chat => <Discussion key={keyGen.generateKey(chat.name)} chat={chat} initialData={initialData} />)
+    return initialData.chats.map(chat => <Discussion key={keyGen.generateKey(chat.name)} chat={chat} initialData={initialData} setDisplayProfile={setDisplayProfile} />)
   }
 
   const listMessages = () => {
@@ -28,7 +28,7 @@ const UsersColumn = ({ initialData, setDisplayProfile, setCurrentPage, setLogged
 
   return (
     <div className="chat-col col-5 px-0">
-      <UsersHeader initialData={initialData} setLoggedUser={setLoggedUser} searchInput={searchInput} setSearchInput={setSearchInput} setDisplayProfile={setDisplayProfile} setCurrentPage={setCurrentPage}
+      <UsersHeader initialData={initialData} loggedUser={loggedUser} setLoggedUser={setLoggedUser} searchInput={searchInput} setSearchInput={setSearchInput} setDisplayProfile={setDisplayProfile} setCurrentPage={setCurrentPage}
         chatType={chatType} setChatType={setChatType} />
       <div className="profile-container">
         <div className="relative">
