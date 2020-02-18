@@ -8,11 +8,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.mongodb.Block;
 import com.mongodb.ConnectionString;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
+import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
@@ -20,18 +17,17 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
-import com.ryhma_3.kaiku.model.cast_object.UserObject;
-
-import org.bson.Document;
+import com.ryhma_3.kaiku.model.cast_object.ChatObject;
+import com.ryhma_3.kaiku.model.cast_object.MessageObject;
 
 import static com.mongodb.client.model.Filters.*;
 
-import com.mongodb.MongoClientSettings;
+import org.bson.Document;
 
 /**
- * AccountsDAO
+ * ChatDAO
  */
-public class UserDAO implements IUserDAO {
+public class ChatDAO implements IChatDAO {
 
     private ConnectionString connString;
     private MongoClientSettings mongoSettings;
@@ -39,78 +35,82 @@ public class UserDAO implements IUserDAO {
     private MongoDatabase mongoDatabase;
     private MongoCollection collection;
 
-    public UserDAO() {
+    public ChatDAO() {
         this.connString = new ConnectionString(getMongoURI("mongoCredentials.txt"));
         this.mongoClient = MongoClients.create(connString);
         this.mongoDatabase = mongoClient.getDatabase("metadata");
-        this.collection = mongoDatabase.getCollection("users");
+        this.collection = mongoDatabase.getCollection("chats");
     }
-    
-    public UserDAO(String URI) {
-    	this.connString = new ConnectionString(URI);
+
+    public ChatDAO(String URI) {
+        this.connString = new ConnectionString(URI);
         this.mongoClient = MongoClients.create(connString);
         this.mongoDatabase = mongoClient.getDatabase("metadata");
-        this.collection = mongoDatabase.getCollection("users");
+        this.collection = mongoDatabase.getCollection("chats");
     }
-    
+
 	@Override
-	public UserObject updateUser(UserObject userObject) {
-        Document document = new Document("username", userObject.getUsername());
-        document.append("name", userObject.getName());
-        document.append("password", userObject.getPassword());
-		UpdateResult result = collection.updateOne(eq("username",
-            userObject.getUsername()), new Document("$set", document));
+	public ChatObject createChatObject(ChatObject chatObject) {
+        // TODO: append id into the name when it's time for it
+        Document document = new Document("chatName", chatObject.getChatName());
+        document.append("type", chatObject.getType());
+        // TODO: add actual messages when it's time for it
+        document.append("messages", "test");
+        collection.insertOne(document);
+        return chatObject;
+
+		// return null;
+	}
+
+	@Override
+	public ChatObject updateChatObject(ChatObject chatObject) {
+        Document document = new Document("chatName", chatObject.getChatName());
+        document.append("type", chatObject.getType());
+        // TODO: add MessageObject[] when messages are actually stored
+        document.append("messages", "");
+		UpdateResult result = collection.updateOne(eq("chatName",
+            chatObject.getChatName()), new Document("$set", document));
         System.out.println(document.getObjectId("_id"));
         if (result.getMatchedCount() == 0) return null;
         // TODO: find a cleaner solution to get udated documents id
-        else return getUser(userObject);
+        else return getChatObject(chatObject);
 	}
 
-    // TODO: refactor to use ObjectId for filtering instead of username
 	@Override
-	public boolean deleteUser(UserObject userObject) {
-        System.out.println(userObject.getUsername());
-		DeleteResult result = collection.deleteOne(eq("username", userObject.getUsername()));
+	public boolean deleteChatObject(ChatObject chatObject) {
+		DeleteResult result = collection.deleteOne(eq("chatName", chatObject.getChatName()));
         // System.out.println();
         if (result.getDeletedCount() > 0) {
+            System.out.println(chatObject.getChatName());
             System.out.println("deleted");
             return true;
         } else {
             System.out.println("not deleted");
             return false;
         }
+
 	}
 
-    @Override
-    public UserObject createUser(UserObject userObject) {
-        Document document = new Document("username", userObject.getUsername());
-        document.append("name", userObject.getName());
-        document.append("password", userObject.getPassword());
-        collection.insertOne(document);
-        System.out.println("id on last added: " + document.getObjectId("_id"));
-        return new UserObject(document.getObjectId("_id").toString(),
-            userObject.getUsername(), userObject.getPassword(), userObject.getName());
-    }
-
-    // TODO: refactor to use ObjectId for filtering instead of username
 	@Override
-	public UserObject getUser(UserObject userObject) {
-		Document document = (Document)collection
-            .find(eq("username", userObject.getUsername())).first();
+	public ChatObject getChatObject(ChatObject chatObject) {
+        Document d = (Document)collection
+            .find(eq("chatName", chatObject.getChatName())).first();
         
-	    return new UserObject(document.getObjectId("_id").toString(),
-            document.getString("username"), "", document.getString("name"));
+	    return new ChatObject(d.getObjectId("_id").toString(), d.getString("chatName"),
+            // TODO: fix when MessageObjects are actually stored
+            d.getString("type"), new MessageObject[]{});
 	}
 
-	public UserObject[] getAllUser() {
-        MongoCursor<Document> cursor = collection.find().iterator();
-        ArrayList<UserObject> userList = new ArrayList<>();
+    // TODO: finish this method once ChatObject stores user information
+	public ChatObject[] getChats(String userId) {
+        MongoCursor<Document> cursor = collection.find(eq("_id", userId)).iterator();
+        ArrayList<ChatObject> chatList = new ArrayList<>();
 
         try {
             while (cursor.hasNext()) {
                 Document d = cursor.next();
-                userList.add(new UserObject(d.getObjectId("_id").toString(),
-                d.getString("username"), "", d.getString("name")));
+                chatList.add(new ChatObject(d.getObjectId("_id").toString(),
+                d.getString("chatName"), d.getString("type"), new MessageObject[]{}));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,10 +118,10 @@ public class UserDAO implements IUserDAO {
             cursor.close();
         }
 
-        UserObject[] userArr = new UserObject[userList.size()];
-        userArr = userList.toArray(userArr);
+        ChatObject[] chatArr = new ChatObject[chatList.size()];
+        chatArr = chatList.toArray(chatArr);
 
-        return userArr;
+        return chatArr;
 	}
 
     private String getMongoURI(String filename) {
@@ -153,4 +153,5 @@ public class UserDAO implements IUserDAO {
         }
         return null;
     }
+    
 }
