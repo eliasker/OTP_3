@@ -21,9 +21,12 @@ public class TestMain {
         for (ChatObject c : chatObjects) {
             // System.out.println(c.getChatName());
         }
-        boolean c = chatDAO.deleteChatObject(new ChatObject("", "chat/tt2te98et", "oooo",
-            new MessageObject[]{}));
-        System.out.println(c);
+
+        chatDAO.createChatObject(new ChatObject("", "uhtneo", "uhtneo", new MessageObject[]{}));
+
+        // boolean c = chatDAO.deleteChatObject(new ChatObject("", "chat/tt2te98et", "oooo",
+        //     new MessageObject[]{}));
+        // System.out.println(c);
         // chatDAO.createChatObject(new ChatObject("ue", "chat/tt2te98et", "private",
         //     new MessageObject[] { new MessageObject() }));
         // System.out.println("euhtno");

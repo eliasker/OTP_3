@@ -58,8 +58,6 @@ public class ChatDAO implements IChatDAO {
         document.append("messages", "test");
         collection.insertOne(document);
         return chatObject;
-
-		// return null;
 	}
 
 	@Override
