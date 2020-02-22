@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useContext } from 'react'
 import useField from '../hooks/hooks'
 import ChatHeader from './ChatHeader'
 import InMessage from './InMessage'
@@ -8,9 +8,12 @@ import keyGen from '../util/keyGen'
 import ProfilePage from './ProfilePage'
 import useChat from '../hooks/useChat'
 import messageValidation from '../util/inputValidation'
+import UserPage from './UserPage'
+import InitialData from '../providers/InitialData'
 
-const ChatColumn = ({ loggedUser, initialData, displayProfile, setDisplayProfile }) => {
-  const { messages, sendMessage } = useChat(loggedUser.id, initialData)
+const ChatColumn = ({ profileState, userState }) => {
+  const { initialData, loggedUser } = useContext(InitialData)
+  const { messages, sendMessage } = useChat(loggedUser.id)
 
   const [searchInput, setSearchInput] = useState('')
   const messagesEndRef = useRef(null)
@@ -57,23 +60,22 @@ const ChatColumn = ({ loggedUser, initialData, displayProfile, setDisplayProfile
   }
   return (
     <div className="chat-col col-7">
-      {displayProfile !== undefined ?
-        <ProfilePage loggedUser={loggedUser} displayProfile={displayProfile} setDisplayProfile={setDisplayProfile} />
-        :
-        <div>
-          <ChatHeader searchInput={searchInput} setSearchInput={setSearchInput} setDisplayProfile={setDisplayProfile} />
-          <div className="read-container">
-            <div className="relative">
-              <div className="read-field">
-                {listMessages()}
-                <div id="beginning" ref={messagesEndRef}></div>
-              </div>
+      <UserPage userState={userState} />
+      <ProfilePage loggedUser={loggedUser} profileState={profileState} />
+      
+      <div>
+        <ChatHeader searchInput={searchInput} setSearchInput={setSearchInput} />
+        <div className="read-container">
+          <div className="relative">
+            <div className="read-field">
+              {listMessages()}
+              <div id="beginning" ref={messagesEndRef}></div>
             </div>
-
           </div>
-          <MessageForm newMessage={newMessage} removeReset={removeReset} handleSubmit={handleSubmit} />
+
         </div>
-      }
+        <MessageForm newMessage={newMessage} removeReset={removeReset} handleSubmit={handleSubmit} />
+      </div>
     </div>
   )
 }

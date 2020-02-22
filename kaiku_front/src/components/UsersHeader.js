@@ -1,17 +1,20 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import InitialData from '../providers/InitialData'
 
-const UsersHeader = ({ initialData, loggedUser, setLoggedUser, searchInput, setSearchInput, setDisplayProfile, setCurrentPage, chatType, setChatType }) => {
+const UsersHeader = ({ searchState, chatTypeState, setDisplayProfile }) => {
+  const { initialData, loggedUser, setLoggedUser } = useContext(InitialData)
+  const { searchInput, setSearchInput } = searchState
+  const { chatType, setChatType } = chatTypeState
+
   const onlineUsers = initialData.users ? initialData.users.length: 0
-  console.log('loggedUser', loggedUser)
   const handleLogout = () => {
     window.localStorage.removeItem('loggedKaikuUser')
     setLoggedUser(null)
-    setCurrentPage('login')
   }
 
   const handleShowProfile = () => {
     console.log('setting displayUser to \n', loggedUser)
-    setDisplayProfile(loggedUser)
+    setDisplayProfile('')
   }
 
   return (
@@ -25,8 +28,8 @@ const UsersHeader = ({ initialData, loggedUser, setLoggedUser, searchInput, setS
           </span>
 
           <div className="dropdown-menu users-menu" aria-labelledby="dropdownMenuLink">
-            <span className="dropdown-item" onClick={() => handleShowProfile()}><i className="fas fa-user"></i> Profile</span>
-            <span className="dropdown-item" onClick={() => handleLogout()}><i className="fas fa-door-open"></i> Log out</span>
+            <span className="dropdown-item" onClick={() => handleShowProfile()}><i className="fas fa-user"></i> Profiili</span>
+            <span className="dropdown-item" onClick={() => handleLogout()}><i className="fas fa-door-open"></i> Lähe dallaa</span>
           </div>
         </div>
       </div>

@@ -1,9 +1,9 @@
 import React from 'react'
 
-const User = ({ user, setDisplayProfile }) => {
+const User = ({ user, setDisplayUser }) => {
   const handleShowProfile = () => {
     console.log('setting displayUser to \n', user)
-    setDisplayProfile(user)
+    setDisplayUser(user)
   }
   return (
     <div className="dropdown pos-rel">

@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import UsersColumn from './components/UsersColumn'
 import ChatColumn from './components/ChatColumn'
 
-const Chat = ({ initialData, loggedUser, setCurrentPage, setLoggedUser }) => {
-//  const [displayProfile, setDisplayProfile] = useState('d-none')
-  // state, johon asetetaan ProfilePage.js -sivulla tarkasteltava käyttäjä
-  const [displayProfile, setDisplayProfile] = useState(undefined)
+const Chat = () => {
+  const [displayProfile, setDisplayProfile] = useState('d-none')
+  const [displayUser, setDisplayUser] = useState(undefined)
 
-  if(initialData === undefined) return <></>
+  //tätä ei enään tarvita?
+  //if(initialData === undefined) return <></>
   
   return (
     <div id="chat" className="container">
       <div className="chat-container container row">
-        <UsersColumn initialData={initialData} loggedUser={loggedUser} setLoggedUser={setLoggedUser} setDisplayProfile={setDisplayProfile} setCurrentPage={setCurrentPage} />
-        <ChatColumn loggedUser={loggedUser} initialData={initialData} displayProfile={displayProfile} setDisplayProfile={setDisplayProfile} />
+        <UsersColumn setDisplayProfile={setDisplayProfile} setDisplayUser={setDisplayUser} />
+        <ChatColumn profileState={{displayProfile, setDisplayProfile}} userState={{displayUser, setDisplayUser}} />
       </div>
     </div>
   )

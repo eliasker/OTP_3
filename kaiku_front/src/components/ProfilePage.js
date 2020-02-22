@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
+import InitialData from '../providers/InitialData'
 
 // Mikäli tarkasteltava profiili on kirjautuneen käyttäjän oma renderöidään muokkausmahdollisuudet
-const ProfilePage = ({ loggedUser, displayProfile, setDisplayProfile }) => {
-  console.log('selected user\n', displayProfile)
-  console.log('who is logged in\n', loggedUser)
+const ProfilePage = ({ profileState }) => {
+  const { loggedUser } = useContext( InitialData )
+  const { displayProfile, setDisplayProfile } = profileState
   const [displayUpload, setDisplayUpload] = useState('d-none')
   const [name, setName] = useState(loggedUser.name)
 
-  if (displayProfile.id === loggedUser.id) {
     return (
       <div className={`${displayProfile} profile-page-container`}>
         <div className="exit-profile-group">
-          <span className="exit-profile" onClick={() => setDisplayProfile(undefined)}>
+          <span className="exit-profile" onClick={() => setDisplayProfile('d-none')}>
             <i className="fas fa-times"></i>
           </span>
           <p className="text-center py-2">Poistu</p>
@@ -41,26 +41,6 @@ const ProfilePage = ({ loggedUser, displayProfile, setDisplayProfile }) => {
         </div>
       </div>
     )
-  }
-  return (
-    <div className={`${displayProfile} profile-page-container`}>
-      <div className="exit-profile-group">
-        <span className="exit-profile" onClick={() => setDisplayProfile(undefined)}>
-          <i className="fas fa-times"></i>
-        </span>
-        <p className="text-center py-2">Poistu</p>
-      </div>
-      <div className="profile-page">
-        <h2 className="profile-page-heading text-center">{displayProfile.name}</h2>
-        <h5 className="profile-page-heading text-center">@{displayProfile.username}</h5>
-        <div className="profile-image-container">
-          <div>
-            <img src="profile-thumb-nobg.png" alt="profiili" className={`${displayProfile.color} profile-thumb`} />
-          </div>
-        </div>
-      </div>
-    </div>
-  )
 }
 
 export default ProfilePage

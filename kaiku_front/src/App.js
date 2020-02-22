@@ -3,10 +3,10 @@ import './App.css'
 import Login from './Login'
 import Chat from './Chat'
 import jsonService from '../src/services/jsonService'
+import InitialData from './providers/InitialData'
 
 const App = () => {
   const [loggedUser, setLoggedUser] = useState(null)
-  const [currentPage, setCurrentPage] = useState('chat')
   const [initialData, setInitialData] = useState([])
 
   useEffect(() => {
@@ -22,19 +22,19 @@ const App = () => {
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedKaikuUser')
-
     if (!loggedUserJSON || loggedUserJSON === 'undefined') return
 
     const user = JSON.parse(loggedUserJSON)
     setLoggedUser(user)
-    setCurrentPage('chat')
   }, [])
 
     return (
       <div className="App">
-        {(loggedUser === null) ?
-        <Login initialData={initialData} setCurrentPage={setCurrentPage} setLoggedUser={setLoggedUser} /> :
-        <Chat initialData={initialData} setLoggedUser={setLoggedUser} loggedUser={loggedUser} setCurrentPage={setCurrentPage} />}
+        <InitialData.Provider value={{initialData, loggedUser, setLoggedUser}}>
+          {(loggedUser === null) ?
+          <Login /> :
+          <Chat />}
+        </InitialData.Provider>
       </div>
     )
 }

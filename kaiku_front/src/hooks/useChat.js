@@ -1,8 +1,10 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useContext } from "react"
 import socketIOClient from 'socket.io-client'
 import jsonService from '../services/jsonService'
+import InitialData from "../providers/InitialData"
 
-const useChat = (loggedUser_id, initialData) => {
+const useChat = (loggedUser_id) => {
+  const {initialData} = useContext(InitialData)
   const [messages, setMessages] = useState([])
   const [users, setUsers] = useState([])
   const socketRef = useRef()

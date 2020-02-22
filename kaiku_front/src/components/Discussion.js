@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import keyGen from '../util/keyGen'
 import User from '../components/User'
+import InitialData from '../providers/InitialData'
 
-const Discussions = ({ initialData, setDisplayProfile, chat }) => {
+const Discussions = ({ setDisplayUser, chat }) => {
+  const {initialData} = useContext(InitialData)
   const membersOnline = chat.members === undefined ? 0: chat.members.length;
   const [displayUsers, setDisplayUsers] = useState(false)
   const listUsers = () => {
@@ -10,7 +12,7 @@ const Discussions = ({ initialData, setDisplayProfile, chat }) => {
       const filteredUsers = chat.members.map(m => initialData.users.find(u => u.id === m))
       //console.log("FILTER ", filteredUsers)
       return filteredUsers
-        .map(u => <User key={keyGen.generateKey(u.name)} setDisplayProfile={setDisplayProfile} user={u} />)
+        .map(u => <User key={keyGen.generateKey(u.name)} setDisplayUser={setDisplayUser} user={u} />)
   }
 
   const handleDiscussionClick = () => {
