@@ -20,7 +20,7 @@ const Discussions = ({ setDisplayUser, chat }) => {
   }
 
   return (
-    <div className="dropdown pos-rel">
+    <div className="group-chat dropdown pos-rel">
       <div className="profile row" onClick={() => handleDiscussionClick()}>
         <img src="kaikuthumb.png" alt="profiili" className={`profile-thumb alpha-1`} />
         <div>
