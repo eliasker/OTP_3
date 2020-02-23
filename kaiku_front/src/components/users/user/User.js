@@ -1,10 +1,8 @@
 import React from 'react'
 
 const User = ({ user, setDisplayUser }) => {
-  const handleShowProfile = () => {
-    console.log('setting displayUser to \n', user)
-    setDisplayUser(user)
-  }
+  const handleShowProfile = () => setDisplayUser(user)
+
   return (
     <div className="dropdown pos-rel">
       <span role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

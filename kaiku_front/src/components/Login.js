@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import InitialData from './providers/InitialData'
+import InitialData from '../providers/InitialData'
 
 const Login = () => {
   const {initialData, setLoggedUser} = useContext(InitialData)

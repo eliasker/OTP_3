@@ -1,15 +1,16 @@
 import React, { useState, useRef, useEffect, useContext } from 'react'
-import useField from '../hooks/hooks'
-import ChatHeader from './ChatHeader'
-import InMessage from './InMessage'
-import OutMessage from './OutMessage'
+
+import useField from '../../hooks/hooks'
+import keyGen from '../../util/keyGen'
+import useChat from '../../hooks/useChat'
+import messageValidation from '../../util/inputValidation'
+import InitialData from '../../providers/InitialData'
+import InMessage from './message/InMessage'
+import OutMessage from './message/OutMessage'
+import ProfilePage from '../profile/ProfilePage'
+import UserPage from '../profile/UserPage'
 import MessageForm from './MessageForm'
-import keyGen from '../util/keyGen'
-import ProfilePage from './ProfilePage'
-import useChat from '../hooks/useChat'
-import messageValidation from '../util/inputValidation'
-import UserPage from './UserPage'
-import InitialData from '../providers/InitialData'
+import ChatHeader from './ChatHeader'
 
 const ChatColumn = ({ profileState, userState }) => {
   const { initialData, loggedUser } = useContext(InitialData)

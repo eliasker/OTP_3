@@ -1,10 +1,10 @@
 import React, { useState, useContext } from 'react'
+import filterUtil from '../../util/filterUtil'
+import keyGen from '../../util/keyGen'
+import InitialData from '../../providers/InitialData'
+import Discussions from './Discussion'
 import UsersHeader from './UsersHeader'
-import filterUtil from '../util/filterUtil'
-import keyGen from '../util/keyGen'
-import DirectUser from './DirectUser'
-import Discussion from './Discussion'
-import InitialData from '../providers/InitialData'
+import DirectUser from './user/DirectUser'
 
 const UsersColumn = ({ setDisplayProfile, setDisplayUser }) => {
   const {initialData} = useContext(InitialData)
@@ -15,7 +15,8 @@ const UsersColumn = ({ setDisplayProfile, setDisplayUser }) => {
   const listGroups = () => {
     if (initialData.chats === undefined) return
     //console.log('initialdata groups', initialData.chats)
-    return initialData.chats.map(chat => <Discussion key={keyGen.generateKey(chat.name)} chat={chat} setDisplayUser={setDisplayUser} />)
+    return initialData.chats.map(chat => 
+      <Discussions key={keyGen.generateKey(chat.name)} chat={chat} setDisplayUser={setDisplayUser} />)
   }
 
   const listMessages = () => {

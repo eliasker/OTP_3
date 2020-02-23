@@ -179,7 +179,7 @@
   height: 100%;
   padding-top: 60px;
   padding-bottom: 60px;
-  background-image: url('img/kaiku-bg.png');
+  background-image: url('../img/kaiku-bg.png');
   background-size: 10rem;
   background-repeat: repeat;
 }

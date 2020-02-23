@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import InitialData from '../providers/InitialData'
+import InitialData from '../../providers/InitialData'
 
 const UsersHeader = ({ searchState, chatTypeState, setDisplayProfile }) => {
   const { initialData, loggedUser, setLoggedUser } = useContext(InitialData)

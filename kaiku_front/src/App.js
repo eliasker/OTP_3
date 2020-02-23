@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import './App.css'
-import Login from './Login'
-import Chat from './Chat'
 import jsonService from '../src/services/jsonService'
 import InitialData from './providers/InitialData'
+import Login from './components/Login'
+import Chat from './components/Chat'
+import './styles/App.css'
 
 const App = () => {
   const [loggedUser, setLoggedUser] = useState(null)

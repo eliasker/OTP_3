@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
-import UsersColumn from './components/UsersColumn'
-import ChatColumn from './components/ChatColumn'
+import UsersColumn from './users/UsersColumn'
+import ChatColumn from './chat/ChatColumn'
 
 const Chat = () => {
   const [displayProfile, setDisplayProfile] = useState('d-none')

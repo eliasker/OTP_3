@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
-import keyGen from '../util/keyGen'
-import User from '../components/User'
-import InitialData from '../providers/InitialData'
+import InitialData from '../../providers/InitialData'
+import keyGen from '../../util/keyGen'
+import User from './user/User'
 
 const Discussions = ({ setDisplayUser, chat }) => {
   const {initialData} = useContext(InitialData)

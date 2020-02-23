@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react'
-import InitialData from '../providers/InitialData'
+import InitialData from '../../providers/InitialData'
 
 // Mikäli tarkasteltava profiili on kirjautuneen käyttäjän oma renderöidään muokkausmahdollisuudet
 const ProfilePage = ({ profileState }) => {
-  const { loggedUser } = useContext( InitialData )
+  const { loggedUser } = useContext(InitialData)
   const { displayProfile, setDisplayProfile } = profileState
   const [displayUpload, setDisplayUpload] = useState('d-none')
   const [name, setName] = useState(loggedUser.name)
