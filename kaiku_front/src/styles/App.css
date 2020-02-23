@@ -623,3 +623,12 @@ input::-webkit-input-placeholder {
 .profile-page-heading h2 {
   margin: 0;
 }
+
+#dashboard {
+  background-color: white;
+  min-height: 100vh;
+}
+
+#side-nav {
+  min-height: 100vh;
+}
