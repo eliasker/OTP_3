@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import jsonService from '../src/services/jsonService'
 import InitialData from './providers/InitialData'
 import Login from './components/Login'
 import Chat from './components/Chat'
 import './styles/App.css'
+import DashBoard from './components/dashboard/DashBoard'
 
 const App = () => {
   const [loggedUser, setLoggedUser] = useState(null)
@@ -30,11 +32,12 @@ const App = () => {
 
     return (
       <div className="App">
-        <InitialData.Provider value={{initialData, loggedUser, setLoggedUser}}>
-          {(loggedUser === null) ?
-          <Login /> :
-          <Chat />}
-        </InitialData.Provider>
+        <Router>
+          <InitialData.Provider value={{initialData, loggedUser, setLoggedUser}}>
+            <Route exact path="/" render={() => (loggedUser === null) ? <Login /> :  <Chat />} />
+            <Route exact path="/dashboard" render={() => <DashBoard />} />
+          </InitialData.Provider>
+        </Router>
       </div>
     )
 }
