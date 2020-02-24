@@ -64,7 +64,7 @@ public class UserResourceController {
 			 */
 //	    		ChatObject[] chats = ChatDAO.getChats(userFromDb.get_Id());	    		
 
-			ChatObject chat = new ChatObject("12312", null, null, null);
+			ChatObject chat = new ChatObject("12312", null, null, null, null);
 			ChatObject[] chats = { chat };
 
 			/*
