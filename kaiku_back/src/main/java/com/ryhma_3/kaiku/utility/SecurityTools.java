@@ -71,7 +71,7 @@ public class SecurityTools {
 				for (Token token : tokenDataStore) {
 					searched = new Token(token);
 					
-					if(searched.getUser_id() != searchInput && searched.getTokenString() != searchInput) {
+					if(!searched.getUser_id().equals(searchInput) && !searched.getTokenString().equals(searchInput)) {
 						searched = null;
 						continue;
 					}
@@ -112,7 +112,7 @@ public class SecurityTools {
 				for (Token token : tokenDataStore) {
 					searched = token;
 					
-					if(searched.getUser_id() != user_id) {
+					if(!searched.getUser_id().equals( user_id)) {
 						searched = null;
 						continue;
 					}
@@ -147,7 +147,7 @@ public class SecurityTools {
 	 * Connect user session id to a token. Acts also as a verification of connecting user.
 	 * Thread-safe
 	 */
-	public static boolean connectTokenToUUID(String tokenString, UUID sessionID) {
+	public static boolean verifySession(String tokenString, UUID sessionID) {
 		synchronized (lock) {
 			try {
 				//wait for monitor
@@ -160,7 +160,7 @@ public class SecurityTools {
 				
 				for (Token token : tokenDataStore) {
 					searched = token;
-					if(searched.getTokenString() != tokenString) {
+					if(!searched.getTokenString().equals(tokenString)) {
 						searched = null;
 						continue;
 					}
