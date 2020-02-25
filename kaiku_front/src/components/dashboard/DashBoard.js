@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import { BrowserRouter as Router } from 'react-router-dom'
-
 import TopNav from './TopNav'
 import Menu from './Menu'
 import Content from './content/Content'

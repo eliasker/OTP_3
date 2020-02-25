@@ -16,9 +16,7 @@ const Menu = () => {
             <span className="nav-link" onClick={() => setContent('u/all')}> Kaikki käyttäjät </span>
           </li>
           <li className="nav-item">
-            <span className="nav-link">
-              Luo käyttäjä
-            </span>
+            <span className="nav-link" onClick={() => setContent('u/new')}>Luo käyttäjä</span>
           </li>
         </ul>
 
@@ -30,9 +28,7 @@ const Menu = () => {
             <span className="nav-link" onClick={() => setContent('g/all')}> Kaikki ryhmät </span>
           </li>
           <li className="nav-item">
-            <span className="nav-link">
-              Luo ryhmä
-            </span>
+            <span className="nav-link" onClick={() => setContent('g/new')}>Luo ryhmä</span>
           </li>
         </ul>
 
