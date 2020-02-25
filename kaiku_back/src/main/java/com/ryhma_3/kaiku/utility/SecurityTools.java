@@ -14,6 +14,14 @@ import org.jasypt.util.password.BasicPasswordEncryptor;
  * - Token operations
  */
 public class SecurityTools {
+	
+	public static void main(String[] args) {
+		for(int i=0; i<1000; i++) {
+			System.out.println(genRandomString());
+		}
+	}
+	
+	
 	private final static BasicPasswordEncryptor cryptor = new BasicPasswordEncryptor();
 	
 	private final static Object lock = new Object();
@@ -46,6 +54,40 @@ public class SecurityTools {
 	public static boolean compare(String encryptedPSW, String PSW) {
 		boolean match = cryptor.checkPassword(PSW, encryptedPSW) ? true : false;
 		return match;
+	}
+	
+	
+	/**
+	 * @return random String of 128 characters
+	 * generate a token string. Doesn't itself contain any information
+	 */
+	private static String genRandomString() {
+		String tokenString = "";
+		
+		String[] characters = { "a","b","c","e","f","g","h","k","l","m","n","o","p","q","r","s","t","u","v","x","y","z" };
+		String[] nums = {"1","2","3","4","5","6","7","8","9","0" };
+		
+		for(int i=0; i<128; i++) {
+			if(randomGen(2)==0) {
+				if(randomGen(2)==0) {
+					tokenString = tokenString.concat(characters[randomGen(characters.length)].toUpperCase());
+				} else {
+					tokenString = tokenString.concat(characters[randomGen(characters.length)]);
+				}
+			} else {
+				tokenString = tokenString.concat(nums[randomGen(nums.length)]);
+			}
+		}
+		return tokenString;
+	}
+	
+	/**
+	 * @param max integer
+	 * @return random integer
+	 * Helper for generating integers
+	 */
+	private static int randomGen(int max) {
+		return (int) Math.floor(Math.random() * (max));
 	}
 	
 	
@@ -125,7 +167,7 @@ public class SecurityTools {
 				
 				
 				//create if update fails
-				Token tokenToAdd = new Token(null, user_id, tokenString);
+				Token tokenToAdd = new Token(null, user_id, genRandomString());
 				tokenDataStore.add(tokenToAdd);
 				
 				releaseObjectLock();
@@ -185,6 +227,9 @@ public class SecurityTools {
 	}
 		
 	
+	/**
+	 * Release monitor that handles token operations
+	 */
 	private static void releaseObjectLock() {
 		operatingTokens = false;
 		lock.notifyAll();
