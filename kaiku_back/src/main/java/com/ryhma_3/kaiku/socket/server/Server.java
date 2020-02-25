@@ -2,10 +2,14 @@ package com.ryhma_3.kaiku.socket.server;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 
+import com.corundumstudio.socketio.AckCallback;
 import com.corundumstudio.socketio.AckRequest;
+import com.corundumstudio.socketio.HandshakeData;
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIONamespace;
 import com.corundumstudio.socketio.SocketIOServer;
@@ -21,6 +25,8 @@ import com.ryhma_3.kaiku.model.database.UserDAO;
 import com.ryhma_3.kaiku.socket.init.IServerInit;
 import com.ryhma_3.kaiku.utility.SecurityTools;
 import com.ryhma_3.kaiku.utility.Token;
+
+import io.netty.handler.codec.http.HttpHeaders;
 
 /**
  * @author Panu Lindqvist
@@ -47,38 +53,26 @@ public class Server implements IServer {
 		//after boot create namespaces for existing chats
 		initializeFromDatabase(server);
 
-		//Gatekeep and register incoming connections
+		//Register incoming connections. Gatekeepign is handled in ServerInit!
 		server.addConnectListener(new ConnectListener() {			
 			@Override
 			public void onConnect(SocketIOClient client) {
 				System.out.println("connect event");
+								
+				String tokenString =  client.getHandshakeData().getSingleUrlParam("Authorization");
 				
-				//Check connection authentication
-				String tokenString = client.getHandshakeData().getHttpHeaders().get("Authorization");
 				System.out.println(tokenString);
-				boolean approved = SecurityTools.verifySession(tokenString, client.getSessionId());
 				
-				//kick if not authenticated
-				if(!approved) {
-					
-					//client.disconnect();
-					
-				} else {
-					
-					Token cloneOfToken = SecurityTools.getCloneOfToken(tokenString);
-					
-					//update connectedUsers
-					Boolean isSet = connectedUsers.putIfAbsent(cloneOfToken.getUser_id(), true);
-					if(isSet==null) {
-						connectedUsers.replace(cloneOfToken.getUser_id(), true);
-					}
-					
-					//send client current user statuses
-					client.sendEvent("connect", connectedUsers);
-					
-					//update other clients about this user
-					server.getBroadcastOperations().sendEvent("connectionEvent", new UserStatusObject(cloneOfToken.getUser_id(), true));
-				}
+				Token cloneOfToken = SecurityTools.getCloneOfToken(tokenString);
+				
+				//update connectedUsers
+				connectedUsers.put(cloneOfToken.getUser_id(), true);
+				
+				//send client current user statuses
+				client.sendEvent("connect", connectedUsers);
+				
+				//update other clients about this user
+				server.getBroadcastOperations().sendEvent("connectionEvent", new UserStatusObject(cloneOfToken.getUser_id(), true));
 			}
 		});
 		
@@ -135,7 +129,7 @@ public class Server implements IServer {
 	 */
 	private void initializeFromDatabase(SocketIOServer server) {
 		//add admin
-		SecurityTools.createOrUpdateToken("admin", "admin");
+		SecurityTools.createOrUpdateToken("kaiku", "kaiku");
 		
 		//TODO initialisation form database
 //		ChatObject[] chats = ChatDAO.getChats(); //all

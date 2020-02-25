@@ -1,17 +1,13 @@
 package com.ryhma_3.kaiku.socket.init;
 
-import com.corundumstudio.socketio.AuthorizationListener;
 import com.corundumstudio.socketio.Configuration;
-import com.corundumstudio.socketio.HandshakeData;
 import com.corundumstudio.socketio.SocketIOServer;
-import com.corundumstudio.socketio.listener.ClientListeners;
 
 /**
  * @author Panu Lindqvist
- * This is a setup class for the server.
+ * This is a server setup with only basics configured
  */
-public class ChatServerInit implements IServerInit {
-	
+public class ServerInitNoAuth implements IServerInit {
 	/*
 	 * Default port: 9991
 	 */
@@ -26,7 +22,7 @@ public class ChatServerInit implements IServerInit {
 	/**
 	 * Default configuration, see port & hostname
 	 */
-	public ChatServerInit() {
+	public ServerInitNoAuth() {
 		
 	}
 	
@@ -35,7 +31,7 @@ public class ChatServerInit implements IServerInit {
 	 * @param hostname
 	 * Override default port number & host name
 	 */
-	public ChatServerInit(int port, String hostname) {
+	public ServerInitNoAuth(int port, String hostname) {
 		this.port = port;
 		this.hostname = hostname;
 	}
