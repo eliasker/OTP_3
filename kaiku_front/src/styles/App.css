@@ -632,3 +632,11 @@ input::-webkit-input-placeholder {
 #side-nav {
   min-height: 100vh;
 }
+
+.cursor-def {
+  cursor: default;
+}
+
+.nav-link {
+  cursor: pointer;
+}

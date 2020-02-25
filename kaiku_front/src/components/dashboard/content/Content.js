@@ -1,16 +1,26 @@
 import React, { useContext } from 'react'
-import ListItem from './ListItem'
-import InitialData from '../../providers/InitialData'
+import ListItem from '../ListItem'
+import InitialData from '../../../providers/InitialData'
+import UserList from './UserList'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import GroupList from './GroupList'
+import Context from '../../../providers/Context'
+
 
 
 const Content = () => {
+  const { content } = useContext(Context)
   const { initialData } = useContext(InitialData)
 
-  const getList = () =>{
-    if(initialData.users === undefined) return
-
-    //TODO: sort toiminto olisi hyvä toteuttaa
-    return initialData.users.map(u => <ListItem key={u.id} user={u} />)
+  const showContent = () => {
+    switch (content) {
+      case 'u/all':
+        return <UserList />
+      case 'g/all':
+        return <GroupList />
+      default:
+        return <UserList />
+    }
   }
 
   return(
@@ -30,23 +40,7 @@ const Content = () => {
         </div>
       </div>
 
-      <h2>Kaikki käyttäjät</h2>
-      <div className="table-responsive">
-        <table className="table table-striped table-sm">
-          <thead>
-            <tr>
-              <th>#id</th>
-              <th>Nimi</th>
-              <th>Käyttäjänimi</th>
-              <th>Rooli</th>
-              <th>Toiminto</th>
-            </tr>
-          </thead>
-          <tbody>
-            {getList()}
-          </tbody>
-        </table>
-      </div>
+      {showContent()}
     </div>
   </>
   )
