@@ -132,10 +132,18 @@ public class UserResourceController {
 			 */
 			userObject.setPassword(SecurityTools.encrypt(userObject.getPassword()));
 			
+			
 			/*
 			 * post user to mongo
 			 */
 //			UserDAO.createUser(userObject);
+			
+			
+			/*
+			 * add user to global chat
+			 */
+//			ChatObject global = chatDAO.getChat(new ChatObject(null, "global", null, null, null));
+//			chatDAO.updateChat(global);
 			
 			return;
 		} else {

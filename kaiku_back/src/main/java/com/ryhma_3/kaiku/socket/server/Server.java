@@ -19,6 +19,7 @@ import com.corundumstudio.socketio.listener.DisconnectListener;
 import com.ryhma_3.kaiku.model.cast_object.AuthObject;
 import com.ryhma_3.kaiku.model.cast_object.ChatObject;
 import com.ryhma_3.kaiku.model.cast_object.MessageObject;
+import com.ryhma_3.kaiku.model.cast_object.UserObject;
 import com.ryhma_3.kaiku.model.cast_object.UserStatusObject;
 import com.ryhma_3.kaiku.model.database.ChatDAO;
 import com.ryhma_3.kaiku.model.database.UserDAO;
@@ -39,6 +40,7 @@ public class Server implements IServer {
 	private static final Map<String, Boolean> connectedUsers = new HashMap<>(); 
 	private static final ArrayList<SocketIONamespace> namespaces = new ArrayList<>();
 //	ChatDAO chatDAO = new ChatDAO();
+//	MessageDAO messageDAO = new MessageDAO();
 	final SocketIOServer server;
 	IServerInit init;
 
@@ -51,7 +53,7 @@ public class Server implements IServer {
 	public void start() {		
 		
 		//after boot create namespaces for existing chats
-		initializeFromDatabase(server);
+		initialize(server);
 
 		//Register incoming connections. Gatekeepign is handled in ServerInit!
 		server.addConnectListener(new ConnectListener() {			
@@ -120,6 +122,17 @@ public class Server implements IServer {
 			}
 		});
 		
+		server.addEventListener("chatEvent", MessageObject.class, new DataListener<MessageObject>() {
+			
+//			ChatObject global = chatDAO.getChat(new ChatObject(null, "global", null, null, null));
+
+			@Override
+			public void onData(SocketIOClient client, MessageObject data, AckRequest ackSender) throws Exception {
+//				messageDAO.createMessage(data, global.getChat_id());
+				server.getBroadcastOperations().sendEvent("chatEvent", data);
+			}
+		});
+		
 		server.start();
 	}
 
@@ -127,9 +140,29 @@ public class Server implements IServer {
 	 * @param server
 	 * Collect all chats from database and add them into servers as namespaces
 	 */
-	private void initializeFromDatabase(SocketIOServer server) {
+	private void initialize(SocketIOServer server) {
 		//add admin
 		SecurityTools.createOrUpdateToken("kaiku", "kaiku");
+		
+		/*
+		
+		// add/get global chat
+		ChatObject global = ChatDAO.getChat("global");
+		
+		if(global==null) {
+			UserObject[] allUserObjects = UserDAO.getAllUsers();
+			String[] allUsers = new String[allUserObjects.length];
+			
+			for(int i=0; i<allUserObjects.length; i++) {
+				allUsers[i] = allUserObjects[i].get_Id();
+			}
+			
+			global = new ChatObject(null, "global", "global", allUsers, null);
+			
+			ChatDAO.createChat(global);
+		}
+		
+		*/
 		
 		//TODO initialisation form database
 //		ChatObject[] chats = ChatDAO.getChats(); //all
@@ -151,7 +184,7 @@ public class Server implements IServer {
 		namespace.addEventListener("chatEvent", MessageObject.class, new DataListener<MessageObject>() {
 			@Override
 			public void onData(SocketIOClient client, MessageObject data, AckRequest ackSender) throws Exception {
-				//MessageDAO.createMessage(data,chatObject.getChat_id());
+				//messageDAO.createMessage(data,chatObject.getChat_id());
 				namespace.getBroadcastOperations().sendEvent("chatEvent", data);
 			}
 		});
