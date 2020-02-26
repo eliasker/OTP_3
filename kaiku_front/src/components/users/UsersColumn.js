@@ -30,12 +30,14 @@ const UsersColumn = ({ setDisplayProfile, setDisplayUser }) => {
     }
   }
 
+  // Lists last direct message from other users 
   const listMessages = () => {
     if (initialData.users === undefined) return
 
     const filteredUsers = filterUtil(initialData.users.map(u => u.name), searchInput)
 
     return initialData.users
+      .filter(u => u.id !== loggedUser.id)
       .filter(u => filteredUsers.find(e => u.name === e))
       .map(u => <DirectUser key={keyGen.generateKey(u.name)} privateChat={findChat(u)} setCurrentChat={setCurrentChat} user={u} />)
   }
