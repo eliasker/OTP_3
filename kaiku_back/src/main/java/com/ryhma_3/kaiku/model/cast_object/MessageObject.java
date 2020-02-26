@@ -11,14 +11,16 @@ public class MessageObject {
 	private String content;
 	private String message_id;
 	private String user_id;
+	private Date timestamp;
 	
 	public MessageObject() {
 	}
 	
-	public MessageObject(String content, String message_id, String user_id) {
+	public MessageObject(String content, String message_id, String user_id, Date timestamp) {
 		this.message_id = message_id;
 		this.user_id = user_id;
 		this.content = content;
+		this.timestamp = timestamp;
 	}
 
 	public String getMessage_id() {
@@ -43,5 +45,13 @@ public class MessageObject {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public Date getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
 	}
 }
