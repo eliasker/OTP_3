@@ -19,7 +19,7 @@ public interface IServer {
 	
 	
 	/**
-	 * Stop the servers
+	 * Stop the server
 	 */
 	void stopServer();
 	

@@ -4,14 +4,12 @@ import com.corundumstudio.socketio.AuthorizationListener;
 import com.corundumstudio.socketio.Configuration;
 import com.corundumstudio.socketio.HandshakeData;
 import com.corundumstudio.socketio.SocketIOServer;
-import com.corundumstudio.socketio.listener.ClientListeners;
 
 /**
  * @author Panu Lindqvist
- * This is a setup class for the server.
+ * This is a server setup with Authorization listener implemented.
  */
-public class ChatServerInit implements IServerInit {
-	
+public class ServerInitAuth implements IServerInit {
 	/*
 	 * Default port: 9991
 	 */
@@ -26,7 +24,7 @@ public class ChatServerInit implements IServerInit {
 	/**
 	 * Default configuration, see port & hostname
 	 */
-	public ChatServerInit() {
+	public ServerInitAuth() {
 		
 	}
 	
@@ -35,20 +33,35 @@ public class ChatServerInit implements IServerInit {
 	 * @param hostname
 	 * Override default port number & host name
 	 */
-	public ChatServerInit(int port, String hostname) {
+	public ServerInitAuth(int port, String hostname) {
 		this.port = port;
 		this.hostname = hostname;
 	}
 
 	
-	/*
-	 * @see Ryhma_3.Kaiku_BE.server.IChatServerInit#getSocketServer()
+	/* (non-Javadoc)
+	 * @see com.ryhma_3.kaiku.socket.init.IServerInit#getSocketServer()
 	 */
 	public SocketIOServer getSocketServer() {
+		
 		Configuration config = new Configuration();
 		config.setHostname(hostname);
 		config.setPort(port);
+		
+		//setup auth listener
+		config.setAuthorizationListener(new AuthorizationListener() {
+			@Override
+			public boolean isAuthorized(HandshakeData data) {
+				
+				String auth = data.getSingleUrlParam("Authorization");
+				
+				if(auth.equals("kaiku")) {
+					return true;
+				}
+				return false;
+			}
+		});
+		
 		return new SocketIOServer(config);
 	}
-	
 }

@@ -14,6 +14,14 @@ import org.jasypt.util.password.BasicPasswordEncryptor;
  * - Token operations
  */
 public class SecurityTools {
+	
+	public static void main(String[] args) {
+		for(int i=0; i<1000; i++) {
+			System.out.println(genRandomString());
+		}
+	}
+	
+	
 	private final static BasicPasswordEncryptor cryptor = new BasicPasswordEncryptor();
 	
 	private final static Object lock = new Object();
@@ -49,6 +57,40 @@ public class SecurityTools {
 	}
 	
 	
+	/**
+	 * @return random String of 128 characters
+	 * generate a token string. Doesn't itself contain any information
+	 */
+	private static String genRandomString() {
+		String tokenString = "";
+		
+		String[] characters = { "a","b","c","e","f","g","h","k","l","m","n","o","p","q","r","s","t","u","v","x","y","z" };
+		String[] nums = {"1","2","3","4","5","6","7","8","9","0" };
+		
+		for(int i=0; i<128; i++) {
+			if(randomGen(2)==0) {
+				if(randomGen(2)==0) {
+					tokenString = tokenString.concat(characters[randomGen(characters.length)].toUpperCase());
+				} else {
+					tokenString = tokenString.concat(characters[randomGen(characters.length)]);
+				}
+			} else {
+				tokenString = tokenString.concat(nums[randomGen(nums.length)]);
+			}
+		}
+		return tokenString;
+	}
+	
+	/**
+	 * @param max integer
+	 * @return random integer
+	 * Helper for generating integers
+	 */
+	private static int randomGen(int max) {
+		return (int) Math.floor(Math.random() * (max));
+	}
+	
+	
 	
 	/**
 	 * @param user_id || tokenString
@@ -71,7 +113,7 @@ public class SecurityTools {
 				for (Token token : tokenDataStore) {
 					searched = new Token(token);
 					
-					if(searched.getUser_id() != searchInput && searched.getTokenString() != searchInput) {
+					if(!searched.getUser_id().equals(searchInput) && !searched.getTokenString().equals(searchInput)) {
 						searched = null;
 						continue;
 					}
@@ -112,7 +154,7 @@ public class SecurityTools {
 				for (Token token : tokenDataStore) {
 					searched = token;
 					
-					if(searched.getUser_id() != user_id) {
+					if(!searched.getUser_id().equals( user_id)) {
 						searched = null;
 						continue;
 					}
@@ -125,7 +167,7 @@ public class SecurityTools {
 				
 				
 				//create if update fails
-				Token tokenToAdd = new Token(null, user_id, tokenString);
+				Token tokenToAdd = new Token(null, user_id, genRandomString());
 				tokenDataStore.add(tokenToAdd);
 				
 				releaseObjectLock();
@@ -147,7 +189,7 @@ public class SecurityTools {
 	 * Connect user session id to a token. Acts also as a verification of connecting user.
 	 * Thread-safe
 	 */
-	public static boolean connectTokenToUUID(String tokenString, UUID sessionID) {
+	public static boolean verifySession(String tokenString, UUID sessionID) {
 		synchronized (lock) {
 			try {
 				//wait for monitor
@@ -160,7 +202,7 @@ public class SecurityTools {
 				
 				for (Token token : tokenDataStore) {
 					searched = token;
-					if(searched.getTokenString() != tokenString) {
+					if(!searched.getTokenString().equals(tokenString)) {
 						searched = null;
 						continue;
 					}
@@ -185,6 +227,9 @@ public class SecurityTools {
 	}
 		
 	
+	/**
+	 * Release monitor that handles token operations
+	 */
 	private static void releaseObjectLock() {
 		operatingTokens = false;
 		lock.notifyAll();

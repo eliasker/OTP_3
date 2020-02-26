@@ -4,13 +4,15 @@ public class ChatObject {
 	private String chat_id;
 	private String chatName;
 	private String type = "private";
+	private String users[];
 	private MessageObject[] messages;
 	
-	public ChatObject(String chat_id, String chatName, String type, MessageObject[] messages) {
+	public ChatObject(String chat_id, String chatName, String type, String[] users, MessageObject[] messages) {
 		super();
 		this.chat_id = chat_id;
 		this.chatName = chatName;
 		this.type = type;
+		this.users = users;
 		this.messages = messages;
 	}
 	
@@ -38,6 +40,14 @@ public class ChatObject {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+	
+	public String[] getUsers() {
+		return users;
+	}
+	
+	public void setUsers(String[] users) {
+		this.users = users;
 	}
 
 	public MessageObject[] getMessages() {
