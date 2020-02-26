@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import com.mongodb.ConnectionString;
@@ -23,6 +24,9 @@ import com.ryhma_3.kaiku.model.cast_object.MessageObject;
 import static com.mongodb.client.model.Filters.*;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
+
+// TODO: relegate authentication and other mongo initialization to a super class
 
 /**
  * ChatDAO
@@ -51,9 +55,10 @@ public class ChatDAO implements IChatDAO {
 
 	@Override
 	public ChatObject createChatObject(ChatObject chatObject) {
-        // TODO: append id into the name when it's time for it
+        // TODO: append id into the name when it's time for it?
         Document document = new Document("chatName", chatObject.getChatName());
         document.append("type", chatObject.getType());
+        document.append("users", Arrays.asList(chatObject.getUsers()));
         // TODO: add actual messages when it's time for it
         document.append("messages", "test");
         collection.insertOne(document);
@@ -64,6 +69,7 @@ public class ChatDAO implements IChatDAO {
 	public ChatObject updateChatObject(ChatObject chatObject) {
         Document document = new Document("chatName", chatObject.getChatName());
         document.append("type", chatObject.getType());
+        document.append("users", Arrays.asList(chatObject.getUsers()));
         // TODO: add MessageObject[] when messages are actually stored
         document.append("messages", "");
 		UpdateResult result = collection.updateOne(eq("chatName",
@@ -77,7 +83,6 @@ public class ChatDAO implements IChatDAO {
 	@Override
 	public boolean deleteChatObject(ChatObject chatObject) {
 		DeleteResult result = collection.deleteOne(eq("chatName", chatObject.getChatName()));
-        // System.out.println();
         if (result.getDeletedCount() > 0) {
             System.out.println(chatObject.getChatName());
             System.out.println("deleted");
@@ -86,29 +91,38 @@ public class ChatDAO implements IChatDAO {
             System.out.println("not deleted");
             return false;
         }
-
 	}
 
 	@Override
 	public ChatObject getChatObject(ChatObject chatObject) {
         Document d = (Document)collection
             .find(eq("chatName", chatObject.getChatName())).first();
+
+        String[] temp = new String[d.getList("users", String.class).size()];
+        temp = d.getList("users", String.class).toArray(temp);
         
+        // TODO: fix when MessageObjects are actually stored
 	    return new ChatObject(d.getObjectId("_id").toString(), d.getString("chatName"),
-            // TODO: fix when MessageObjects are actually stored
-            d.getString("type"), new MessageObject[]{});
+            d.getString("type"), temp, new MessageObject[]{});
 	}
 
-    // TODO: finish this method once ChatObject stores user information
 	public ChatObject[] getChats(String userId) {
-        MongoCursor<Document> cursor = collection.find(eq("_id", userId)).iterator();
+        MongoCursor<Document> cursor = collection.find().iterator();
         ArrayList<ChatObject> chatList = new ArrayList<>();
 
+        // Loop through each Chat document and check if the users field includes userId
         try {
             while (cursor.hasNext()) {
                 Document d = cursor.next();
-                chatList.add(new ChatObject(d.getObjectId("_id").toString(),
-                d.getString("chatName"), d.getString("type"), new MessageObject[]{}));
+                System.out.println(d.getList("users", String.class).size());
+                if (d.getList("users", String.class).contains(userId)) {
+                    String[] users = new String[d.getList("users", String.class).size()];
+                    users = d.getList("users", String.class).toArray(users);
+                    chatList.add(new ChatObject(d.getObjectId("_id").toString(),
+                        d.getString("chatName"), d.getString("type"),
+                        // TODO: fix messageobject when time for it
+                        users, new MessageObject[]{}));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
