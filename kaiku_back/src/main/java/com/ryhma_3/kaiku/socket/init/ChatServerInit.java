@@ -5,8 +5,11 @@ import com.corundumstudio.socketio.Configuration;
 import com.corundumstudio.socketio.HandshakeData;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ClientListeners;
+import com.ryhma_3.kaiku.model.database.IChatDAO;
+import com.ryhma_3.kaiku.model.database.IMessageDAO;
 
 /**
+ * @deprecated
  * @author Panu Lindqvist
  * This is a setup class for the server.
  */
@@ -49,6 +52,24 @@ public class ChatServerInit implements IServerInit {
 		config.setHostname(hostname);
 		config.setPort(port);
 		return new SocketIOServer(config);
+	}
+
+	@Override
+	public IChatDAO getChatDAO() {
+		return null;
+	}
+
+	@Override
+	public IMessageDAO getMessageDAO() {
+		return null;
+	}
+
+	@Override
+	public void setChatDAO(IChatDAO chatDAO) {		
+	}
+
+	@Override
+	public void setMessageDAO(IMessageDAO messageDAO) {		
 	}
 	
 }

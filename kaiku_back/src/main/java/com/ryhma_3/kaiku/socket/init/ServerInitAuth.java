@@ -4,16 +4,21 @@ import com.corundumstudio.socketio.AuthorizationListener;
 import com.corundumstudio.socketio.Configuration;
 import com.corundumstudio.socketio.HandshakeData;
 import com.corundumstudio.socketio.SocketIOServer;
+import com.ryhma_3.kaiku.model.database.ChatDAO;
+import com.ryhma_3.kaiku.model.database.IChatDAO;
+import com.ryhma_3.kaiku.model.database.IMessageDAO;
 
 /**
  * @author Panu Lindqvist
  * This is a server setup with Authorization listener implemented.
  */
 public class ServerInitAuth implements IServerInit {
+	
 	/*
 	 * Default port: 9991
 	 */
 	private int port = 9991;
+	
 	
 	/*
 	 * Default hostname: "localhost"
@@ -22,11 +27,21 @@ public class ServerInitAuth implements IServerInit {
 	
 	
 	/**
+	 * Default blank chatDAO
+	 */
+	private IChatDAO chatDAO = new ChatDAO();
+	
+	
+	
+	/**
+	 * Default blank messageDAO
+	 */
+//	private IMessageDAO messageDAO = new MessageDAO();
+	
+	/**
 	 * Default configuration, see port & hostname
 	 */
-	public ServerInitAuth() {
-		
-	}
+	public ServerInitAuth() {}
 	
 	/**
 	 * @param port
@@ -63,5 +78,27 @@ public class ServerInitAuth implements IServerInit {
 		});
 		
 		return new SocketIOServer(config);
+	}
+
+	@Override
+	public IChatDAO getChatDAO() {
+		return chatDAO;
+	}
+
+	@Override
+	public IMessageDAO getMessageDAO() {
+		//TODO: wait for messageDAO
+		return null;
+	}
+
+	@Override
+	public void setChatDAO(IChatDAO chatDAO) {
+		this.chatDAO = chatDAO;
+		
+	}
+
+	@Override
+	public void setMessageDAO(IMessageDAO messageDAO) {
+		//TODO: wait for messageDAO
 	}
 }

@@ -2,12 +2,16 @@ package com.ryhma_3.kaiku.socket.init;
 
 import com.corundumstudio.socketio.Configuration;
 import com.corundumstudio.socketio.SocketIOServer;
+import com.ryhma_3.kaiku.model.database.ChatDAO;
+import com.ryhma_3.kaiku.model.database.IChatDAO;
+import com.ryhma_3.kaiku.model.database.IMessageDAO;
 
 /**
  * @author Panu Lindqvist
  * This is a server setup with only basics configured
  */
 public class ServerInitNoAuth implements IServerInit {
+	
 	/*
 	 * Default port: 9991
 	 */
@@ -17,6 +21,15 @@ public class ServerInitNoAuth implements IServerInit {
 	 * Default hostname: "localhost"
 	 */
 	private String hostname = "localhost";
+	
+	
+	/**
+	 * Default blank chatDAO
+	 */
+	private IChatDAO chatDAO = new ChatDAO();
+	
+	
+//	private IMessageDAO messageDAO = new MessageDAO();
 	
 	
 	/**
@@ -45,6 +58,27 @@ public class ServerInitNoAuth implements IServerInit {
 		config.setHostname(hostname);
 		config.setPort(port);
 		return new SocketIOServer(config);
+	}
+
+	@Override
+	public IChatDAO getChatDAO() {
+		return chatDAO;
+	}
+
+	@Override
+	public IMessageDAO getMessageDAO() {
+		// TODO: wait for messageDAO
+		return null;
+	}
+
+	@Override
+	public void setChatDAO(IChatDAO chatDAO) {
+		this.chatDAO = chatDAO;
+	}
+
+	@Override
+	public void setMessageDAO(IMessageDAO messageDAO) {
+		// TODO: wait for messageDAO
 	}
 	
 }

@@ -22,6 +22,8 @@ import com.ryhma_3.kaiku.model.cast_object.MessageObject;
 import com.ryhma_3.kaiku.model.cast_object.UserObject;
 import com.ryhma_3.kaiku.model.cast_object.UserStatusObject;
 import com.ryhma_3.kaiku.model.database.ChatDAO;
+import com.ryhma_3.kaiku.model.database.IChatDAO;
+import com.ryhma_3.kaiku.model.database.IMessageDAO;
 import com.ryhma_3.kaiku.model.database.UserDAO;
 import com.ryhma_3.kaiku.socket.init.IServerInit;
 import com.ryhma_3.kaiku.utility.SecurityTools;
@@ -39,32 +41,34 @@ public class Server implements IServer {
 	
 	private static final Map<String, Boolean> connectedUsers = new HashMap<>(); 
 	private static final ArrayList<SocketIONamespace> namespaces = new ArrayList<>();
-//	ChatDAO chatDAO = new ChatDAO();
-//	MessageDAO messageDAO = new MessageDAO();
+	IChatDAO chatDAO = null;
+	IMessageDAO messageDAO = null;
 	final SocketIOServer server;
 	IServerInit init;
 
 	public Server(IServerInit init) {
 		this.init = init;
 		server = init.getSocketServer();
+		chatDAO = init.getChatDAO();
+//		messageDAO = init.getMessageDAO();
 	}
 	
 	@Override
 	public void start() {		
 		
+		
 		//after boot create namespaces for existing chats
 		initialize(server);
+		
 
-		//Register incoming connections. Gatekeepign is handled in ServerInit!
+		//Register incoming connections. Gate keeping is handled in ServerInit!
 		server.addConnectListener(new ConnectListener() {			
 			@Override
 			public void onConnect(SocketIOClient client) {
 				System.out.println("connect event");
 								
 				String tokenString =  client.getHandshakeData().getSingleUrlParam("Authorization");
-				
-				System.out.println(tokenString);
-				
+								
 				Token cloneOfToken = SecurityTools.getCloneOfToken(tokenString);
 				
 				//update connectedUsers
@@ -98,9 +102,11 @@ public class Server implements IServer {
 		server.addEventListener("createChatEvent", ChatObject.class, new DataListener<ChatObject>() {
 			@Override
 			public void onData(SocketIOClient client, ChatObject data, AckRequest ackSender) throws Exception {
-//				ChatObject result = chatDAO.createChatObject(data);
-				ChatObject result = new ChatObject();
+				ChatObject result = chatDAO.createChatObject(data);
+//				ChatObject result = new ChatObject();
+				
 				if(result != null) {
+					
 					//create namespace
 					setupNamespace(server, result);
 					
@@ -118,6 +124,7 @@ public class Server implements IServer {
 					
 				} else {
 					client.sendEvent("fail");
+					//TODO: look into error statuses
 				}
 			}
 		});
