@@ -6,7 +6,7 @@ import NewUser from './NewUser'
 import NewGroup from './NewGroup'
 
 const Content = () => {
-  const { content } = useContext(Context)
+  const { content, setContent } = useContext(Context)
 
   const showContent = () => {
     switch (content) {
@@ -30,8 +30,8 @@ const Content = () => {
         <h1 className="h2">Kojelauta</h1>
         <div className="btn-toolbar mb-2 mb-md-0">
           <div className="btn-group mr-2">
-            <button type="button" className="btn btn-sm btn-outline-secondary">Luo käyttäjä</button>
-            <button type="button" className="btn btn-sm btn-outline-secondary">Luo ryhmä</button>
+            <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setContent('u/new')}>Luo käyttäjä</button>
+            <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() =>setContent('g/new')}>Luo ryhmä</button>
           </div>
           <button type="button" className="btn btn-sm btn-outline-secondary dropdown-toggle">
             Järjestä

@@ -640,3 +640,11 @@ input::-webkit-input-placeholder {
 .nav-link {
   cursor: pointer;
 }
+
+.font-2 {
+  font-size: 20px;
+}
+
+#new-group .fa-times:hover{
+  color: rgb(175, 29, 29);
+}
