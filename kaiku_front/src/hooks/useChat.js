@@ -3,8 +3,8 @@ import socketIOClient from 'socket.io-client'
 import jsonService from '../services/jsonService'
 import InitialData from "../providers/InitialData"
 
-const useChat = (loggedUser_id) => {
-  const {initialData} = useContext(InitialData)
+const useChat = (loggedUser_id, currentChat) => {
+  const { initialData } = useContext(InitialData)
   const [messages, setMessages] = useState([])
   const [users, setUsers] = useState([])
   const socketRef = useRef()
@@ -12,6 +12,11 @@ const useChat = (loggedUser_id) => {
     if (initialData.chats === undefined) return console.log('initialData pending...')
     setMessages(initialData.chats[0].messages)
   }, [initialData])
+
+  useEffect(() => {
+    if (currentChat === undefined) return 
+    setMessages(currentChat.messages)
+  }, [currentChat])
 
   useEffect(() => {
     socketRef.current = socketIOClient(

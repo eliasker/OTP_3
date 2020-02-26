@@ -1,19 +1,27 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import UsersColumn from './users/UsersColumn'
 import ChatColumn from './chat/ChatColumn'
+import CurrentChat from '../providers/CurrentChat'
+import InitialData from '../providers/InitialData'
 
 const Chat = () => {
+  const { initialData } = useContext(InitialData)
   const [displayProfile, setDisplayProfile] = useState('d-none')
   const [displayUser, setDisplayUser] = useState(undefined)
+  const [currentChat, setCurrentChat] = useState()
 
-  //tätä ei enään tarvita?
-  //if(initialData === undefined) return <></>
-  
+  useEffect(() => {
+    if (initialData.chats)
+      setCurrentChat(initialData.chats[0])
+  }, [initialData])
+
   return (
     <div id="chat" className="container">
       <div className="chat-container container row">
-        <UsersColumn setDisplayProfile={setDisplayProfile} setDisplayUser={setDisplayUser} />
-        <ChatColumn profileState={{displayProfile, setDisplayProfile}} userState={{displayUser, setDisplayUser}} />
+        <CurrentChat.Provider value={{ currentChat, setCurrentChat }}>
+          <UsersColumn setDisplayProfile={setDisplayProfile} setDisplayUser={setDisplayUser} />
+          <ChatColumn profileState={{ displayProfile, setDisplayProfile }} userState={{ displayUser, setDisplayUser }} />
+        </CurrentChat.Provider>
       </div>
     </div>
   )

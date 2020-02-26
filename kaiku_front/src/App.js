@@ -18,7 +18,7 @@ const App = () => {
 
     jsonService.getInitialData()
       .then(response => {
-        setInitialData({ ...response, users: response.users.map( u => u = { ...u, color: colors[generateColor()] }) })
+        setInitialData({ ...response, users: response.users.map(u => u = { ...u, color: colors[generateColor()] }) })
       })
   }, [])
 
@@ -30,16 +30,16 @@ const App = () => {
     setLoggedUser(user)
   }, [])
 
-    return (
-      <div className="App">
-        <Router>
-          <InitialData.Provider value={{initialData, loggedUser, setLoggedUser}}>
-            <Route exact path="/" render={() => (loggedUser === null) ? <Login /> :  <Chat />} />
-            <Route exact path="/dashboard" render={() => <DashBoard />} />
-          </InitialData.Provider>
-        </Router>
-      </div>
-    )
+  return (
+    <div className="App">
+      <Router>
+        <InitialData.Provider value={{ initialData, loggedUser, setLoggedUser }}>
+          <Route exact path="/" render={() => (loggedUser === null) ? <Login /> : <Chat />} />
+          <Route exact path="/dashboard" render={() => <DashBoard />} />
+        </InitialData.Provider>
+      </Router>
+    </div>
+  )
 }
 
 export default App

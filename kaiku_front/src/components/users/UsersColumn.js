@@ -5,18 +5,29 @@ import InitialData from '../../providers/InitialData'
 import Discussions from './Discussion'
 import UsersHeader from './UsersHeader'
 import DirectUser from './user/DirectUser'
+import CurrentChat from '../../providers/CurrentChat'
 
 const UsersColumn = ({ setDisplayProfile, setDisplayUser }) => {
-  const {initialData} = useContext(InitialData)
-  //chatti tyypit: direct, group
+  const { initialData, loggedUser } = useContext(InitialData)
+  const { setCurrentChat } = useContext(CurrentChat)
+  // chatTypes are group, global, private
   const [chatType, setChatType] = useState('group')
   const [searchInput, setSearchInput] = useState('')
 
   const listGroups = () => {
     if (initialData.chats === undefined) return
-    //console.log('initialdata groups', initialData.chats)
-    return initialData.chats.map(chat => 
+    const groupChats = initialData.chats.filter(chat => chat.type !== 'private')
+    return groupChats.map(chat =>
       <Discussions key={keyGen.generateKey(chat.name)} chat={chat} setDisplayUser={setDisplayUser} />)
+  }
+
+  const findChat = (targetUser) => {
+    const searchResult = initialData.chats.find(chat => (chat.type === 'private' && chat.members.includes(targetUser.id)))
+    if (searchResult) return { ...searchResult, name: targetUser.username }
+    else {
+      console.log('no privatechat found, start new conversation')
+      return { name: targetUser.username, type: 'private', members: [loggedUser.id, targetUser.id], messages: [] }
+    }
   }
 
   const listMessages = () => {
@@ -26,7 +37,7 @@ const UsersColumn = ({ setDisplayProfile, setDisplayUser }) => {
 
     return initialData.users
       .filter(u => filteredUsers.find(e => u.name === e))
-      .map(u => <DirectUser key={keyGen.generateKey(u.name)} user={u} />)
+      .map(u => <DirectUser key={keyGen.generateKey(u.name)} privateChat={findChat(u)} setCurrentChat={setCurrentChat} user={u} />)
   }
 
   return (

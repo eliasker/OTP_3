@@ -7,14 +7,17 @@ import messageValidation from '../../util/inputValidation'
 import InitialData from '../../providers/InitialData'
 import InMessage from './message/InMessage'
 import OutMessage from './message/OutMessage'
+import DefaultMessage from './message/DefaultMessage'
 import ProfilePage from '../profile/ProfilePage'
 import UserPage from '../profile/UserPage'
 import MessageForm from './MessageForm'
 import ChatHeader from './ChatHeader'
+import CurrentChat from '../../providers/CurrentChat'
 
 const ChatColumn = ({ profileState, userState }) => {
   const { initialData, loggedUser } = useContext(InitialData)
-  const { messages, sendMessage } = useChat(loggedUser.id)
+  const { currentChat } = useContext(CurrentChat)
+  const { messages, sendMessage } = useChat(loggedUser.id, currentChat)
 
   const [searchInput, setSearchInput] = useState('')
   const messagesEndRef = useRef(null)
@@ -30,8 +33,8 @@ const ChatColumn = ({ profileState, userState }) => {
   }
 
   const listMessages = () => {
-    if (initialData.chats === undefined) return
-
+    if (currentChat === undefined) return
+    if (messages === undefined || messages.length === 0) return <DefaultMessage /> 
     const filteredMsgs = messages.filter(msg => msg.content.includes(searchInput))
     return filteredMsgs.map(m =>
       m.user_id === loggedUser.id ?
@@ -63,7 +66,7 @@ const ChatColumn = ({ profileState, userState }) => {
     <div className="chat-col col-7">
       <UserPage userState={userState} />
       <ProfilePage loggedUser={loggedUser} profileState={profileState} />
-      
+
       <div>
         <ChatHeader searchInput={searchInput} setSearchInput={setSearchInput} />
         <div className="read-container">
@@ -73,7 +76,6 @@ const ChatColumn = ({ profileState, userState }) => {
               <div id="beginning" ref={messagesEndRef}></div>
             </div>
           </div>
-
         </div>
         <MessageForm newMessage={newMessage} removeReset={removeReset} handleSubmit={handleSubmit} />
       </div>

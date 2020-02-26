@@ -342,6 +342,25 @@
   background-color: white;
 }
 
+.default-message-container {
+  display: flex;
+  justify-content: center;
+  margin: 1rem;
+}
+
+.default-message p {
+  -webkit-box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.5);
+  -moz-box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.5);
+  box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.5);
+}
+
+.default-message p {
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.25rem;
+  border-radius: 15px 15px 15px 15px;
+  background-color: rgb(223, 233, 252);
+}
+
 .msg-senda {
   font-weight: 500;
 }
