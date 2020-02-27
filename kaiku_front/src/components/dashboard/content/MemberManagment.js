@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import InitialData from '../../../providers/InitialData'
 import Context from '../../../providers/Context'
 
@@ -6,28 +6,46 @@ import Context from '../../../providers/Context'
 const MemberManagment = () => {
   const { initialData } = useContext(InitialData)
   const { currentGroup, setContent } = useContext(Context)
+  const [ tempGroup, setTempGroup ] = useState(currentGroup)
 
-  console.log(currentGroup)
-  const handleDelete = () => {
+  const handleSubmit = e => {
+    e.preventDefault()
+    if(!window.confirm('Haluatko päivittää tämän ryhmän?')) return
 
+    //uusi päivitettävä ryhmä on tempGroup
+    //tähän tulisi rest pyyntö
+    setContent('g/all')
   }
+
+  const handleDelete = userId => {
+    setTempGroup(
+      {...tempGroup, members: tempGroup.members.filter(m => m !== userId)}
+    )
+  }
+
   const handleOptionClick = id => {
-    /*if(addedList.find(u => u.id === id)) return
+    if(tempGroup.members.find(m => m === id)) return
     
-    setAddedList(
-      addedList.concat(initialData.users.find(u => u.id === id))
-    )*/
+    setTempGroup(
+      {...tempGroup, members: tempGroup.members.concat(id)}
+    )
   }
 
   const getUserList = () => {
-    return <span className="badge badge-primary m-1 font-2" key={1}>
-        Hra S.Aukko <i className="fas fa-times h-red" onClick={() => handleDelete()}></i>
-    </span>
+    if(!tempGroup.members) return
+    const memberList = tempGroup.members.map(m => initialData.users.find(u => u.id === m))
+    console.log(memberList)
+    return memberList.map(m => 
+      <span className="badge badge-primary m-1 font-2" key={m.id}>
+          {m.username} <i className="fas fa-times h-red" onClick={() => handleDelete(m.id)}></i>
+      </span>
+    )
   }
 
   const generateOptions = () => (!initialData) ?
    <option value="...">Ladataan...</option>:
    initialData.users.map(u => <option value={u.id} key={u.id}>{u.username}</option>)
+
 
   if(!currentGroup.name) return <></>
 
@@ -40,12 +58,12 @@ const MemberManagment = () => {
       </ol>
     </nav>
     <hr/>
-    <form className="form-row">
+    <form className="form-row" onSubmit={e => handleSubmit(e)}>
       <div className="col-12 col-md-6 mb-2">
         <div className="form-group">
           <label htmlFor="user-name">Ryhmän nimi</label>
           <input type="text" className="form-control" id="user-name" placeholder="Ryhmän nimi"
-            value={currentGroup.name} onChange={e => console.log(e)/**muuta value */} required />
+            value={tempGroup.name} onChange={e => setTempGroup({...tempGroup, name: e.target.value})} required />
         </div>
         <div className="form-group">
           <p className="mb-1">Lisää käyttäjä</p>
@@ -57,11 +75,9 @@ const MemberManagment = () => {
       <div className="col-12 col-md-6">
         <p>Ryhmän jäsenet:</p>
         {getUserList()}
-        {getUserList()}
-        {getUserList()}
       </div>
-      <button className="btn btn-primary mr-1">Tallenna</button>
-      <button className="btn btn-outline-primary">Peru</button>
+      <button type='submit' className="btn btn-primary mr-1">Tallenna</button>
+      <button onClick={() => setContent('g/all')} className="btn btn-outline-primary">Peru</button>
     </form>
   </>
   )
