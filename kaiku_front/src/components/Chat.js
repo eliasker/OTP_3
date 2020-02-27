@@ -19,7 +19,7 @@ const Chat = () => {
     <div id="chat" className="container">
       <div className="chat-container container row">
         <CurrentChat.Provider value={{ currentChat, setCurrentChat }}>
-          <UsersColumn setDisplayProfile={setDisplayProfile} setDisplayUser={setDisplayUser} />
+          <UsersColumn setDisplayProfile={setDisplayProfile} userState={{ displayUser, setDisplayUser }} />
           <ChatColumn profileState={{ displayProfile, setDisplayProfile }} userState={{ displayUser, setDisplayUser }} />
         </CurrentChat.Provider>
       </div>

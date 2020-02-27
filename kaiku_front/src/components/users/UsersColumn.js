@@ -7,12 +7,15 @@ import UsersHeader from './UsersHeader'
 import DirectUser from './user/DirectUser'
 import CurrentChat from '../../providers/CurrentChat'
 
-const UsersColumn = ({ setDisplayProfile, setDisplayUser }) => {
+const UsersColumn = ({ setDisplayProfile, userState }) => {
   const { initialData, loggedUser } = useContext(InitialData)
   const { setCurrentChat } = useContext(CurrentChat)
+  const { displayUser, setDisplayUser } = userState
+
   // chatTypes are group, global, private
   const [chatType, setChatType] = useState('group')
   const [searchInput, setSearchInput] = useState('')
+  console.log('displayUser', displayUser)
 
   const listGroups = () => {
     if (initialData.chats === undefined) return
@@ -39,7 +42,7 @@ const UsersColumn = ({ setDisplayProfile, setDisplayUser }) => {
     return initialData.users
       .filter(u => u.id !== loggedUser.id)
       .filter(u => filteredUsers.find(e => u.name === e))
-      .map(u => <DirectUser key={keyGen.generateKey(u.name)} privateChat={findChat(u)} setCurrentChat={setCurrentChat} user={u} />)
+      .map(u => <DirectUser key={keyGen.generateKey(u.name)} privateChat={findChat(u)} setCurrentChat={setCurrentChat} user={u} setDisplayUser={setDisplayUser}/>)
   }
 
   return (

@@ -34,7 +34,7 @@ const ChatColumn = ({ profileState, userState }) => {
 
   const listMessages = () => {
     if (currentChat === undefined) return
-    if (messages === undefined || messages.length === 0) return <DefaultMessage /> 
+    if (messages === undefined || messages.length === 0) return <DefaultMessage />
     const filteredMsgs = messages.filter(msg => msg.content.includes(searchInput))
     return filteredMsgs.map(m =>
       m.user_id === loggedUser.id ?
