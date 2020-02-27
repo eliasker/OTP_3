@@ -74,7 +74,6 @@ public class MessageDAO implements IMessageDAO {
             d.append("user_id", messageObject.getUser_id());
             d.append("timestamp", new Date());
             collection.insertOne(d);
-            // MessageObject ueht = new MessageObject(content, message_id, user_id, timestamp);
             // TODO: 
             return new MessageObject(d.getString("content"), d.getObjectId("_id").toString(),
                 d.getString("user_id"), d.getDate("timestamp"));
