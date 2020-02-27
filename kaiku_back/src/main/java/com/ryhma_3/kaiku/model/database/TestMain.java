@@ -15,7 +15,7 @@ public class TestMain {
     public static void main(String[] args) {
         ChatDAO chatDAO = new ChatDAO();
         UserDAO userDAO = new UserDAO();
-        UserObject[] userObjects = userDAO.getAllUser();
+        UserObject[] userObjects = userDAO.getAllUsers();
         ChatObject[] chatObjects = chatDAO.getChats("5e4bf66017f01d48ce59cd93");
         System.out.println(chatObjects.length);
         for (ChatObject c : chatObjects) {

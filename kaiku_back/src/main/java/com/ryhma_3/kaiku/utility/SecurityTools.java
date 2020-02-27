@@ -81,6 +81,7 @@ public class SecurityTools {
 		return tokenString;
 	}
 	
+	
 	/**
 	 * @param max integer
 	 * @return random integer
@@ -113,7 +114,9 @@ public class SecurityTools {
 				for (Token token : tokenDataStore) {
 					searched = new Token(token);
 					
-					if(!searched.getUser_id().equals(searchInput) && !searched.getTokenString().equals(searchInput)) {
+					if(!searched.getUser_id().equals(searchInput) 
+							&& !searched.getTokenString().equals(searchInput)
+							&& !searched.getSessionID().toString().equals(searchInput)) {
 						searched = null;
 						continue;
 					}
@@ -135,12 +138,11 @@ public class SecurityTools {
 	
 	/**
 	 * @param user_id
-	 * @param tokenString
 	 * Create or update a user specific token. On first connect user gets a new list-item, on consecutive connections a new token string 
 	 * is created.
 	 * Thread-safe
 	 */
-	public static Token createOrUpdateToken(String user_id, String tokenString) {
+	public static Token createOrUpdateToken(String user_id) {
 		synchronized (lock) {
 			try {
 				while(operatingTokens) {
@@ -151,18 +153,19 @@ public class SecurityTools {
 				Token searched = null;
 				
 				//update
-				for (Token token : tokenDataStore) {
-					searched = token;
+				for (int i=0; i<tokenDataStore.size(); i++) {
+					searched = tokenDataStore.get(i);
 					
-					if(!searched.getUser_id().equals( user_id)) {
-						searched = null;
+					if(!searched.getUser_id().equals(user_id)) {
 						continue;
 					}
 					
-					token = new Token(null, user_id, tokenString);
+					//update success
+					searched = new Token(null, user_id, genRandomString());
+					tokenDataStore.set(i, searched);
 					
 					releaseObjectLock();
-					return new Token(token);
+					return new Token(searched);
 				}
 				
 				
@@ -182,14 +185,64 @@ public class SecurityTools {
 	}
 	
 	
+	
+	/**
+	 * @param user_id
+	 * @param tokenString
+	 * override,
+	 * Create or update a user specific token. On first connect user gets a new list-item, on consecutive connections a new token string 
+	 * is created.
+	 * Thread-safe
+	 */
+	public static Token createOrUpdateToken(String user_id, String tokenString) {
+		synchronized (lock) {
+			try {
+				while(operatingTokens) {
+					lock.wait();
+				}
+				operatingTokens = true;
+				
+				Token searched = null;
+				
+				//update
+				for (int i=0; i<tokenDataStore.size(); i++) {
+					searched = tokenDataStore.get(i);
+					
+					if(!searched.getUser_id().equals(user_id)) {
+						continue;
+					}
+					
+					//update success
+					searched = new Token(searched.getSessionID(), user_id, tokenString);
+					tokenDataStore.set(i, searched);
+					
+					releaseObjectLock();
+					return new Token(searched);
+				}
+				
+				
+				//create if update fails
+				Token tokenToAdd = new Token(null, user_id, tokenString);
+				tokenDataStore.add(tokenToAdd);
+				
+				releaseObjectLock();
+				return new Token(tokenToAdd);
+		
+			} catch(Exception e) {
+				e.printStackTrace();
+				releaseObjectLock();
+				return null;
+			}
+		}
+	}
+	
 	/**
 	 * @param tokenString
-	 * @param sessionID
 	 * @return boolean - did the operation succeed
 	 * Connect user session id to a token. Acts also as a verification of connecting user.
 	 * Thread-safe
 	 */
-	public static boolean verifySession(String tokenString, UUID sessionID) {
+	public static boolean verifySession(String tokenString) {
 		synchronized (lock) {
 			try {
 				//wait for monitor
@@ -208,8 +261,6 @@ public class SecurityTools {
 					}
 					
 					//task succeeded
-					token = new Token(sessionID, token.getUser_id(), token.getTokenString());
-					
 					releaseObjectLock();
 					return true;
 				}
@@ -220,8 +271,48 @@ public class SecurityTools {
 				
 			} catch(Exception e) {
 				e.printStackTrace();
+				releaseObjectLock();
 				//Task failed / exception
 				return false;
+			}
+		}
+	}
+	
+	
+	public static void attachSessionToToken(String tokenString, UUID sessionID) {
+		synchronized (lock) {
+			try {
+
+				//wait for monitor
+				while(operatingTokens){
+					lock.wait();
+				}
+				operatingTokens = true;
+				
+				Token searched = null;
+				
+				for (int i=0; i<tokenDataStore.size(); i++) {
+					searched = tokenDataStore.get(i);
+					if(!searched.getTokenString().equals(tokenString)) {
+						continue;
+					}
+					
+					//task succeeded					
+					searched = new Token(sessionID, searched.getUser_id(), searched.getTokenString());
+					tokenDataStore.set(i, searched);
+										
+					releaseObjectLock();
+					return;
+				}
+				
+				//task failed
+				releaseObjectLock();
+				return;
+				
+			} catch(Exception e) {
+				releaseObjectLock();
+				e.printStackTrace();
+				return;
 			}
 		}
 	}

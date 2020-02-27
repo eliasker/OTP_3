@@ -11,5 +11,6 @@ public interface IUserDAO {
     public UserObject updateUser(UserObject profileObject);
     public boolean deleteUser(UserObject profileObject);
     public UserObject getUser(UserObject profileObject);
+	public UserObject[] getAllUsers();
 
 }

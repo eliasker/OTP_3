@@ -7,6 +7,7 @@ import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ClientListeners;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
+import com.ryhma_3.kaiku.model.database.IUserDAO;
 
 /**
  * @deprecated
@@ -70,6 +71,18 @@ public class ChatServerInit implements IServerInit {
 
 	@Override
 	public void setMessageDAO(IMessageDAO messageDAO) {		
+	}
+
+	@Override
+	public void setUserDAO(IUserDAO userDAO) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public IUserDAO getUserDAO() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

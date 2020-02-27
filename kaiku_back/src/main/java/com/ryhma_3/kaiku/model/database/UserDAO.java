@@ -102,7 +102,7 @@ public class UserDAO implements IUserDAO {
             d.getString("username"), d.getString("password"), d.getString("name"));
 	}
 
-	public UserObject[] getAllUser() {
+	public UserObject[] getAllUsers() {
         MongoCursor<Document> cursor = collection.find().iterator();
         ArrayList<UserObject> userList = new ArrayList<>();
 

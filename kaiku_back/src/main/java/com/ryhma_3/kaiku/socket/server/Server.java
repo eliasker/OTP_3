@@ -24,6 +24,7 @@ import com.ryhma_3.kaiku.model.cast_object.UserStatusObject;
 import com.ryhma_3.kaiku.model.database.ChatDAO;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
+import com.ryhma_3.kaiku.model.database.IUserDAO;
 import com.ryhma_3.kaiku.model.database.UserDAO;
 import com.ryhma_3.kaiku.socket.init.IServerInit;
 import com.ryhma_3.kaiku.utility.SecurityTools;
@@ -41,8 +42,11 @@ public class Server implements IServer {
 	
 	private static final Map<String, Boolean> connectedUsers = new HashMap<>(); 
 	private static final ArrayList<SocketIONamespace> namespaces = new ArrayList<>();
+
 	IChatDAO chatDAO = null;
 	IMessageDAO messageDAO = null;
+	IUserDAO userDAO = null;
+	
 	final SocketIOServer server;
 	IServerInit init;
 
@@ -50,7 +54,8 @@ public class Server implements IServer {
 		this.init = init;
 		server = init.getSocketServer();
 		chatDAO = init.getChatDAO();
-//		messageDAO = init.getMessageDAO();
+		messageDAO = init.getMessageDAO();
+		userDAO = init.getUserDAO();
 	}
 	
 	@Override
@@ -66,10 +71,18 @@ public class Server implements IServer {
 			@Override
 			public void onConnect(SocketIOClient client) {
 				System.out.println("connect event");
-								
+				
+				//register client
 				String tokenString =  client.getHandshakeData().getSingleUrlParam("Authorization");
+				
+				SecurityTools.attachSessionToToken(tokenString, client.getSessionId());
 								
 				Token cloneOfToken = SecurityTools.getCloneOfToken(tokenString);
+				
+				System.out.println("client:" + cloneOfToken.getUser_id() + 
+						" verified, token:" + cloneOfToken.getTokenString() + 
+						" UUID:" + cloneOfToken.getSessionID());
+				
 				
 				//update connectedUsers
 				connectedUsers.put(cloneOfToken.getUser_id(), true);
@@ -87,14 +100,17 @@ public class Server implements IServer {
 		server.addDisconnectListener(new DisconnectListener() {
 			@Override
 			public void onDisconnect(SocketIOClient client) {
-				String tokenString = client.getHandshakeData().getHttpHeaders().get("Authorization");
-				Token cloneOfToken = SecurityTools.getCloneOfToken(tokenString);
+//				String tokenString = client.getHandshakeData().getSingleUrlParam("Authorization");
+								
+				Token cloneOfToken = SecurityTools.getCloneOfToken(client.getSessionId().toString());
 				
 				//set user as disconnected
 				connectedUsers.replace(cloneOfToken.getUser_id(), false);
 				
 				//broadcast info
 				server.getBroadcastOperations().sendEvent("connectionEvent", new UserStatusObject(cloneOfToken.getUser_id(), true));
+				
+				System.out.println("UUID:" + cloneOfToken.getSessionID().toString() + " disconnected");
 			}
 		});
 		
@@ -122,6 +138,8 @@ public class Server implements IServer {
 						receiver.sendEvent("createChatEvent", data);
 					}
 					
+					System.out.println("Chatgroup:" + result.getChatName() + " created");
+					
 				} else {
 					client.sendEvent("fail");
 					//TODO: look into error statuses
@@ -131,11 +149,11 @@ public class Server implements IServer {
 		
 		server.addEventListener("chatEvent", MessageObject.class, new DataListener<MessageObject>() {
 			
-//			ChatObject global = chatDAO.getChat(new ChatObject(null, "global", null, null, null));
+			ChatObject global = chatDAO.getChatObject(new ChatObject(null, "global", null, null, null));
 
 			@Override
 			public void onData(SocketIOClient client, MessageObject data, AckRequest ackSender) throws Exception {
-//				messageDAO.createMessage(data, global.getChat_id());
+				messageDAO.createMessage(data, global.getChat_id());
 				server.getBroadcastOperations().sendEvent("chatEvent", data);
 			}
 		});
@@ -149,15 +167,13 @@ public class Server implements IServer {
 	 */
 	private void initialize(SocketIOServer server) {
 		//add admin
-		SecurityTools.createOrUpdateToken("kaiku", "kaiku");
-		
-		/*
+		SecurityTools.createOrUpdateToken("kaiku", "kaiku");		
 		
 		// add/get global chat
-		ChatObject global = ChatDAO.getChat("global");
+		ChatObject global = chatDAO.getChatObject(new ChatObject(null, "global", null, null, null));
 		
 		if(global==null) {
-			UserObject[] allUserObjects = UserDAO.getAllUsers();
+			UserObject[] allUserObjects = userDAO.getAllUsers();
 			String[] allUsers = new String[allUserObjects.length];
 			
 			for(int i=0; i<allUserObjects.length; i++) {
@@ -166,10 +182,9 @@ public class Server implements IServer {
 			
 			global = new ChatObject(null, "global", "global", allUsers, null);
 			
-			ChatDAO.createChat(global);
+			chatDAO.createChatObject(global);
 		}
 		
-		*/
 		
 		//TODO initialisation form database
 //		ChatObject[] chats = ChatDAO.getChats(); //all
@@ -191,7 +206,7 @@ public class Server implements IServer {
 		namespace.addEventListener("chatEvent", MessageObject.class, new DataListener<MessageObject>() {
 			@Override
 			public void onData(SocketIOClient client, MessageObject data, AckRequest ackSender) throws Exception {
-				//messageDAO.createMessage(data,chatObject.getChat_id());
+				messageDAO.createMessage(data,chatObject.getChat_id());
 				namespace.getBroadcastOperations().sendEvent("chatEvent", data);
 			}
 		});

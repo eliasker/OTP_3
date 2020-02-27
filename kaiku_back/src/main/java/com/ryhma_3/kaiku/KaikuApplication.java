@@ -7,6 +7,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.corundumstudio.socketio.SocketIOServer;
 import com.ryhma_3.kaiku.model.database.ChatDAO;
+import com.ryhma_3.kaiku.model.database.IChatDAO;
+import com.ryhma_3.kaiku.model.database.IMessageDAO;
+import com.ryhma_3.kaiku.model.database.IUserDAO;
+import com.ryhma_3.kaiku.model.database.MessageDAO;
+import com.ryhma_3.kaiku.model.database.UserDAO;
 import com.ryhma_3.kaiku.socket.init.ChatServerInit;
 import com.ryhma_3.kaiku.socket.init.IServerInit;
 import com.ryhma_3.kaiku.socket.init.ServerInitAuth;
@@ -20,9 +25,14 @@ public class KaikuApplication {
 	
 	static IServerInit init = null;
 	static Server server = null;
+	
+	static IChatDAO chatDAO = null;
+	static IMessageDAO messageDAO = null;
+	static IUserDAO userDAO = null;
 
 	public static void main(String[] args) {
 		commandLineSetup();
+		
 		SpringApplication.run(KaikuApplication.class, args);
 		
 
@@ -30,6 +40,10 @@ public class KaikuApplication {
 	}
 
 	
+	/**
+	 * Input launch parameters
+	 * IMPORTANT: needs to run before launching spring app
+	 */
 	private static void commandLineSetup() {
 		Scanner scanner = new Scanner(System.in);
 		
@@ -44,6 +58,9 @@ public class KaikuApplication {
 		String select = scanner.nextLine();
 		
 		if(select.equals("")) {
+			userDAO = new UserDAO();
+			messageDAO = new MessageDAO();
+			chatDAO = new ChatDAO();
 			init = new ServerInitNoAuth();
 			server = new Server(init);
 			return;
@@ -61,8 +78,14 @@ public class KaikuApplication {
 			System.exit(-1);
 		}
 		
-		init.setChatDAO(new ChatDAO(URI));
-//		init.setMessageDAO(new MessageDAO(URI));
+		
+		userDAO = new UserDAO(URI);
+		messageDAO = new MessageDAO(URI);
+		chatDAO = new ChatDAO(URI);
+
+		init.setChatDAO(chatDAO);
+		init.setMessageDAO(messageDAO);
+		init.setUserDAO(userDAO);
 		
 		server = new Server(init);
 	
@@ -70,5 +93,17 @@ public class KaikuApplication {
 		System.out.println("Server will run locally, with:");
 		System.out.println("socket in port: " + init.getSocketServer().getConfiguration().getPort());
 		System.out.println("Spring rest in port: 8080");;
+	}
+	
+	public static IUserDAO getUserDAO() {
+		return userDAO;
+	}
+	
+	public static IMessageDAO getMessageDAO() {
+		return messageDAO;
+	}
+	
+	public static IChatDAO getChatDAO() {
+		return chatDAO;
 	}
 }

@@ -7,6 +7,10 @@ import com.corundumstudio.socketio.SocketIOServer;
 import com.ryhma_3.kaiku.model.database.ChatDAO;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
+import com.ryhma_3.kaiku.model.database.IUserDAO;
+import com.ryhma_3.kaiku.model.database.MessageDAO;
+import com.ryhma_3.kaiku.model.database.UserDAO;
+import com.ryhma_3.kaiku.utility.SecurityTools;
 
 /**
  * @author Panu Lindqvist
@@ -26,16 +30,11 @@ public class ServerInitAuth implements IServerInit {
 	private String hostname = "localhost";
 	
 	
-	/**
-	 * Default blank chatDAO
-	 */
 	private IChatDAO chatDAO = null;
 	
+	private IMessageDAO messageDAO = null;
 	
-	/**
-	 * Default blank messageDAO
-	 */
-//	private IMessageDAO messageDAO = new MessageDAO();
+	private IUserDAO userDAO = null;
 	
 	/**
 	 * Default configuration, see port & hostname
@@ -61,9 +60,13 @@ public class ServerInitAuth implements IServerInit {
 		Configuration config = new Configuration();
 		config.setHostname(hostname);
 		config.setPort(port);
+
 		
 		//confirm not null
 		chatDAO = chatDAO == null ? new ChatDAO() : chatDAO;
+		messageDAO = messageDAO == null ? new MessageDAO() : messageDAO;
+		userDAO = userDAO == null ? new UserDAO() : userDAO;
+		
 		
 		//setup auth listener
 		config.setAuthorizationListener(new AuthorizationListener() {
@@ -72,7 +75,7 @@ public class ServerInitAuth implements IServerInit {
 				
 				String auth = data.getSingleUrlParam("Authorization");
 				
-				if(auth.equals("kaiku")) {
+				if(auth.equals("kaiku") || SecurityTools.verifySession(auth)) {
 					return true;
 				}
 				return false;
@@ -89,8 +92,7 @@ public class ServerInitAuth implements IServerInit {
 
 	@Override
 	public IMessageDAO getMessageDAO() {
-		//TODO: wait for messageDAO
-		return null;
+		return messageDAO;
 	}
 
 	@Override
@@ -101,6 +103,16 @@ public class ServerInitAuth implements IServerInit {
 
 	@Override
 	public void setMessageDAO(IMessageDAO messageDAO) {
-		//TODO: wait for messageDAO
+		this.messageDAO = messageDAO;
+	}
+
+	@Override
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
+	@Override
+	public IUserDAO getUserDAO() {
+		return userDAO;
 	}
 }

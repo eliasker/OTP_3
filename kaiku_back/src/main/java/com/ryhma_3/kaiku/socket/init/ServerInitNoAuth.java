@@ -5,6 +5,9 @@ import com.corundumstudio.socketio.SocketIOServer;
 import com.ryhma_3.kaiku.model.database.ChatDAO;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
+import com.ryhma_3.kaiku.model.database.IUserDAO;
+import com.ryhma_3.kaiku.model.database.MessageDAO;
+import com.ryhma_3.kaiku.model.database.UserDAO;
 
 /**
  * @author Panu Lindqvist
@@ -23,13 +26,11 @@ public class ServerInitNoAuth implements IServerInit {
 	private String hostname = "localhost";
 	
 	
-	/**
-	 * Default blank chatDAO
-	 */
 	private IChatDAO chatDAO = null;
 	
+	private IMessageDAO messageDAO = null;
 	
-//	private IMessageDAO messageDAO = new MessageDAO();
+	private IUserDAO userDAO = null;
 	
 	
 	/**
@@ -60,6 +61,9 @@ public class ServerInitNoAuth implements IServerInit {
 		
 		//confirm not null
 		chatDAO = chatDAO == null ? new ChatDAO() : chatDAO;
+		messageDAO = messageDAO == null ? new MessageDAO() : messageDAO;
+		userDAO = userDAO == null ? new UserDAO() : userDAO;
+		
 		
 		return new SocketIOServer(config);
 	}
@@ -68,21 +72,30 @@ public class ServerInitNoAuth implements IServerInit {
 	public IChatDAO getChatDAO() {
 		return chatDAO;
 	}
-
-	@Override
-	public IMessageDAO getMessageDAO() {
-		// TODO: wait for messageDAO
-		return null;
-	}
-
+	
 	@Override
 	public void setChatDAO(IChatDAO chatDAO) {
 		this.chatDAO = chatDAO;
 	}
 
 	@Override
+	public IMessageDAO getMessageDAO() {
+		return messageDAO;
+	}
+
+	@Override
 	public void setMessageDAO(IMessageDAO messageDAO) {
-		// TODO: wait for messageDAO
+		this.messageDAO = messageDAO;
+	}
+
+	@Override
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
+	@Override
+	public IUserDAO getUserDAO() {
+		return userDAO;
 	}
 	
 }
