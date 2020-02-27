@@ -10,12 +10,14 @@ const GroupList = () => {
     if(initialData.chats === undefined) return
 
     //TODO: sort toiminto olisi hyvä toteuttaa
-    return initialData.chats.map(g => <ListItem key={Math.random()} group={g} />)
+    const filteredList = initialData.chats.filter(g => g.name)
+
+    return filteredList.map(g => <ListItem key={Math.random()} group={g} />)
   }
 
   return(
   <>
-    <h2>Kaikki käyttäjät</h2>
+    <h2>Kaikki ryhmät</h2>
     <div className="table-responsive">
       <table className="table table-striped table-sm">
         <thead>

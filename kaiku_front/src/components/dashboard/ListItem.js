@@ -31,7 +31,8 @@ const DashBoard = ({ user, group }) => {
       <button className="btn btn-sm btn-primary mr-1" onClick={toggleEdit}>Peru</button>
     </>:
     <>
-      <button className="btn btn-sm btn-outline-primary mr-1" onClick={toggleEdit}>Muokkaa</button>
+      <button className="btn btn-sm btn-outline-primary mr-1"
+        onClick={() => group ? toggleMemberManagment(): toggleEdit()} >Muokkaa</button>
       <button className="btn btn-sm btn-danger" onClick={() => handleDelete(object)}>Poista</button>
     </>
   }

@@ -35,7 +35,7 @@ const MemberManagment = () => {
   <>
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item link" onClick={() => setContent('g/all')}>Kaikki käyttäjät</li>
+        <li class="breadcrumb-item link" onClick={() => setContent('g/all')}>Kaikki ryhmät</li>
         <li class="breadcrumb-item active" aria-current="page">{currentGroup.name} -muokkaus</li>
       </ol>
     </nav>

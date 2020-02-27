@@ -1,14 +1,16 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 
 const TopNav = () => {
+  const history = useHistory()
   const handleQuit = () => {
     if(!window.confirm('Haluatko poistua Kaikun takahuoneesta?\nTekemiäsi muutoksia ei välttämättä tallenneta.'))
       return
     
     //Poistu etusivulle
-    console.log('ETUSIVU')
+    window.localStorage.removeItem('mastakey')
+    history.push('/')
   }
 
   return(

@@ -6,10 +6,12 @@ import Login from './components/Login'
 import Chat from './components/Chat'
 import './styles/App.css'
 import DashBoard from './components/dashboard/DashBoard'
+import Authentication from './components/auth/Authentication'
 
 const App = () => {
   const [loggedUser, setLoggedUser] = useState(null)
   const [initialData, setInitialData] = useState([])
+  const [authToken, setAuthToken] = useState()
 
   useEffect(() => {
     //profile theme color generator
@@ -24,18 +26,29 @@ const App = () => {
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedKaikuUser')
-    if (!loggedUserJSON || loggedUserJSON === 'undefined') return
+    const masterkey = window.localStorage.getItem('mastakey')
 
+    if (!loggedUserJSON || loggedUserJSON === 'undefined') return
     const user = JSON.parse(loggedUserJSON)
     setLoggedUser(user)
+
+    if (!masterkey || masterkey === 'undefined') return
+    const auth = JSON.parse(masterkey)
+    setAuthToken(auth)
   }, [])
+
+  const showContent = () => {
+    if(!loggedUser) return <Login />
+    if(!authToken) return <Authentication />
+    return <DashBoard />
+  }
 
   return (
     <div className="App">
       <Router>
-        <InitialData.Provider value={{ initialData, loggedUser, setLoggedUser }}>
+        <InitialData.Provider value={{ initialData, loggedUser, setLoggedUser, setAuthToken }}>
           <Route exact path="/" render={() => (loggedUser === null) ? <Login /> : <Chat />} />
-          <Route exact path="/dashboard" render={() => <DashBoard />} />
+          <Route exact path="/dashboard" render={showContent} />
         </InitialData.Provider>
       </Router>
     </div>
