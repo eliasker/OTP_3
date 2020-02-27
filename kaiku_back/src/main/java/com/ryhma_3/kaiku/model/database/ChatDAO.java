@@ -106,6 +106,7 @@ public class ChatDAO implements IChatDAO {
             d.getString("type"), temp, new MessageObject[]{});
 	}
 
+    @Override
 	public ChatObject[] getChats(String userId) {
         MongoCursor<Document> cursor = collection.find().iterator();
         ArrayList<ChatObject> chatList = new ArrayList<>();
