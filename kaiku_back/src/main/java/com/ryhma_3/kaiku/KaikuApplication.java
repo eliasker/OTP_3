@@ -41,7 +41,13 @@ public class KaikuApplication {
 		System.out.println("1: no auth");
 		System.out.println("2: auth");
 		System.out.println("just enter to skip setup");
-		String select = scanner.next();
+		String select = scanner.nextLine();
+		
+		if(select.equals("")) {
+			init = new ServerInitNoAuth();
+			server = new Server(init);
+			return;
+		}
 		
 		System.out.println("Give your mongodb URI with username and password:");
 		String URI = scanner.next();
@@ -50,10 +56,6 @@ public class KaikuApplication {
 			init = new ServerInitNoAuth();
 		} else if(select.equals("2")) {
 			init = new ServerInitAuth();
-		} else if(select.equals("")){
-			init = new ServerInitNoAuth();
-			server = new Server(init);
-			return;
 		} else {
 			System.out.println("bad input");
 			System.exit(-1);
