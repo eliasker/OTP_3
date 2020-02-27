@@ -6,8 +6,7 @@ import InitialData from "../providers/InitialData"
 const useChat = (loggedUser_id, currentChat) => {
   const { initialData } = useContext(InitialData)
   const [messages, setMessages] = useState([])
-  const [users, setUsers] = useState([])
-  const socketRef = useRef()
+   const socketRef = useRef()
   useEffect(() => {
     if (initialData.chats === undefined) return console.log('initialData pending...')
     setMessages(initialData.chats[0].messages)
@@ -24,7 +23,7 @@ const useChat = (loggedUser_id, currentChat) => {
     )
 
     socketRef.current.on(
-      "chatevent",
+      "chatEvent",
       (message) => {
         if (message.user_id === loggedUser_id) return
 
@@ -35,22 +34,19 @@ const useChat = (loggedUser_id, currentChat) => {
 
     socketRef.current.on(
       "connect",
-      (user) => {
-        // TODO
+      (users) => {
+	console.log(users)
+	// 	socket = socketIO.connect(baseString, {
+	//   query: "Authorization=kaiku"
+	// });
       }
     )
 
     socketRef.current.on(
-      "connectionEvent",
-      (user) => {
-        // TODO
-      }
-    )
-
-    socketRef.current.on(
-      "createchatEvent",
+      "createChatEvent",
       (chat) => {
-        // TODO
+	console.log('createChatEvent')
+        console.log(chat)
       }
     )
 
@@ -59,10 +55,14 @@ const useChat = (loggedUser_id, currentChat) => {
     }
   }, [messages])
 
+  const createChatEvent = () => {
+    socketRef.current.emit("chat", { chatName: 'testichat' , users: ['1','2','3'] })
+  }
+
   const sendMessage = (message) => {
     //    socketRef.current.emit("chatevent", { message: message.content, user: 'Minä' })
     setMessages(messages.concat(message))
-    socketRef.current.emit("chatevent", message)
+    socketRef.current.emit("chatEvent", message)
   }
   return { messages, sendMessage }
 }
