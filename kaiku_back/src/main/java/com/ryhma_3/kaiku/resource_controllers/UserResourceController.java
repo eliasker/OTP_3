@@ -1,5 +1,6 @@
 package com.ryhma_3.kaiku.resource_controllers;
 
+import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -74,8 +75,8 @@ public class UserResourceController {
 
 //	    			MessageObject[] messages = MessageDAO.getMessages(userFromDb.get_Id());
 
-				MessageObject message = new MessageObject("adsas", "sadd", "asd");
-				MessageObject message2 = new MessageObject("baba", "asd", "kakaka");
+				MessageObject message = new MessageObject("adsas", "sadd", "asd", new Date());
+				MessageObject message2 = new MessageObject("baba", "asd", "kakaka", new Date());
 				MessageObject[] messages = { message, message2 };
 				chats[i].setMessages(messages);
 			}

@@ -29,8 +29,7 @@ public class ServerInitAuth implements IServerInit {
 	/**
 	 * Default blank chatDAO
 	 */
-	private IChatDAO chatDAO = new ChatDAO();
-	
+	private IChatDAO chatDAO = null;
 	
 	
 	/**
@@ -62,6 +61,9 @@ public class ServerInitAuth implements IServerInit {
 		Configuration config = new Configuration();
 		config.setHostname(hostname);
 		config.setPort(port);
+		
+		//confirm not null
+		chatDAO = chatDAO == null ? new ChatDAO() : chatDAO;
 		
 		//setup auth listener
 		config.setAuthorizationListener(new AuthorizationListener() {

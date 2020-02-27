@@ -26,7 +26,7 @@ public class ServerInitNoAuth implements IServerInit {
 	/**
 	 * Default blank chatDAO
 	 */
-	private IChatDAO chatDAO = new ChatDAO();
+	private IChatDAO chatDAO = null;
 	
 	
 //	private IMessageDAO messageDAO = new MessageDAO();
@@ -57,6 +57,10 @@ public class ServerInitNoAuth implements IServerInit {
 		Configuration config = new Configuration();
 		config.setHostname(hostname);
 		config.setPort(port);
+		
+		//confirm not null
+		chatDAO = chatDAO == null ? new ChatDAO() : chatDAO;
+		
 		return new SocketIOServer(config);
 	}
 
