@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
+import Context from '../../providers/Context'
 
 const DashBoard = ({ user, group }) => {
+  const { setCurrentGroup, setContent } = useContext(Context)
   const [ userState, setUserState ] = useState(user)
   const [ groupState, setGroupState ] = useState(group)
   const [editMode, setEditMode] = useState(false)
@@ -15,6 +17,11 @@ const DashBoard = ({ user, group }) => {
   const handleDelete = (object) => {
     if (!window.confirm('Haluatko poistaa '+object.name+'n tiedot')) return
     console.log("POISTETTU")
+  }
+
+  const toggleMemberManagment = () => {
+    setCurrentGroup(group)
+    setContent('g/members')
   }
 
   const buttons = (object) => {
@@ -36,7 +43,12 @@ const DashBoard = ({ user, group }) => {
           <td>{user.id}</td>
           <td>{editMode ? <input value={userState.name} onChange={e => setUserState({...userState, name: e.target.value})}/>: user.name}</td>
           <td>{editMode ? <input value={userState.username} onChange={e => setUserState({...userState, username: e.target.value})}/>: user.username}</td>
-          <td>{editMode ? <input placeholder="Peasant"/>: "Peasant"}</td>
+          <td>{editMode ?
+          <select defaultValue="Peasant" className="user-role">
+            <option value="Peasant">Peasant</option>
+            <option value="Ylläpitäjä">Ylläpitäjä</option>
+          </select>:
+          "Peasant"}</td>
           <td>{ buttons(userState) }</td>
         </tr>
       </>
@@ -46,12 +58,12 @@ const DashBoard = ({ user, group }) => {
     return (
       <>
       <tr>
-          <td>{ group.id }</td>
-          <td>{ editMode ? <input value={groupState.name} onChange={e => setGroupState({...groupState, name: e.target.value})}/>: group.name }</td>
-          <td>{ group.members.length }</td>
-          <td>{ group.messages.length }</td>
-          <td>{ buttons(groupState) }</td>
-        </tr>
+        <td>{ group.id }</td>
+        <td>{ editMode ? <input value={groupState.name} onChange={e => setGroupState({...groupState, name: e.target.value})}/>: group.name }</td>
+        <td>{ editMode ? <span className="link" onClick={() => toggleMemberManagment()}>{group.members.length}</span>: group.members.length }</td>
+        <td>{ group.messages.length }</td>
+        <td>{ buttons(groupState) }</td>
+      </tr>
       </>
     )
 }

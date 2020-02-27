@@ -29,8 +29,8 @@ const NewUser = () => {
             <input type="password" className="form-control" id="user-password" placeholder="Salasana" required />
           </div>
           <div className="col-md-6 mb-2">
-            <label htmlFor="user-repassword">Varmista salasana</label>
-            <input type="password" className="form-control" id="user-password" placeholder="Varmista salasana" required />
+            <label htmlFor="user-repassword">Toista salasana</label>
+            <input type="password" className="form-control" id="user-password" placeholder="Toista salasana" required />
           </div>
         </div>
         <div className="container-fluid row">

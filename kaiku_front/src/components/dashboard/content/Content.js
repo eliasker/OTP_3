@@ -4,6 +4,7 @@ import GroupList from './GroupList'
 import Context from '../../../providers/Context'
 import NewUser from './NewUser'
 import NewGroup from './NewGroup'
+import MemberManagment from './MemberManagment'
 
 const Content = () => {
   const { content, setContent } = useContext(Context)
@@ -18,6 +19,8 @@ const Content = () => {
         return <GroupList />
       case 'g/new':
         return <NewGroup />
+      case 'g/members':
+        return <MemberManagment />
       default:
         return <UserList />
     }
