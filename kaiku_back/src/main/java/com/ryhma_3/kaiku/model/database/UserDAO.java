@@ -95,11 +95,11 @@ public class UserDAO implements IUserDAO {
     // TODO: refactor to use ObjectId for filtering instead of username
 	@Override
 	public UserObject getUser(UserObject userObject) {
-		Document document = (Document)collection
+		Document d = (Document)collection
             .find(eq("username", userObject.getUsername())).first();
         
-	    return new UserObject(document.getObjectId("_id").toString(),
-            document.getString("username"), "", document.getString("name"));
+	    return new UserObject(d.getObjectId("_id").toString(),
+            d.getString("username"), d.getString("password"), d.getString("name"));
 	}
 
 	public UserObject[] getAllUser() {
@@ -110,7 +110,7 @@ public class UserDAO implements IUserDAO {
             while (cursor.hasNext()) {
                 Document d = cursor.next();
                 userList.add(new UserObject(d.getObjectId("_id").toString(),
-                d.getString("username"), "", d.getString("name")));
+                d.getString("username"), d.getString("password"), d.getString("name")));
             }
         } catch (Exception e) {
             e.printStackTrace();
