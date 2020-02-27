@@ -2,14 +2,15 @@
 import axios from 'axios'
 const baseUrl = 'http://localhost:3001/'
 
-const getUsers = () => {
-  const request = axios.get(`${baseUrl}users`)
+const getInitialData = () => {
+  const request = axios.get(`${baseUrl}user`)
   return request.then(response => response.data)
 }
 
+// voisi olla getMessagesByChatId
 const getMessages = () => {
-  const request = axios.get(`${baseUrl}messages`)
-  return request.then(response => response.data)
+  const request = axios.get(`${baseUrl}user`)
+  return request.then(response => response.data.chats[0].messages)
 }
 
-export default { getUsers, getMessages }
+export default { getInitialData, getMessages }

@@ -78,6 +78,9 @@
   top: 0;
   width: 100%;
   z-index: 2;
+  -webkit-box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.25);
+  -moz-box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.25);
+  box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.25);
 }
 
 .user-header-container {
@@ -108,11 +111,11 @@
   padding: 0;
 }
 
-.chat-type :hover {
+.chat-type p:hover {
   cursor: pointer;
   background-color: #5f77a1bb;
   color: #fff;
-  border: 1px solid #0000;
+  /*border: 1px solid #0000;*/
   transition: ease-in-out;
   transition-duration: .4s;
 }
@@ -132,6 +135,10 @@
   font-weight: 600;
 }
 
+.chat-type .fas {
+  padding: 5px;
+}
+
 .fa-ellipsis-v {
   font-size: 22px;
   margin-right: 1rem;
@@ -142,6 +149,16 @@
 
 .users-menu {
   transform: translate3d(-160px, 43px, 0px) !important;
+}
+
+.profile-menu {
+  transform: translate3d(66px, 34px, 0px) !important;
+  border-radius: 0 .25rem .25rem .25rem;
+}
+
+.users-menu span:hover,
+.profile-menu .dropdown-item:hover {
+  cursor: pointer;
 }
 
 .find-user-input {
@@ -162,7 +179,7 @@
   height: 100%;
   padding-top: 60px;
   padding-bottom: 60px;
-  background-image: url('kaiku-bg.png');
+  background-image: url('../img/kaiku-bg.png');
   background-size: 10rem;
   background-repeat: repeat;
 }
@@ -214,6 +231,7 @@
 
 .profile-list {
   overflow-y: scroll;
+  overflow-x: hidden !important;
   position: absolute;
   width: 100%;
   height: 100%;
@@ -243,11 +261,30 @@
   background-color: rgb(90, 105, 156);
   margin-left: 0;
   margin-right: 0;
+  cursor: pointer;
 }
 
 .profile p {
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   font-weight: 600;
+  margin-bottom: 0;
+}
+
+.profile span {
+  font-style: italic;
+}
+
+.profile-menu .text-sm {
+  font-style: italic;
+  margin: 0 1.5rem;
+}
+
+.text-sm {
+  font-size: smaller;
+}
+
+.pos-rel {
+  position: relative;
 }
 
 .bg-navy {
@@ -257,6 +294,10 @@
 .chat-header p{
   font-weight: 600;
   margin-top: 1rem;
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 .message-date {
@@ -280,6 +321,13 @@
   max-width: 70%;
 }
 
+.in-message p,
+.out-message p {
+  -webkit-box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.5);
+  -moz-box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.5);
+  box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.5);
+}
+
 .out-message p {
   padding: 0.5rem 1rem;
   margin-bottom: 0.25rem;
@@ -292,6 +340,25 @@
   margin-bottom: 0.25rem;
   border-radius: 0 15px 15px 15px;
   background-color: white;
+}
+
+.default-message-container {
+  display: flex;
+  justify-content: center;
+  margin: 1rem;
+}
+
+.default-message p {
+  -webkit-box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.5);
+  -moz-box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.5);
+  box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.5);
+}
+
+.default-message p {
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.25rem;
+  border-radius: 15px 15px 15px 15px;
+  background-color: rgb(223, 233, 252);
 }
 
 .msg-senda {
@@ -467,6 +534,29 @@ input::-webkit-input-placeholder {
   margin: auto;
 }
 
+.upload-container {
+  background-color: #000000df;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.upload-form {
+  margin: auto;
+  background-color: #f1f1f1;
+  height: 150px;
+  width: 400px;
+  color: #000;
+  border-radius: 2px;
+  text-align: center;
+  padding-top: 45px;
+  margin-top: 200px;
+}
+
+.upload-form input {
+  height: 32px;
+}
+
 .profile-page-thumb {
   min-height: 150px;
   max-width: 150px;
@@ -498,6 +588,13 @@ input::-webkit-input-placeholder {
   background-color: #777;
   padding: 15px 17px;
   border-radius: 90px;
+  transition: ease-in-out .3s;
+}
+
+.profile-image-container span:hover {
+  transform: scale(1.1);
+  background-color: #444;
+  transition: ease-in-out .5s;
 }
 
 .exit-profile {
@@ -544,4 +641,48 @@ input::-webkit-input-placeholder {
 
 .profile-page-heading h2 {
   margin: 0;
+}
+
+#dashboard {
+  background-color: white;
+  min-height: 100vh;
+}
+
+#side-nav {
+  min-height: 100vh;
+}
+
+.cursor-def {
+  cursor: default;
+}
+
+.nav-link {
+  cursor: pointer;
+}
+
+.font-2 {
+  font-size: 20px;
+}
+
+.font-3 {
+  font-size: 24px;
+}
+
+#new-group .fa-times:hover,
+.h-red:hover {
+  color: rgb(175, 29, 29);
+}
+
+.user-role {
+  padding: 3px;
+}
+
+.link {
+  cursor: pointer;
+  text-decoration: underline;
+  color: rgb(47, 61, 255);
+}
+
+.link:hover {
+  color: rgb(47, 137, 255);
 }

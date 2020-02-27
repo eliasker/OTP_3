@@ -1,10 +1,18 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import InitialData from '../providers/InitialData'
 
-const Login = ({ setCurrentPage, users, setLoggedUser }) => {
+const Login = () => {
+  const {initialData, setLoggedUser} = useContext(InitialData)
   const handleSubmit = e => {
     e.preventDefault()
-    setCurrentPage('chat')
-    setLoggedUser(users[Math.floor(Math.random() * users.length)])
+    const loggedUser = {
+      name: initialData.name,
+      username: initialData.username,
+      token: 'kaiku',
+      id: initialData.user_id
+    }
+    setLoggedUser(loggedUser)
+    window.localStorage.setItem('loggedKaikuUser', JSON.stringify(loggedUser))
   }
   
   return (
