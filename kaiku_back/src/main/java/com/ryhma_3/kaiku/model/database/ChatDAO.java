@@ -115,7 +115,6 @@ public class ChatDAO implements IChatDAO {
         try {
             while (cursor.hasNext()) {
                 Document d = cursor.next();
-                System.out.println(d.getList("users", String.class).size());
                 if (d.getList("users", String.class).contains(userId)) {
                     String[] users = new String[d.getList("users", String.class).size()];
                     users = d.getList("users", String.class).toArray(users);
@@ -137,6 +136,34 @@ public class ChatDAO implements IChatDAO {
         return chatArr;
 	}
 
+	@Override
+	public ChatObject[] getAllChats() {
+        MongoCursor<Document> cursor = collection.find().iterator();
+        ArrayList<ChatObject> chatList = new ArrayList<>();
+
+        // Loop through each Chat document and check if the users field includes userId
+        try {
+            while (cursor.hasNext()) {
+                Document d = cursor.next();
+                String[] users = new String[d.getList("users", String.class).size()];
+                users = d.getList("users", String.class).toArray(users);
+                chatList.add(new ChatObject(d.getObjectId("_id").toString(),
+                    d.getString("chatName"), d.getString("type"),
+                    // TODO: fix messageobject when time for it
+                    users, new MessageObject[]{}));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            cursor.close();
+        }
+
+        ChatObject[] chatArr = new ChatObject[chatList.size()];
+        chatArr = chatList.toArray(chatArr);
+
+        return chatArr;
+	}
+    
     private String getMongoURI(String filename) {
         String filepath = "./secrets/" + filename;
 		try {
@@ -166,5 +193,5 @@ public class ChatDAO implements IChatDAO {
         }
         return null;
     }
-    
+
 }
