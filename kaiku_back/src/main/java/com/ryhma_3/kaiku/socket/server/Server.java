@@ -73,7 +73,7 @@ public class Server implements IServer {
 				System.out.println("connect event");
 				
 				//register client
-				String tokenString =  client.getHandshakeData().getSingleUrlParam("Authorization");
+				String tokenString = client.getHandshakeData().getSingleUrlParam("Authorization");
 				
 				SecurityTools.attachSessionToToken(tokenString, client.getSessionId());
 								

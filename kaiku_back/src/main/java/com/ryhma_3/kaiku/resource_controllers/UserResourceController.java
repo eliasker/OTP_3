@@ -3,10 +3,13 @@ package com.ryhma_3.kaiku.resource_controllers;
 import java.util.Date;
 import java.util.UUID;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,6 +29,7 @@ import com.ryhma_3.kaiku.utility.Token;
 /**
  * AccountController
  */
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class UserResourceController {
 	private IChatDAO chatDAO = KaikuApplication.getChatDAO();
@@ -37,12 +41,13 @@ public class UserResourceController {
 	 * @return InitializationObject or fail 400
 	 * Request invoked when user starts a session. This entry point compiles all necessary data needed to initialize front end application.
 	 */
-	@GetMapping("/users")
+	@RequestMapping(value = "/users/**", method=RequestMethod.POST)
 	public InitializationObject getInit(@RequestBody UserObject user) {
 
 		String username = user.getUsername();
 		String password = user.getPassword();
-		// check user credentials
+		
+		System.out.println(username + "  " + password);
 
 		/*
 		 * Get user with matching username from database. COmpare encrypted password with one submitted
