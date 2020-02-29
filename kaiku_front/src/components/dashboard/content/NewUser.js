@@ -23,8 +23,6 @@ const NewUser = () => {
 
   return(
   <>
-    <h2>Luo käyttäjä</h2>
-    <hr />
     <div className="container-fluid">
       <form className="p-5 mt-5 bg-light">
         <div className="form-row">

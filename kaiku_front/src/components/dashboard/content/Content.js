@@ -5,6 +5,7 @@ import Context from '../../../providers/Context'
 import NewUser from './NewUser'
 import NewGroup from './NewGroup'
 import MemberManagment from './MemberManagment'
+import Breadcrumb from '../Breadcrumb'
 
 const Content = () => {
   const { content, setContent } = useContext(Context)
@@ -38,7 +39,7 @@ const Content = () => {
           </div>
         </div>
       </div>
-
+      <Breadcrumb />
       {showContent()}
     </div>
   </>

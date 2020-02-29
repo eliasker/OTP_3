@@ -13,10 +13,10 @@ const Menu = () => {
         </h6>
         <ul className="nav flex-column mb-2">
           <li className="nav-item">
-            <span className="nav-link" onClick={() => setContent('u/all')}> Kaikki käyttäjät </span>
+            <span className="nav-link link" onClick={() => setContent('u/all')}> Kaikki käyttäjät </span>
           </li>
           <li className="nav-item">
-            <span className="nav-link" onClick={() => setContent('u/new')}>Luo käyttäjä</span>
+            <span className="nav-link link" onClick={() => setContent('u/new')}>Luo käyttäjä</span>
           </li>
         </ul>
 
@@ -25,10 +25,10 @@ const Menu = () => {
         </h6>
         <ul className="nav flex-column mb-2">
           <li className="nav-item">
-            <span className="nav-link" onClick={() => setContent('g/all')}> Kaikki ryhmät </span>
+            <span className="nav-link link" onClick={() => setContent('g/all')}> Kaikki ryhmät </span>
           </li>
           <li className="nav-item">
-            <span className="nav-link" onClick={() => setContent('g/new')}>Luo ryhmä</span>
+            <span className="nav-link link" onClick={() => setContent('g/new')}>Luo ryhmä</span>
           </li>
         </ul>
 
