@@ -85,13 +85,20 @@ public class UserDAO extends DataAccessInit implements IUserDAO {
     // TODO: refactor to use ObjectId for filtering instead of username
 	@Override
 	public UserObject getUser(UserObject userObject) {
-		Document d = (Document)collection
-            .find(eq("username", userObject.getUsername())).first();
-        
-	    return new UserObject(d.getObjectId("_id").toString(),
-            d.getString("username"), d.getString("password"), d.getString("name"));
+        try {
+            Document d = (Document)collection
+                .find(eq("username", userObject.getUsername())).first();
+            
+            return new UserObject(d.getObjectId("_id").toString(),
+                d.getString("username"), d.getString("password"), d.getString("name"));
+            
+        } catch (Exception e) {
+            System.out.println("User not found in the database");
+        }
+        return null;
 	}
 
+    @Override
 	public UserObject[] getAllUsers() {
         MongoCursor<Document> cursor = collection.find().iterator();
         ArrayList<UserObject> userList = new ArrayList<>();
