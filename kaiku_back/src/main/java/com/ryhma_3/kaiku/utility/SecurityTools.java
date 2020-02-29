@@ -299,16 +299,16 @@ public class SecurityTools {
 					//task succeeded					
 					searched = new Token(sessionID, searched.getUser_id(), searched.getTokenString());
 					tokenDataStore.set(i, searched);										
-					releaseObjectLock("connect UUID: success");
+					releaseObjectLock("connect UUID to token: success");
 					return;
 				}
 				
 				//task failed
-				releaseObjectLock("connect UUID: fail");
+				releaseObjectLock("connect UUID to token: fail");
 				return;
 				
 			} catch(Exception e) {
-				releaseObjectLock("connect UUID: exception");
+				releaseObjectLock("connect UUID to token: exception");
 				e.printStackTrace();
 				return;
 			}
