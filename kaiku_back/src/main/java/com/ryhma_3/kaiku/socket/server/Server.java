@@ -61,7 +61,6 @@ public class Server implements IServer {
 	@Override
 	public void start() {		
 		
-		
 		//after boot create namespaces for existing chats
 		initialize(server);
 		
@@ -159,15 +158,18 @@ public class Server implements IServer {
 		});
 		
 		server.start();
+		
+		System.out.println("server started");
 	}
 
+	
 	/**
 	 * @param server
 	 * Collect all chats from database and add them into servers as namespaces
 	 */
 	private void initialize(SocketIOServer server) {
 		//add admin
-		SecurityTools.createOrUpdateToken("kaiku", "kaiku");		
+//		SecurityTools.createOrUpdateToken("kaiku", "kaiku");		
 		
 		// add/get global chat
 		ChatObject global = chatDAO.getChatObject(new ChatObject(null, "global", null, null, null));
@@ -187,10 +189,10 @@ public class Server implements IServer {
 		
 		
 		//TODO initialisation form database
-//		ChatObject[] chats = ChatDAO.getChats(); //all
-//		for (ChatObject chatObject : chats) {
-//			setupNamespace(server, chatObject);
-//		}
+		ChatObject[] chats = chatDAO.getAllChats(); //alL
+		for (ChatObject chatObject : chats) {
+			setupNamespace(server, chatObject);
+		}
 	}
 	
 	

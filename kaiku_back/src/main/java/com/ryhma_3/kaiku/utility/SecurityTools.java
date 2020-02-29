@@ -123,12 +123,12 @@ public class SecurityTools {
 					break;
 				}
 	
-				releaseObjectLock();;
+				releaseObjectLock("clone: success");
 				return searched;
 				
 			} catch(Exception e) {
 				e.printStackTrace();
-				releaseObjectLock();
+				releaseObjectLock("clone: exception");
 				return null;
 			}
 		}
@@ -162,9 +162,8 @@ public class SecurityTools {
 					
 					//update success
 					searched = new Token(null, user_id, genRandomString());
-					tokenDataStore.set(i, searched);
-					
-					releaseObjectLock();
+					tokenDataStore.set(i, searched);					
+					releaseObjectLock("update token: success");
 					return new Token(searched);
 				}
 				
@@ -173,12 +172,12 @@ public class SecurityTools {
 				Token tokenToAdd = new Token(null, user_id, genRandomString());
 				tokenDataStore.add(tokenToAdd);
 				
-				releaseObjectLock();
+				releaseObjectLock("create token: success");
 				return new Token(tokenToAdd);
 		
 			} catch(Exception e) {
 				e.printStackTrace();
-				releaseObjectLock();
+				releaseObjectLock("create token: exception");
 				return null;
 			}
 		}
@@ -215,8 +214,8 @@ public class SecurityTools {
 					//update success
 					searched = new Token(searched.getSessionID(), user_id, tokenString);
 					tokenDataStore.set(i, searched);
-					
-					releaseObjectLock();
+
+					releaseObjectLock("update token: success");
 					return new Token(searched);
 				}
 				
@@ -225,12 +224,12 @@ public class SecurityTools {
 				Token tokenToAdd = new Token(null, user_id, tokenString);
 				tokenDataStore.add(tokenToAdd);
 				
-				releaseObjectLock();
+				releaseObjectLock("create token: success");
 				return new Token(tokenToAdd);
 		
 			} catch(Exception e) {
 				e.printStackTrace();
-				releaseObjectLock();
+				releaseObjectLock("create token: exception");
 				return null;
 			}
 		}
@@ -261,17 +260,17 @@ public class SecurityTools {
 					}
 					
 					//task succeeded
-					releaseObjectLock();
+					releaseObjectLock("token verified: success");
 					return true;
 				}
 							
 				//task failed / not found
-				releaseObjectLock();
+				releaseObjectLock("token verified: fail");
 				return false;
 				
 			} catch(Exception e) {
 				e.printStackTrace();
-				releaseObjectLock();
+				releaseObjectLock("token verified: exception");
 				//Task failed / exception
 				return false;
 			}
@@ -299,18 +298,17 @@ public class SecurityTools {
 					
 					//task succeeded					
 					searched = new Token(sessionID, searched.getUser_id(), searched.getTokenString());
-					tokenDataStore.set(i, searched);
-										
-					releaseObjectLock();
+					tokenDataStore.set(i, searched);										
+					releaseObjectLock("connect UUID: success");
 					return;
 				}
 				
 				//task failed
-				releaseObjectLock();
+				releaseObjectLock("connect UUID: fail");
 				return;
 				
 			} catch(Exception e) {
-				releaseObjectLock();
+				releaseObjectLock("connect UUID: exception");
 				e.printStackTrace();
 				return;
 			}
@@ -320,8 +318,10 @@ public class SecurityTools {
 	
 	/**
 	 * Release monitor that handles token operations
+	 * logs operations
 	 */
-	private static void releaseObjectLock() {
+	private static void releaseObjectLock(String location) {
+		System.out.println("SECURITYTOOLS: " + location);
 		operatingTokens = false;
 		lock.notifyAll();
 	}

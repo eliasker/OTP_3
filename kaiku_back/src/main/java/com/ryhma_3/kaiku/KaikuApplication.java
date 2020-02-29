@@ -1,5 +1,6 @@
 package com.ryhma_3.kaiku;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 import org.springframework.boot.SpringApplication;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.corundumstudio.socketio.SocketIOServer;
+import com.ryhma_3.kaiku.model.cast_object.ChatObject;
 import com.ryhma_3.kaiku.model.database.ChatDAO;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
@@ -37,10 +39,26 @@ public class KaikuApplication {
 	public static void main(String[] args) {
 		commandLineSetup();
 		
+		initializeState();
+		
 		SpringApplication.run(KaikuApplication.class, args);
 		
 
 		server.start();
+	}
+	
+	
+	private static void initializeState() {
+		
+		//confirm global chat exists
+		ChatObject global = null;
+		try {
+			global = chatDAO.getChatObject(new ChatObject(null, "global", null, null, null));
+		} catch (Exception e) {
+			String[] empty = { };
+			global = new ChatObject(null, "global", "global", empty, null);
+			chatDAO.createChatObject(global);
+		}
 	}
 
 

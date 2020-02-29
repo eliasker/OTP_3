@@ -1,5 +1,6 @@
 package com.ryhma_3.kaiku.resource_controllers;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.yaml.snakeyaml.util.ArrayUtils;
 
 import com.ryhma_3.kaiku.KaikuApplication;
 import com.ryhma_3.kaiku.model.cast_object.ChatObject;
@@ -25,6 +27,8 @@ import com.ryhma_3.kaiku.model.database.IUserDAO;
 import com.ryhma_3.kaiku.model.database.UserDAO;
 import com.ryhma_3.kaiku.utility.SecurityTools;
 import com.ryhma_3.kaiku.utility.Token;
+
+import ch.qos.logback.core.encoder.EchoEncoder;
 
 /**
  * AccountController
@@ -43,6 +47,7 @@ public class UserResourceController {
 	 */
 	@RequestMapping(value = "/users/**", method=RequestMethod.POST)
 	public InitializationObject getInit(@RequestBody UserObject user) {
+		System.out.println("REST: login");
 
 		String username = user.getUsername();
 		String password = user.getPassword();
@@ -52,76 +57,80 @@ public class UserResourceController {
 		/*
 		 * Get user with matching username from database. COmpare encrypted password with one submitted
 		 */
-	    UserObject userFromDb = userDAO.getUser(new UserObject(null, username, null ,null));
-		boolean valid = SecurityTools.compare(userFromDb.getPassword(), password) ? true : false;
+		try {
+		    UserObject userFromDb = userDAO.getUser(new UserObject(null, username, null ,null));
+			boolean valid = SecurityTools.compare(userFromDb.getPassword(), password) ? true : false;
+			
+			if (valid) {
+				/*
+				 * complete user info
+				 */
+				String user_id = userFromDb.get_Id();
+				String name = userFromDb.getName();
+				boolean online = true;
 
-//		UserObject userFromDb = new UserObject("213132", username, password, "pena");
-//		boolean valid = true;
-		
-		if (valid) {
-			/*
-			 * complete user info
-			 */
-			String user_id = userFromDb.get_Id();
-			String name = userFromDb.getName();
-			boolean online = true;
+				/*
+				 * Generate token, get token String
+				 */
+				String tokenString = SecurityTools.createOrUpdateToken(user_id).getTokenString();
+				System.out.println("created token: " + tokenString);
+			
 
-			/*
-			 * Generate token, get token String
-			 */
-			String tokenString = SecurityTools.createOrUpdateToken(user_id).getTokenString();
+				/*
+				 * CHATS don't have to have messages at this point!!!
+				 */
+	    		ChatObject[] chats = chatDAO.getChats(userFromDb.get_Id());	    		
+	    		    		
+//				ChatObject chat = new ChatObject("12312", null, null, null, null);
+//				ChatObject[] chats = { chat };
 
-		
+				/*
+				 * Get and put all messages to chats
+				 */
+				for (int i = 0; i < chats.length; i++) {
 
-			/*
-			 * CHATS don't have to have messages at this point!!!
-			 */
-    		ChatObject[] chats = chatDAO.getChats(userFromDb.get_Id());	    		
+	    			MessageObject[] messages = messageDAO.getAllMessages(userFromDb.get_Id());
 
-//			ChatObject chat = new ChatObject("12312", null, null, null, null);
-//			ChatObject[] chats = { chat };
+//					MessageObject message = new MessageObject("adsas", "sadd", "asd", new Date());
+//					MessageObject message2 = new MessageObject("baba", "asd", "kakaka", new Date());
+//					MessageObject[] messages = { message, message2 };
+					chats[i].setMessages(messages);
+				}
 
-			/*
-			 * Get and put all messages to chats
-			 */
-			for (int i = 0; i < chats.length; i++) {
+				/*
+				 * Get list of users
+				 */
+	    		UserObject[] users = userDAO.getAllUsers();
 
-    			MessageObject[] messages = messageDAO.getAllMessages(userFromDb.get_Id());
+//				UserObject user1 = new UserObject("12312", "kake", "keh keh", "kartsa");
+//				UserObject user2 = new UserObject("24135", "toto", "africa", "tortelliini");
+//				UserObject[] users = { user1, user2 };
 
-//				MessageObject message = new MessageObject("adsas", "sadd", "asd", new Date());
-//				MessageObject message2 = new MessageObject("baba", "asd", "kakaka", new Date());
-//				MessageObject[] messages = { message, message2 };
-				chats[i].setMessages(messages);
+				/*
+				 * Eliminate passwords
+				 */
+				for (int i = 0; i < users.length; i++) {
+					users[i].setPassword(null);
+				}
+
+				/*
+				 * Construct a InitialObject
+				 */
+				InitializationObject init = new InitializationObject(user_id, name, username, tokenString, online, chats, users);
+
+				return init;
+
+			} else {
+				/*
+				 * fail with 400
+				 */
+				return null;
 			}
-
-			/*
-			 * Get list of users
-			 */
-    		UserObject[] users = userDAO.getAllUsers();
-
-//			UserObject user1 = new UserObject("12312", "kake", "keh keh", "kartsa");
-//			UserObject user2 = new UserObject("24135", "toto", "africa", "tortelliini");
-//			UserObject[] users = { user1, user2 };
-
-			/*
-			 * Eliminate passwords
-			 */
-			for (int i = 0; i < users.length; i++) {
-				users[i].setPassword(null);
-			}
-
-			/*
-			 * Construct a InitialObject
-			 */
-			InitializationObject init = new InitializationObject(user_id, name, username, tokenString, online, chats, users);
-
-			return init;
-
-		} else {
-			/*
-			 * fail with 400
-			 */
+			
+		} catch (Exception e) {
+			
 			return null;
+		
 		}
 	}
 	
@@ -131,8 +140,9 @@ public class UserResourceController {
 	 * @param token - token for authorization
 	 * Validate sent token and create a new user from Request body. Return nothing;
 	 */
-	@PostMapping("/users")
+	@RequestMapping(value = "/users", method=RequestMethod.POST)
 	public void createUser(@RequestBody UserObject userObject, @RequestHeader("Authorization") String token) {
+		System.out.println("REST: create user");
 		
 		/*
 		 * Compare token and token storage
@@ -150,14 +160,16 @@ public class UserResourceController {
 			/*
 			 * post user to mongo
 			 */
-			userDAO.createUser(userObject);
+			userObject = userDAO.createUser(userObject);
 			
 			
-			/*
+			/*			 
 			 * add user to global chat
 			 */
-//			ChatObject global = chatDAO.getChat(new ChatObject(null, "global", null, null, null));
-//			chatDAO.updateChat(global);
+			ChatObject global = chatDAO.getChatObject(new ChatObject(null, "global", null, null, null));
+			String[] users = Arrays.copyOf(global.getUsers(), global.getUsers().length + 1);
+			users[global.getUsers().length] = userObject.get_Id();
+			chatDAO.updateChatObject(global);
 			
 			return;
 		} else {
