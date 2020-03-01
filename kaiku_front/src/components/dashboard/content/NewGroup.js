@@ -42,8 +42,6 @@ const NewGroup = () => {
 
   return(
   <>
-    <h2>Luo ryhmä</h2>
-    <hr />
     <div id="new-group" className="container-fluid">
       <form className="p-5 mt-5 bg-light" onSubmit={(e) => handleSubmit(e)}>
         <div className="form-row pb-3">

@@ -17,7 +17,6 @@ const GroupList = () => {
 
   return(
   <>
-    <h2>Kaikki ryhmät</h2>
     <div className="table-responsive">
       <table className="table table-striped table-sm">
         <thead>

@@ -5,6 +5,7 @@ import Context from '../../../providers/Context'
 import NewUser from './NewUser'
 import NewGroup from './NewGroup'
 import MemberManagment from './MemberManagment'
+import Breadcrumb from '../Breadcrumb'
 
 const Content = () => {
   const { content, setContent } = useContext(Context)
@@ -36,12 +37,9 @@ const Content = () => {
             <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setContent('u/new')}>Luo käyttäjä</button>
             <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() =>setContent('g/new')}>Luo ryhmä</button>
           </div>
-          <button type="button" className="btn btn-sm btn-outline-secondary dropdown-toggle">
-            Järjestä
-          </button>
         </div>
       </div>
-
+      <Breadcrumb />
       {showContent()}
     </div>
   </>
