@@ -40,7 +40,11 @@ import io.netty.handler.codec.http.HttpHeaders;
  */
 public class Server implements IServer {
 	
+	/**
+	 * user_id, onlineStatus
+	 */
 	private static final Map<String, Boolean> connectedUsers = new HashMap<>(); 
+	
 	private static final ArrayList<SocketIONamespace> namespaces = new ArrayList<>();
 
 	IChatDAO chatDAO = null;
@@ -101,7 +105,7 @@ public class Server implements IServer {
 			public void onDisconnect(SocketIOClient client) {
 //				String tokenString = client.getHandshakeData().getSingleUrlParam("Authorization");
 								
-				Token cloneOfToken = SecurityTools.getCloneOfToken(client.getSessionId().toString());
+				Token cloneOfToken = SecurityTools.getCloneOfToken(client.getSessionId());
 				
 				//set user as disconnected
 				connectedUsers.replace(cloneOfToken.getUser_id(), false);
