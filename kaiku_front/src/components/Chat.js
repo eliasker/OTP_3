@@ -10,6 +10,7 @@ const Chat = () => {
   const [displayProfile, setDisplayProfile] = useState('d-none')
   const [displayUser, setDisplayUser] = useState(undefined)
   const [currentChat, setCurrentChat] = useState()
+  const [showModal, setShowModal] = useState(false)
 
   useEffect(() => {
     if (initialData.chats)
@@ -18,15 +19,15 @@ const Chat = () => {
 
   return (
     <>
-      <div id="chat" className="container">
-        <div className="chat-container container row">
-          <CurrentChat.Provider value={{ currentChat, setCurrentChat }}>
-            <UsersColumn setDisplayProfile={setDisplayProfile} userState={{ displayUser, setDisplayUser }} />
-            <ChatColumn profileState={{ displayProfile, setDisplayProfile }} userState={{ displayUser, setDisplayUser }} />
-          </CurrentChat.Provider>
+    <CurrentChat.Provider value={{ currentChat, setCurrentChat, showModal, setShowModal }}>
+        <div id="chat" className="container">
+          <div className="chat-container container row">
+              <UsersColumn setDisplayProfile={setDisplayProfile} userState={{ displayUser, setDisplayUser }} />
+              <ChatColumn profileState={{ displayProfile, setDisplayProfile }} userState={{ displayUser, setDisplayUser }} />
+          </div>
+          <HelpPanel />
         </div>
-        <HelpPanel />
-      </div>
+      </CurrentChat.Provider>
     </>
   )
 }

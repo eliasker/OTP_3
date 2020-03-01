@@ -1,8 +1,10 @@
 import React, { useContext } from 'react'
 import InitialData from '../../providers/InitialData'
+import CurrentChat from '../../providers/CurrentChat'
 
 const UsersHeader = ({ searchState, chatTypeState, setDisplayProfile }) => {
   const { initialData, loggedUser, setLoggedUser } = useContext(InitialData)
+  const { showModal, setShowModal } = useContext(CurrentChat)
   const { searchInput, setSearchInput } = searchState
   const { chatType, setChatType } = chatTypeState
 
@@ -29,6 +31,7 @@ const UsersHeader = ({ searchState, chatTypeState, setDisplayProfile }) => {
 
           <div className="dropdown-menu users-menu" aria-labelledby="dropdownMenuLink">
             <span className="dropdown-item" onClick={() => handleShowProfile()}><i className="fas fa-user"></i> Profiili</span>
+            <span className="dropdown-item" onClick={() => setShowModal(!showModal)}><i className="fas fa-question-circle"></i> Apua</span>
             <span className="dropdown-item" onClick={() => handleLogout()}><i className="fas fa-door-open"></i> Lähe dallaa</span>
           </div>
         </div>

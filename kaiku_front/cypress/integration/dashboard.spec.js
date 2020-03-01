@@ -65,7 +65,7 @@ describe('Basic functionality', function() {
     it('check kaikki ryhmät', function() {
       cy.get('.sidebar-sticky ul:last li').first().click()
       cy.get('.btn-outline-primary:first').click()
-      cy.contains(' -muokkaus')
+      cy.contains('Ryhmän muokkaus')
     })
   })
 })

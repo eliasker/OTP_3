@@ -1,18 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import help from '../../util/help'
+import CurrentChat from '../../providers/CurrentChat'
 
 const HelpPanel = () => {
-  const [showModal, setShowModal] = useState(false)
+  const { showModal, setShowModal } = useContext(CurrentChat)
   const [tip, setTip] = useState(help[0])
 
-  const nextTip = integer => {
-    let index = help.indexOf(tip) + integer
-
-    if(index < 0) index = help.length - 1
-    if(index >= help.length) index = 0
-
-    setTip(help[index])
-  }
+  const nextTip = integer =>
+    setTip(help[
+      ((help.indexOf(tip) + integer) < 0) ? help.length - 1: (help.indexOf(tip) + integer) % help.length
+    ])
 
   return (
     <>
