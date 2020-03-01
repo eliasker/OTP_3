@@ -95,7 +95,6 @@ public class SecurityTools {
 	
 	/**
 	 * @param user_id || tokenString
-	 * @param tokenString
 	 * @return Triple<UUID, user_id, tokenString> token
 	 * Get a users token with user_id OR tokenString. 
 	 * Thread-safe
@@ -115,8 +114,46 @@ public class SecurityTools {
 					searched = new Token(token);
 					
 					if(!searched.getUser_id().equals(searchInput) 
-							&& !searched.getTokenString().equals(searchInput)
-							&& !searched.getSessionID().toString().equals(searchInput)) {
+							&& !searched.getTokenString().equals(searchInput)) {
+						searched = null;
+						continue;
+					}
+					break;
+				}
+	
+				releaseObjectLock("clone: success");
+				return searched;
+				
+			} catch(Exception e) {
+				e.printStackTrace();
+				releaseObjectLock("clone: exception");
+				return null;
+			}
+		}
+	}
+	
+	
+	/**
+	 * @param sessionID
+	 * @return Triple<UUID, user_id, tokenString> token
+	 * Get a users token with user_id OR tokenString. 
+	 * Thread-safe
+	 */
+	public static Token getCloneOfToken(UUID sessionID) {
+		synchronized (lock) {
+			try {
+				//wait for monitor
+				while(operatingTokens) {
+					lock.wait();
+				}
+				operatingTokens = true;
+				
+				Token searched = null;
+				
+				for (Token token : tokenDataStore) {
+					searched = new Token(token);
+					
+					if(!searched.getSessionID().toString().equals(sessionID.toString())) {
 						searched = null;
 						continue;
 					}
@@ -138,6 +175,7 @@ public class SecurityTools {
 	
 	/**
 	 * @param user_id
+	 * @return Triple<UUID, user_id, tokenString> token
 	 * Create or update a user specific token. On first connect user gets a new list-item, on consecutive connections a new token string 
 	 * is created.
 	 * Thread-safe

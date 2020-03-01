@@ -2,6 +2,8 @@ package com.ryhma_3.kaiku.utility;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.UUID;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -82,6 +84,10 @@ class SecurityToolsTest {
 	}
 	
 	
+	/**
+	 * @param input
+	 * test getting token with tokeString
+	 */
 	@ParameterizedTest
 	@ValueSource(strings = {"112911", "uniqueString"})
 	void getTokenTest(String input) {
@@ -91,7 +97,23 @@ class SecurityToolsTest {
 		assertEquals(token.getTokenString(), searchedToken.getTokenString());
 	}
 	
-	//get token with tokenString
+	
+	/*
+	@Test
+	void getTokenWithUUID() {
+		Token token = SecurityTools.createOrUpdateToken("113344");
+		UUID sessionID = UUID.randomUUID();
+		
+		System.out.println(sessionID);
+		System.out.println(token.getTokenString());
+		
+		SecurityTools.attachSessionToToken(token.getTokenString(), sessionID);
+		
+		Token searchedToken = SecurityTools.getCloneOfToken(sessionID);
+		
+		assertEquals(token.getTokenString(), searchedToken.getTokenString());
+	}
+	*/
 	
 	//get token with bad parameter
 	
