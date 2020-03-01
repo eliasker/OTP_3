@@ -112,6 +112,11 @@
             <mainClass>com.ryhma_3.kaiku.model.database.TestMain</mainClass>
         </configuration>
     </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.5</version>
+            </plugin>
 		</plugins>
 	</build>
 
