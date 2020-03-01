@@ -5,17 +5,14 @@ import InitialData from '../../providers/InitialData'
 import Discussions from './Discussion'
 import UsersHeader from './UsersHeader'
 import DirectUser from './user/DirectUser'
-import CurrentChat from '../../providers/CurrentChat'
 
 const UsersColumn = ({ setDisplayProfile, userState }) => {
   const { initialData, loggedUser } = useContext(InitialData)
-  const { setCurrentChat } = useContext(CurrentChat)
-  const { displayUser, setDisplayUser } = userState
+  const { setDisplayUser } = userState
 
   // chatTypes are group, global, private
   const [chatType, setChatType] = useState('group')
   const [searchInput, setSearchInput] = useState('')
-  console.log('displayUser', displayUser)
 
   const listGroups = () => {
     if (initialData.chats === undefined) return
@@ -28,7 +25,6 @@ const UsersColumn = ({ setDisplayProfile, userState }) => {
     const searchResult = initialData.chats.find(chat => (chat.type === 'private' && chat.members.includes(targetUser.id)))
     if (searchResult) return { ...searchResult, name: targetUser.username }
     else {
-      console.log('no privatechat found, start new conversation')
       return { name: targetUser.username, type: 'private', members: [loggedUser.id, targetUser.id], messages: [] }
     }
   }
@@ -42,7 +38,7 @@ const UsersColumn = ({ setDisplayProfile, userState }) => {
     return initialData.users
       .filter(u => u.id !== loggedUser.id)
       .filter(u => filteredUsers.find(e => u.name === e))
-      .map(u => <DirectUser key={keyGen.generateKey(u.name)} privateChat={findChat(u)} setCurrentChat={setCurrentChat} user={u} setDisplayUser={setDisplayUser}/>)
+      .map(u => <DirectUser key={keyGen.generateKey(u.name)} privateChat={findChat(u)} user={u} setDisplayUser={setDisplayUser}/>)
   }
 
   return (

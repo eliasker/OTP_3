@@ -1,14 +1,16 @@
 import React, { useContext } from 'react'
 import InitialData from '../../../providers/InitialData'
+import CurrentChat from '../../../providers/CurrentChat'
 
-const User = ({ user, privateChat, setCurrentChat, setDisplayUser }) => {
+const User = ({ user, privateChat, setDisplayUser }) => {
   const { loggedUser } = useContext(InitialData)
+  const { selectChat } = useContext(CurrentChat)
   const handleShowProfile = () => setDisplayUser(user)
 
   // tässä tarvitaan logiikka uuden keskustelun aloittamiseksi
   const handleShowChat = () => {
     console.log('handleShowChat clicked', privateChat)
-    setCurrentChat(privateChat)
+    selectChat(privateChat)
   }
   return (
     <div className="dropdown pos-rel">
