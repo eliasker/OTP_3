@@ -679,10 +679,10 @@ input::-webkit-input-placeholder {
 
 .link {
   cursor: pointer;
-  text-decoration: underline;
-  color: rgb(47, 61, 255);
+  color: rgb(47, 137, 255);
 }
 
 .link:hover {
-  color: rgb(47, 137, 255);
+  color: rgb(47, 61, 255);
+  text-decoration: underline;
 }

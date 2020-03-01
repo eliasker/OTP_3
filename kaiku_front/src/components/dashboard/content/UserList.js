@@ -15,7 +15,6 @@ const UserList = () => {
 
   return(
   <>
-    <h2>Kaikki käyttäjät</h2>
     <div className="table-responsive">
       <table className="table table-striped table-sm">
         <thead>
