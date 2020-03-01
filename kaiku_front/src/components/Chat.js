@@ -3,6 +3,7 @@ import UsersColumn from './users/UsersColumn'
 import ChatColumn from './chat/ChatColumn'
 import CurrentChat from '../providers/CurrentChat'
 import InitialData from '../providers/InitialData'
+import HelpPanel from './help/HelpPanel'
 
 const Chat = () => {
   const { initialData } = useContext(InitialData)
@@ -16,14 +17,17 @@ const Chat = () => {
   }, [initialData])
 
   return (
-    <div id="chat" className="container">
-      <div className="chat-container container row">
-        <CurrentChat.Provider value={{ currentChat, setCurrentChat }}>
-          <UsersColumn setDisplayProfile={setDisplayProfile} userState={{ displayUser, setDisplayUser }} />
-          <ChatColumn profileState={{ displayProfile, setDisplayProfile }} userState={{ displayUser, setDisplayUser }} />
-        </CurrentChat.Provider>
+    <>
+      <div id="chat" className="container">
+        <div className="chat-container container row">
+          <CurrentChat.Provider value={{ currentChat, setCurrentChat }}>
+            <UsersColumn setDisplayProfile={setDisplayProfile} userState={{ displayUser, setDisplayUser }} />
+            <ChatColumn profileState={{ displayProfile, setDisplayProfile }} userState={{ displayUser, setDisplayUser }} />
+          </CurrentChat.Provider>
+        </div>
+        <HelpPanel />
       </div>
-    </div>
+    </>
   )
 }
 
