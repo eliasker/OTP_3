@@ -65,7 +65,7 @@ public class MessageDAO implements IMessageDAO {
             d.append("timestamp", new Date());
             collection.insertOne(d);
             return new MessageObject(d.getString("content"), d.getObjectId("_id").toString(),
-                d.getString("user_id"), d.getDate("timestamp"));
+                d.getString("user_id"), d.getDate("timestamp"), d.getString("chat_id"));
         } catch (MongoCommandException e) {
 
             MongoCollection collection = mongoDatabase.getCollection(chat_id);
@@ -76,7 +76,7 @@ public class MessageDAO implements IMessageDAO {
             collection.insertOne(d);
             // TODO: 
             return new MessageObject(d.getString("content"), d.getObjectId("_id").toString(),
-                d.getString("user_id"), d.getDate("timestamp"));
+                d.getString("user_id"), d.getDate("timestamp"), d.getString("chat_id"));
         }
 	}
 
@@ -109,7 +109,7 @@ public class MessageDAO implements IMessageDAO {
                     if (d.getString("user_id").equals(user_id)) {
                         messageList.add(new MessageObject(d.getString("content"),
                             d.getObjectId("_id").toString(), d.getString("user_id"),
-                            d.getDate("timestamp")));
+                            d.getDate("timestamp"), d.getString("chat_id")));
                     }
                 }
             } catch (Exception e) {
