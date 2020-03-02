@@ -53,7 +53,7 @@ describe('Basic functionality', function() {
       cy.get('.fa-ellipsis-v').click()
       cy.get('.dropdown-item').first().click()
       cy.contains('Poistu')
-      cy.get('.fa-times').click()
+      cy.get('.exit-profile').click()
       cy.get('.message-from-group').type('123 check check')
       cy.get('.send-btn').click()
       cy.get('.out-message').last().contains('123 check check')
@@ -82,6 +82,27 @@ describe('Basic functionality', function() {
       cy.get('.message-from-group').type('123 check check')
       cy.get('.send-btn').click()
       cy.get('.read-field .out-container').should('have.length', sentMessages)
+    })
+
+    it('check help modal', function() {
+      cy.get('.fa-ellipsis-v').click()
+      cy.get('.fa-question-circle').click()
+      cy.get('.help-nxt').click()
+      cy.contains('Pääset myös profiilinmuokkaussivulle')
+    })
+
+    it('check help modal negative-index', function() {
+      cy.get('.fa-ellipsis-v').click()
+      cy.get('.fa-question-circle').click()
+      cy.get('.help-pre').click()
+      cy.get('.modal-container h3').contains('3/3')
+    })
+
+    it('check help modal overflow-index', function() {
+      cy.get('.fa-ellipsis-v').click()
+      cy.get('.fa-question-circle').click()
+      cy.get('.help-nxt').click().click().click()
+      cy.get('.modal-container h3').contains('1/3')
     })
 
     it('check log out', function() {
