@@ -222,7 +222,7 @@ public class Server implements IServer {
 		
 		//TODO initialisation form database
 		ChatObject[] chatsFromDb = chatDAO.getAllChats(); //alL
-		for (ChatObject chatObject : chats) {
+		for (ChatObject chatObject : chatsFromDb) {
 //			setupNamespace(server, chatObject); 
 			chats.add(chatObject);
 		}
