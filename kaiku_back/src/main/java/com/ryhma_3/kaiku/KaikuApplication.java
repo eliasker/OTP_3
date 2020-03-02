@@ -53,7 +53,7 @@ public class KaikuApplication {
 		//confirm global chat exists
 		ChatObject global = null;
 		try {
-			global = chatDAO.getChatObject(new ChatObject(null, "global", null, null, null));
+			global = chatDAO.getChatObject(new ChatObject(null, "global", "global", null, null));
 		} catch (Exception e) {
 			String[] empty = { };
 			global = new ChatObject(null, "global", "global", empty, null);

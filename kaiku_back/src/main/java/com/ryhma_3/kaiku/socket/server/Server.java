@@ -45,7 +45,10 @@ public class Server implements IServer {
 	 */
 	private static final Map<String, Boolean> connectedUsers = new HashMap<>(); 
 	
-	private static final ArrayList<SocketIONamespace> namespaces = new ArrayList<>();
+//	Discarded due to implementation difficuties
+//	private static final ArrayList<SocketIONamespace> namespaces = new ArrayList<>(); 
+	
+	private static ArrayList<ChatObject> chats = new ArrayList<>();
 
 	IChatDAO chatDAO = null;
 	IMessageDAO messageDAO = null;
@@ -152,12 +155,32 @@ public class Server implements IServer {
 		
 		server.addEventListener("chatEvent", MessageObject.class, new DataListener<MessageObject>() {
 			
-			ChatObject global = chatDAO.getChatObject(new ChatObject(null, "global", null, null, null));
-
+//			ChatObject chat = chatDAO.getChatObject(new ChatObject(null, "global", null, null, null));
+			
 			@Override
 			public void onData(SocketIOClient client, MessageObject data, AckRequest ackSender) throws Exception {
-				messageDAO.createMessage(data, global.getChat_id());
-				server.getBroadcastOperations().sendEvent("chatEvent", data);
+				
+				//find correct chat
+				for(ChatObject chat : chats) {
+					if(chat.getChat_id() == data.getChat_id()) {
+					
+						messageDAO.createMessage(data, chat.getChat_id());
+						
+						//run through all users
+						for(String user : chat.getUsers()) {
+							
+							//get UUID
+							UUID sessionID = SecurityTools.getCloneOfToken(user).getSessionID();
+							if(sessionID!=null) {
+								server.getClient(sessionID).sendEvent("chatEvent", data);
+							}
+						}
+						break;
+					}
+				}
+				
+//				messageDAO.createMessage(data, chat.getChat_id());
+//				server.getBroadcastOperations().sendEvent("chatEvent", data);
 			}
 		});
 		
@@ -176,7 +199,11 @@ public class Server implements IServer {
 //		SecurityTools.createOrUpdateToken("kaiku", "kaiku");		
 		
 		// add/get global chat
+		
 		ChatObject global = chatDAO.getChatObject(new ChatObject(null, "global", null, null, null));
+		chats.add(global);
+		
+		/*
 		
 		if(global==null) {
 			UserObject[] allUserObjects = userDAO.getAllUsers();
@@ -191,11 +218,13 @@ public class Server implements IServer {
 			chatDAO.createChatObject(global);
 		}
 		
+		*/
 		
 		//TODO initialisation form database
-		ChatObject[] chats = chatDAO.getAllChats(); //alL
+		ChatObject[] chatsFromDb = chatDAO.getAllChats(); //alL
 		for (ChatObject chatObject : chats) {
-			setupNamespace(server, chatObject);
+//			setupNamespace(server, chatObject); 
+			chats.add(chatObject);
 		}
 	}
 	
@@ -204,18 +233,20 @@ public class Server implements IServer {
 	 * @param server
 	 * @param chatObject
 	 * Running chat objects through this method creates new server namespaces with proper attributes attached.
+	 * 
+	 * @deprecated for the time being
 	 */ 
 	private void setupNamespace(SocketIOServer server, ChatObject chatObject) {
-		SocketIONamespace namespace = server.addNamespace("/" + chatObject.getChat_id());
-		namespaces.add(namespace);
+//		SocketIONamespace namespace = server.addNamespace("/" + chatObject.getChat_id());
+//		namespaces.add(namespace);
 		
-		namespace.addEventListener("chatEvent", MessageObject.class, new DataListener<MessageObject>() {
-			@Override
-			public void onData(SocketIOClient client, MessageObject data, AckRequest ackSender) throws Exception {
-				messageDAO.createMessage(data,chatObject.getChat_id());
-				namespace.getBroadcastOperations().sendEvent("chatEvent", data);
-			}
-		});
+//		namespace.addEventListener("chatEvent", MessageObject.class, new DataListener<MessageObject>() {
+//			@Override
+//			public void onData(SocketIOClient client, MessageObject data, AckRequest ackSender) throws Exception {
+//				messageDAO.createMessage(data,chatObject.getChat_id());
+//				namespace.getBroadcastOperations().sendEvent("chatEvent", data);
+//			}
+//		});
 	}
 	
 	
