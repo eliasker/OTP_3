@@ -164,7 +164,7 @@ public class Server implements IServer {
 				for(ChatObject chat : chats) {
 					if(chat.getChat_id() == data.getChat_id()) {
 					
-						messageDAO.createMessage(data, chat.getChat_id());
+						MessageObject message = messageDAO.createMessage(data, chat.getChat_id());
 						
 						//run through all users
 						for(String user : chat.getUsers()) {
@@ -172,7 +172,7 @@ public class Server implements IServer {
 							//get UUID
 							UUID sessionID = SecurityTools.getCloneOfToken(user).getSessionID();
 							if(sessionID!=null) {
-								server.getClient(sessionID).sendEvent("chatEvent", data);
+								server.getClient(sessionID).sendEvent("chatEvent", message);
 							}
 						}
 						break;
