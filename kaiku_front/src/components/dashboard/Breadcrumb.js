@@ -9,38 +9,38 @@ const Breadcrumb = () => {
       case 'u/all':
         return (
           <>
-            <li class="breadcrumb-item active" >Kaikki käyttäjät</li>
+            <li className="breadcrumb-item active" >Kaikki käyttäjät</li>
           </>
         )
       case 'u/new':
         return (
           <>
-            <li class="breadcrumb-item active" >Uusi käyttäjä</li>
+            <li className="breadcrumb-item active" >Uusi käyttäjä</li>
           </>
         )
       case 'g/all':
         return (
           <>
-            <li class="breadcrumb-item active" >Kaikki ryhmät</li>
+            <li className="breadcrumb-item active" >Kaikki ryhmät</li>
           </>
         )
       case 'g/new':
         return (
           <>
-            <li class="breadcrumb-item active" >Uusi ryhmä</li>
+            <li className="breadcrumb-item active" >Uusi ryhmä</li>
           </>
         )
       case 'g/members':
         return (
           <>
-            <li class="breadcrumb-item link" >Kaikki ryhmät</li>
-            <li class="breadcrumb-item active" >Ryhmän muokkaus</li>
+            <li className="breadcrumb-item link" >Kaikki ryhmät</li>
+            <li className="breadcrumb-item active" >Ryhmän muokkaus</li>
           </>
         )
       default:
         return (
           <>
-            <li class="breadcrumb-item active" >Kaikki käyttäjät</li>
+            <li className="breadcrumb-item active" >Kaikki käyttäjät</li>
           </>
         )
     }
@@ -49,8 +49,8 @@ const Breadcrumb = () => {
   return(
     <>
       <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item link" onClick={() => setContent('g/all')}>Kojelauta</li>
+        <ol className="breadcrumb">
+          <li className="breadcrumb-item link" onClick={() => setContent('g/all')}>Kojelauta</li>
           {showDaWae()}
         </ol>
       </nav>

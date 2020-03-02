@@ -5,6 +5,7 @@ import CurrentChat from '../../providers/CurrentChat'
 const HelpPanel = () => {
   const { showModal, setShowModal } = useContext(CurrentChat)
   const [tip, setTip] = useState(help[0])
+  const [showHelpBtn, setShowHelpBtn] = useState(true)
 
   const nextTip = integer =>
     setTip(help[
@@ -16,23 +17,24 @@ const HelpPanel = () => {
       <div className={`${showModal ? 'help-modal': 'd-none'}` } onClick={(e) => e.target.className.includes('relative') ? setShowModal(!showModal) : null}>
         <div className="relative">
           <div className="modal-container">
-            <h3>Protips {help.indexOf(tip)+1}/{help.length}</h3>
+            <h3>{tip.title} {help.indexOf(tip)+1}/{help.length}</h3>
             <hr />
-            <p>{tip}</p>
+            <p>{tip.content}</p>
           </div>
           <div className="help-button-container">
             <div className="help-button-group">
-              <button className="btn btn-outline-primary help-pre" onClick={() => nextTip(-1)}><i class="fas fa-caret-left"></i> Edellinen</button>
-              <button className="btn btn-outline-primary help-nxt" onClick={() => nextTip(1)}>Seuraava <i class="fas fa-caret-right"></i></button>
+              <button className={(showHelpBtn && help.indexOf(tip)+1 === help.length) ? "btn btn-outline-primary mr-1": "d-none"} onClick={() => setShowHelpBtn(false) || setShowModal(!showModal)}>Piilota</button>
+              <button className="btn btn-outline-primary help-pre" onClick={() => nextTip(-1)}><i className="fas fa-caret-left"></i> Edellinen</button>
+              <button className="btn btn-outline-primary help-nxt" onClick={() => nextTip(1)}>Seuraava <i className="fas fa-caret-right"></i></button>
             </div>
             <div className="exit-button">
-              <i class="fas fa-times" onClick={() => setShowModal(!showModal)}></i>
+              <i className="fas fa-times" onClick={() => setShowModal(!showModal)}></i>
             </div>
           </div>
         </div>
       </div>
-      <div className="help-button d-none d-xl-block">
-        <i class="fas fa-question" onClick={() => setShowModal(!showModal)}></i>
+      <div className={showHelpBtn ? "help-button d-none d-xl-block": "d-none"}>
+        <i className="fas fa-question" onClick={() => setShowModal(!showModal)}></i>
       </div>
     </>
   )
