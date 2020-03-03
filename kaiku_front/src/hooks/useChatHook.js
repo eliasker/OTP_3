@@ -18,13 +18,15 @@ const useChatHook = (initialData) => {
   // Once receiving messages from socket work, a message is passed as a parameter 
   // TODO: Fix sphagetti (works currently)
   const addMessage = (newMessage, chatID) => {
+    console.log(chatState)
     console.log('new message', newMessage, '\n', 'to chatID', chatID)
     const newChatState = chatState
     if (chatID === undefined) {
       currentChat.messages.push(newMessage)
       console.log('current', currentChat)
-      newChatState = { ...chatState, currentChat }
+      newChatState.push(currentChat)
       setChatState(newChatState)
+      return
     }
     const prevMessages = newChatState[chatID].messages
 
