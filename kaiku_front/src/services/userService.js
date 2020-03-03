@@ -105,4 +105,22 @@ const createUser = async (username, password, name, config) => {
     return result.data;
 }
 
-export default { login, createUser }
+const getAllUsers = async (token) => {
+    
+    const configAsAdmin = {
+        headers: {
+            Authorization: 'kaiku'
+        }
+    }
+
+    const result = await axios.get(
+        baseUrl + "api/users",
+        configAsAdmin
+    )
+
+    console.log("REST: getAllUsers", result.data);
+    
+    return result.data;
+}
+
+export default { login, createUser, getAllUsers }

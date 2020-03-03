@@ -40,8 +40,8 @@ const Karvalakki = () => {
   }
 
   const handleCreateUsers = () => {
-    init.users.forEach((user) => {
-      users = users.concat(userService.createUser(user.username, user.password, user.name));
+    init.users.forEach(async (user) => {
+      users = users.concat(await userService.createUser(user.username, user.password, user.name));
     })
   }
 
@@ -49,17 +49,24 @@ const Karvalakki = () => {
 
     const index = Math.floor(Math.random() * users.length);
 
-    initKontsa = userService.login(
+    console.log("users: ", users[index]);
+
+
+    initKontsa = await userService.login(
       users[index].username,
       users[index].password
-    )
-
+    )  
     console.log(initKontsa);
+  }
+
+  const handleGetAllUser = async() => {
+    users = await userService.getAllUsers()
   }
 
   return(
     <div>
       <button onClick={() => handleCreateUsers()}>1. create test users</button>
+      <button onClick={() => handleGetAllUser()}> 1(opt) get all users</button>
       <button onClick={() => handleSignIn()}>2. sign in random</button>
       <button onClick={() => initialize()} >3. Init socket</button>
     </div>
