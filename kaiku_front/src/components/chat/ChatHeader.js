@@ -7,7 +7,7 @@ const ChatHeader = ({ searchInput, setSearchInput }) => {
     <div className="chat-header row justify-content-between">
       <div className="row marginy-0">
         <img src="/kaikuthumb.png" alt="profiili kuva" className="profile-thumb alpha-1" />
-        <p className="d-none d-lg-block">{currentChat === null ? 'keskustelu' : currentChat.name}</p>
+        <p className="d-none d-lg-block">{currentChat === null ? '' : currentChat.name}</p>
       </div>
       <form id="search-message" onSubmit={e => e.preventDefault()}>
         <input type="search" placeholder="search" value={searchInput} onChange={e => setSearchInput(e.target.value)} />

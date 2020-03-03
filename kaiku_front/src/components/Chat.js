@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import UsersColumn from './users/UsersColumn'
 import ChatColumn from './chat/ChatColumn'
 import CurrentChat from '../providers/CurrentChat'
@@ -10,18 +10,20 @@ const Chat = () => {
   const { initialData } = useContext(InitialData)
   const [displayProfile, setDisplayProfile] = useState('d-none')
   const [displayUser, setDisplayUser] = useState(undefined)
-  //const [currentChat, setCurrentChat] = useState()
-  const { currentChat, selectChat } = useChatHook(initialData)
+  const { addMessage, currentChat, selectChat } = useChatHook(initialData)
   const [showModal, setShowModal] = useState(false)
 
-  useEffect(() => {
-    if (initialData.chats)
-      selectChat(initialData.chats[0])
-  }, [initialData])
-
+  // Testing function for receiving messages
+  const receiveMesage = () => {
+    const newMessageObj = {
+      content: 'uusi viesti',
+      user_id: '2'
+    }
+    addMessage(newMessageObj, Math.floor(Math.random() * initialData.chats.length))
+  }
   return (
     <>
-      <CurrentChat.Provider value={{ currentChat, selectChat, showModal, setShowModal }}>
+      <CurrentChat.Provider value={{ addMessage, currentChat, selectChat, showModal, setShowModal }}>
         <div id="chat" className="container">
           <div className="chat-container container row">
             <UsersColumn setDisplayProfile={setDisplayProfile} userState={{ displayUser, setDisplayUser }} />
@@ -29,6 +31,7 @@ const Chat = () => {
           </div>
           <HelpPanel />
         </div>
+        <button onClick={() => receiveMesage()}>receive msg</button>
       </CurrentChat.Provider>
     </>
   )

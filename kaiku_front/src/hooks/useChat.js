@@ -1,22 +1,14 @@
-import { useEffect, useRef, useState, useContext } from "react"
+import { useEffect, useRef } from "react"
 import socketIOClient from 'socket.io-client'
-import jsonService from '../services/jsonService'
-import InitialData from "../providers/InitialData"
 
-const useChat = (loggedUser_id, currentChat) => {
-  const { initialData } = useContext(InitialData)
-  const [messages, setMessages] = useState([])
+/**
+ * 
+ * @param {*} loggedUser_id used to prevent sending chatevents to itself
+ * @param {*} currentChat state that holds selected and currently visible chat, messages are sent to this chats id
+ * @param {*} addMessage function that adds a message to any chat incoming or sent, addMessage(newMessage, chatID)
+ */
+const useChat = (loggedUser_id, currentChat, addMessage) => {
   const socketRef = useRef()
-
-  useEffect(() => {
-    if (initialData.chats === undefined) return console.log('initialData pending...')
-    setMessages(initialData.chats[0].messages)
-  }, [initialData])
-
-  useEffect(() => {
-    if (currentChat === null) return
-    setMessages(currentChat.messages)
-  }, [currentChat])
 
   useEffect(() => {
     socketRef.current = socketIOClient(
@@ -29,7 +21,8 @@ const useChat = (loggedUser_id, currentChat) => {
         if (message.user_id === loggedUser_id) return
 
         //Toiminnot vastaanottajalle
-        setMessages(messages.concat(message))
+        //setMessages(messages.concat(message)) // pois
+        //addMessage(message, message.chatID) ?? tarvitaan kohde chatin id
       }
     )
 
@@ -54,18 +47,17 @@ const useChat = (loggedUser_id, currentChat) => {
     return () => {
       socketRef.current.disconnect()
     }
-  }, [messages])
+  }, [currentChat])
 
   const createChatEvent = () => {
     socketRef.current.emit("chat", { chatName: 'testichat', users: ['1', '2', '3'] })
   }
 
   const sendMessage = (message) => {
-    //    socketRef.current.emit("chatevent", { message: message.content, user: 'Minä' })
-    setMessages(messages.concat(message))
+    addMessage(message, currentChat.id)
     socketRef.current.emit("chatEvent", message)
   }
-  return { messages, sendMessage }
+  return { sendMessage }
 }
 
 export default useChat

@@ -16,9 +16,8 @@ import CurrentChat from '../../providers/CurrentChat'
 
 const ChatColumn = ({ profileState, userState }) => {
   const { initialData, loggedUser } = useContext(InitialData)
-  const { currentChat } = useContext(CurrentChat)
-  const { messages, sendMessage } = useChat(loggedUser.id, currentChat)
-
+  const { addMessage, currentChat } = useContext(CurrentChat)
+  const { sendMessage } = useChat(loggedUser.id, currentChat, addMessage)
   const [searchInput, setSearchInput] = useState('')
   const messagesEndRef = useRef(null)
   const newMessage = useField('text')
@@ -33,16 +32,16 @@ const ChatColumn = ({ profileState, userState }) => {
   }
 
   const listMessages = () => {
-    if (currentChat === undefined) return
-    if (messages === undefined || messages.length === 0) return <DefaultMessage />
-    const filteredMsgs = messages.filter(msg => msg.content.includes(searchInput))
+    if (currentChat === null) return
+    if (currentChat.messages === undefined || currentChat.messages.length === 0) return <DefaultMessage />
+    const filteredMsgs = currentChat.messages.filter(msg => msg.content.includes(searchInput))
     return filteredMsgs.map(m =>
       m.user_id === loggedUser.id ?
         <OutMessage key={keyGen.generateKey(m.content)} content={m.content} /> :
         <InMessage key={keyGen.generateKey(m.content)} content={m.content} user={getUser(m.user_id)} />)
   }
 
-  useEffect(scrollToBottom, [initialData, messages])
+  useEffect(scrollToBottom, [initialData, currentChat])
 
   const removeReset = (object) => {
     const { reset, ...newObject } = object
