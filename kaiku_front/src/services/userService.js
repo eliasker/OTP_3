@@ -32,7 +32,8 @@ const configAsAdmin = {
     }
 }
 
-const login = (username, password) => {
+const login = async (username, password) => {
+    /*
     axios.post(
         baseUrl + "api/users/" + username,
         { 
@@ -48,14 +49,29 @@ const login = (username, password) => {
         console.log('REST: login error', error);
         return null
     })
+    */
+
+    try{
+        const response = await axios.post(
+            baseUrl + "api/users/" + username,
+            { 
+                username,
+                password
+            }
+        )
+
+        console.log(response.data);
+        return response.data;
+        
+    } catch(error){
+        console.log('REST: login error', error);
+    }
+
 }
 
 
 //set config manually or set null;
-const createUser = (username, password, name, config) => {
-    config = config === null 
-            ? config = configAsAdmin
-            : config = config
+const createUser = async (username, password, name, config) => {
 
     const user = {
         id: null,
@@ -64,10 +80,11 @@ const createUser = (username, password, name, config) => {
         name
     }
 
+    /*
     axios.post(
         baseUrl + 'api/users',
         user,
-        config
+        configAsAdmin
     )
     .then((response) => {
         console.log('REST: createUser', response.data);
@@ -76,6 +93,16 @@ const createUser = (username, password, name, config) => {
     .catch((error) => {
         console.log('REST: createUser error', error);
     })
+    */
+
+    const result = await axios.post(
+        baseUrl + 'api/users',
+        user,
+        configAsAdmin
+    )
+
+    console.log(result.data);
+    return result.data;
 }
 
 export default { login, createUser }

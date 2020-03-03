@@ -141,7 +141,7 @@ public class UserResourceController {
 	 * Validate sent token and create a new user from Request body. Return nothing;
 	 */
 	@RequestMapping(value = "/api/users", method=RequestMethod.POST)
-	public void createUser(@RequestBody UserObject userObject, @RequestHeader("Authorization") String token) {
+	public UserObject createUser(@RequestBody UserObject userObject, @RequestHeader("Authorization") String token) {
 		System.out.println("REST: create user");
 		
 		/*
@@ -167,17 +167,40 @@ public class UserResourceController {
 			 * add user to global chat
 			 */
 			ChatObject global = chatDAO.getChatObject(new ChatObject(null, "global", null, null, null));
-			String[] users = Arrays.copyOf(global.getUsers(), global.getUsers().length + 1);
-			users[global.getUsers().length] = userObject.get_Id();
+			String[] users = Arrays.copyOf(global.getMembers(), global.getMembers().length + 1);
+			users[global.getMembers().length] = userObject.get_Id();
 			chatDAO.updateChatObject(global);
 			
-			return;
+			return userObject;
 		} else {
 			
 			/*
 			 * fail 400 or 401
 			 */
-			return;
+			return null;
 		}
+	}
+	
+	
+	@RequestMapping(value="/api/users", method=RequestMethod.GET)
+	public UserObject[] getUsers(@RequestHeader("Authorization") String token) {
+		System.out.println("REST: get users");
+		
+		/*
+		 * compare token with token storage
+		 */
+		boolean valid = token.equals("kaiku");
+		
+		UserObject[] users = userDAO.getAllUsers();
+		
+		if(users != null) {
+			for(UserObject user : users) {
+				user.setPassword("");
+			}
+			
+			return users;
+		}
+		
+		return null;
 	}
 }

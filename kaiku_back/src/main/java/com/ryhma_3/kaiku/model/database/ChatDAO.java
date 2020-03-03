@@ -51,7 +51,7 @@ public class ChatDAO extends DataAccessInit implements IChatDAO {
         // TODO: append id into the name when it's time for it?
         Document document = new Document("chatName", chatObject.getChatName());
         document.append("type", chatObject.getType());
-        document.append("users", Arrays.asList(chatObject.getUsers()));
+        document.append("users", Arrays.asList(chatObject.getMembers()));
         // TODO: add actual messages when it's time for it
         document.append("messages", "test");
         collection.insertOne(document);
@@ -62,7 +62,7 @@ public class ChatDAO extends DataAccessInit implements IChatDAO {
 	public ChatObject updateChatObject(ChatObject chatObject) {
         Document document = new Document("chatName", chatObject.getChatName());
         document.append("type", chatObject.getType());
-        document.append("users", Arrays.asList(chatObject.getUsers()));
+        document.append("users", Arrays.asList(chatObject.getMembers()));
         // TODO: add MessageObject[] when messages are actually stored
         document.append("messages", "");
 		UpdateResult result = collection.updateOne(eq("chatName",

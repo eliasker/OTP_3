@@ -133,9 +133,9 @@ public class Server implements IServer {
 					setupNamespace(server, result);
 					
 					//gather related users
-					Token[] users = new Token[data.getUsers().length];
-					for(int i=0; i<data.getUsers().length; i++) {
-						users[i] = SecurityTools.getCloneOfToken(data.getUsers()[i]);
+					Token[] users = new Token[data.getMembers().length];
+					for(int i=0; i<data.getMembers().length; i++) {
+						users[i] = SecurityTools.getCloneOfToken(data.getMembers()[i]);
 					}
 					
 					//send information event to related users
@@ -167,7 +167,7 @@ public class Server implements IServer {
 						MessageObject message = messageDAO.createMessage(data, chat.getChat_id());
 						
 						//run through all users
-						for(String user : chat.getUsers()) {
+						for(String user : chat.getMembers()) {
 							
 							//get UUID
 							UUID sessionID = SecurityTools.getCloneOfToken(user).getSessionID();

@@ -1,39 +1,48 @@
 import React from 'react';
 import userService from '../../services/userService'
-import init from '../debugTool/init';
+import socketService from '../../services/socketService'
+
 
 const Karvalakki = () => {
+
+  const { createSocketConnection, createChat, sendMessage } = socketService();
 
   const init = {
     "users": [
       {
         "name": "Marko",
         "username": "MarkoM",
+        "password": "asdsaff",
         "id": "1"
       },
       {
         "name": "Mirka",
         "username": "mirka-kissa",
+        "password": "asgakikk",
         "id": "2"
       },
       {
         "name": "Makedius",
         "username": "suidekaM",
+        "password": "asijafj",
         "id": "3"
       },
       {
         "name": "markus",
         "username": "xXxmaRkUsxXx",
+        "password": "lkjökkpko",
         "id": "4"
       },
       {
         "name": "Mikko",
         "username": "mixu666",
+        "password": "uihiehaf",
         "id": "5"
       },
       {
         "name": "Make",
         "username": "maKKKe",
+        "password": "wrtwqqqtwt",
         "id": "6"
       }
     ],
@@ -127,33 +136,69 @@ const Karvalakki = () => {
     ]
   }
 
-  const userTemplate = (uName, uPSW, name) =>  ({username: uName, password: uPSW, name:name})
-  const initUsers = [userTemplate('tester1', 'tester1', 'tester1'), userTemplate('tester2', 'tester2', 'tester2')];
+  var initKontsa = null;
+  var users = [];
 
-  const initDatabase = () => {
-    init.users.forEach((user) => {
-      userService.createUser(user.username, user.password, user.name);
+  const initialize = async() => {
+
+    init.users.forEach(async(user) => {
+      users = users.concat(userService.createUser(user.username, user.password, user.name));
     })
+    
+    console.log(users);
+    
+
+    initKontsa = await userService.login(init.users[0].username, init.users[0].password);
+
+    createSocketConnection(await initKontsa.token);
+
+    init.chats.forEach((chat) => {
+      let member1 = Math.floor(Math.random() * (users.length - 1)) + 1;
+      let member2 = 0;
+
+      console.log(member1, member2);
+
+      const _chat = createChat(
+        chat.name,
+        "private",
+        [
+          users[member1],
+          users[member2]
+        ]
+      )
+
+      init.chats.concat(_chat);
+    })
+
+    console.log(initKontsa);
+    
   }
 
   const handleCreateUsers = () => {
+    /*
     initUsers.forEach((user) => {
       //userService.createUser(user.username, user.password, user.name, null);
     })
+    */
   }
 
-  const handleSignIn = () => {
-    userService.login(
-      //initUsers[0].username,
-     // initUsers[0].password
+  const handleSignIn = async() => {
+
+    const index = Math.floor(Math.random(users.length));
+
+    initKontsa = userService.login(
+      users[index].username,
+      users[index].password
     )
+
+    console.log(initKontsa);
   }
 
   return(
     <div>
-      <button onClick={() => handleSignIn()}>sign in</button>
+      <button onClick={() => handleSignIn()}>sign in random</button>
       <button onClick={() => handleCreateUsers()}>create test users</button>
-      <button onClick={() => initDatabase()} >Init database</button>
+      <button onClick={() => initialize()} >Init database</button>
     </div>
   )
 
