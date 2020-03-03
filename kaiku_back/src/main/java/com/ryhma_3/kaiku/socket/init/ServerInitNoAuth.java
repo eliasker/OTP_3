@@ -56,7 +56,7 @@ public class ServerInitNoAuth implements IServerInit {
 	 */
 	public SocketIOServer getSocketServer() {
 		Configuration config = new Configuration();
-		config.setHostname(hostname);
+		//config.setHostname(hostname);
 		config.setPort(port);
 		
 		//confirm not null
