@@ -6,6 +6,8 @@ import InitialData from '../providers/InitialData'
 import HelpPanel from './help/HelpPanel'
 import useChatHook from '../hooks/useChatHook'
 
+import Karvalakki from './debugTool/Karvalakki'
+
 const Chat = () => {
   const { initialData } = useContext(InitialData)
   const [displayProfile, setDisplayProfile] = useState('d-none')
@@ -32,6 +34,7 @@ const Chat = () => {
           <HelpPanel />
         </div>
         <button onClick={() => receiveMesage()}>receive msg</button>
+        <Karvalakki />
       </CurrentChat.Provider>
     </>
   )

@@ -147,7 +147,7 @@ public class UserResourceController {
 		/*
 		 * Compare token and token storage
 		 */
-		boolean valid = token.equals("kaiku") ? true : false;
+		boolean valid = token.equals("kaiku");
 		
 		if(valid) {
 			
