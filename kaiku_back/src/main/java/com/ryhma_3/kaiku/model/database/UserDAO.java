@@ -8,6 +8,8 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.IndexOptions;
+import com.mongodb.client.model.Indexes;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.ryhma_3.kaiku.model.cast_object.UserObject;
@@ -34,6 +36,13 @@ public class UserDAO extends DataAccessInit implements IUserDAO {
         this.mongoClient = MongoClients.create(connString);
         this.mongoDatabase = mongoClient.getDatabase("metadata");
         this.collection = mongoDatabase.getCollection("users");
+        Document index = new Document("username", 1);
+        // Ensure username field is unique by adding an index, if it does not exist
+        try {
+            this.collection.createIndex(index, new IndexOptions().unique(true));
+        } catch (Exception e) {
+            
+        }
     }
     
     public UserDAO(String URI) {
@@ -76,7 +85,12 @@ public class UserDAO extends DataAccessInit implements IUserDAO {
         Document document = new Document("username", userObject.getUsername());
         document.append("name", userObject.getName());
         document.append("password", userObject.getPassword());
-        collection.insertOne(document);
+        try {
+            collection.insertOne(document);
+        } catch (Exception e) {
+            System.out.println("Username already taken");
+            return null;
+        }
         System.out.println("id on last added: " + document.getObjectId("_id"));
         return new UserObject(document.getObjectId("_id").toString(),
             userObject.getUsername(), userObject.getPassword(), userObject.getName());
