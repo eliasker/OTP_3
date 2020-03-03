@@ -45,7 +45,7 @@ public class UserResourceController {
 	 * @return InitializationObject or fail 400
 	 * Request invoked when user starts a session. This entry point compiles all necessary data needed to initialize front end application.
 	 */
-	@RequestMapping(value = "/users/**", method=RequestMethod.POST)
+	@RequestMapping(value = "/api/users/**", method=RequestMethod.POST)
 	public InitializationObject getInit(@RequestBody UserObject user) {
 		System.out.println("REST: login");
 
@@ -140,7 +140,7 @@ public class UserResourceController {
 	 * @param token - token for authorization
 	 * Validate sent token and create a new user from Request body. Return nothing;
 	 */
-	@RequestMapping(value = "/users", method=RequestMethod.POST)
+	@RequestMapping(value = "/api/users", method=RequestMethod.POST)
 	public void createUser(@RequestBody UserObject userObject, @RequestHeader("Authorization") String token) {
 		System.out.println("REST: create user");
 		

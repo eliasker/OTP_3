@@ -58,7 +58,7 @@ public class ServerInitAuth implements IServerInit {
 	public SocketIOServer getSocketServer() {
 		
 		Configuration config = new Configuration();
-		config.setHostname(hostname);
+		//config.setHostname(hostname);
 		config.setPort(port);
 
 		

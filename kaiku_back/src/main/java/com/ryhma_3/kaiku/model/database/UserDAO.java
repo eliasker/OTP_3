@@ -1,23 +1,15 @@
 package com.ryhma_3.kaiku.model.database;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Scanner;
 
-import com.mongodb.Block;
 import com.mongodb.ConnectionString;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.IndexOptions;
+import com.mongodb.client.model.Indexes;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.ryhma_3.kaiku.model.cast_object.UserObject;
@@ -31,7 +23,7 @@ import com.mongodb.MongoClientSettings;
 /**
  * AccountsDAO
  */
-public class UserDAO implements IUserDAO {
+public class UserDAO extends DataAccessInit implements IUserDAO {
 
     private ConnectionString connString;
     private MongoClientSettings mongoSettings;
@@ -44,6 +36,13 @@ public class UserDAO implements IUserDAO {
         this.mongoClient = MongoClients.create(connString);
         this.mongoDatabase = mongoClient.getDatabase("metadata");
         this.collection = mongoDatabase.getCollection("users");
+        Document index = new Document("username", 1);
+        // Ensure username field is unique by adding an index, if it does not exist
+        try {
+            this.collection.createIndex(index, new IndexOptions().unique(true));
+        } catch (Exception e) {
+            
+        }
     }
     
     public UserDAO(String URI) {
@@ -86,7 +85,12 @@ public class UserDAO implements IUserDAO {
         Document document = new Document("username", userObject.getUsername());
         document.append("name", userObject.getName());
         document.append("password", userObject.getPassword());
-        collection.insertOne(document);
+        try {
+            collection.insertOne(document);
+        } catch (Exception e) {
+            System.out.println("Username already taken");
+            return null;
+        }
         System.out.println("id on last added: " + document.getObjectId("_id"));
         return new UserObject(document.getObjectId("_id").toString(),
             userObject.getUsername(), userObject.getPassword(), userObject.getName());
@@ -95,13 +99,20 @@ public class UserDAO implements IUserDAO {
     // TODO: refactor to use ObjectId for filtering instead of username
 	@Override
 	public UserObject getUser(UserObject userObject) {
-		Document d = (Document)collection
-            .find(eq("username", userObject.getUsername())).first();
-        
-	    return new UserObject(d.getObjectId("_id").toString(),
-            d.getString("username"), d.getString("password"), d.getString("name"));
+        try {
+            Document d = (Document)collection
+                .find(eq("username", userObject.getUsername())).first();
+            
+            return new UserObject(d.getObjectId("_id").toString(),
+                d.getString("username"), d.getString("password"), d.getString("name"));
+            
+        } catch (Exception e) {
+            System.out.println("User not found in the database");
+        }
+        return null;
 	}
 
+    @Override
 	public UserObject[] getAllUsers() {
         MongoCursor<Document> cursor = collection.find().iterator();
         ArrayList<UserObject> userList = new ArrayList<>();
@@ -124,33 +135,4 @@ public class UserDAO implements IUserDAO {
         return userArr;
 	}
 
-    private String getMongoURI(String filename) {
-        String filepath = "./secrets/" + filename;
-		try {
-            Scanner scanner = new Scanner(new File(filepath));
-            String mongoURL = scanner.nextLine();
-            String[] credentials = mongoURL.substring(mongoURL.indexOf("//") + 2,
-                mongoURL.lastIndexOf('@')).split(":");
-            String username = urlEncode(credentials[0]);
-            String password = urlEncode(credentials[1]);
-            scanner.close();
-            return "mongodb://" + username + ":" + password + 
-                mongoURL.substring(mongoURL.lastIndexOf('@'));
-		} catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("File " + filename + "not found. Create it in the secrets " +
-                "directory with the mongoDB URI in it.");
-            System.exit(0);
-        }
-        return null;
-    }
-
-    private String urlEncode(String string) {
-        try {
-            return URLEncoder.encode(string, StandardCharsets.UTF_8.toString());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }

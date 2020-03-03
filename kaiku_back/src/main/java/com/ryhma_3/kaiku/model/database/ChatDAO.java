@@ -1,13 +1,7 @@
 package com.ryhma_3.kaiku.model.database;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Scanner;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
@@ -24,14 +18,13 @@ import com.ryhma_3.kaiku.model.cast_object.MessageObject;
 import static com.mongodb.client.model.Filters.*;
 
 import org.bson.Document;
-import org.bson.types.ObjectId;
 
 // TODO: relegate authentication and other mongo initialization to a super class
 
 /**
  * ChatDAO
  */
-public class ChatDAO implements IChatDAO {
+public class ChatDAO extends DataAccessInit implements IChatDAO {
 
     private ConnectionString connString;
     private MongoClientSettings mongoSettings;
@@ -163,35 +156,5 @@ public class ChatDAO implements IChatDAO {
 
         return chatArr;
 	}
-    
-    private String getMongoURI(String filename) {
-        String filepath = "./secrets/" + filename;
-		try {
-            Scanner scanner = new Scanner(new File(filepath));
-            String mongoURL = scanner.nextLine();
-            String[] credentials = mongoURL.substring(mongoURL.indexOf("//") + 2,
-                mongoURL.lastIndexOf('@')).split(":");
-            String username = urlEncode(credentials[0]);
-            String password = urlEncode(credentials[1]);
-            scanner.close();
-            return "mongodb://" + username + ":" + password + 
-                mongoURL.substring(mongoURL.lastIndexOf('@'));
-		} catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("File " + filename + "not found. Create it in the secrets " +
-                "directory with the mongoDB URI in it.");
-            System.exit(0);
-        }
-        return null;
-    }
-
-    private String urlEncode(String string) {
-        try {
-            return URLEncoder.encode(string, StandardCharsets.UTF_8.toString());
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
 }
