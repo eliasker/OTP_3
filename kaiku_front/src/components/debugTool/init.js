@@ -1,33 +1,39 @@
-{
+const init = {
   "users": [
     {
       "name": "Marko",
       "username": "MarkoM",
+      "password": "asdsaff",
       "id": "1"
     },
     {
       "name": "Mirka",
       "username": "mirka-kissa",
+      "password": "asgakikk",
       "id": "2"
     },
     {
       "name": "Makedius",
       "username": "suidekaM",
+      "password": "asijafj",
       "id": "3"
     },
     {
       "name": "markus",
       "username": "xXxmaRkUsxXx",
+      "password": "lkjökkpko",
       "id": "4"
     },
     {
       "name": "Mikko",
       "username": "mixu666",
+      "password": "uihiehaf",
       "id": "5"
     },
     {
       "name": "Make",
       "username": "maKKKe",
+      "password": "wrtwqqqtwt",
       "id": "6"
     }
   ],
@@ -120,3 +126,5 @@
     }
   ]
 }
+
+export default init
