@@ -2,10 +2,9 @@ import React, { useContext } from 'react'
 import InitialData from '../../providers/InitialData'
 import CurrentChat from '../../providers/CurrentChat'
 
-const UsersHeader = ({ searchState, chatTypeState, setDisplayProfile }) => {
+const UsersHeader = ({ chatTypeState, setDisplayProfile }) => {
   const { initialData, loggedUser, setLoggedUser } = useContext(InitialData)
   const { showModal, setShowModal } = useContext(CurrentChat)
-  const { searchInput, setSearchInput } = searchState
   const { chatType, setChatType } = chatTypeState
 
   const onlineUsers = initialData.users ? initialData.users.length: 0
@@ -47,8 +46,6 @@ const UsersHeader = ({ searchState, chatTypeState, setDisplayProfile }) => {
         </p>
       </div>
       <p className="users-online">Käyttäjiä paikalla - {onlineUsers}</p>
-      <input className="form-control find-user-input" placeholder="Etsi käyttäjä (ei huumeiden)"
-        value={searchInput} onChange={e => setSearchInput(e.target.value)} />
     </div>
   )
 }

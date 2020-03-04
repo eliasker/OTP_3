@@ -35,15 +35,21 @@ const UsersColumn = ({ setDisplayProfile, userState }) => {
 
     const filteredUsers = filterUtil(initialData.users.map(u => u.name), searchInput)
 
-    return initialData.users
-      .filter(u => u.id !== loggedUser.id)
-      .filter(u => filteredUsers.find(e => u.name === e))
-      .map(u => <DirectUser key={keyGen.generateKey(u.name)} privateChat={findChat(u)} user={u} setDisplayUser={setDisplayUser}/>)
+    return (
+      <>
+        <input className="form-control find-user-input" placeholder="Etsi käyttäjä (ei huumeiden)"
+          value={searchInput} onChange={e => setSearchInput(e.target.value)} />
+        {initialData.users
+        .filter(u => u.id !== loggedUser.id)
+        .filter(u => filteredUsers.find(e => u.name === e))
+        .map(u => <DirectUser key={keyGen.generateKey(u.name)} privateChat={findChat(u)} user={u} setDisplayUser={setDisplayUser}/>)}
+      </>
+    )
   }
 
   return (
     <div className="chat-col col-5 px-0">
-      <UsersHeader searchState={{ searchInput, setSearchInput }} chatTypeState={{ chatType, setChatType }}
+      <UsersHeader chatTypeState={{ chatType, setChatType }}
         setDisplayProfile={setDisplayProfile} />
       <div className="profile-container">
         <div className="relative">
