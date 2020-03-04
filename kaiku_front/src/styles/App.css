@@ -66,7 +66,7 @@
 
 .chat-col {
   background-color: #1d2637;
-  border: solid 1px white;
+  /*border: solid 1px rgba(255, 255, 255, 0.33);*/
   height: 90vh;
   padding: 0;
   overflow: hidden;
@@ -91,10 +91,13 @@
   z-index: 2;
 }
 
+.chat-header {
+  border-left: 1px solid #9cacca4b !important;
+}
+
 .chat-header,
 .user-header {
   height: 60px;
-  background-color: #9cacca;
   margin: 0;
   vertical-align: middle !important;
 }
@@ -163,6 +166,7 @@
 
 .find-user-input {
   border-radius: 1px;
+  border: 0;
 }
 
 .users-online {
@@ -229,6 +233,10 @@
   margin-top: 0.75rem;
 }
 
+.message-form-group input {
+  border: 0;
+}
+
 .profile-list {
   overflow-y: scroll;
   overflow-x: hidden !important;
@@ -243,6 +251,12 @@
   height: 100%;
   padding-top: 160px;
   z-index: 0;
+}
+
+.profile-container .relative {
+  background-image: url('../img/kaiku-bg.png');
+  background-size: 9.98rem;
+  background-repeat: repeat;
 }
 
 .profile-thumb {
@@ -380,7 +394,7 @@
 #search-message input[type=search] {
 	width: 22px;
 	padding-left: 10px;
-	color: transparent;
+	color: white !important;
 	cursor: pointer;
 }
 #search-message input[type=search]:hover {
@@ -417,7 +431,7 @@ input::-webkit-search-cancel-button {
 
 
 input[type=search] {
-	background: #9cacca url(https://static.tumblr.com/ftv85bp/MIXmud4tx/search-icon.png) no-repeat 11px center;
+	background: #ffffff url(../img/search.png) no-repeat 11px center !important;
 	border: none;
 	padding: 9px 10px 9px 32px;
 	width: 55px;
@@ -430,14 +444,16 @@ input[type=search] {
 	-moz-transition: all .5s;
 	transition: all .5s;
 }
+
 input[type=search]:focus {
 	width: 130px;
 	background-color: #fff;
-	border-color: rgb(102, 197, 204);
+  border-color: rgb(102, 197, 204);
+  padding-left: 46px !important;
 	
-	-webkit-box-shadow: 0 0 5px rgba(109,207,246,.5);
-	-moz-box-shadow: 0 0 5px rgba(109,207,246,.5);
-	box-shadow: 0 0 5px rgba(109,207,246,.5);
+	-webkit-box-shadow: 0 0 5px rgba(106, 158, 255, 0.55);
+	-moz-box-shadow: 0 0 5px rgba(106, 158, 255, 0.55);
+	box-shadow: 0 0 5px rgba(106, 158, 255, 0.55);
 }
 
 input:-moz-placeholder {
@@ -700,28 +716,29 @@ input::-webkit-input-placeholder {
   text-align: center;
 }
 
-.fa-question {
-  background-color: rgb(47, 137, 255);
+.fa-info {
+  background-color: rgb(14, 68, 139);
   color: rgba(255, 255, 255, 0.9);
   text-shadow: 4px 4px 5px rgba(0,0,0,0.25);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.75);
   border-radius: 60px;
-  width: 72px;
+  width: 37px;
   padding: 10px;
-  border: 1px solid rgb(79, 155, 255);
-  font-size: 50px;
+  border: 1px solid rgb(23, 46, 75);
+  font-size: 15px;
   cursor: pointer;
   transition-duration: .8s;
 }
 
-.fa-question:hover {
-  background-color: rgb(79, 155, 255);
+.fa-info:hover {
+  background-color: rgb(39, 76, 124);
   color: rgba(255, 255, 255);
   transform: scale(1.1);
   transition-duration: .8s;
 }
 
-.fa-question:active {
-  background-color: rgb(47, 61, 255);
+.fa-info:active {
+  background-color: rgb(14, 61, 122);
   color: rgba(255, 255, 255, .75);
   transform: scale(1.1);
   transition-duration: .3s;
@@ -795,3 +812,75 @@ input::-webkit-input-placeholder {
 .help-pre {
   border-radius: 3px 0 0 3px;
 }
+
+/**
+* 
+* COLOR THEMING
+*
+*/
+
+.primary-0 { color: #1D2637 !important }	/* Main Primary color */
+.primary-1 { color: #4B566B !important }
+.primary-2 { color: #313847 !important }
+.primary-3 { color: #121B2C !important }
+.primary-4 { color: #070F1E !important }
+
+.bg-primary-0, .user-header, #search-message input
+{ background-color: #1D2637 !important }	/* Main Primary color */
+
+.bg-primary-1, .message-field, .chat-type, .users-online, .pr-user
+{ background-color: #4B566B !important }
+
+.bg-primary-2, .active-chat
+{ background-color: #313847 !important }
+
+.bg-primary-3
+{ background-color: #121B2C !important }
+
+.bg-primary-4, .App 
+{ background-color: #070F1E !important }
+
+.bg-primary-5, #search-message input:hover, #search-message input:focus
+{ background-color: #3B465B !important }
+
+.txt-light, .chat-header, .user-header, .message-date, .chat-type, .profile
+{ color: rgba(240, 240, 240, 0.9) !important }
+
+.users-online
+{ color: white !important }
+
+.txt-dark, .find-user-input
+{ color: black !important}
+
+.read-field, .profile-list
+{ background-color: rgba(50, 57, 72, 0.981) !important } /*bg-primary-1 modified alpha*/
+
+ .in-message p
+  { background-color: #8B96AB  !important }
+
+ .in-message p
+{ background-color: #cBd6eB  !important }
+
+.find-user-input::placeholder
+  { color: #0007 !important }
+
+.find-user-input:focus,
+.message-form-group input:focus {
+  border: 1px solid #4b566b !important;
+
+	
+	-webkit-box-shadow: 0 0 5px rgba(7, 15, 30, 0.533) !important;
+	-moz-box-shadow: 0 0 5px rgba(7, 15, 30, 0.533) !important;
+	box-shadow: 0 0 5px rgba(7, 15, 30, 0.533);
+ }
+
+ .profile:hover {
+   color: white !important;
+   opacity: .75;
+   transition-duration: .5s;
+ }
+
+ .fa-ellipsis-v:hover{
+   color: white !important;
+   transition-duration: .5s;
+  }

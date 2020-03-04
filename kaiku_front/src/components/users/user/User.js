@@ -15,7 +15,7 @@ const User = ({ user, privateChat, setDisplayUser }) => {
   return (
     <div className="dropdown pos-rel">
       <span role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <div className="profile row">
+        <div className="profile pr-user row">
           <img src="profile-thumb-nobg.png" alt="profiili" className={`${user.color} profile-thumb`} />
           <div>
             <p>{user.name}</p>

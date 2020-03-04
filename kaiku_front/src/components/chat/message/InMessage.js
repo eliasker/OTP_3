@@ -9,7 +9,7 @@ const InMessage = ({ content, user }) => {
           <br />
           {content}
         </p>
-        <span className="message-date"> 12.42, Tänään</span>
+        <span className="message-date"> </span>
       </div>
     </div>
   )
