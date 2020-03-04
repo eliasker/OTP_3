@@ -15,6 +15,7 @@ import com.mongodb.client.result.UpdateResult;
 import com.ryhma_3.kaiku.model.cast_object.UserObject;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import static com.mongodb.client.model.Filters.*;
 
@@ -33,6 +34,10 @@ public class UserDAO extends DataAccessInit implements IUserDAO {
 
     public UserDAO() {
         this.connString = new ConnectionString(getMongoURI("mongoCredentials.txt"));
+        if (this.connString == null) {
+            this.connString = new ConnectionString(getMongoURI(
+                "mongodb://10.114.32.19:8080/admin"));
+        }
         this.mongoClient = MongoClients.create(connString);
         this.mongoDatabase = mongoClient.getDatabase("metadata");
         this.collection = mongoDatabase.getCollection("users");
@@ -57,8 +62,8 @@ public class UserDAO extends DataAccessInit implements IUserDAO {
         Document document = new Document("username", userObject.getUsername());
         document.append("name", userObject.getName());
         document.append("password", userObject.getPassword());
-		UpdateResult result = collection.updateOne(eq("username",
-            userObject.getUsername()), new Document("$set", document));
+		UpdateResult result = collection.updateOne(eq("_id",
+            new ObjectId(userObject.get_Id())), new Document("$set", document));
         System.out.println(document.getObjectId("_id"));
         if (result.getMatchedCount() == 0) return null;
         // TODO: find a cleaner solution to get udated documents id
@@ -69,7 +74,7 @@ public class UserDAO extends DataAccessInit implements IUserDAO {
 	@Override
 	public boolean deleteUser(UserObject userObject) {
         System.out.println(userObject.getUsername());
-		DeleteResult result = collection.deleteOne(eq("username", userObject.getUsername()));
+		DeleteResult result = collection.deleteOne(eq("_id", new ObjectId(userObject.get_Id())));
         // System.out.println();
         if (result.getDeletedCount() > 0) {
             System.out.println("deleted");
