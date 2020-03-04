@@ -43,7 +43,7 @@ public class Server implements IServer {
 	/**
 	 * user_id, onlineStatus
 	 */
-	private static final Map<String, Boolean> connectedUsers = new HashMap<>(); 
+	private static Map<String, Boolean> connectedUsers = new HashMap<>(); 
 	
 //	Discarded due to implementation difficuties
 //	private static final ArrayList<SocketIONamespace> namespaces = new ArrayList<>(); 
@@ -106,15 +106,15 @@ public class Server implements IServer {
 		server.addDisconnectListener(new DisconnectListener() {
 			@Override
 			public void onDisconnect(SocketIOClient client) {
-//				String tokenString = client.getHandshakeData().getSingleUrlParam("Authorization");
-								
+
+				//get token of disconnecting client
 				Token cloneOfToken = SecurityTools.getCloneOfToken(client.getSessionId());
 				
 				//set user as disconnected
-				connectedUsers.replace(cloneOfToken.getUser_id(), false);
+				connectedUsers.put(cloneOfToken.getUser_id(), false);
 				
 				//broadcast info
-				server.getBroadcastOperations().sendEvent("connectionEvent", new UserStatusObject(cloneOfToken.getUser_id(), true));
+				server.getBroadcastOperations().sendEvent("connectionEvent", new UserStatusObject(cloneOfToken.getUser_id(), false));
 				
 				System.out.println("UUID:" + cloneOfToken.getSessionID().toString() + " disconnected");
 			}
@@ -124,13 +124,10 @@ public class Server implements IServer {
 		server.addEventListener("createChatEvent", ChatObject.class, new DataListener<ChatObject>() {
 			@Override
 			public void onData(SocketIOClient client, ChatObject data, AckRequest ackSender) throws Exception {
+				
 				ChatObject result = chatDAO.createChatObject(data);
-//				ChatObject result = new ChatObject();
 				
 				if(result != null) {
-					
-					//create namespace
-					setupNamespace(server, result);
 					
 					//gather related users
 					Token[] users = new Token[data.getMembers().length];
@@ -155,32 +152,33 @@ public class Server implements IServer {
 		
 		server.addEventListener("chatEvent", MessageObject.class, new DataListener<MessageObject>() {
 			
-//			ChatObject chat = chatDAO.getChatObject(new ChatObject(null, "global", null, null, null));
-			
 			@Override
 			public void onData(SocketIOClient client, MessageObject data, AckRequest ackSender) throws Exception {
 				
-				//find correct chat
-				for(ChatObject chat : chats) {
-					if(chat.getChat_id() == data.getChat_id()) {
-					
-						MessageObject message = messageDAO.createMessage(data, chat.getChat_id());
-						
-						//run through all users
-						for(String user : chat.getMembers()) {
-							
-							//get UUID
-							UUID sessionID = SecurityTools.getCloneOfToken(user).getSessionID();
-							if(sessionID!=null) {
-								server.getClient(sessionID).sendEvent("chatEvent", message);
-							}
-						}
-						break;
-					}
-				}
+				try {
 				
-//				messageDAO.createMessage(data, chat.getChat_id());
-//				server.getBroadcastOperations().sendEvent("chatEvent", data);
+					//find correct chat
+					for(ChatObject chat : chats) {
+						if(chat.getChat_id() == data.getChat_id()) {
+						
+							MessageObject message = messageDAO.createMessage(data, chat.getChat_id());
+							
+							//run through all users
+							for(String user : chat.getMembers()) {
+								
+								//get UUID
+								UUID sessionID = SecurityTools.getCloneOfToken(user).getSessionID();
+								if(sessionID!=null) {
+									server.getClient(sessionID).sendEvent("chatEvent", message);
+								}
+							}
+							break;
+						}
+					}
+				}catch (Exception e) {
+					System.out.println("chatEvent: FAIL");
+					e.printStackTrace();
+				}
 			}
 		});
 		
@@ -195,36 +193,22 @@ public class Server implements IServer {
 	 * Collect all chats from database and add them into servers as namespaces
 	 */
 	private void initialize(SocketIOServer server) {
-		//add admin
-//		SecurityTools.createOrUpdateToken("kaiku", "kaiku");		
 		
-		// add/get global chat
-		
-		ChatObject global = chatDAO.getChatObject(new ChatObject(null, "global", null, null, null));
-		chats.add(global);
-		
-		/*
-		
-		if(global==null) {
-			UserObject[] allUserObjects = userDAO.getAllUsers();
-			String[] allUsers = new String[allUserObjects.length];
-			
-			for(int i=0; i<allUserObjects.length; i++) {
-				allUsers[i] = allUserObjects[i].get_Id();
+		try {
+			//initialize chats from database
+			ChatObject[] chatsFromDb = chatDAO.getAllChats(); //alL
+			for (ChatObject chatObject : chatsFromDb) {
+				chats.add(chatObject);
 			}
 			
-			global = new ChatObject(null, "global", "global", allUsers, null);
-			
-			chatDAO.createChatObject(global);
-		}
-		
-		*/
-		
-		//TODO initialisation form database
-		ChatObject[] chatsFromDb = chatDAO.getAllChats(); //alL
-		for (ChatObject chatObject : chatsFromDb) {
-//			setupNamespace(server, chatObject); 
-			chats.add(chatObject);
+			//initialize connected users list
+			UserObject[] users = userDAO.getAllUsers();
+			for(UserObject user: users) {
+				connectedUsers.put(user.get_Id(), false);
+			}
+		}catch (Exception e) {
+			System.out.println("SERVER INIT: FAIL");
+			e.printStackTrace();
 		}
 	}
 	
