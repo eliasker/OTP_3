@@ -18,7 +18,7 @@ const useChatHook = (initialData) => {
   // Once receiving messages from socket work, a message is passed as a parameter 
   // TODO: Fix sphagetti (works currently)
   const addMessage = (newMessage, chatID) => {
-    console.log(chatState)
+    console.log(currentChat)
     console.log('new message', newMessage, '\n', 'to chatID', chatID)
     const newChatState = chatState
     if (chatID === undefined) {
@@ -56,6 +56,7 @@ const useChatHook = (initialData) => {
    * @param {*} chat Chat that user clicks from chat column 
    */
   const selectChat = (chat) => {
+    console.log('setting chat to', chat)
     const newChatState = chatState
     if (newChatState[chat.id]) newChatState[chat.id].unreadMessages = false
     setChatState(newChatState)
