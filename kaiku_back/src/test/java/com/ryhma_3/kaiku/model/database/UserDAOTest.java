@@ -4,6 +4,7 @@ package com.ryhma_3.kaiku.model.database;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ryhma_3.kaiku.model.cast_object.UserObject;
 
@@ -25,6 +26,9 @@ public class UserDAOTest {
         assertEquals("CreateTestUser", u.getUsername(), "Username incorrect");
         assertEquals("password", u.getPassword(), "Password incorrect");
         assertEquals("test user", u.getName(), "Username incorrect");
+
+        assertNull(testUserDAO.createUser(
+            new UserObject(null, "CreateTestUser", "password", "test user")));
 
         testUserDAO.deleteUser(u);
     }
@@ -56,6 +60,8 @@ public class UserDAOTest {
         testUserDAO.deleteUser(u);
         u = testUserDAO.getUser(u);
         assertNull(u, "_id found, User deletion failed");
+
+        testUserDAO.deleteUser(new UserObject(null, "NotInDatabase", null, null));
     }
     
     @Test
@@ -73,5 +79,20 @@ public class UserDAOTest {
         assertEquals("changed", u.getName(), "Name change failed");
 
         testUserDAO.deleteUser(u);
+    }
+
+    @Test
+    public void getAllUsersTest() {
+        UserDAO testUserDAO = new UserDAO();
+        testUserDAO.createUser(new UserObject(null, "TestUser1", "password1", "name1"));
+        testUserDAO.createUser(new UserObject(null, "TestUser2", "password2", "name2"));
+        testUserDAO.createUser(new UserObject(null, "TestUser3", "password3", "name3"));
+        
+        UserObject[] allUsers = testUserDAO.getAllUsers();
+        assertTrue(allUsers.length > 0);
+
+        testUserDAO.deleteUser(new UserObject(null, "TestUser1", "password1", "name1"));
+        testUserDAO.deleteUser(new UserObject(null, "TestUser2", "password2", "name2"));
+        testUserDAO.deleteUser(new UserObject(null, "TestUser3", "password3", "name3"));
     }
 }
