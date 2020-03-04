@@ -52,7 +52,7 @@ const ProfilePage = ({ profileState }) => {
           </div>
           <input type="password" className="form-control" value={password} onChange={e => setPassword(e.target.value)} placeholder="Uusi salasana" />
           <input type="password" className="form-control" value={rePassword} onChange={e => setRePassword(e.target.value)} placeholder="Varmenna salasana" />
-          <button type="submit" className="btn btn-primary btn-block">Tallenna</button>
+          <button type="submit" className="btn btn-dark btn-block">Tallenna</button>
         </form>
       </div>
 
