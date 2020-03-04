@@ -72,7 +72,7 @@ describe('Basic functionality', function() {
 
     it('check search users', function() {
       cy.get('.fa-user-friends').click()
-      cy.get(".profile").should('have.length', 1)
+      cy.get(".profile").should('have.length', 5)
       cy.get('.find-user-input').click().type('Mirka')
       cy.get(".profile").should('have.length', 1)
     })
