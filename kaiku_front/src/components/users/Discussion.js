@@ -29,7 +29,7 @@ const Discussions = ({ setDisplayUser, chat }) => {
 
   const handleDiscussionClick = () => {
     setDisplayUsers(!displayUsers)
-    selectChat(chat)
+    selectChat({...chat, color: 'none', image: '/kaikuthumb.png'})
   }
 
   return (

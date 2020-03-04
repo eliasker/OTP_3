@@ -40,6 +40,7 @@ public class UserResourceController {
 	private IMessageDAO messageDAO = KaikuApplication.getMessageDAO();
 	private IUserDAO userDAO = KaikuApplication.getUserDAO();
 	
+	
 	/**
 	 * @param user
 	 * @return InitializationObject or fail 400
@@ -69,6 +70,7 @@ public class UserResourceController {
 				String name = userFromDb.getName();
 				boolean online = true;
 
+				
 				/*
 				 * Generate token, get token String
 				 */
@@ -81,8 +83,6 @@ public class UserResourceController {
 				 */
 	    		ChatObject[] chats = chatDAO.getChats(userFromDb.get_Id());	    		
 	    		    		
-//				ChatObject chat = new ChatObject("12312", null, null, null, null);
-//				ChatObject[] chats = { chat };
 
 				/*
 				 * Get and put all messages to chats
@@ -90,29 +90,21 @@ public class UserResourceController {
 				for (int i = 0; i < chats.length; i++) {
 
 	    			MessageObject[] messages = messageDAO.getAllMessages(userFromDb.get_Id());
-
-//					MessageObject message = new MessageObject("adsas", "sadd", "asd", new Date());
-//					MessageObject message2 = new MessageObject("baba", "asd", "kakaka", new Date());
-//					MessageObject[] messages = { message, message2 };
 					chats[i].setMessages(messages);
 				}
 
+				
 				/*
-				 * Get list of users
+				 * Get list of users & erase passwords
 				 */
 	    		UserObject[] users = userDAO.getAllUsers();
-
-//				UserObject user1 = new UserObject("12312", "kake", "keh keh", "kartsa");
-//				UserObject user2 = new UserObject("24135", "toto", "africa", "tortelliini");
-//				UserObject[] users = { user1, user2 };
-
-				/*
-				 * Eliminate passwords
-				 */
+	    		
 				for (int i = 0; i < users.length; i++) {
-					users[i].setPassword(null);
+					users[i].setPassword("");
 				}
 
+				
+				
 				/*
 				 * Construct a InitialObject
 				 */
@@ -129,6 +121,7 @@ public class UserResourceController {
 			
 		} catch (Exception e) {
 			
+			e.printStackTrace();
 			return null;
 		
 		}
@@ -158,7 +151,7 @@ public class UserResourceController {
 			
 			
 			/*
-			 * post user to mongo
+			 * post user to db
 			 */
 			userObject = userDAO.createUser(userObject);
 			
@@ -168,10 +161,15 @@ public class UserResourceController {
 			 */
 			ChatObject global = chatDAO.getChatObject(new ChatObject(null, "global", null, null, null));
 			String[] users = Arrays.copyOf(global.getMembers(), global.getMembers().length + 1);
-			users[global.getMembers().length] = userObject.get_Id();
+			users[users.length-1] = userObject.get_Id();
+			global.setMembers(users);
+			
 			chatDAO.updateChatObject(global);
 			
+			userObject.setPassword("");
+			
 			return userObject;
+			
 		} else {
 			
 			/*
@@ -182,8 +180,14 @@ public class UserResourceController {
 	}
 	
 	
+	/**
+	 * @param token
+	 * @return UserObject[]
+	 * With admin token, get all users
+	 */
 	@RequestMapping(value="/api/users", method=RequestMethod.GET)
-	public UserObject[] getUsers(@RequestHeader("Authorization") String token) {
+	public UserObject[] getUsers(
+			@RequestHeader("Authorization") String token){
 		System.out.println("REST: get users");
 		
 		/*
@@ -191,16 +195,46 @@ public class UserResourceController {
 		 */
 		boolean valid = token.equals("kaiku");
 		
-		UserObject[] users = userDAO.getAllUsers();
+		if(valid) {
 		
-		if(users != null) {
-			for(UserObject user : users) {
-				user.setPassword("");
-			}
+			UserObject[] users = userDAO.getAllUsers();
 			
-			return users;
+			if(users != null) {
+				for(UserObject user : users) {
+					user.setPassword("");
+				}
+				
+				return users;
+			}
 		}
 		
 		return null;
+	}
+	
+	
+	/**
+	 * @param token
+	 * @param user_id
+	 * @return boolan
+	 * With admin token, delete a user
+	 */
+	@RequestMapping(value="/api/users/**", method=RequestMethod.DELETE)
+	public boolean deleteUser(
+			@RequestHeader("Authorization") String token,
+			@RequestParam String user_id){
+		System.out.println("REST: delete user");
+		
+		boolean valid = token.equals("kaiku");
+		
+		if(valid) {
+			
+			System.out.println("id: " + user_id);
+			
+			boolean success = userDAO.deleteUser(new UserObject(user_id, null, null ,null));
+			
+			return success;
+		}
+		
+		return false;
 	}
 }

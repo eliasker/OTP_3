@@ -1,5 +1,10 @@
 .App {
   background-color: #0d1627;
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
+.read-container, input, .users-online, .text-sm, #dashboard {
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji" !important;
 }
 
 /*
@@ -486,8 +491,8 @@ input::-webkit-input-placeholder {
 }
 
 .orange {
-  background-color: orange;
-  color: orange;
+  background-color: rgb(136, 88, 0);
+  color: rgb(136, 88, 0);
 }
 
 .blue {
@@ -501,13 +506,13 @@ input::-webkit-input-placeholder {
 }
 
 .amber {
-  background-color: rgb(184, 184, 0);
-  color: rgb(184, 184, 0);
+  background-color: rgb(128, 128, 13);
+  color: rgb(128, 128, 13);
 }
 
 .turqoise {
-  background-color: turquoise;
-  color: turquoise;
+  background-color: rgb(43, 150, 139);
+  color: rgb(43, 150, 139);
 }
 
 .dark {
@@ -516,8 +521,8 @@ input::-webkit-input-placeholder {
 }
 
 .pink {
-  background-color: palevioletred;
-  color: palevioletred;
+  background-color: rgb(134, 38, 70);
+  color: rgb(134, 38, 70);
 }
 
 .brown {
@@ -651,7 +656,7 @@ input::-webkit-input-placeholder {
 }
 
 .profile-page-heading {
-  color: #000;
+  color: #fff;
   font-weight: 700;
 }
 
@@ -716,11 +721,19 @@ input::-webkit-input-placeholder {
   text-align: center;
 }
 
+.profile-page-container .fa-times {
+  text-shadow: 1px 3px 3px rgba(0,0,0,0.5);
+}
+
+.profile-page-container .exit-profile {
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.75);
+}
+
 .fa-info {
-  background-color: rgb(14, 68, 139);
-  color: rgba(255, 255, 255, 0.9);
   text-shadow: 4px 4px 5px rgba(0,0,0,0.25);
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.75);
+  background-color: rgb(14, 68, 139);
+  color: rgba(255, 255, 255, 0.9);
   border-radius: 60px;
   width: 37px;
   padding: 10px;
@@ -828,7 +841,7 @@ input::-webkit-input-placeholder {
 .bg-primary-0, .user-header, #search-message input
 { background-color: #1D2637 !important }	/* Main Primary color */
 
-.bg-primary-1, .message-field, .chat-type, .users-online, .pr-user
+.bg-primary-1, .message-field, .chat-type, .users-online, .pr-user, .profile-page-container
 { background-color: #4B566B !important }
 
 .bg-primary-2, .active-chat
