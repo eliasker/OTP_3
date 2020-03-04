@@ -9,7 +9,7 @@ const DirectUser = ({ user, privateChat }) => {
 
   const handleShowChat = () => {
     console.log('handleShowChat clicked', privateChat)
-    selectChat(privateChat)
+    selectChat({...privateChat, image: '/profile-thumb-nobg.png', color: user.color})
   }
 
   if(privateChat.messages.length === 0) return <></>
