@@ -19,8 +19,6 @@ import static com.mongodb.client.model.Filters.*;
 
 import org.bson.Document;
 
-// TODO: relegate authentication and other mongo initialization to a super class
-
 /**
  * ChatDAO
  */
@@ -34,6 +32,11 @@ public class ChatDAO extends DataAccessInit implements IChatDAO {
 
     public ChatDAO() {
         this.connString = new ConnectionString(getMongoURI("mongoCredentials.txt"));
+        // TODO: remove hardcoded URIs
+        if (this.connString == null) {
+            this.connString = new ConnectionString(getMongoURI(
+                "mongodb://mongoAdmin:very_good_salasana@10.114.32.19:27017/?authsource=admin"));
+        }
         this.mongoClient = MongoClients.create(connString);
         this.mongoDatabase = mongoClient.getDatabase("metadata");
         this.collection = mongoDatabase.getCollection("chats");
@@ -67,9 +70,7 @@ public class ChatDAO extends DataAccessInit implements IChatDAO {
         document.append("messages", "");
 		UpdateResult result = collection.updateOne(eq("chatName",
             chatObject.getChatName()), new Document("$set", document));
-        System.out.println(document.getObjectId("_id"));
         if (result.getMatchedCount() == 0) return null;
-        // TODO: find a cleaner solution to get udated documents id
         else return getChatObject(chatObject);
 	}
 
