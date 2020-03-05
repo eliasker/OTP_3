@@ -28,9 +28,9 @@ public abstract class DataAccessInit {
             e.printStackTrace();
             System.out.println("File " + filename + "not found. Create it in the secrets " +
                 "directory with the mongoDB URI in it.");
-            System.exit(0);
+            // TODO: remove this
+            return "mongodb://mongoAdmin:very_good_salasana@10.114.32.19:27017/?authsource=admin";
         }
-        return null;
     }
 
     protected String urlEncode(String string) {

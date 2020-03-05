@@ -35,10 +35,6 @@ public class UserDAO extends DataAccessInit implements IUserDAO {
     public UserDAO() {
         this.connString = new ConnectionString(getMongoURI("mongoCredentials.txt"));
         // TODO: remove hardcoded URIs
-        if (this.connString == null) {
-            this.connString = new ConnectionString(getMongoURI(
-                "mongodb://mongoAdmin:very_good_salasana@10.114.32.19:27017/?authsource=admin"));
-        }
         this.mongoClient = MongoClients.create(connString);
         this.mongoDatabase = mongoClient.getDatabase("metadata");
         this.collection = mongoDatabase.getCollection("users");
