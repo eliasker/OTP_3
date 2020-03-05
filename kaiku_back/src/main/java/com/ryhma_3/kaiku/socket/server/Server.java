@@ -190,7 +190,8 @@ public class Server implements IServer {
 	
 	/**
 	 * @param server
-	 * Collect all chats from database and add them into servers as namespaces
+	 *  //Collect all chats from database and add them into servers as namespaces
+	 *   Initialize all chats into chats list, initialize all users to connectedUsers list
 	 */
 	private void initialize(SocketIOServer server) {
 		
