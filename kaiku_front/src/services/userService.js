@@ -27,100 +27,81 @@ export default { getAll, create, update, deleteById }
 const baseUrl = 'http://localhost:8080/'
 
 const configAsAdmin = {
-    headers: {
-        Authorization: 'kaiku'
-    }
+  headers: {
+    Authorization: 'kaiku'
+  }
 }
 
 const login = async (username, password) => {
-    /*
-    axios.post(
-        baseUrl + "api/users/" + username,
-        { 
-            username,
-            password
-        }
+  try {
+    console.log('login with: ', username, password)
+    const response = await axios.post(
+      baseUrl + 'api/users/' + username,
+      {
+        username,
+        password
+      }
     )
-    .then((response) => {
-        console.log('REST: login', response.data);
-        return response.data
-    })
-    .catch((error) => {
-        console.log('REST: login error', error);
-        return null
-    })
-    */
+    console.log('response from request', response);
+    return response.data;
 
-    try{
-        const response = await axios.post(
-            baseUrl + "api/users/" + username,
-            { 
-                username,
-                password
-            }
-        )
-
-        console.log(response.data);
-        return response.data;
-        
-    } catch(error){
-        console.log('REST: login error', error);
-    }
-
+  } catch (error) {
+    console.log('REST: login error', error);
+  }
 }
 
 
 //set config manually or set null;
 const createUser = async (username, password, name, config) => {
 
-    const user = {
-        id: null,
-        username,
-        password,
-        name
-    }
+  const user = {
+    id: null,
+    username,
+    password,
+    name
+  }
 
-    /*
-    axios.post(
-        baseUrl + 'api/users',
-        user,
-        configAsAdmin
-    )
-    .then((response) => {
-        console.log('REST: createUser', response.data);
-        return response.data
-    })
-    .catch((error) => {
-        console.log('REST: createUser error', error);
-    })
-    */
+  /*
+  axios.post(
+      baseUrl + 'api/users',
+      user,
+      configAsAdmin
+  )
+  .then((response) => {
+      console.log('REST: createUser', response.data);
+      return response.data
+  })
+  .catch((error) => {
+      console.log('REST: createUser error', error);
+  })
+  */
 
-    const result = await axios.post(
-        baseUrl + 'api/users',
-        user,
-        configAsAdmin
-    )
+  const result = await axios.post(
+    baseUrl + 'api/users',
+    user,
+    configAsAdmin
+  )
 
-    console.log(result.data);
-    return result.data;
+  console.log(result.data);
+  return result.data;
 }
 
 const getAllUsers = async (token) => {
-    
-    const configAsAdmin = {
-        headers: {
-            Authorization: 'kaiku'
-        }
+
+  const configAsAdmin = {
+    headers: {
+      Authorization: 'kaiku'
     }
+  }
 
-    const result = await axios.get(
-        baseUrl + "api/users",
-        configAsAdmin
-    )
+  const result = await axios.get(
+    baseUrl + "api/users",
+    configAsAdmin
+  )
 
-    console.log("REST: getAllUsers", result.data);
-    
-    return result.data;
+  console.log("REST: getAllUsers", result.data);
+
+  return result.data;
 }
 
 export default { login, createUser, getAllUsers }

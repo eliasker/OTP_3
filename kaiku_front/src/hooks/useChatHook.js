@@ -10,7 +10,7 @@ const useChatHook = (initialData) => {
 
   useEffect(() => {
     if (initialData.chats === undefined) return console.log('initialData pending...')
-    console.log('setting initial chats')
+    console.log('setting initial chats', initialData)
     setChatState(initialData.chats)
     setCurrentChat(initialData.chats[0])
   }, [initialData])
