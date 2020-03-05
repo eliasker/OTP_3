@@ -43,7 +43,7 @@ public class UserResourceController {
 	
 	/**
 	 * @param user
-	 * @return InitializationObject or fail 400
+	 * @return {@link InitializationObject} or fail 400
 	 * Request invoked when user starts a session. This entry point compiles all necessary data needed to initialize front end application.
 	 */
 	@RequestMapping(value = "/api/users/**", method=RequestMethod.POST)
@@ -142,7 +142,9 @@ public class UserResourceController {
 	 * Validate sent token and create a new user from Request body. Return nothing;
 	 */
 	@RequestMapping(value = "/api/users", method=RequestMethod.POST)
-	public UserObject createUser(@RequestBody UserObject userObject, @RequestHeader("Authorization") String token) {
+	public UserObject createUser(
+			@RequestBody UserObject userObject, 
+			@RequestHeader("Authorization") String token) {
 		System.out.println("REST: create user");
 		
 		/*
@@ -190,7 +192,7 @@ public class UserResourceController {
 	
 	/**
 	 * @param token
-	 * @return UserObject[]
+	 * @return {@link UserObject}[]
 	 * With admin token, get all users
 	 */
 	@RequestMapping(value="/api/users", method=RequestMethod.GET)
@@ -201,7 +203,7 @@ public class UserResourceController {
 		/*
 		 * compare token with token storage
 		 */
-		boolean valid = token.equals("kaiku");
+		boolean valid = token.equals("kaiku") || SecurityTools.verifySession(token);
 		
 		if(valid) {
 		
@@ -214,6 +216,32 @@ public class UserResourceController {
 				
 				return users;
 			}
+		}
+		
+		return null;
+	}
+	
+	
+	/**
+	 * @param token
+	 * @param user
+	 * @return {@link UserObject}
+	 * Logged in user can send request to change their user information
+	 */
+	@RequestMapping(value="/api/users", method=RequestMethod.PUT)
+	public UserObject updateUser(
+			@RequestHeader("Authorization") String token,
+			@RequestBody UserObject user) {
+		System.out.println("REST: update user");
+		
+		boolean valid = SecurityTools.verifySession(token);
+		
+		if(valid) {
+			
+			UserObject result = userDAO.updateUser(user);
+			result.setPassword("");
+			return result;
+			
 		}
 		
 		return null;
