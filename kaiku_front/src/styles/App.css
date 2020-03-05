@@ -860,6 +860,9 @@ input::-webkit-input-placeholder {
 .txt-light, .chat-header, .user-header, .message-date, .chat-type, .profile
 { color: rgba(240, 240, 240, 0.9) !important }
 
+.active-chat
+{ color: rgba(240, 240, 240, 0.5) !important }
+
 .users-online
 { color: white !important }
 
