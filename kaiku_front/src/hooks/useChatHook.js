@@ -18,36 +18,34 @@ const useChatHook = (initialData) => {
   // Once receiving messages from socket work, a message is passed as a parameter 
   // TODO: Fix sphagetti (works currently)
   const addMessage = (newMessage, chatID) => {
-    console.log(currentChat)
     console.log('new message', newMessage, '\n', 'to chatID', chatID)
+    if (chatID !== currentChat.id && chatID !== undefined) chatState[chatID].unreadMessages = true
     const newChatState = chatState
-    if (chatID === undefined) {
-      currentChat.messages.push(newMessage)
-      console.log('current', currentChat)
-      newChatState.push(currentChat)
-      setChatState(newChatState)
-      return
-    }
-    const prevMessages = newChatState[chatID].messages
 
-    if (currentChat === null || currentChat.id !== newChatState.id) {
-      console.log('message to curr chat')
+    if (chatID === currentChat.id && chatID !== undefined) {
+      const prevMessages = newChatState[chatID].messages
       newChatState[chatID] = {
         ...newChatState[chatID],
         messages: [...prevMessages, newMessage], unreadMessages: false
       }
-      console.log(newChatState)
-      setChatState(newChatState)
+      setCurrentChat(newChatState[chatID])
+    } else if (chatID === undefined) {
+      console.log(currentChat)
+      currentChat.messages.push(newMessage)
+      const prevChat = chatState.find(c => c.members === currentChat.members)
+      if (prevChat === undefined) {
+        currentChat.id = chatState.length
+        newChatState.push(currentChat)
+      }
     } else {
+      const prevMessages = newChatState[chatID].messages
       newChatState[chatID] = {
         ...newChatState[chatID],
         messages: [...prevMessages, newMessage]
       }
-      setChatState(newChatState)
     }
-    if (chatID !== undefined) {
-      setCurrentChat(newChatState[chatID])
-    }
+    setChatState(newChatState)  
+    console.log(chatState)
   }
 
   /**
