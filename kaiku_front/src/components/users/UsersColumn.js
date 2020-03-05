@@ -35,17 +35,16 @@ const UsersColumn = ({ setDisplayProfile, userState }) => {
 
     const filteredUsers = filterUtil(initialData.users.map(u => u.name), searchInput)
 
-    return (
-      <>
-        <input className="form-control find-user-input" placeholder="Etsi käyttäjä (ei huumeiden)"
-          value={searchInput} onChange={e => setSearchInput(e.target.value)} />
-        {initialData.users
-        .filter(u => u.id !== loggedUser.id)
-        .filter(u => filteredUsers.find(e => u.name === e))
-        .map(u => <DirectUser key={keyGen.generateKey(u.name)} privateChat={findChat(u)} user={u} setDisplayUser={setDisplayUser}/>)}
-      </>
-    )
-  }
+    return initialData.users
+      .filter(u => u.id !== loggedUser.id)
+      .filter(u => filteredUsers.find(e => u.name === e))
+      .map(u => <DirectUser key={keyGen.generateKey(u.name)} privateChat={findChat(u)} user={u} setDisplayUser={setDisplayUser}/>)
+    }
+    
+  const showInput = () => chatType === 'direct' ?
+    <input className="form-control find-user-input" placeholder="Etsi käyttäjä (ei huumeiden)"
+      value={searchInput} onChange={e => setSearchInput(e.target.value)} />:
+    <></>
 
   return (
     <div className="chat-col col-5 px-0">
@@ -53,6 +52,7 @@ const UsersColumn = ({ setDisplayProfile, userState }) => {
         setDisplayProfile={setDisplayProfile} />
       <div className="profile-container">
         <div className="relative">
+          {showInput()}
           <div className="profile-list">
             {chatType === 'group' ? listGroups() : listMessages()}
           </div>
