@@ -180,6 +180,9 @@
   font-style: italic;
   margin: 0em;
   padding-left: 1rem;
+  -webkit-box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.25);
+  -moz-box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.25);
+  box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.25);
 }
 
 .read-container {
@@ -276,7 +279,7 @@
 }
 
 .profile {
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   background-color: rgb(90, 105, 156);
   margin-left: 0;
   margin-right: 0;
@@ -289,9 +292,7 @@
   margin-bottom: 0;
 }
 
-.profile span {
-  font-style: italic;
-}
+/**.profile span { font-style: italic; }**/
 
 .profile-menu .text-sm {
   font-style: italic;
