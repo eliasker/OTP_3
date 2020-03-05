@@ -34,7 +34,11 @@ ____________________
   - `npm run test`: Ajaa frontendin testit
   - `npm run eject`: Tuhoaa projektin. Älä missään nimessä käytä tätä komentoa.
 * Backend komennot:
-    - ...
+  - `mwnv spring-boot:run`: Aja komento serverin root hakemistossa, configuroi springin ja käynnistää serverin
+
+Serverin käynnistyessä täytyy käynnistäjän antaa lähtöparametrit terminaalin kautta:
+  -  configuraatiotyyppi: autentikaatio middlewaren kanssa tai ilman
+  -  mongodb uri: joko tyhjä (pre-configured), tai uri reitti vaikkapa mongodb atlakseen 
 _______________
 
 **4. Kuvankaappaukset (projektista)**\
