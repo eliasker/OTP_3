@@ -1,40 +1,26 @@
 package com.ryhma_3.kaiku.resource_controllers;
 
 import java.util.Arrays;
-import java.util.Date;
-import java.util.UUID;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.yaml.snakeyaml.util.ArrayUtils;
 
 import com.ryhma_3.kaiku.KaikuApplication;
 import com.ryhma_3.kaiku.model.cast_object.ChatObject;
 import com.ryhma_3.kaiku.model.cast_object.InitializationObject;
 import com.ryhma_3.kaiku.model.cast_object.MessageObject;
 import com.ryhma_3.kaiku.model.cast_object.UserObject;
-import com.ryhma_3.kaiku.model.database.ChatDAO;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
 import com.ryhma_3.kaiku.model.database.IUserDAO;
-import com.ryhma_3.kaiku.model.database.UserDAO;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ResourceNotFoundException;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ValidationFailedException;
 import com.ryhma_3.kaiku.utility.SecurityTools;
-import com.ryhma_3.kaiku.utility.Token;
-
-import ch.qos.logback.core.encoder.EchoEncoder;
 
 /**
  * AccountController
@@ -91,7 +77,8 @@ public class UserResourceController {
     		ChatObject[] chats = chatDAO.getChats(userFromDb.get_Id());
     		
     		for(int i=0; i<chats.length; i++) {
-    			if( !(chats[i].getType().equals("private") || chats[i].getType().equals("group") || chats[i].equals("global"))) {
+    			String type = chats[i].getType();
+    			if( !(type.equals("global") || type.equals("private") || type.equals("group"))) {
     				chats[i] = null;
     			}
     		}
