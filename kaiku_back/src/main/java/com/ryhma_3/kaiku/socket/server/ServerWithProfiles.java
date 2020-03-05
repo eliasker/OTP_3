@@ -13,6 +13,11 @@ import com.ryhma_3.kaiku.model.cast_object.UserObject;
 import com.ryhma_3.kaiku.socket.init.IServerInit;
 import com.ryhma_3.kaiku.utility.Token;
 
+/**
+ * @author Panu Lindqvist
+ * @deprecated
+ *
+ */
 public class ServerWithProfiles implements IServer{
 	IServerInit init;
 	final SocketIOServer server;

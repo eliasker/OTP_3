@@ -53,7 +53,7 @@ public class UserResourceController {
 		String username = user.getUsername();
 		String password = user.getPassword();
 		
-		System.out.println(username + "  " + password);
+		System.out.println("creds: " + username + "  " + password);
 
 		/*
 		 * Get user with matching username from database. COmpare encrypted password with one submitted
@@ -79,18 +79,26 @@ public class UserResourceController {
 			
 
 				/*
+				 * Gather chats, remove deleted or archived
 				 * CHATS don't have to have messages at this point!!!
 				 */
-	    		ChatObject[] chats = chatDAO.getChats(userFromDb.get_Id());	    		
+	    		ChatObject[] chats = chatDAO.getChats(userFromDb.get_Id());
+	    		
+	    		for(int i=0; i<chats.length; i++) {
+	    			if( !(chats[i].getType().equals("private") || chats[i].getType().equals("group") || chats[i].equals("global"))) {
+	    				chats[i] = null;
+	    			}
+	    		}
 	    		    		
 
 				/*
 				 * Get and put all messages to chats
 				 */
 				for (int i = 0; i < chats.length; i++) {
-
-	    			MessageObject[] messages = messageDAO.getAllMessages(userFromDb.get_Id());
-					chats[i].setMessages(messages);
+					if(chats[i] != null) {
+		    			MessageObject[] messages = messageDAO.getAllMessages(userFromDb.get_Id());
+						chats[i].setMessages(messages);
+					}
 				}
 
 				
