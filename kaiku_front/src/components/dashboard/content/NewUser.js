@@ -6,6 +6,7 @@ const NewUser = () => {
   const [ username, setUsername ] = useState('')
   const [ password, setPassword ] = useState('')
   const [ rePassword, setRePassword ] = useState('')
+  const [ showPassword, setShowPassword ] = useState(false)
   const { nouns, adjectives, capitalize } = dictionary
 
   const generateUser = () => {
@@ -20,6 +21,10 @@ const NewUser = () => {
     setPassword(`${adjective}${noun}`)
     setRePassword(`${adjective}${noun}`)
   }
+
+  const showVisibilityIcon = () => showPassword ?
+  <i class="far fa-eye"></i>:
+  <i class="far fa-eye-slash"></i>
 
   return(
   <>
@@ -44,8 +49,16 @@ const NewUser = () => {
         <div className="form-row">
           <div className="col-md-6 mb-2">
             <label htmlFor="user-password">Salasana</label>
-            <input type="password" className="form-control" id="user-password" placeholder="Salasana"
-            value={password} onChange={e => setPassword(e.target.value)} required />
+            <div className="input-group">
+              <input type={`${showPassword ? 'text': 'password'}`} className="form-control" id="user-password" placeholder="Salasana"
+                aria-describedby="inputGroupAppepend2" value={password} onChange={e => setPassword(e.target.value)} required />
+
+                <div className="input-group-append">
+                  <span className="input-group-text" id="inputGroupAppepend2" onClick={() => setShowPassword(!showPassword)}>
+                    {showVisibilityIcon()}
+                  </span>
+                </div>
+            </div>
           </div>
           <div className="col-md-6 mb-2">
             <label htmlFor="user-repassword">Toista salasana</label>
