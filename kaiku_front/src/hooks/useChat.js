@@ -29,7 +29,7 @@ const useChat = (loggedUser_id, currentChat, addMessage) => {
     socketRef.current.on(
       "connect",
       (users) => {
-        console.log(users)
+        //console.log('connect', users)
         // 	socket = socketIO.connect(baseString, {
         //   query: "Authorization=kaiku"
         // });

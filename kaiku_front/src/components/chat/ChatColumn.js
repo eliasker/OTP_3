@@ -32,7 +32,7 @@ const ChatColumn = ({ profileState, userState }) => {
   }
 
   const listMessages = () => {
-    if (currentChat === null) return
+    if (currentChat === null || currentChat === undefined) return
     if (currentChat.messages === undefined || currentChat.messages.length === 0) return <DefaultMessage />
     const filteredMsgs = currentChat.messages.filter(msg => msg.content.includes(searchInput))
     return filteredMsgs.map(m =>
@@ -53,11 +53,10 @@ const ChatColumn = ({ profileState, userState }) => {
     if (messageValidation(newMessage.value)) {
       const newMessageObj = {
         content: newMessage.value,
-        message_id: keyGen.generateId(),
-        user_id: loggedUser.id
+        id: keyGen.generateId(),
+        user_id: loggedUser.user_id
       }
       sendMessage(newMessageObj)
-
       newMessage.reset()
     }
   }

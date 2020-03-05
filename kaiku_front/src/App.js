@@ -23,7 +23,7 @@ const App = () => {
         setInitialData({ ...response, users: response.users.map(u => u = { ...u, color: colors[generateColor()] }) })
       })
   }, [])
-
+  
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedKaikuUser')
     const masterkey = window.localStorage.getItem('mastakey')
@@ -46,7 +46,7 @@ const App = () => {
   return (
     <div className="App">
       <Router>
-        <InitialData.Provider value={{ initialData, loggedUser, setLoggedUser, setAuthToken }}>
+        <InitialData.Provider value={{ initialData, setInitialData, loggedUser, setLoggedUser, setAuthToken }}>
           <Route exact path="/" render={() => (loggedUser === null) ? <Login /> : <Chat />} />
           <Route exact path="/dashboard" render={showContent} />
         </InitialData.Provider>
