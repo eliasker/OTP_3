@@ -61,7 +61,6 @@ public class UserDAO extends DataAccessInit implements IUserDAO {
         document.append("password", userObject.getPassword());
 		UpdateResult result = collection.updateOne(eq("_id",
             new ObjectId(userObject.get_Id())), new Document("$set", document));
-        System.out.println(document.getObjectId("_id"));
         if (result.getMatchedCount() == 0) return null;
         // TODO: find a cleaner solution to get udated documents id
         else return getUser(userObject);
