@@ -18,6 +18,7 @@ import com.ryhma_3.kaiku.model.cast_object.MessageObject;
 import static com.mongodb.client.model.Filters.*;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 /**
  * ChatDAO
@@ -52,13 +53,14 @@ public class ChatDAO extends DataAccessInit implements IChatDAO {
 	@Override
 	public ChatObject createChatObject(ChatObject chatObject) {
         // TODO: append id into the name when it's time for it?
-        Document document = new Document("chatName", chatObject.getChatName());
-        document.append("type", chatObject.getType());
-        document.append("users", Arrays.asList(chatObject.getMembers()));
+        Document d = new Document("chatName", chatObject.getChatName());
+        d.append("type", chatObject.getType());
+        d.append("users", Arrays.asList(chatObject.getMembers()));
         // TODO: add actual messages when it's time for it
-        document.append("messages", "test");
-        collection.insertOne(document);
-        return chatObject;
+        d.append("messages", "test");
+        collection.insertOne(d);
+        return new ChatObject(d.getObjectId("_id").toString(), chatObject.getChatName(),
+            chatObject.getType(), chatObject.getMembers(), chatObject.getMessages());
 	}
 
 	@Override
@@ -76,7 +78,8 @@ public class ChatDAO extends DataAccessInit implements IChatDAO {
 
 	@Override
 	public boolean deleteChatObject(ChatObject chatObject) {
-		DeleteResult result = collection.deleteOne(eq("chatName", chatObject.getChatName()));
+		DeleteResult result = collection.deleteOne(
+            eq("_id", new ObjectId(chatObject.getChat_id())));
         if (result.getDeletedCount() > 0) {
             System.out.println(chatObject.getChatName());
             System.out.println("deleted");
