@@ -70,7 +70,6 @@
 }
 
 .chat-col {
-  background-color: #1d2637;
   /*border: solid 1px rgba(255, 255, 255, 0.33);*/
   height: 90vh;
   padding: 0;
@@ -114,7 +113,6 @@
 }
 
 .chat-type {
-  background-color: #9cacca;
   margin: 0;
   padding: 0;
 }
@@ -175,9 +173,7 @@
 }
 
 .users-online {
-  background-color: #9cacca;
   font-size: 85%;
-  font-style: italic;
   margin: 0em;
   padding-left: 1rem;
   -webkit-box-shadow: 0px 1px 2px 1px rgba(0,0,0,0.25);
@@ -204,7 +200,6 @@
 
 .read-field {
   overflow-y: scroll;
-  background-color: #a89ccaf5;
   position: absolute;
   bottom: 0;
   height: 100%;
@@ -280,7 +275,6 @@
 
 .profile {
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-  background-color: rgb(90, 105, 156);
   margin-left: 0;
   margin-right: 0;
   cursor: pointer;
@@ -295,7 +289,6 @@
 /**.profile span { font-style: italic; }**/
 
 .profile-menu .text-sm {
-  font-style: italic;
   margin: 0 1.5rem;
 }
 
@@ -544,7 +537,6 @@ input::-webkit-input-placeholder {
   position: absolute;
   height: 100%;
   width: 100%;
-  background-color: #9cacca;
   color: white;
   display: flex;
   z-index: 10;
@@ -607,9 +599,11 @@ input::-webkit-input-placeholder {
   bottom: 0;
   left: 100px;
   font-size: 14px;
-  background-color: #777;
+  background-color: rgb(28, 34, 43);
   padding: 15px 17px;
   border-radius: 90px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.75);
+  text-shadow: 1px 3px 3px rgba(0,0,0,0.5);
   transition: ease-in-out .3s;
 }
 
