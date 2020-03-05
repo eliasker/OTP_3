@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import InitialData from '../providers/InitialData'
-import userService from '../services/userService'
+import loginService from '../services/loginService'
 import useField from '../hooks/hooks'
 
 const Login = () => {
@@ -19,7 +19,7 @@ const Login = () => {
       window.localStorage.setItem('loggedKaikuUser', JSON.stringify(initialData))
     } else {
       try {
-        const user = await userService.login(username.value, password.value)
+        const user = await loginService.login(username.value, password.value)
         if (user === '') throw ('no matching user')
         setLoggedUser(user)
         console.log(user)

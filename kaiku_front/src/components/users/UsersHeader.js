@@ -10,6 +10,7 @@ const UsersHeader = ({ chatTypeState, setDisplayProfile }) => {
   const onlineUsers = initialData.users ? initialData.users.length: 0
   const handleLogout = () => {
     window.localStorage.removeItem('loggedKaikuUser')
+    console.log('logging out')
     setLoggedUser(null)
   }
 

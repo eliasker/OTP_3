@@ -1,5 +1,11 @@
 import axios from 'axios'
+const baseUrl = 'http://localhost:8080/'
 
+const configAsAdmin = {
+  headers: {
+    Authorization: 'kaiku'
+  }
+}
 /*
 const baseUrl = 'http://localhost:3001/users'
 const getAll = () => {
@@ -23,32 +29,6 @@ const deleteById = (id) =>
 
 export default { getAll, create, update, deleteById }
 */
-
-const baseUrl = 'http://localhost:8080/'
-
-const configAsAdmin = {
-  headers: {
-    Authorization: 'kaiku'
-  }
-}
-
-const login = async (username, password) => {
-  try {
-    console.log('login with: ', username, password)
-    const response = await axios.post(
-      baseUrl + 'api/users/' + username,
-      {
-        username,
-        password
-      }
-    )
-    console.log('response from request', response);
-    return response.data;
-
-  } catch (error) {
-    console.log('REST: login error', error);
-  }
-}
 
 
 //set config manually or set null;
@@ -104,4 +84,4 @@ const getAllUsers = async (token) => {
   return result.data;
 }
 
-export default { login, createUser, getAllUsers }
+export default { createUser, getAllUsers }

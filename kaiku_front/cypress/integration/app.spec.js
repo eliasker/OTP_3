@@ -9,8 +9,8 @@ describe('Basic functionality', function() {
   })
 
   it('login form works', function() {
-    cy.get('#inputUsername').type('123')
-    cy.get('#inputPassword').type('123')
+    cy.get('#inputUsername').type('testi')
+    cy.get('#inputPassword').type('testi')
     cy.get('.btn').click()
     cy.contains('Hissichat')
   })
@@ -18,9 +18,9 @@ describe('Basic functionality', function() {
   describe('When user logged in', function() {
     beforeEach(function() {
       cy.get('#inputUsername')
-        .type('123')
+        .type('testi')
       cy.get('#inputPassword')
-        .type('123{enter}')
+        .type('testi{enter}')
     })
 
     it('check initial content', function() {
