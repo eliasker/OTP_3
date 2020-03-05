@@ -201,7 +201,7 @@ public class UserResourceController {
 		/*
 		 * compare token with token storage
 		 */
-		boolean valid = token.equals("kaiku");
+		boolean valid = token.equals("kaiku") || SecurityTools.verifySession(token);
 		
 		if(valid) {
 		
@@ -214,6 +214,32 @@ public class UserResourceController {
 				
 				return users;
 			}
+		}
+		
+		return null;
+	}
+	
+	
+	/**
+	 * @param token
+	 * @param user
+	 * @return UserObject
+	 * Logged in user can send request to change their user information
+	 */
+	@RequestMapping(value="/api/users", method=RequestMethod.PUT)
+	public UserObject updateUser(
+			@RequestHeader("Authorization") String token,
+			@RequestBody UserObject user) {
+		System.out.println("REST: update user");
+		
+		boolean valid = SecurityTools.verifySession(token);
+		
+		if(valid) {
+			
+			UserObject result = userDAO.updateUser(user);
+			result.setPassword("");
+			return result;
+			
 		}
 		
 		return null;

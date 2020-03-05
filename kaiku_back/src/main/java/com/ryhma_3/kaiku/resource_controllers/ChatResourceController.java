@@ -12,6 +12,10 @@ import com.ryhma_3.kaiku.KaikuApplication;
 import com.ryhma_3.kaiku.model.cast_object.ChatObject;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
 
+/**
+ * @author Panu Lindqvist
+ * Controller to allow access to chats via REST api
+ */
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class ChatResourceController {
