@@ -1,5 +1,6 @@
 package com.ryhma_3.kaiku.resource_controllers;
 
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ryhma_3.kaiku.KaikuApplication;
 import com.ryhma_3.kaiku.model.cast_object.ChatObject;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
+import com.ryhma_3.kaiku.resource_controllers.exceptions.ValidationFailedException;
 import com.ryhma_3.kaiku.utility.SecurityTools;
 
 /**
@@ -40,11 +42,15 @@ public class ChatResourceController {
 		if(valid) {
 			
 			ChatObject[] results = chatDAO.getChats(user_id);
-			return results;
 			
+			if(results!=null) {
+				return results;
+			}
+			
+			throw new ResourceNotFoundException();
 		}
 		
-		return null;
+		throw new ValidationFailedException();
 	}
 	
 	
@@ -65,11 +71,14 @@ public class ChatResourceController {
 		if(valid) {
 			
 			ChatObject result = chatDAO.createChatObject(chat);
-			return result;
+			if(result!=null) {
+				return result;
+			}
 			
+			throw new ResourceNotFoundException();
 		}
-		
-		return null;
+
+		throw new ValidationFailedException();
 	}
 	
 	
@@ -90,11 +99,14 @@ public class ChatResourceController {
 		if(valid) {
 			
 			ChatObject result = chatDAO.updateChatObject(chat);
-			return result;
+			if(result!=null) {
+				return result;
+			}
 			
+			throw new ResourceNotFoundException();
 		}
-		
-		return null;
+			
+		throw new ValidationFailedException();
 	}
 	
 	
@@ -115,10 +127,13 @@ public class ChatResourceController {
 		if(valid) {
 			
 			boolean success = chatDAO.deleteChatObject(new ChatObject(chat_id, null, null, null, null));
-			return success;
+			if(success) {
+				return success;
+			}
 			
+			throw new ResourceNotFoundException();
 		}
 		
-		return false;
+		throw new ValidationFailedException();
 	}
 }
