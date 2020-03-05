@@ -1,16 +1,10 @@
 package com.ryhma_3.kaiku;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import com.corundumstudio.socketio.SocketIOServer;
 import com.ryhma_3.kaiku.model.cast_object.ChatObject;
 import com.ryhma_3.kaiku.model.database.ChatDAO;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
@@ -18,13 +12,10 @@ import com.ryhma_3.kaiku.model.database.IMessageDAO;
 import com.ryhma_3.kaiku.model.database.IUserDAO;
 import com.ryhma_3.kaiku.model.database.MessageDAO;
 import com.ryhma_3.kaiku.model.database.UserDAO;
-import com.ryhma_3.kaiku.socket.init.ChatServerInit;
 import com.ryhma_3.kaiku.socket.init.IServerInit;
 import com.ryhma_3.kaiku.socket.init.ServerInitAuth;
 import com.ryhma_3.kaiku.socket.init.ServerInitNoAuth;
 import com.ryhma_3.kaiku.socket.server.Server;
-
-import ch.qos.logback.core.net.SyslogOutputStream;
 
 @SpringBootApplication
 public class KaikuApplication {
