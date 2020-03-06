@@ -34,7 +34,6 @@ public class UserDAO extends DataAccessInit implements IUserDAO {
 
     public UserDAO() {
         this.connString = new ConnectionString(getMongoURI("mongoCredentials.txt"));
-        // TODO: remove hardcoded URIs
         this.mongoClient = MongoClients.create(connString);
         this.mongoDatabase = mongoClient.getDatabase("metadata");
         this.collection = mongoDatabase.getCollection("users");
@@ -66,12 +65,10 @@ public class UserDAO extends DataAccessInit implements IUserDAO {
         else return getUser(userObject);
 	}
 
-    // TODO: refactor to use ObjectId for filtering instead of username
 	@Override
 	public boolean deleteUser(UserObject userObject) {
         System.out.println(userObject.getUsername());
 		DeleteResult result = collection.deleteOne(eq("_id", new ObjectId(userObject.get_Id())));
-        // System.out.println();
         if (result.getDeletedCount() > 0) {
             System.out.println("deleted");
             return true;
