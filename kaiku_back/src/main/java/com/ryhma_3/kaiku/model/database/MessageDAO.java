@@ -54,6 +54,7 @@ public class MessageDAO extends DataAccessInit implements IMessageDAO {
             Document d = new Document("content", messageObject.getContent());
             d.append("user_id", messageObject.getUser_id());
             d.append("timestamp", new Date());
+            d.append("chat_id", chat_id);
             collection.insertOne(d);
             return new MessageObject(d.getString("content"), d.getObjectId("_id").toString(),
                 d.getString("user_id"), d.getDate("timestamp"), d.getString("chat_id"));
@@ -64,6 +65,7 @@ public class MessageDAO extends DataAccessInit implements IMessageDAO {
             Document d = new Document("content", messageObject.getContent());
             d.append("user_id", messageObject.getUser_id());
             d.append("timestamp", new Date());
+            d.append("chat_id", chat_id);
             collection.insertOne(d);
             // TODO: 
             return new MessageObject(d.getString("content"), d.getObjectId("_id").toString(),
@@ -96,7 +98,6 @@ public class MessageDAO extends DataAccessInit implements IMessageDAO {
             try {
                 while (cursor.hasNext()) {
                     Document d = cursor.next();
-                    // System.out.println(d.getList("users", String.class).size());
                     if (d.getString("user_id").equals(user_id)) {
                         messageList.add(new MessageObject(d.getString("content"),
                             d.getObjectId("_id").toString(), d.getString("user_id"),
