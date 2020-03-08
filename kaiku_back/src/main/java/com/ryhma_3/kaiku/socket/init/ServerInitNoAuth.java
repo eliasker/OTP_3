@@ -41,9 +41,9 @@ public class ServerInitNoAuth implements IServerInit {
 	}
 	
 	/**
+	 * Override default port number & host name
 	 * @param port
 	 * @param hostname
-	 * Override default port number & host name
 	 */
 	public ServerInitNoAuth(int port, String hostname) {
 		this.port = port;

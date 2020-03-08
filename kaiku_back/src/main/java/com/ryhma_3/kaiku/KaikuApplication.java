@@ -108,14 +108,23 @@ public class KaikuApplication {
 		System.out.println("Spring rest in port: 8080");;
 	}
 	
+	/**
+	 * @return UserDAO
+	 */
 	public static IUserDAO getUserDAO() {
 		return userDAO;
 	}
 	
+	/**
+	 * @return MessageDAO
+	 */
 	public static IMessageDAO getMessageDAO() {
 		return messageDAO;
 	}
 	
+	/**
+	 * @return ChatDAO
+	 */
 	public static IChatDAO getChatDAO() {
 		return chatDAO;
 	}

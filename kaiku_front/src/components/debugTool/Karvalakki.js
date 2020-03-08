@@ -33,11 +33,15 @@ const Karvalakki = () => {
 
       console.log(member1, member2);
 
+      console.log(users[member1], users[member2]);
+      
+
       const _chat = createChat(
         chat.name,
-        "private",[
-          users[member1]._Id,
-          users[member2]._Id
+        "private",
+        [
+          users[member1],
+          users[member2]
         ]
       )
 
@@ -48,7 +52,7 @@ const Karvalakki = () => {
 
   const handleCreateUsers = () => {
     init.users.forEach(async (user) => {
-      users = users.concat(await userService.createUser(user.username, user.password, user.name));
+      users.push(await userService.createUser(user.username, user.password, user.name));
     })
   }
 
@@ -59,7 +63,7 @@ const Karvalakki = () => {
 
     console.log("users: ", users[index]);
 
-    const userFromInit = init.users.find((usr) => usr.username == users[index].username);
+    const userFromInit = init.users.find((usr) => usr.username === users[index].username);
     
 
     initKontsa = await userService.login(
@@ -76,7 +80,7 @@ const Karvalakki = () => {
 
 
   const handleSendMessage = (target, message) => {
-    const target_id = initKontsa.chats.find((chat) => chat.chatName == target);
+    const target_id = initKontsa.chats.find((chat) => chat.chatName === target);
     const result = sendMessage(message, initKontsa._Id, target_id);
 
     console.log(result);
@@ -88,8 +92,8 @@ const Karvalakki = () => {
       <button onClick={() => handleCreateUsers()}>1. create test users</button>
       <button onClick={() => handleGetAllUser()}> 1(opt) get all users</button>
       <button onClick={() => handleSignIn()}>2. sign in random</button>
-      <button onClick={() => handleCreateChats()}>Create chats for user if not created</button>
       <button onClick={() => initialize()} >3. Init socket</button>
+      <button onClick={() => handleCreateChats()}>4. (opt) create chats</button>
 
       <form>
         message:

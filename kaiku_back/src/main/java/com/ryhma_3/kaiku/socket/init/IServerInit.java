@@ -14,51 +14,51 @@ import com.ryhma_3.kaiku.model.database.IUserDAO;
 public interface IServerInit {
 
 	/**
-	 * @return configured SocketIOServer
 	 * Give a configured SocketIOServer to requester.
+	 * @return configured SocketIOServer
 	 */
 	SocketIOServer getSocketServer();
 	
 	
 	/**
-	 * @param chatDAO
 	 * Setup specific chatDAO
+	 * @param chatDAO
 	 */
 	void setChatDAO(IChatDAO chatDAO);
 	
 	/**
-	 * @return ChatDAO
 	 * ChatDAO is configurable in initialization class.
+	 * @return ChatDAO
 	 */
 	IChatDAO getChatDAO();
 	
 	
 	/**
-	 * @param messageDAO
 	 * Setup specific messageDAO
+	 * @param messageDAO
 	 */
 	void setMessageDAO(IMessageDAO messageDAO);
 	
 	
 	/**
-	 * @return MessageDAO
 	 * MessageDAO is configurable in initialization class.
+	 * @return MessageDAO
 	 */
 	IMessageDAO getMessageDAO();
 	
 	
 	
 	/**
-	 * @param userDAO
 	 * setup specific userDAO
+	 * @param userDAO
 	 */
 	void setUserDAO(IUserDAO userDAO);
 	
 	
 	
 	/**
-	 * @return userDAO
 	 * UserDAO is configurable in initialization class.
+	 * @return userDAO
 	 */
 	IUserDAO getUserDAO();
 	

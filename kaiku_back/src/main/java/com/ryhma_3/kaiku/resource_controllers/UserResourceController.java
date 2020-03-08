@@ -23,7 +23,9 @@ import com.ryhma_3.kaiku.resource_controllers.exceptions.ValidationFailedExcepti
 import com.ryhma_3.kaiku.utility.SecurityTools;
 
 /**
+ * <pre>
  * AccountController
+ * </pre>
  */
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -34,9 +36,11 @@ public class UserResourceController {
 	
 	
 	/**
+	 * <pre>
+	 * Request invoked when user starts a session. This entry point compiles all necessary data needed to initialize front end application.
+	 * </pre>
 	 * @param user
 	 * @return {@link InitializationObject} or fail 400
-	 * Request invoked when user starts a session. This entry point compiles all necessary data needed to initialize front end application.
 	 */
 	@RequestMapping(value = "/api/users/**", method=RequestMethod.POST)
 	public InitializationObject getInit(@RequestBody UserObject user) {
@@ -120,9 +124,9 @@ public class UserResourceController {
 	
 
 	/**
+	 * Validate sent token and create a new user from Request body. Return nothing;
 	 * @param userObject - user info
 	 * @param token - token for authorization
-	 * Validate sent token and create a new user from Request body. Return nothing;
 	 */
 	@RequestMapping(value = "/api/users", method=RequestMethod.POST)
 	public UserObject createUser(
@@ -157,6 +161,8 @@ public class UserResourceController {
 			users[users.length-1] = userObject.get_Id();
 			global.setMembers(users);
 			
+			System.out.println(global.getMembers());
+			
 			chatDAO.updateChatObject(global);
 			
 			userObject.setPassword("");
@@ -170,9 +176,9 @@ public class UserResourceController {
 	
 	
 	/**
+	 * With admin token, get all users
 	 * @param token
 	 * @return {@link UserObject}[]
-	 * With admin token, get all users
 	 */
 	@RequestMapping(value="/api/users", method=RequestMethod.GET)
 	public UserObject[] getUsers(
@@ -202,10 +208,10 @@ public class UserResourceController {
 	
 	
 	/**
+	 * Logged in user can send request to change their user information
 	 * @param token
 	 * @param user
 	 * @return {@link UserObject}
-	 * Logged in user can send request to change their user information
 	 */
 	@RequestMapping(value="/api/users", method=RequestMethod.PUT)
 	public UserObject updateUser(
@@ -232,10 +238,10 @@ public class UserResourceController {
 	
 	
 	/**
+	 * With admin token, delete a user
 	 * @param token
 	 * @param user_id
 	 * @return boolan
-	 * With admin token, delete a user
 	 */
 	@RequestMapping(value="/api/users/**", method=RequestMethod.DELETE)
 	public boolean deleteUser(

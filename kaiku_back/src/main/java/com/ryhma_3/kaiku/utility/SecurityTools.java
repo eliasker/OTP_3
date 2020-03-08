@@ -36,9 +36,9 @@ public class SecurityTools {
 	
 	
 	/**
+	 * Secure passwords by encryption.
 	 * @param string
 	 * @return Encrypted string
-	 * Secure passwords by encryption.
 	 */
 	public static String encrypt(String string) {
 		return cryptor.encryptPassword(string);
@@ -46,10 +46,10 @@ public class SecurityTools {
 	
 	
 	/**
+	 * Check if encryptedPWS matches PSW
 	 * @param encryptedPSW
 	 * @param PSW
 	 * @return boolean: match
-	 * Check if encryptedPWS matches PSW
 	 */
 	public static boolean compare(String encryptedPSW, String PSW) {
 		boolean match = cryptor.checkPassword(PSW, encryptedPSW) ? true : false;
@@ -58,8 +58,8 @@ public class SecurityTools {
 	
 	
 	/**
-	 * @return random String of 128 characters
 	 * generate a token string. Doesn't itself contain any information
+	 * @return random String of 128 characters
 	 */
 	private static String genRandomString() {
 		String tokenString = "";
@@ -83,9 +83,9 @@ public class SecurityTools {
 	
 	
 	/**
+	 * Helper for generating integers
 	 * @param max integer
 	 * @return random integer
-	 * Helper for generating integers
 	 */
 	private static int randomGen(int max) {
 		return (int) Math.floor(Math.random() * (max));
@@ -94,10 +94,9 @@ public class SecurityTools {
 	
 	
 	/**
+	 * Get a users token with user_id OR tokenString. 
 	 * @param user_id || tokenString
 	 * @return Triple<UUID, user_id, tokenString> token
-	 * Get a users token with user_id OR tokenString. 
-	 * Thread-safe
 	 */
 	public static Token getCloneOfToken(String searchInput){
 		synchronized (lock) {
@@ -134,10 +133,9 @@ public class SecurityTools {
 	
 	
 	/**
+	 * Get a users token with user_id OR tokenString. 
 	 * @param sessionID
 	 * @return Triple<UUID, user_id, tokenString> token
-	 * Get a users token with user_id OR tokenString. 
-	 * Thread-safe
 	 */
 	public static Token getCloneOfToken(UUID sessionID) {
 		synchronized (lock) {
@@ -174,11 +172,10 @@ public class SecurityTools {
 	
 	
 	/**
-	 * @param user_id
-	 * @return Triple<UUID, user_id, tokenString> token
 	 * Create or update a user specific token. On first connect user gets a new list-item, on consecutive connections a new token string 
 	 * is created.
-	 * Thread-safe
+	 * @param user_id
+	 * @return Triple<UUID, user_id, tokenString> token
 	 */
 	public static Token createOrUpdateToken(String user_id) {
 		synchronized (lock) {
@@ -224,12 +221,11 @@ public class SecurityTools {
 	
 	
 	/**
-	 * @param user_id
-	 * @param tokenString
 	 * override,
 	 * Create or update a user specific token. On first connect user gets a new list-item, on consecutive connections a new token string 
 	 * is created.
-	 * Thread-safe
+	 * @param user_id
+	 * @param tokenString
 	 */
 	public static Token createOrUpdateToken(String user_id, String tokenString) {
 		synchronized (lock) {
@@ -274,10 +270,9 @@ public class SecurityTools {
 	}
 	
 	/**
+	 * Connect user session id to a token. Acts also as a verification of connecting user.
 	 * @param tokenString
 	 * @return boolean - did the operation succeed
-	 * Connect user session id to a token. Acts also as a verification of connecting user.
-	 * Thread-safe
 	 */
 	public static boolean verifySession(String tokenString) {
 		synchronized (lock) {
@@ -316,6 +311,11 @@ public class SecurityTools {
 	}
 	
 	
+	/**
+	 * When client connects trough socket, attach client UUID to a token.
+	 * @param tokenString
+	 * @param sessionID
+	 */
 	public static void attachSessionToToken(String tokenString, UUID sessionID) {
 		synchronized (lock) {
 			try {
