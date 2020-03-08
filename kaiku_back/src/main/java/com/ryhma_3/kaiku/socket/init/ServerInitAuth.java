@@ -42,9 +42,9 @@ public class ServerInitAuth implements IServerInit {
 	public ServerInitAuth() {}
 	
 	/**
+	 * Override default port number & host name
 	 * @param port
 	 * @param hostname
-	 * Override default port number & host name
 	 */
 	public ServerInitAuth(int port, String hostname) {
 		this.port = port;

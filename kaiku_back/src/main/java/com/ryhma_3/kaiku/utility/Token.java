@@ -3,10 +3,7 @@ package com.ryhma_3.kaiku.utility;
 import java.util.UUID;
 
 /**
- * @author Stack Overflow
- * @param <F>
- * @param <S>
- * @param <T>
+ * Token container class
  */
 public class Token {
 	private UUID sessionID;
@@ -14,6 +11,12 @@ public class Token {
 	private String tokenString;
 	private boolean online = false;
 	
+    /**
+     * Create token
+     * @param sessionID
+     * @param user_id
+     * @param tokenString
+     */
     public Token(UUID sessionID, String user_id, String tokenString) {
     	this.sessionID = sessionID;
     	this.user_id = user_id;
@@ -42,8 +45,8 @@ public class Token {
 
 
 	/**
+	 * This constructor clones another token
      * @param toClone
-     * This constructor clones another Triple
      */
     public Token (Token toClone) {
     	this.sessionID = toClone.getSessionID();

@@ -26,11 +26,10 @@ public class ChatResourceController {
 	
 	
 	/**
+	 * get all user's chats with authorization and user_id
 	 * @param token
 	 * @param user_id
 	 * @return {@link ChatObject}[]
-	 * 
-	 * get all user's chats with authorization and user_id
 	 */
 	@RequestMapping(value="/api/chats/**", method=RequestMethod.GET)
 	public ChatObject[] getChats(
@@ -55,10 +54,10 @@ public class ChatResourceController {
 	
 	
 	/**
+	 * Create a new chat group, only accessible to admin
 	 * @param chat
 	 * @param token 
 	 * @return {@link ChatObject}
-	 * Create a new chat group, only accessible to admin
 	 */
 	@RequestMapping(value = "/api/chats", method=RequestMethod.POST)
 	public ChatObject createChat(
@@ -83,10 +82,10 @@ public class ChatResourceController {
 	
 	
 	/**
+	 * Update existing chat group, only accessible to admin
 	 * @param chat
 	 * @param token
 	 * @return {@link ChatObject}
-	 *  Update existing chat group, only accessible to admin
 	 */
 	@RequestMapping(value = "/api/chats/**", method=RequestMethod.PUT)
 	public ChatObject updateChat(
@@ -111,10 +110,10 @@ public class ChatResourceController {
 	
 	
 	/**
+	 * Delete existing chat, only accessible to admin.
 	 * @param chat_id
 	 * @param token
 	 * @return boolean
-	 * Delete existing chat, only accessible to admin.
 	 */
 	@RequestMapping(value ="/api/chats/**", method=RequestMethod.DELETE)
 	public boolean deleteChat(

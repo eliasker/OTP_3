@@ -7,14 +7,24 @@ public class AuthObject {
 		
 	}
 	
+	/**
+	 * Create auth object
+	 * @param auth
+	 */
 	public AuthObject(String auth) {
 		this.auth = auth;
 	}
 
+	/**
+	 * @return {@link AuthObject}
+	 */
 	public String getAuth() {
 		return auth;
 	}
 
+	/**
+	 * @param auth
+	 */
 	public void setAuth(String auth) {
 		this.auth = auth;
 	}
