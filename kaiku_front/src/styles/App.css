@@ -133,12 +133,17 @@
 }
 
 .chat-type p{
-  border: 1px solid #7777;
   margin: 0;
   padding: 0.5rem;
   text-align: center;
-  border-radius: 2px;
+  border-radius: 0;
   font-weight: 600;
+  border-bottom: 1px solid #5B667B;
+}
+
+.active-chat {
+  border: 1px solid #5B667B !important;
+  border-bottom: 0 !important;
 }
 
 .chat-type .fas {
@@ -252,7 +257,7 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  padding-top: 124px;
+  padding-top: 123px;
   z-index: 0;
 }
 
@@ -836,10 +841,10 @@ input::-webkit-input-placeholder {
 .bg-primary-0, .user-header, #search-message input
 { background-color: #1D2637 !important }	/* Main Primary color */
 
-.bg-primary-1, .message-field, .chat-type, .users-online, .pr-user, .profile-page-container
+.bg-primary-1, .message-field, .users-online, .profile-page-container, .active-chat
 { background-color: #4B566B !important }
 
-.bg-primary-2, .active-chat
+.bg-primary-2, .chat-type
 { background-color: #313847 !important }
 
 .bg-primary-3
@@ -851,10 +856,13 @@ input::-webkit-input-placeholder {
 .bg-primary-5, #search-message input:hover, #search-message input:focus
 { background-color: #3B465B !important }
 
+.pr-user
+{ background-color: #394257 !important}
+
 .txt-light, .chat-header, .user-header, .message-date, .chat-type, .profile
 { color: rgba(240, 240, 240, 0.9) !important }
 
-.active-chat
+.chat-type
 { color: rgba(240, 240, 240, 0.5) !important }
 
 .users-online
