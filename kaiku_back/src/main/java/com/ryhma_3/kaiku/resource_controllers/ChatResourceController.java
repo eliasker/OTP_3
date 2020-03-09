@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ryhma_3.kaiku.KaikuApplication;
 import com.ryhma_3.kaiku.model.cast_object.ChatObject;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
+import com.ryhma_3.kaiku.resource_controllers.exceptions.ResourceNotFoundException;
+import com.ryhma_3.kaiku.resource_controllers.exceptions.ValidationFailedException;
 import com.ryhma_3.kaiku.utility.SecurityTools;
 
 /**
@@ -24,35 +26,44 @@ public class ChatResourceController {
 	
 	
 	/**
+	 * get all user's chats with authorization and user_id
 	 * @param token
 	 * @param user_id
 	 * @return {@link ChatObject}[]
-	 * 
-	 * get all user's chats with authorization and user_id
 	 */
 	@RequestMapping(value="/api/chats/**", method=RequestMethod.GET)
 	public ChatObject[] getChats(
 			@RequestHeader("Authorization") String token,
 			@RequestParam String user_id) {
 		
-		boolean valid = token.equals(token) || SecurityTools.verifySession(token);
+		boolean valid = token.equals("kaiku") || SecurityTools.verifySession(token);
 		
 		if(valid) {
 			
-			ChatObject[] results = chatDAO.getChats(user_id);
-			return results;
+			if(token.equals("kaiku")) {
+				//admin gets all chats
+				ChatObject[] results = chatDAO.getAllChats();
+				return results;
+			}
 			
+			ChatObject[] results = chatDAO.getChats(user_id);
+			
+			if(results!=null) {
+				return results;
+			}
+			
+			throw new ResourceNotFoundException();
 		}
 		
-		return null;
+		throw new ValidationFailedException();
 	}
 	
 	
 	/**
+	 * Create a new chat group, only accessible to admin
 	 * @param chat
 	 * @param token 
 	 * @return {@link ChatObject}
-	 * Create a new chat group, only accessible to admin
 	 */
 	@RequestMapping(value = "/api/chats", method=RequestMethod.POST)
 	public ChatObject createChat(
@@ -65,19 +76,22 @@ public class ChatResourceController {
 		if(valid) {
 			
 			ChatObject result = chatDAO.createChatObject(chat);
-			return result;
+			if(result!=null) {
+				return result;
+			}
 			
+			throw new ResourceNotFoundException();
 		}
-		
-		return null;
+
+		throw new ValidationFailedException();
 	}
 	
 	
 	/**
+	 * Update existing chat group, only accessible to admin
 	 * @param chat
 	 * @param token
 	 * @return {@link ChatObject}
-	 *  Update existing chat group, only accessible to admin
 	 */
 	@RequestMapping(value = "/api/chats/**", method=RequestMethod.PUT)
 	public ChatObject updateChat(
@@ -90,19 +104,22 @@ public class ChatResourceController {
 		if(valid) {
 			
 			ChatObject result = chatDAO.updateChatObject(chat);
-			return result;
+			if(result!=null) {
+				return result;
+			}
 			
+			throw new ResourceNotFoundException();
 		}
-		
-		return null;
+			
+		throw new ValidationFailedException();
 	}
 	
 	
 	/**
+	 * Delete existing chat, only accessible to admin.
 	 * @param chat_id
 	 * @param token
 	 * @return boolean
-	 * Delete existing chat, only accessible to admin.
 	 */
 	@RequestMapping(value ="/api/chats/**", method=RequestMethod.DELETE)
 	public boolean deleteChat(
@@ -115,10 +132,13 @@ public class ChatResourceController {
 		if(valid) {
 			
 			boolean success = chatDAO.deleteChatObject(new ChatObject(chat_id, null, null, null, null));
-			return success;
+			if(success) {
+				return success;
+			}
 			
+			throw new ResourceNotFoundException();
 		}
 		
-		return false;
+		throw new ValidationFailedException();
 	}
 }

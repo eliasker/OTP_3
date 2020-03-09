@@ -1,34 +1,38 @@
-import React, { useRef } from 'react';
+import React, {useState } from 'react';
 import socketIOClient from 'socket.io-client';
 
-const socketService = () => {
+const SocketService = () => {
 
-  var socketRef = null;
+  const[socket, setSocket] = useState()
 
   const createSocketConnection = (token) => {
     const socketUrl = 'http://localhost:9991';
 
-    socketRef = socketIOClient.connect(
+    console.log('token: ', token);
+    
+    const _socket = socketIOClient.connect(
       socketUrl,
-      {query: `Authorization:${token}`}
+      {query: `Authorization=${token}`}
     )
 
-    socketRef.on('connect', function(data){
+    _socket.on('connect', function(data){
       console.log('connect event');
       console.log('connected users: ', data);
     });
     
-    socketRef.on('chatEvent', function(data){
+    _socket.on('chatEvent', function(data){
       console.log('chatEvent received', data);
     });
     
-    socketRef.on('disconnect', function(){
+    _socket.on('disconnect', function(){
       console.log('disconnect');
     });
 
-    socketRef.on('createChatEvent', function(data){
+    _socket.on('createChatEvent', function(data){
       console.log('createChatEvent', data);
     })
+
+    setSocket(_socket);
   }
 
   const sendMessage = (message, user_id, chat_id) => {
@@ -39,7 +43,7 @@ const socketService = () => {
       chat_id
     }
 
-    socketRef.emit("chatEvent", obj);
+    socket.emit("chatEvent", obj);
   }
 
   const createChat = (chatName, type, users) => {
@@ -53,10 +57,10 @@ const socketService = () => {
     console.log("create: ", obj);
     
 
-    socketRef.emit("createChatEvent", obj);
+    socket.emit("createChatEvent", obj);
   }
 
   return { createSocketConnection, createChat, sendMessage }
 }
 
-export default socketService
+export default SocketService

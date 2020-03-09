@@ -81,15 +81,12 @@ public class Server implements IServer {
 				//register client
 				String tokenString = client.getHandshakeData().getSingleUrlParam("Authorization");
 				
+				System.out.println(tokenString);
+				
 				SecurityTools.attachSessionToToken(tokenString, client.getSessionId());
 								
 				Token cloneOfToken = SecurityTools.getCloneOfToken(tokenString);
-				
-				System.out.println("client:" + cloneOfToken.getUser_id() + 
-						" verified, token:" + cloneOfToken.getTokenString() + 
-						" UUID:" + cloneOfToken.getSessionID());
-				
-				
+					
 				//update connectedUsers
 				connectedUsers.put(cloneOfToken.getUser_id(), true);
 				
@@ -189,9 +186,8 @@ public class Server implements IServer {
 
 	
 	/**
+	 * Initialize all chats into chats list, initialize all users to connectedUsers list
 	 * @param server
-	 *  //Collect all chats from database and add them into servers as namespaces
-	 *   Initialize all chats into chats list, initialize all users to connectedUsers list
 	 */
 	private void initialize(SocketIOServer server) {
 		
@@ -215,10 +211,9 @@ public class Server implements IServer {
 	
 	
 	/**
+	 * Running chat objects through this method creates new server namespaces with proper attributes attached.
 	 * @param server
 	 * @param chatObject
-	 * Running chat objects through this method creates new server namespaces with proper attributes attached.
-	 * 
 	 * @deprecated for the time being
 	 */ 
 	private void setupNamespace(SocketIOServer server, ChatObject chatObject) {

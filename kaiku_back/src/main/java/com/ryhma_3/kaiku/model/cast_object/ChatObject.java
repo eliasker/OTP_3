@@ -1,5 +1,8 @@
 package com.ryhma_3.kaiku.model.cast_object;
 
+/**
+ * Java object representing a chat database entry
+ */
 public class ChatObject {
 	private String chat_id;
 	private String chatName;
