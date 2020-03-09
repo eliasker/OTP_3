@@ -9,7 +9,6 @@ const configAsAdmin = {
 
 const login = async (username, password) => {
   try {
-    console.log('login with: ', username, password)
     const response = await axios.post(
       baseUrl + 'api/users/' + username,
       {
@@ -17,7 +16,6 @@ const login = async (username, password) => {
         password
       }
     )
-    console.log('response from request', response);
     return response.data;
 
   } catch (error) {
