@@ -34,6 +34,7 @@ public class UserResourceController {
 	private IMessageDAO messageDAO = KaikuApplication.getMessageDAO();
 	private IUserDAO userDAO = KaikuApplication.getUserDAO();
 	
+	private ChatObject global = KaikuApplication.getGlobalChat();
 	
 	/**
 	 * <pre>
@@ -156,7 +157,6 @@ public class UserResourceController {
 			/*			 
 			 * add user to global chat
 			 */
-			ChatObject global = chatDAO.getChatObject(new ChatObject(null, "global", null, null, null));
 			String[] users = Arrays.copyOf(global.getMembers(), global.getMembers().length + 1);
 			users[users.length-1] = userObject.get_Id();
 			global.setMembers(users);

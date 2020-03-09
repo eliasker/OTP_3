@@ -26,6 +26,8 @@ public class KaikuApplication {
 	static IChatDAO chatDAO = null;
 	static IMessageDAO messageDAO = null;
 	static IUserDAO userDAO = null;
+	
+	private static ChatObject global = null;
 
 	public static void main(String[] args) {
 		commandLineSetup();
@@ -42,13 +44,13 @@ public class KaikuApplication {
 	private static void initializeState() {
 		
 		//confirm global chat exists
-		ChatObject global = null;
-		try {
-			global = chatDAO.getChatObject(new ChatObject(null, "global", "global", null, null));
-		} catch (Exception e) {
+		ChatObject[] chats = chatDAO.getAllChats();
+		if(chats.length>=1) {
+			global = chats[0];
+		} else {
 			String[] empty = { };
 			global = new ChatObject(null, "global", "global", empty, null);
-			chatDAO.createChatObject(global);
+			global = chatDAO.createChatObject(global);
 		}
 	}
 
@@ -127,5 +129,9 @@ public class KaikuApplication {
 	 */
 	public static IChatDAO getChatDAO() {
 		return chatDAO;
+	}
+	
+	public static ChatObject getGlobalChat() {
+		return global;
 	}
 }
