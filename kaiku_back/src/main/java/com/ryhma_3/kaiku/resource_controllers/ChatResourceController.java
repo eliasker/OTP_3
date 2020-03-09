@@ -36,9 +36,15 @@ public class ChatResourceController {
 			@RequestHeader("Authorization") String token,
 			@RequestParam String user_id) {
 		
-		boolean valid = token.equals(token) || SecurityTools.verifySession(token);
+		boolean valid = token.equals("kaiku") || SecurityTools.verifySession(token);
 		
 		if(valid) {
+			
+			if(token.equals("kaiku")) {
+				//admin gets all chats
+				ChatObject[] results = chatDAO.getAllChats();
+				return results;
+			}
 			
 			ChatObject[] results = chatDAO.getChats(user_id);
 			
