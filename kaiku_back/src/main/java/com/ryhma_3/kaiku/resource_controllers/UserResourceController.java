@@ -93,7 +93,7 @@ public class UserResourceController {
 			 */
 			for (int i = 0; i < chats.length; i++) {
 				if(chats[i] != null) {
-	    			MessageObject[] messages = messageDAO.getAllMessages(userFromDb.get_Id());
+	    			MessageObject[] messages = messageDAO.getAllMessages(chats[i].getChat_id());
 					chats[i].setMessages(messages);
 				}
 			}

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ryhma_3.kaiku.KaikuApplication;
 import com.ryhma_3.kaiku.model.cast_object.ChatObject;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
+import com.ryhma_3.kaiku.model.database.IMessageDAO;
+import com.ryhma_3.kaiku.model.database.MessageDAO;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ResourceNotFoundException;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ValidationFailedException;
 import com.ryhma_3.kaiku.utility.SecurityTools;
@@ -23,6 +25,7 @@ import com.ryhma_3.kaiku.utility.SecurityTools;
 @RestController
 public class ChatResourceController {
 	private IChatDAO chatDAO = KaikuApplication.getChatDAO();
+	private IMessageDAO messageDAO = KaikuApplication.getMessageDAO();
 	
 	
 	/**
@@ -40,14 +43,24 @@ public class ChatResourceController {
 		
 		if(valid) {
 			
+			ChatObject[] results;
+			
 			if(token.equals("kaiku")) {
 				//admin gets all chats
-				ChatObject[] results = chatDAO.getAllChats();
-				return results;
+				results = chatDAO.getAllChats();
+				
+			} else {
+
+				results = chatDAO.getChats(user_id);
+
 			}
 			
-			ChatObject[] results = chatDAO.getChats(user_id);
+			for(ChatObject chat : results) {
+				
+				chat.setMessages(messageDAO.getAllMessages(chat.getChat_id()));
 			
+			}
+						
 			if(results!=null) {
 				return results;
 			}
