@@ -1,11 +1,13 @@
 package com.ryhma_3.kaiku;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.ryhma_3.kaiku.model.cast_object.ChatObject;
+import com.ryhma_3.kaiku.model.cast_object.UserObject;
 import com.ryhma_3.kaiku.model.database.ChatDAO;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
@@ -41,18 +43,47 @@ public class KaikuApplication {
 	}
 	
 	
+	/**
+	 * Make sure there is global chat
+	 */
 	private static void initializeState() {
 		
 		//confirm global chat exists
 		try {
 			ChatObject[] chats = chatDAO.getAllChats();
+			
 			if(chats.length>=1) {
-				global = chats[0];
+				//try to find global chat
+				
+				for(ChatObject chat : chats) {
+					
+					if(chat.getChatName().equals("global")) {
+						global = chat;
+					}
+					
+				}
+				
 			} else {
-				String[] empty = { };
-				global = new ChatObject(null, "global", "global", empty, null);
+				//create global chat
+				
+				String[] users = new String[0];
+				
+				//try adding existing users to new global chat
+				try {
+					UserObject[] userObjs = userDAO.getAllUsers();
+					for(UserObject user : userObjs) {
+						users = Arrays.copyOf(users, users.length+1);
+						users[users.length-1] = user.get_Id();
+					}
+					
+				} catch(NullPointerException ne) {
+					System.out.println("no existing users for new global chat");
+				}
+				
+				global = new ChatObject(null, "global", "global", users, null);
 				global = chatDAO.createChatObject(global);
 			} 
+			
 		} catch (Exception e) {
 			System.out.println("failed to create global chat");
 		}
