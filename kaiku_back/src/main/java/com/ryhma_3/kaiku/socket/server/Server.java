@@ -126,12 +126,10 @@ public class Server implements IServer {
 			public void onData(SocketIOClient client, ChatObject data, AckRequest ackSender) throws Exception {
 				
 				try {
-					
-					System.out.println(data.getMembers()[0]);
-					System.out.println(data.getMembers()[1]);
-					
 					//Create chat
 					ChatObject result = chatDAO.createChatObject(data);
+					
+					result.setMessages(messageDAO.getAllMessages(result.getChat_id()));
 					
 					System.out.println("created chat: " + result.getChatName() + ", with ID: " + result.getChat_id());
 										
@@ -144,6 +142,8 @@ public class Server implements IServer {
 							//send event realtime
 							SocketIOClient receiver = server.getClient(SecurityTools.getCloneOfToken(member).getSessionID());
 							receiver.sendEvent("createChatEvent", result);
+							
+							
 							
 							System.out.println("sent event to: " + receiver.getSessionId().toString());
 							
