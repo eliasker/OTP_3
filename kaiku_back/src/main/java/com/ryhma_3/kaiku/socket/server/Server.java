@@ -31,6 +31,7 @@ import com.ryhma_3.kaiku.utility.SecurityTools;
 import com.ryhma_3.kaiku.utility.Token;
 
 import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.HttpContentEncoder.Result;
 
 /**
  * @author Panu Lindqvist
@@ -126,11 +127,29 @@ public class Server implements IServer {
 			public void onData(SocketIOClient client, ChatObject data, AckRequest ackSender) throws Exception {
 				
 				try {
+					
 					//Create chat
-					ChatObject result = chatDAO.createChatObject(data);
+					ChatObject result = null;
+					try {						
+						MessageObject[] messages = data.getMessages();
+						
+						data.setMessages(null);
+						
+						result = chatDAO.createChatObject(data);
+						
+						messageDAO.createMessage(messages[0], result.getChat_id());
+						
+						System.out.println("Chat created with initial message");
+						
+					} catch(Exception e) {
+						
+						System.out.println("no initial message");
+						
+						result = chatDAO.createChatObject(data);
+					}
 					
-					result.setMessages(messageDAO.getAllMessages(result.getChat_id()));
 					
+										
 					System.out.println("created chat: " + result.getChatName() + ", with ID: " + result.getChat_id());
 										
 					//go through all  members
