@@ -140,7 +140,7 @@ public class Server implements IServer {
 							
 							//send event realtime
 							SocketIOClient receiver = server.getClient(SecurityTools.getCloneOfToken(member).getSessionID());
-							receiver.sendEvent("createChatEvent", data);
+							receiver.sendEvent("createChatEvent", result);
 							
 						}
 					}
