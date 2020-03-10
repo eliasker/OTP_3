@@ -160,7 +160,7 @@ public class Server implements IServer {
 				
 					//find correct chat
 					for(ChatObject chat : chats) {
-						if(chat.getChat_id() == data.getChat_id()) {
+						if(chat.getChat_id().equals(data.getChat_id())) {
 						
 							MessageObject message = messageDAO.createMessage(data, chat.getChat_id());
 							System.out.println("Created message: " + message.getContent() + ",  to: " + message.getChat_id());
