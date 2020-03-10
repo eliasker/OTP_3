@@ -7,8 +7,8 @@ public class ChatObject {
 	private String chat_id;
 	private String chatName;
 	private String type = "private";
-	private String members[];
-	private MessageObject[] messages;
+	private String members[] = null;
+	private MessageObject[] messages = null;
 	
 	public ChatObject(String chat_id, String chatName, String type, String[] members, MessageObject[] messages) {
 		super();
@@ -54,6 +54,7 @@ public class ChatObject {
 	}
 
 	public MessageObject[] getMessages() {
+		if(messages==null) { return null; }
 		return messages;
 	}
 
