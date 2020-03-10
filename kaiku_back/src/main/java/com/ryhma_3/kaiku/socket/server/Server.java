@@ -169,10 +169,14 @@ public class Server implements IServer {
 							for(String user : chat.getMembers()) {
 								
 								//get UUID
-								UUID sessionID = SecurityTools.getCloneOfToken(user).getSessionID();
-								if(sessionID!=null) {
+								try {
+									UUID sessionID = SecurityTools.getCloneOfToken(user).getSessionID();
 									server.getClient(sessionID).sendEvent("chatEvent", message);
 									System.out.println("sent message to UUID: " + sessionID);
+								} catch (NullPointerException ne) {
+									System.out.println("skipping client on return msg");
+								} catch (Exception e) {
+									e.printStackTrace();
 								}
 							}
 							break;
