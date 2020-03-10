@@ -52,7 +52,10 @@ public class ChatDAO extends DataAccessInit implements IChatDAO {
         d.append("type", chatObject.getType());
         d.append("users", Arrays.asList(chatObject.getMembers()));
         // TODO: add actual messages when it's time for it
-        d.append("messages", Arrays.asList(chatObject.getMessages()));
+        if (chatObject.getMessages() == null)
+            d.append("messages", null);
+        else
+            d.append("messages", Arrays.asList(chatObject.getMessages()));
         collection.insertOne(d);
         return new ChatObject(d.getObjectId("_id").toString(), chatObject.getChatName(),
             chatObject.getType(), chatObject.getMembers(), chatObject.getMessages());
