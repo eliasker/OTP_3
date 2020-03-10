@@ -154,6 +154,12 @@ public class UserResourceController {
 			userObject = userDAO.createUser(userObject);
 			
 			
+			/*
+			 * Add user to token collection
+			 */
+			SecurityTools.createOrUpdateToken(userObject.get_Id());
+			
+			
 			/*			 
 			 * add user to global chat
 			 */
