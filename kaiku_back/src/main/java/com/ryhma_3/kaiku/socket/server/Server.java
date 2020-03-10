@@ -127,6 +127,9 @@ public class Server implements IServer {
 				
 				try {
 					
+					System.out.println(data.getMembers()[0]);
+					System.out.println(data.getMembers()[1]);
+					
 					//Create chat
 					ChatObject result = chatDAO.createChatObject(data);
 					
