@@ -125,12 +125,13 @@ public class Server implements IServer {
 			@Override
 			public void onData(SocketIOClient client, ChatObject data, AckRequest ackSender) throws Exception {
 				
-				//Create chat
-				ChatObject result = chatDAO.createChatObject(data);
-				
-				if(result != null) {
-					System.out.println("Chat created: " + result.getChatName());
+				try {
 					
+					//Create chat
+					ChatObject result = chatDAO.createChatObject(data);
+					
+					System.out.println("created chat: " + result.getChatName() + ", with ID: " + result.getChat_id());
+										
 					//go through all  members
 					for(String member : data.getMembers()) {
 						
@@ -141,13 +142,17 @@ public class Server implements IServer {
 							SocketIOClient receiver = server.getClient(SecurityTools.getCloneOfToken(member).getSessionID());
 							receiver.sendEvent("createChatEvent", result);
 							
+							System.out.println("sent event to: " + receiver.getSessionId().toString());
+							
 						}
 					}
-				} else {
-					throw new Exception();
+				} catch(Exception e) {
+					System.out.println("Create chat failed");
+					e.printStackTrace();
 				}
 			}
 		});
+		
 		
 		server.addEventListener("chatEvent", MessageObject.class, new DataListener<MessageObject>() {
 			
