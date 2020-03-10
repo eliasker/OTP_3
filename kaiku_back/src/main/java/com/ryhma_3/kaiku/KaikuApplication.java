@@ -44,13 +44,17 @@ public class KaikuApplication {
 	private static void initializeState() {
 		
 		//confirm global chat exists
-		ChatObject[] chats = chatDAO.getAllChats();
-		if(chats.length>=1) {
-			global = chats[0];
-		} else {
-			String[] empty = { };
-			global = new ChatObject(null, "global", "global", empty, null);
-			global = chatDAO.createChatObject(global);
+		try {
+			ChatObject[] chats = chatDAO.getAllChats();
+			if(chats.length>=1) {
+				global = chats[0];
+			} else {
+				String[] empty = { };
+				global = new ChatObject(null, "global", "global", empty, null);
+				global = chatDAO.createChatObject(global);
+			} 
+		} catch (Exception e) {
+			System.out.println("failed to create global chat");
 		}
 	}
 
