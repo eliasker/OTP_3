@@ -1,10 +1,10 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import InitialData from '../providers/InitialData'
 import loginService from '../services/loginService'
 import useField from '../hooks/hooks'
 
-const Login = () => {
-  const { initialData, setInitialData, loggedUser, setLoggedUser } = useContext(InitialData)
+const Login = ({ createSocketConnection }) => {
+  const { initialData, setLoggedUser } = useContext(InitialData)
   const username = useField('text')
   const password = useField('text')
 
@@ -19,25 +19,18 @@ const Login = () => {
       window.localStorage.setItem('loggedKaikuUser', JSON.stringify(initialData))
     } else {
       try {
-        const user = await loginService.login(username.value, password.value)
+        var user = await loginService.login(username.value, password.value)
         if (user === '') throw ('no matching user')
+        console.log('setting loggeduser to ', user)
+        user._Id = user.user_id
         setLoggedUser(user)
-        console.log(user)
+        createSocketConnection(await user.token)
         window.localStorage.setItem('loggedKaikuUser', JSON.stringify(user))
       } catch (e) {
-        console.log('failed login')
+        console.log('failed login', e)
       }
     }
   }
-
-  useEffect(() => {
-    //profile theme color generator
-    if (loggedUser === null) return
-    const colors = ['red', 'navy', 'orange', 'blue', 'green', 'amber', 'turqoise', 'pink', 'brown', 'dark']
-    const generateColor = () => Math.floor(Math.random() * Math.floor(colors.length))
-    setInitialData({ ...loggedUser, users: loggedUser.users.map(u => u = { ...u, color: colors[generateColor()] }) })
-  }, [initialData])
-
 
   const removeReset = (object) => {
     const { reset, ...newObject } = object
