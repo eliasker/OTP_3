@@ -169,7 +169,7 @@ public class UserResourceController {
 			
 			System.out.println(global.getMembers());
 			
-			chatDAO.updateChatObject(global);
+			global = chatDAO.updateChatObject(global);
 			
 			userObject.setPassword("");
 			
