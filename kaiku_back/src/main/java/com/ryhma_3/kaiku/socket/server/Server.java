@@ -129,7 +129,6 @@ public class Server implements IServer {
 				ChatObject result = chatDAO.createChatObject(data);
 				
 				if(result != null) {
-					
 					System.out.println("Chat created: " + result.getChatName());
 					
 					//go through all  members
@@ -156,12 +155,15 @@ public class Server implements IServer {
 			public void onData(SocketIOClient client, MessageObject data, AckRequest ackSender) throws Exception {
 				
 				try {
+					
+					System.out.println("chats in store:  " + chats.size());
 				
 					//find correct chat
 					for(ChatObject chat : chats) {
 						if(chat.getChat_id() == data.getChat_id()) {
 						
 							MessageObject message = messageDAO.createMessage(data, chat.getChat_id());
+							System.out.println("Created message: " + message.getContent() + ",  to: " + message.getChat_id());
 							
 							//run through all users
 							for(String user : chat.getMembers()) {
@@ -170,6 +172,7 @@ public class Server implements IServer {
 								UUID sessionID = SecurityTools.getCloneOfToken(user).getSessionID();
 								if(sessionID!=null) {
 									server.getClient(sessionID).sendEvent("chatEvent", message);
+									System.out.println("sent message to UUID: " + sessionID);
 								}
 							}
 							break;
