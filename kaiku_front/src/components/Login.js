@@ -7,7 +7,7 @@ const Login = ({ createSocketConnection }) => {
   const [showPassword, setShowPassword] = useState(false)
   const { initialData, setLoggedUser } = useContext(InitialData)
   const username = useField('text')
-  const password = useField(showPassword ? 'text': 'password')
+  const password = useField(showPassword ? 'text' : 'password')
 
   // mirka-kissa asgakikk
   // MarkoM asdsaff
@@ -53,7 +53,7 @@ const Login = ({ createSocketConnection }) => {
             <label htmlFor="inputPassword" className="sr-only">Salasana</label>
             <input id="inputPassword" className="form-control" placeholder="Salasana" required {...removeReset(password)} />
             <div class="form-check pt-2 pb-0">
-              <input class="form-check-input" type="checkbox" value={showPassword} onChange={() => setShowPassword(!showPassword)} id="defaultCheck1"/>
+              <input class="form-check-input" type="checkbox" value={showPassword} onChange={() => setShowPassword(!showPassword)} id="defaultCheck1" />
               <label class="form-check-label" for="defaultCheck1"> Show password </label>
             </div>
           </div>

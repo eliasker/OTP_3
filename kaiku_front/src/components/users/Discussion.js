@@ -6,38 +6,37 @@ import CurrentChat from '../../providers/CurrentChat'
 
 const Discussions = ({ setDisplayUser, chat }) => {
   const { initialData, loggedUser } = useContext(InitialData)
-  const { currentChat, selectChat } = useContext(CurrentChat)
-  const membersOnline = chat.members === undefined ? 0 : chat.members.length;
+  const { currentChat, chatState, selectChat } = useContext(CurrentChat)
+  //const membersOnline = chat.members === undefined ? 0 : chat.members.length;
   const [displayUsers, setDisplayUsers] = useState(currentChat === chat)
 
-  // Searches initialData.chats for 'private' conversation with target user
-  // Name of private conversation is the username of target user
   const findChat = (targetUser) => {
-    const searchResult = initialData.chats.find(chat => (chat.type === 'private' && chat.members.includes(targetUser.id)))
+    const searchResult = chatState.find(chat => (chat.type === 'private' && chat.members.includes(targetUser._Id)))
     if (searchResult) return { ...searchResult, name: targetUser.username }
     else {
-      return { name: targetUser.username, type: 'private', members: [loggedUser.id, targetUser.id], messages: [] }
+      return { name: targetUser.username, type: 'private', members: [loggedUser.user_id, targetUser._Id], messages: [] }
     }
   }
 
   const listUsers = () => {
     if (initialData.users === undefined) return console.log('initialData pending...')
-    const filteredUsers = chat.members.map(m => initialData.users.find(u => u.id === m))
+    const filteredUsers = chat.members.map(m => initialData.users.find(u => u._Id === m))
     return filteredUsers
       .map(u => <User key={keyGen.generateKey(u.name)} setDisplayUser={setDisplayUser} user={u} privateChat={findChat(u)} />)
   }
 
   const handleDiscussionClick = () => {
     setDisplayUsers(!displayUsers)
+    console.log('selecting chat', chat)
     selectChat(chat)
   }
-
+  //  unread msgs pallura: <i className="fas fa-circle">
   return (
     <div className="group-chat dropdown pos-rel">
-      <div className={`${displayUsers ? 'bg-primary-2' : 'bg-primary-5'} profile row`} onClick={() => handleDiscussionClick()}>
+      <div className={`${displayUsers ? 'bg-primary-1' : 'bg-primary-2'} profile row`} onClick={() => handleDiscussionClick()}>
         <img src="kaikuthumb.png" alt="profiili" className={`profile-thumb alpha-1`} />
         <div>
-          <p>{chat.name} {membersOnline}/{membersOnline} <i className="fas fa-circle"></i></p>
+          <p>{chat.chatName}</p>
         </div>
       </div>
       <div className={`${displayUsers ? "" : "d-none"}`}>
