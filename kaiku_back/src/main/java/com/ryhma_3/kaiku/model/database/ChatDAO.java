@@ -67,7 +67,10 @@ public class ChatDAO extends DataAccessInit implements IChatDAO {
         document.append("type", chatObject.getType());
         document.append("users", Arrays.asList(chatObject.getMembers()));
         // TODO: add actual messages when it's time for it
-        document.append("messages", Arrays.asList(chatObject.getMessages()));
+        if (chatObject.getMessages() == null)
+            document.append("messages", null);
+        else
+            document.append("messages", Arrays.asList(chatObject.getMessages()));
 		UpdateResult result = collection.updateOne(eq("_id",
             new ObjectId(chatObject.getChat_id())), new Document("$set", document));
         if (result.getMatchedCount() == 0) return null;
