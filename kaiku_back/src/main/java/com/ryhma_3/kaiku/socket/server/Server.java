@@ -125,27 +125,27 @@ public class Server implements IServer {
 			@Override
 			public void onData(SocketIOClient client, ChatObject data, AckRequest ackSender) throws Exception {
 				
+				//Create chat
 				ChatObject result = chatDAO.createChatObject(data);
 				
 				if(result != null) {
 					
-					//gather related users
-					Token[] users = new Token[data.getMembers().length];
-					for(int i=0; i<data.getMembers().length; i++) {
-						users[i] = SecurityTools.getCloneOfToken(data.getMembers()[i]);
-					}
+					System.out.println("Chat created: " + result.getChatName());
 					
-					//send information event to related users
-					for (Token token : users) {
-						SocketIOClient receiver = server.getClient(token.getSessionID());
-						receiver.sendEvent("createChatEvent", data);
+					//go through all  members
+					for(String member : data.getMembers()) {
+						
+						//check if member is online
+						if(connectedUsers.get(member)) {
+							
+							//send event realtime
+							SocketIOClient receiver = server.getClient(SecurityTools.getCloneOfToken(member).getSessionID());
+							receiver.sendEvent("createChatEvent", data);
+							
+						}
 					}
-					
-					System.out.println("Chatgroup:" + result.getChatName() + " created");
-		
 				} else {
-					client.sendEvent("fail");
-					//TODO: look into error statuses
+					throw new Exception();
 				}
 			}
 		});
