@@ -45,8 +45,9 @@ const update = (id, newObject) => {
   return request.then(response => response.data)
 }
 
-const deleteById = (id) =>
+const deleteById = (id) => {
   axios.delete(`${baseUrl}/?chat_id=${id}`, configAsAdmin)
+}
 
 
 export default { getAllChats, getAllByID, create, update, deleteById }
