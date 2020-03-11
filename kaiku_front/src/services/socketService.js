@@ -3,8 +3,9 @@ import socketIOClient from 'socket.io-client';
 
 const SocketService = () => {
   var socketRef = useRef()
-  const [latestMessage, setLatesMessage] = useState([null])
+  const [incMessageData, setIncMsgData] = useState(null)
   var loggedUserID = useRef()
+  const [newChatData, setNewChatData] = useState(null)
 
   const createSocketConnection = (token, id) => {
     const socketUrl = 'http://localhost:9991';
@@ -22,8 +23,7 @@ const SocketService = () => {
 
     socketRef.current.on('chatEvent', function (data) {
       if (loggedUserID === data.user_id) return
-      console.log('chatEvent received', data);
-      setLatesMessage(data)
+      setIncMsgData(data)
     });
 
     /**
@@ -36,6 +36,7 @@ const SocketService = () => {
 
     socketRef.current.on('createChatEvent', function (data) {
       console.log('createChatEvent', data);
+      setNewChatData(data)
     })
     console.log('setting socket to: _socket', socketRef.current)
   }
@@ -53,8 +54,7 @@ const SocketService = () => {
   }
 
   const createChat = (chatName, type, members, messages) => {
-    console.log('creating chat socket service')
-    console.log('users are..', members, 'chatname', chatName, 'type', type)
+    console.log('creating new chat', members, 'chatname', chatName, 'type', type)
     const obj = {
       chatName,
       type,
@@ -91,7 +91,7 @@ const SocketService = () => {
   */
 
 
-  return { createSocketConnection, createChat, latestMessage, sendMessage, disconnect }
+  return { createSocketConnection, createChat, incMessageData, newChatData, sendMessage, disconnect }
 }
 
 export default SocketService

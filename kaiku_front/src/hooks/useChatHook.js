@@ -5,21 +5,25 @@ import InitialData from '../providers/InitialData'
  * Custom hook for chat state management in front end
  * @param {*} initialData 
  */
-const useChatHook = (initialData, createChat, sendMessage, latestMessage) => {
+const useChatHook = (initialData, createChat, sendMessage, incMessageData, newChatData) => {
   const { loggedUser } = useContext(InitialData)
   const [chatState, setChatState] = useState(null)
   const [currentChat, setCurrentChat] = useState(null)
 
   useEffect(() => {
     if (initialData.chats === undefined) return console.log('initialData pending...')
-    console.log('setting chatState to', initialData.chats[0])
+    console.log('setting chatState to', initialData.chats)
     setChatState(initialData.chats)
     setCurrentChat(initialData.chats[0])
   }, [initialData])
 
   useEffect(() => {
-    receiveMessage(latestMessage)
-  }, [latestMessage])
+    receiveMessage(incMessageData)
+  }, [incMessageData])
+
+  useEffect(() => {
+    addNewChat(newChatData)
+  }, [newChatData])
 
   const findChatByID = id => {
     if (chatState === null) return
@@ -40,7 +44,7 @@ const useChatHook = (initialData, createChat, sendMessage, latestMessage) => {
     var newChatState = chatState
     if (chatID === undefined) {
       currentChat.messages.push(newMessage)
-      currentChat.chat_id = chatState.length
+
       createChat('chat', currentChat.type, currentChat.members, currentChat.messages)
       newChatState.push(currentChat)
     } else {
@@ -58,17 +62,34 @@ const useChatHook = (initialData, createChat, sendMessage, latestMessage) => {
   }
 
   /**
+   * Function for adding new chats to chatState when another user creates them
+   * @param {*} data 
+   */
+  const addNewChat = data => {
+    if (data === null) return
+    console.log('creating new chat', data)
+    var newChatState = chatState
+    var newChatObject = {
+      chat_id: data.chat_id,
+      chatName: data.chatName || null,
+      type: data.type,
+      members: data.members,
+      messages: data.messages
+    }
+    console.log(newChatObject)
+  }
+
+  /**
    * Method for adding incoming messages to react state
    * First method tries to find existing chat with same chatID as newMessage
-   * Case1: No such chat found, placeholder is created to which message is added.
-   * Case2: Chat exists, message is added to its list of messages
    * Then react state is updated
    * @param {*} newMessage
    * @param {*} chatID id of chat where new message belongs
    */
-  const receiveMessage = (data) => {
+  const receiveMessage = data => {
+    if (data === null) return
     if (data !== undefined) {
-      console.log('received message', data)
+      console.log('msg received from', data.user_id, 'loggeduserid', loggedUser._Id, 'message', data)
       var newChatState = chatState
       var newChatObject = findChatByID(data.chat_id)
       try {
@@ -80,11 +101,10 @@ const useChatHook = (initialData, createChat, sendMessage, latestMessage) => {
         }
         newChatState[index].messages.push(newMessage)
         if (data.chat_id === currentChat.chat_id) {
-          console.log('to currentchat')
-          console.log('has messages', newChatState[index].messages)
+          console.log('message to currentchat', newChatState[index].messages)
           setCurrentChat(newChatState[index])
         }
-      } catch (e) { console.log('haistapaska') }
+      } catch (e) { }
       setChatState(newChatState)
       console.log(chatState)
     }
