@@ -15,6 +15,7 @@ import com.ryhma_3.kaiku.model.database.IMessageDAO;
 import com.ryhma_3.kaiku.model.database.MessageDAO;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ResourceNotFoundException;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ValidationFailedException;
+import com.ryhma_3.kaiku.socket.server.Server;
 import com.ryhma_3.kaiku.utility.SecurityTools;
 
 /**
@@ -90,6 +91,8 @@ public class ChatResourceController {
 			
 			ChatObject result = chatDAO.createChatObject(chat);
 			if(result!=null) {
+				
+				KaikuApplication.getServer().sendCreateChatEvent(result);
 				return result;
 			}
 			

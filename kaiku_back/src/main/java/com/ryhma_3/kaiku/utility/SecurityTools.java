@@ -162,7 +162,6 @@ public class SecurityTools {
 				return searched;
 				
 			} catch(Exception e) {
-				e.printStackTrace();
 				releaseObjectLock("clone: exception");
 				return null;
 			}
@@ -351,8 +350,7 @@ public class SecurityTools {
 				return;
 			}
 		}
-	}
-		
+	}	
 	
 	/**
 	 * Release monitor that handles token operations

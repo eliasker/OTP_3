@@ -17,6 +17,7 @@ import com.ryhma_3.kaiku.model.database.UserDAO;
 import com.ryhma_3.kaiku.socket.init.IServerInit;
 import com.ryhma_3.kaiku.socket.init.ServerInitAuth;
 import com.ryhma_3.kaiku.socket.init.ServerInitNoAuth;
+import com.ryhma_3.kaiku.socket.server.IServer;
 import com.ryhma_3.kaiku.socket.server.Server;
 import com.ryhma_3.kaiku.utility.GlobalChats;
 
@@ -125,6 +126,10 @@ public class KaikuApplication {
 	 */
 	public static IChatDAO getChatDAO() {
 		return chatDAO;
+	}
+	
+	public static IServer getServer() {
+		return server;
 	}
 	
 }

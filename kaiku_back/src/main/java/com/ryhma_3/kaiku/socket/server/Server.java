@@ -96,10 +96,14 @@ public class Server implements IServer {
 		server.addDisconnectListener(new DisconnectListener() {
 			@Override
 			public void onDisconnect(SocketIOClient client) {
+				
+				UUID sessionID = client.getSessionId();
+				
+				System.out.println(client);
 
 				try {
 					//get token of disconnecting client
-					Token cloneOfToken = SecurityTools.getCloneOfToken(client.getSessionId());
+					Token cloneOfToken = SecurityTools.getCloneOfToken(sessionID);
 					
 					//set user as disconnected
 					connectedUsers.put(cloneOfToken.getUser_id(), false);
@@ -110,9 +114,11 @@ public class Server implements IServer {
 					//remove sessionID form storage
 					SecurityTools.attachSessionToToken(cloneOfToken.getTokenString(), null);
 					
-					System.out.println("UUID:" + cloneOfToken.getSessionID().toString() + " disconnected");
+					System.out.println("UUID:" + cloneOfToken.getSessionID().toString() + " disconnected cleanly");
 				} catch (Exception e) {
-					System.out.println("Bad disconnection");
+					System.out.println("Disconnected uncleanly");
+					
+					//TODO find a way to cleanup connectedUsers
 				}
 			}
 		});
@@ -214,6 +220,32 @@ public class Server implements IServer {
 		server.start();
 		
 		System.out.println("server started");
+	}
+	
+	
+	/**
+	 * Method for rest controller. Admin dashboard uses REST to create chats
+	 * @param chat {@link ChatObject}
+	 */
+	public void sendCreateChatEvent(ChatObject chat) {
+		
+		try {
+			//go through all  members
+			for(String member : chat.getMembers()) {
+				
+				//check if member is online
+				if(connectedUsers.get(member)) {
+					
+					//send event realtime
+					SocketIOClient receiver = server.getClient(SecurityTools.getCloneOfToken(member).getSessionID());
+					receiver.sendEvent("createChatEvent", chat);
+					
+					System.out.println("sent event to: " + receiver.getSessionId().toString());				
+				}
+			}
+		} catch(Exception e) {
+			System.out.println("Exception in sendCreateChatEvent");
+		}
 	}
 
 	
