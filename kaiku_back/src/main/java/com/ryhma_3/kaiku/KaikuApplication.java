@@ -18,6 +18,7 @@ import com.ryhma_3.kaiku.socket.init.IServerInit;
 import com.ryhma_3.kaiku.socket.init.ServerInitAuth;
 import com.ryhma_3.kaiku.socket.init.ServerInitNoAuth;
 import com.ryhma_3.kaiku.socket.server.Server;
+import com.ryhma_3.kaiku.utility.GlobalChats;
 
 @SpringBootApplication
 public class KaikuApplication {
@@ -29,64 +30,24 @@ public class KaikuApplication {
 	static IMessageDAO messageDAO = null;
 	static IUserDAO userDAO = null;
 	
-	private static ChatObject global = null;
-
 	public static void main(String[] args) {
 		commandLineSetup();
-		
+				
 		initializeState();
-		
+
 		SpringApplication.run(KaikuApplication.class, args);
-		
 
 		server.start();
 	}
 	
 	
 	/**
-	 * Make sure there is global chat
+	 * Make sure global chats are initialized
 	 */
 	private static void initializeState() {
-		
-		//confirm global chat exists
-		try {
-			ChatObject[] chats = chatDAO.getAllChats();
-			
-			if(chats.length>=1) {
-				//try to find global chat
-				
-				for(ChatObject chat : chats) {
-					
-					if(chat.getChatName().equals("global")) {
-						global = chat;
-					}
-					
-				}
-				
-			} else {
-				//create global chat
-				
-				String[] users = new String[0];
-				
-				//try adding existing users to new global chat
-				try {
-					UserObject[] userObjs = userDAO.getAllUsers();
-					for(UserObject user : userObjs) {
-						users = Arrays.copyOf(users, users.length+1);
-						users[users.length-1] = user.get_Id();
-					}
-					
-				} catch(NullPointerException ne) {
-					System.out.println("no existing users for new global chat");
-				}
-				
-				global = new ChatObject(null, "global", "global", users, null);
-				global = chatDAO.createChatObject(global);
-			} 
-			
-		} catch (Exception e) {
-			System.out.println("failed to create global chat");
-		}
+	
+		new GlobalChats();
+		GlobalChats.globalChatsInit();
 	}
 
 
@@ -166,7 +127,4 @@ public class KaikuApplication {
 		return chatDAO;
 	}
 	
-	public static ChatObject getGlobalChat() {
-		return global;
-	}
 }
