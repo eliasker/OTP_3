@@ -24,7 +24,7 @@ const ChatColumn = ({ profileState, userState }) => {
   }
 
   const getUser = (user_id) => {
-    const user = initialData.users.find(user => user.id === user_id) || { name: '', color: 'red' }
+    const user = initialData.users.find(user => user._Id === user_id)
     return user
   }
 
@@ -35,7 +35,7 @@ const ChatColumn = ({ profileState, userState }) => {
     return filteredMsgs.map(m =>
       m.user_id === loggedUser.user_id ?
         <OutMessage key={keyGen.generateKey(m.content)} content={m.content} /> :
-        <InMessage key={keyGen.generateKey(m.content)} content={m.content} user={getUser(m._Id)} />)
+        <InMessage key={keyGen.generateKey(m.content)} content={m.content} user={getUser(m.user_id)} />)
   }
 
   useEffect(scrollToBottom, [initialData, currentChat])

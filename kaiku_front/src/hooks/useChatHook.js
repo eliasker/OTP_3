@@ -5,7 +5,7 @@ import InitialData from '../providers/InitialData'
  * Custom hook for chat state management in front end
  * @param {*} initialData 
  */
-const useChatHook = (initialData, createChat, sendMessage) => {
+const useChatHook = (initialData, createChat, sendMessage, latestMessage) => {
   const { loggedUser } = useContext(InitialData)
   const [chatState, setChatState] = useState(null)
   const [currentChat, setCurrentChat] = useState(null)
@@ -17,8 +17,12 @@ const useChatHook = (initialData, createChat, sendMessage) => {
     setCurrentChat(initialData.chats[0])
   }, [initialData])
 
+  useEffect(() => {
+    receiveMessage(latestMessage)
+  }, [latestMessage])
 
   const findChatByID = id => {
+    if (chatState === null) return
     return chatState.find(c => c.chat_id === id)
   }
 
@@ -36,9 +40,7 @@ const useChatHook = (initialData, createChat, sendMessage) => {
     var newChatState = chatState
     if (chatID === undefined) {
       currentChat.messages.push(newMessage)
-      currentChat.chat_id = chatState.length // tarvitaan serveriltä oikea chatid
-      console.log('currchat messages', currentChat.messages)
-      //await groupService.create(newChatObject)
+      currentChat.chat_id = chatState.length
       createChat('chat', currentChat.type, currentChat.members, currentChat.messages)
       newChatState.push(currentChat)
     } else {
@@ -48,7 +50,6 @@ const useChatHook = (initialData, createChat, sendMessage) => {
         const index = newChatState.indexOf(newChatObject)
         newChatState[index].messages.push(newMessage)
         setCurrentChat(newChatState[index])
-        //await groupService.update(chatID, currentChat)
         sendMessage(newMessage, loggedUser._Id, chatID)
       }
     }
@@ -66,8 +67,27 @@ const useChatHook = (initialData, createChat, sendMessage) => {
    * @param {*} chatID id of chat where new message belongs
    */
   const receiveMessage = (data) => {
-    console.log('received message', data)
-    //var newChatObject = findChatByID(chatID)
+    if (data !== undefined) {
+      console.log('received message', data)
+      var newChatState = chatState
+      var newChatObject = findChatByID(data.chat_id)
+      try {
+        const index = newChatState.indexOf(newChatObject)
+        const newMessage = {
+          content: data.content,
+          user_id: data.user_id,
+          chat_id: data.chat_id
+        }
+        newChatState[index].messages.push(newMessage)
+        if (data.chat_id === currentChat.chat_id) {
+          console.log('to currentchat')
+          console.log('has messages', newChatState[index].messages)
+          setCurrentChat(newChatState[index])
+        }
+      } catch (e) { console.log('haistapaska') }
+      setChatState(newChatState)
+      console.log(chatState)
+    }
   }
 
   /**

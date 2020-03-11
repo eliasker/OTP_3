@@ -1,13 +1,14 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import socketIOClient from 'socket.io-client';
 
 const SocketService = () => {
   var socketRef = useRef()
+  const [latestMessage, setLatesMessage] = useState([null])
+  var loggedUserID = useRef()
 
-  const createSocketConnection = (token) => {
+  const createSocketConnection = (token, id) => {
     const socketUrl = 'http://localhost:9991';
-
-    console.log('token: ', token);
+    loggedUserID = id
 
     socketRef.current = socketIOClient.connect(
       socketUrl,
@@ -20,8 +21,9 @@ const SocketService = () => {
     });
 
     socketRef.current.on('chatEvent', function (data) {
+      if (loggedUserID === data.user_id) return
       console.log('chatEvent received', data);
-      //receiveMessage(data)
+      setLatesMessage(data)
     });
 
     /**
@@ -36,7 +38,6 @@ const SocketService = () => {
       console.log('createChatEvent', data);
     })
     console.log('setting socket to: _socket', socketRef.current)
-    //setSocket(_socket);
   }
 
   const sendMessage = (message, user_id, chat_id) => {
@@ -90,7 +91,7 @@ const SocketService = () => {
   */
 
 
-  return { createSocketConnection, createChat, sendMessage, disconnect }
+  return { createSocketConnection, createChat, latestMessage, sendMessage, disconnect }
 }
 
 export default SocketService

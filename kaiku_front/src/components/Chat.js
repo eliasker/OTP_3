@@ -9,10 +9,10 @@ import useChatHook from '../hooks/useChatHook'
 import Karvalakki from './debugTool/Karvalakki'
 
 const Chat = () => {
-  const { initialData, createChat, sendMessage } = useContext(InitialData)
+  const { initialData, createChat, sendMessage, latestMessage } = useContext(InitialData)
   const [displayProfile, setDisplayProfile] = useState('d-none')
   const [displayUser, setDisplayUser] = useState(undefined)
-  const { chatState, postMessage, receiveMessage, currentChat, selectChat } = useChatHook(initialData, createChat, sendMessage)
+  const { chatState, postMessage, receiveMessage, currentChat, selectChat } = useChatHook(initialData, createChat, sendMessage, latestMessage)
   const [showModal, setShowModal] = useState(false)
 
   return (
