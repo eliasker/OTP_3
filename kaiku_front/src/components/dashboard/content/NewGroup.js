@@ -25,7 +25,7 @@ const NewGroup = () => {
   }
 
   const handleOptionClick = id => {
-    if (addedList.find(u => u._Id === id)) return
+    if (id === "none" || addedList.find(u => u._Id === id)) return
     const addedUser = initialData.users.find(u => u._Id === id)
     setAddedList(
       addedList.concat(addedUser)
@@ -60,6 +60,7 @@ const NewGroup = () => {
             <div className="col-6 p-0">
               <label>Lisää henkilöitä</label>
               <select defaultValue="none" className="custom-select" onChange={e => handleOptionClick(e.target.value)}>
+                <option value="none">-</option>
                 {generateOptions()}
               </select>
             </div>

@@ -61,11 +61,12 @@ const ListItem = ({ user, group }) => {
           <td>{editMode ? <input value={userState.name} onChange={e => setUserState({ ...userState, name: e.target.value })} /> : user.name}</td>
           <td>{editMode ? <input value={userState.username} onChange={e => setUserState({ ...userState, username: e.target.value })} /> : user.username}</td>
           <td>{editMode ?
-            <select defaultValue="Peasant" className="user-role">
-              <option value="Peasant">Peasant</option>
+            <select defaultValue="-" className="user-role">
+              <option value="-">-</option>
+              <option value="Käyttäjä">Käyttäjä</option>
               <option value="Ylläpitäjä">Ylläpitäjä</option>
             </select> :
-            "Peasant"}</td>
+            "Käyttäjä"}</td>
           <td>{buttons(userState)}</td>
         </tr>
       </>

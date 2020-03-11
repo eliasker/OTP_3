@@ -42,7 +42,7 @@ const UsersColumn = ({ setDisplayProfile, userState }) => {
     }
     
   const showInput = () => chatType === 'direct' ?
-    <input className="form-control find-user-input" placeholder="Etsi käyttäjä (ei huumeiden)"
+    <input className="form-control find-user-input" placeholder="Etsi käyttäjä"
       value={searchInput} onChange={e => setSearchInput(e.target.value)} />:
     <></>
 

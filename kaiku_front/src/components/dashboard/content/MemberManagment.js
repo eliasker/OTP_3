@@ -23,7 +23,7 @@ const MemberManagment = () => {
   }
 
   const handleOptionClick = id => {
-    if (tempGroup.members.find(m => m === id)) return
+    if (id === "none" || tempGroup.members.find(m => m === id)) return
 
     setTempGroup(
       { ...tempGroup, members: tempGroup.members.concat(id) }
@@ -61,6 +61,7 @@ const MemberManagment = () => {
           <div className="form-group">
             <p className="mb-1">Lisää käyttäjä</p>
             <select defaultValue="none" className="custom-select" onChange={e => handleOptionClick(e.target.value)}>
+              <option value="none">-</option>
               {generateOptions()}
             </select>
           </div>
