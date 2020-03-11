@@ -162,8 +162,6 @@ public class Server implements IServer {
 							SocketIOClient receiver = server.getClient(SecurityTools.getCloneOfToken(member).getSessionID());
 							receiver.sendEvent("createChatEvent", result);
 							
-							
-							
 							System.out.println("sent event to: " + receiver.getSessionId().toString());
 							
 						}

@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect, useContext } from 'react'
 
 import useField from '../../hooks/hooks'
 import keyGen from '../../util/keyGen'
-import useChat from '../../hooks/useChat'
 import messageValidation from '../../util/inputValidation'
 import InitialData from '../../providers/InitialData'
 import InMessage from './message/InMessage'
@@ -16,12 +15,10 @@ import CurrentChat from '../../providers/CurrentChat'
 
 const ChatColumn = ({ profileState, userState }) => {
   const { initialData, loggedUser } = useContext(InitialData)
-  const { addMessage, currentChat } = useContext(CurrentChat)
-  const { sendMessage } = useChat(loggedUser.id, currentChat, addMessage)
+  const { postMessage, currentChat } = useContext(CurrentChat)
   const [searchInput, setSearchInput] = useState('')
   const messagesEndRef = useRef(null)
   const newMessage = useField('text')
-
   const scrollToBottom = () => {
     if (messagesEndRef.current !== null) messagesEndRef.current.scrollIntoView({ behavior: "auto" })
   }
@@ -36,9 +33,9 @@ const ChatColumn = ({ profileState, userState }) => {
     if (currentChat.messages === undefined || currentChat.messages.length === 0) return <DefaultMessage />
     const filteredMsgs = currentChat.messages.filter(msg => msg.content.includes(searchInput))
     return filteredMsgs.map(m =>
-      m.user_id === loggedUser.id ?
+      m.user_id === loggedUser.user_id ?
         <OutMessage key={keyGen.generateKey(m.content)} content={m.content} /> :
-        <InMessage key={keyGen.generateKey(m.content)} content={m.content} user={getUser(m.user_id)} />)
+        <InMessage key={keyGen.generateKey(m.content)} content={m.content} user={getUser(m._Id)} />)
   }
 
   useEffect(scrollToBottom, [initialData, currentChat])
@@ -53,10 +50,10 @@ const ChatColumn = ({ profileState, userState }) => {
     if (messageValidation(newMessage.value)) {
       const newMessageObj = {
         content: newMessage.value,
-        id: keyGen.generateId(),
+        message_id: null,
         user_id: loggedUser.user_id
       }
-      sendMessage(newMessageObj)
+      postMessage(newMessageObj, currentChat.chat_id)
       newMessage.reset()
     }
   }

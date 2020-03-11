@@ -126,6 +126,7 @@ public class ChatDAOTest {
             }, testMessageObjects));
         
         assertTrue(testChatDAO.getChats(o.getMembers()[0]).length > 0);
+        assertTrue(testChatDAO.getAllChats().length > 0);
 
         testChatDAO.deleteChatObject(o);
     }

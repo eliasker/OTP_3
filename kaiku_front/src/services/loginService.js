@@ -1,12 +1,6 @@
 import axios from 'axios'
 const baseUrl = 'http://localhost:8080/'
 
-const configAsAdmin = {
-  headers: {
-    Authorization: 'kaiku'
-  }
-}
-
 const login = async (username, password) => {
   try {
     const response = await axios.post(
