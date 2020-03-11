@@ -24,8 +24,8 @@ const NewUser = () => {
   }
 
   const showVisibilityIcon = () => showPassword ?
-    <i class="far fa-eye"></i> :
-    <i class="far fa-eye-slash"></i>
+    <i className="far fa-eye"></i> :
+    <i className="far fa-eye-slash"></i>
 
   const handleSubmit = async (e) => {
     e.preventDefault()
