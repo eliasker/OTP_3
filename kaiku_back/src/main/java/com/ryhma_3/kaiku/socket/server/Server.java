@@ -2,36 +2,25 @@ package com.ryhma_3.kaiku.socket.server;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.UUID;
 
-import com.corundumstudio.socketio.AckCallback;
 import com.corundumstudio.socketio.AckRequest;
-import com.corundumstudio.socketio.HandshakeData;
 import com.corundumstudio.socketio.SocketIOClient;
-import com.corundumstudio.socketio.SocketIONamespace;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DataListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
-import com.ryhma_3.kaiku.model.cast_object.AuthObject;
 import com.ryhma_3.kaiku.model.cast_object.ChatObject;
 import com.ryhma_3.kaiku.model.cast_object.MessageObject;
 import com.ryhma_3.kaiku.model.cast_object.UserObject;
 import com.ryhma_3.kaiku.model.cast_object.UserStatusObject;
-import com.ryhma_3.kaiku.model.database.ChatDAO;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
 import com.ryhma_3.kaiku.model.database.IUserDAO;
-import com.ryhma_3.kaiku.model.database.UserDAO;
 import com.ryhma_3.kaiku.socket.init.IServerInit;
 import com.ryhma_3.kaiku.utility.SecurityTools;
 import com.ryhma_3.kaiku.utility.Token;
-
-import io.netty.handler.codec.http.HttpHeaders;
-import io.netty.handler.codec.http.HttpContentEncoder.Result;
 
 /**
  * @author Panu Lindqvist
@@ -108,16 +97,23 @@ public class Server implements IServer {
 			@Override
 			public void onDisconnect(SocketIOClient client) {
 
-				//get token of disconnecting client
-				Token cloneOfToken = SecurityTools.getCloneOfToken(client.getSessionId());
-				
-				//set user as disconnected
-				connectedUsers.put(cloneOfToken.getUser_id(), false);
-				
-				//broadcast info
-				server.getBroadcastOperations().sendEvent("connectionEvent", new UserStatusObject(cloneOfToken.getUser_id(), false));
-				
-				System.out.println("UUID:" + cloneOfToken.getSessionID().toString() + " disconnected");
+				try {
+					//get token of disconnecting client
+					Token cloneOfToken = SecurityTools.getCloneOfToken(client.getSessionId());
+					
+					//set user as disconnected
+					connectedUsers.put(cloneOfToken.getUser_id(), false);
+					
+					//broadcast info
+					server.getBroadcastOperations().sendEvent("connectionEvent", new UserStatusObject(cloneOfToken.getUser_id(), false));
+					
+					//remove sessionID form storage
+					SecurityTools.attachSessionToToken(cloneOfToken.getTokenString(), null);
+					
+					System.out.println("UUID:" + cloneOfToken.getSessionID().toString() + " disconnected");
+				} catch (Exception e) {
+					System.out.println("Bad disconnection");
+				}
 			}
 		});
 		
@@ -130,6 +126,7 @@ public class Server implements IServer {
 					
 					//Create chat
 					ChatObject result = null;
+					
 					try {						
 						MessageObject[] messages = data.getMessages();
 						
