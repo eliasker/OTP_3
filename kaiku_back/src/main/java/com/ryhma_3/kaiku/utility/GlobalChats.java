@@ -3,8 +3,6 @@ package com.ryhma_3.kaiku.utility;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.yaml.snakeyaml.util.ArrayUtils;
-
 import com.ryhma_3.kaiku.KaikuApplication;
 import com.ryhma_3.kaiku.model.cast_object.ChatObject;
 import com.ryhma_3.kaiku.model.cast_object.UserObject;

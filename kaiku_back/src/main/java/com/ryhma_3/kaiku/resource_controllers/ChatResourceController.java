@@ -12,10 +12,8 @@ import com.ryhma_3.kaiku.KaikuApplication;
 import com.ryhma_3.kaiku.model.cast_object.ChatObject;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
-import com.ryhma_3.kaiku.model.database.MessageDAO;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ResourceNotFoundException;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ValidationFailedException;
-import com.ryhma_3.kaiku.socket.server.Server;
 import com.ryhma_3.kaiku.utility.SecurityTools;
 
 /**

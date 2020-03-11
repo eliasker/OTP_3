@@ -1,7 +1,5 @@
 package com.ryhma_3.kaiku.resource_controllers;
 
-import java.util.Arrays;
-
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
