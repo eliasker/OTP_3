@@ -86,30 +86,31 @@ public class MessageDAO extends DataAccessInit implements IMessageDAO {
 	}
 
 	@Override
-	public MessageObject[] getAllMessages(String user_id) {
+	public MessageObject[] getAllMessages(String chat_id) {
 		
         ArrayList<MessageObject> messageList = new ArrayList<>();
-        MongoIterable<String> collectionList = mongoDatabase.listCollectionNames();
+        MongoCollection tempCollection;
+        try {
+            tempCollection = mongoDatabase.getCollection(chat_id);
+        } catch (Exception e) {
+            System.out.println("Chat not found");
+            return null;
+        }
 
-        collectionList.forEach((Consumer<String>) collectionName -> {
-            MongoCollection tempCollection;
-            tempCollection = mongoDatabase.getCollection(collectionName);
-            MongoCursor<Document> cursor = tempCollection.find().iterator();
-            try {
-                while (cursor.hasNext()) {
-                    Document d = cursor.next();
-                    if (d.getString("user_id").equals(user_id)) {
-                        messageList.add(new MessageObject(d.getString("content"),
-                            d.getObjectId("_id").toString(), d.getString("user_id"),
-                            d.getDate("timestamp"), d.getString("chat_id")));
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                cursor.close();
+        MongoCursor<Document> cursor = tempCollection.find().iterator();
+
+        try {
+            while (cursor.hasNext()) {
+                Document d = cursor.next();
+                messageList.add(new MessageObject(d.getString("content"),
+                    d.getObjectId("_id").toString(), d.getString("user_id"),
+                    d.getDate("timestamp"), d.getString("chat_id")));
             }
-        });
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            cursor.close();
+        }
 
         MessageObject[] messageArr = new MessageObject[messageList.size()];
         messageArr = messageList.toArray(messageArr);

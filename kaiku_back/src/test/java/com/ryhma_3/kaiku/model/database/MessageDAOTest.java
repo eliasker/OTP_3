@@ -45,7 +45,7 @@ public class MessageDAOTest {
         testMessageDAO.createMessage(
             new MessageObject("test message", null, "12345", new Date(), null),
             "test_id");
-        MessageObject[] t = testMessageDAO.getAllMessages("12345");
+        MessageObject[] t = testMessageDAO.getAllMessages("test_id");
         assertTrue(t.length > 0);
     }
 

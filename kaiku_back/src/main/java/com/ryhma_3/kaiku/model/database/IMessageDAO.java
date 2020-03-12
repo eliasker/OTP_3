@@ -39,9 +39,9 @@ public interface IMessageDAO {
     public MessageObject getMessage(MessageObject messageObject, String chat_id);
 
     /**
-     * Gets all message entries of a specific user
-     * @param user_id
+     * Gets all message entries of a specific chat
+     * @param chat_id
      * @return All message entries of a specified user
      */
-    public MessageObject[] getAllMessages(String user_id);
+    public MessageObject[] getAllMessages(String chat_id);
 }

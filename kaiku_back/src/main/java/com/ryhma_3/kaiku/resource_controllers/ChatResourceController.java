@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ryhma_3.kaiku.KaikuApplication;
 import com.ryhma_3.kaiku.model.cast_object.ChatObject;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
+import com.ryhma_3.kaiku.model.database.IMessageDAO;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ResourceNotFoundException;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ValidationFailedException;
 import com.ryhma_3.kaiku.utility.SecurityTools;
@@ -23,6 +24,7 @@ import com.ryhma_3.kaiku.utility.SecurityTools;
 @RestController
 public class ChatResourceController {
 	private IChatDAO chatDAO = KaikuApplication.getChatDAO();
+	private IMessageDAO messageDAO = KaikuApplication.getMessageDAO();
 	
 	
 	/**
@@ -36,12 +38,28 @@ public class ChatResourceController {
 			@RequestHeader("Authorization") String token,
 			@RequestParam String user_id) {
 		
-		boolean valid = token.equals(token) || SecurityTools.verifySession(token);
+		boolean valid = token.equals("kaiku") || SecurityTools.verifySession(token);
 		
 		if(valid) {
 			
-			ChatObject[] results = chatDAO.getChats(user_id);
+			ChatObject[] results;
 			
+			if(token.equals("kaiku")) {
+				//admin gets all chats
+				results = chatDAO.getAllChats();
+				
+			} else {
+
+				results = chatDAO.getChats(user_id);
+
+			}
+			
+			for(ChatObject chat : results) {
+				
+				chat.setMessages(messageDAO.getAllMessages(chat.getChat_id()));
+			
+			}
+						
 			if(results!=null) {
 				return results;
 			}
@@ -71,6 +89,8 @@ public class ChatResourceController {
 			
 			ChatObject result = chatDAO.createChatObject(chat);
 			if(result!=null) {
+				
+				KaikuApplication.getServer().sendCreateChatEvent(result);
 				return result;
 			}
 			

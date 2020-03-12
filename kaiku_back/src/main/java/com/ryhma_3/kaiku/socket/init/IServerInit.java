@@ -1,7 +1,6 @@
 package com.ryhma_3.kaiku.socket.init;
 
 import com.corundumstudio.socketio.SocketIOServer;
-import com.ryhma_3.kaiku.model.cast_object.ChatObject;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
 import com.ryhma_3.kaiku.model.database.IUserDAO;

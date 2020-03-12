@@ -26,7 +26,7 @@ const User = ({ user, privateChat, setDisplayUser }) => {
 
       <div className="dropdown-menu profile-menu" aria-labelledby="dropdownMenuLink">
         <span className="text-muted text-sm">Valikko: @{user.username}</span>
-        {(loggedUser.id === user.id) ? null : <span className="dropdown-item" onClick={handleShowChat}><i className="fas fa-paper-plane"></i> Lähetä viesti</span>}
+        {(loggedUser._Id === user._Id) ? null : <span className="dropdown-item" onClick={handleShowChat}><i className="fas fa-paper-plane"></i> Lähetä viesti</span>}
         <span className="dropdown-item" onClick={handleShowProfile}><i className="fas fa-user"></i> Katso profiili</span>
       </div>
     </div>

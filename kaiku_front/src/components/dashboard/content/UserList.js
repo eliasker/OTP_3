@@ -1,37 +1,34 @@
 import React, { useContext } from 'react'
 import ListItem from '../ListItem'
-import InitialData from '../../../providers/InitialData'
+import Context from '../../../providers/Context'
 
 
 const UserList = () => {
-  const { initialData } = useContext(InitialData)
-
-  const getUserList = () =>{
-    if(initialData.users === undefined) return
-
-    //TODO: sort toiminto olisi hyvä toteuttaa
-    return initialData.users.map(u => <ListItem key={u.id} user={u} />)
+  const { users } = useContext(Context)
+  const getUserList = () => {
+    if (users === undefined) return
+    return users.map(u => <ListItem key={u._Id} user={u} />)
   }
 
-  return(
-  <>
-    <div className="table-responsive">
-      <table className="table table-striped table-sm">
-        <thead>
-          <tr>
-            <th>#id</th>
-            <th>Nimi</th>
-            <th>Käyttäjänimi</th>
-            <th>Rooli</th>
-            <th>Toiminto</th>
-          </tr>
-        </thead>
-        <tbody>
-          {getUserList()}
-        </tbody>
-      </table>
-    </div>
-  </>
+  return (
+    <>
+      <div className="table-responsive">
+        <table className="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th>#id</th>
+              <th>Nimi</th>
+              <th>Käyttäjänimi</th>
+              <th>Rooli</th>
+              <th>Toiminto</th>
+            </tr>
+          </thead>
+          <tbody>
+            {getUserList()}
+          </tbody>
+        </table>
+      </div>
+    </>
   )
 }
 
