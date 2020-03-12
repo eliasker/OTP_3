@@ -59,6 +59,6 @@ _____
 **6. Liitteet**
 - UML: [UML](http://users.metropolia.fi/~borissj/kaiku-uml.pdf)
 - Testit [Testit](https://users.metropolia.fi/~jessear/OTP1/jacoco/index.html)
-- Väliraportti: [Väliraportti](https://gitlab.com/)
+- Väliraportti: [Väliraportti](http://users.metropolia.fi/~borissj/Kaiku-v%c3%a4liraportti.pdf)
 - Javadoc: [Javadoc](https://users.metropolia.fi/~jessear/OTP1/javadocs/index.html)
 - Production build: [kaiku-app](http://10.114.32.19:5000/)
