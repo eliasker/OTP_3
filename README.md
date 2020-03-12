@@ -57,9 +57,8 @@ _____
 - Viesti ilmoitukset (Windows-ilmoitukset)
 _____
 **6. Liitteet**
-- UML: [UML](https://gitlab.com/)
+- UML: [UML](http://users.metropolia.fi/~borissj/kaiku-uml.pdf)
 - Testit [Testit](https://users.metropolia.fi/~jessear/OTP1/jacoco/index.html)
 - Väliraportti: [Väliraportti](https://gitlab.com/)
 - Javadoc: [Javadoc](https://users.metropolia.fi/~jessear/OTP1/javadocs/index.html)
 - Production build: [kaiku-app](http://10.114.32.19:5000/)
-
