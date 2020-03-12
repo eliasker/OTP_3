@@ -29,9 +29,7 @@ const useChatHook = (initialData, createChat, sendMessage, incMessageData, newCh
     })()
   }, [loggedUser]
   )
-  useEffect(() => {
-    receiveMessage(incMessageData)
-  }, [incMessageData])
+
 
   useEffect(() => {
     addNewChat(newChatData)
@@ -56,7 +54,6 @@ const useChatHook = (initialData, createChat, sendMessage, incMessageData, newCh
     var newChatState = chatState
     if (chatID === undefined) {
       currentChat.messages.push(newMessage)
-
       createChat('chat', currentChat.type, currentChat.members, currentChat.messages)
       newChatState.push(currentChat)
     } else {
@@ -66,6 +63,7 @@ const useChatHook = (initialData, createChat, sendMessage, incMessageData, newCh
         const index = newChatState.indexOf(newChatObject)
         newChatState[index].messages.push(newMessage)
         setCurrentChat(newChatState[index])
+        console.log('uusi', newChatState[index].messages)
         sendMessage(newMessage, loggedUser._Id, chatID)
       }
     }

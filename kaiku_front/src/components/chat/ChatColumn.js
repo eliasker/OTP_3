@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useContext } from 'react'
+import React, { useState, useRef, useEffect, useContext, useReducer } from 'react'
 
 import useField from '../../hooks/hooks'
 import keyGen from '../../util/keyGen'
@@ -14,8 +14,8 @@ import ChatHeader from './ChatHeader'
 import CurrentChat from '../../providers/CurrentChat'
 
 const ChatColumn = ({ profileState, userState, currentChat }) => {
-  const { initialData, loggedUser } = useContext(InitialData)
-  const { postMessage } = useContext(CurrentChat)
+  const { initialData, loggedUser, incMessageData } = useContext(InitialData)
+  const { postMessage, receiveMessage } = useContext(CurrentChat)
   const [searchInput, setSearchInput] = useState('')
   const messagesEndRef = useRef(null)
   const newMessage = useField('text')
@@ -23,7 +23,14 @@ const ChatColumn = ({ profileState, userState, currentChat }) => {
     if (messagesEndRef.current !== null) messagesEndRef.current.scrollIntoView({ behavior: "auto" })
   }
 
-  //console.log('curr chat in column', currentChat)
+  const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
+
+  useEffect(() => {
+    receiveMessage(incMessageData)
+    console.log('incoming message', incMessageData)
+    forceUpdate()
+    //scrollToBottom()
+  }, [incMessageData])
 
   const getUser = (user_id) => {
     const user = initialData.users.find(user => user._Id === user_id)

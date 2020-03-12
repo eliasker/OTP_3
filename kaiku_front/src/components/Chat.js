@@ -32,7 +32,6 @@ const Chat = () => {
           </div>
           <HelpPanel />
         </div>
-        <Karvalakki />
       </CurrentChat.Provider>
     </>
   )

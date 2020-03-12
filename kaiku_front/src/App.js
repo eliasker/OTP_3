@@ -7,6 +7,7 @@ import './styles/App.css'
 import DashBoard from './components/dashboard/DashBoard'
 import Authentication from './components/auth/Authentication'
 import socketService from './services/socketService'
+import Karvalakki from './components/debugTool/Karvalakki'
 
 const App = () => {
   const [loggedUser, setLoggedUser] = useState(null)
@@ -29,7 +30,7 @@ const App = () => {
     if (!loggedUserJSON || loggedUserJSON === 'undefined') return
     const user = JSON.parse(loggedUserJSON)
     setLoggedUser(user)
-    createSocketConnection(user.token, user.user_id)
+    createSocketConnection(user.token, user._Id)
 
     if (!masterkey || masterkey === 'undefined') return
     const auth = JSON.parse(masterkey)
@@ -49,6 +50,7 @@ const App = () => {
         <InitialData.Provider value={{ initialData, incMessageData, newChatData, sendMessage, disconnect, createChat, loggedUser, setLoggedUser, setAuthToken }}>
           <Route exact path="/" render={() => (loggedUser === null) ? <Login createSocketConnection={createSocketConnection} /> : <Chat />} />
           <Route exact path="/dashboard" render={showContent} />
+          <Route exact path='/karvalakki' render={() => <Karvalakki />}/>
         </InitialData.Provider>
       </Router>
     </div>
