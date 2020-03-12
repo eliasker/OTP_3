@@ -22,6 +22,8 @@ const SocketService = () => {
     });
 
     socketRef.current.on('chatEvent', function (data) {
+      console.log("userID:", data.user_id, "loggedUserID:", loggedUserID);
+      
       if (loggedUserID === data.user_id) return
       setIncMsgData(data)
     });
