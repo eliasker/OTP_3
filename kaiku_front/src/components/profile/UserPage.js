@@ -1,12 +1,12 @@
 import React from 'react'
 
 const UserPage = ({ userState }) => {
-  const {displayUser, setDisplayUser} = userState
+  const { displayUser, setDisplayUser } = userState
 
   if( displayUser === undefined ) return <></>
 
   return (
-    <div className={`profile-page-container`}>
+    <div className={'profile-page-container'}>
       <div className="exit-profile-group">
         <span className="exit-profile" onClick={() => setDisplayUser(undefined)}>
           <i className="fas fa-times"></i>

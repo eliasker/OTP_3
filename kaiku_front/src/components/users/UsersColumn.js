@@ -22,18 +22,18 @@ const UsersColumn = ({ setDisplayProfile, userState }) => {
       const groupChats = chatState.filter(chat => chat.type !== 'private')
       return groupChats.map(chat =>
         <Discussions key={keyGen.generateKey(chat.chatName)} chat={chat} setDisplayUser={setDisplayUser} />)
-    } catch (e) { }
+    } catch (e) { console.log(e) }
   }
 
   const findChat = (targetUser) => {
     try {
       const searchResult = chatState.find(chat => (chat.type === 'private' && chat.members.includes(targetUser._Id)))
       if (searchResult) return { ...searchResult, name: targetUser.username }
-    } catch (e) { }
+    } catch (e) { console.log(e) }
     return { name: targetUser.username, type: 'private', members: [loggedUser.user_id, targetUser._Id], messages: [] }
   }
 
-  // Lists last direct message from other users 
+  // Lists last direct message from other users
   const listMessages = () => {
     if (initialData.users === undefined) return
     const filteredUsers = filterUtil(initialData.users.map(u => u.name), searchInput)

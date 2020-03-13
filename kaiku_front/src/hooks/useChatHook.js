@@ -3,7 +3,7 @@ import InitialData from '../providers/InitialData'
 
 /**
  * Custom hook for chat state management in front end
- * @param {*} initialData 
+ * @param {*} initialData
  */
 const useChatHook = (initialData, createChat, sendMessage, incMessageData, newChatData) => {
   const { loggedUser } = useContext(InitialData)
@@ -33,7 +33,7 @@ const useChatHook = (initialData, createChat, sendMessage, incMessageData, newCh
   /**
    * Method for posting messages. First updates current chats messagelist.
    * Then method checks if chatID is undefined
-   * Case1: ChatID is undefined, so chat didn't exist and just received its first message. 
+   * Case1: ChatID is undefined, so chat didn't exist and just received its first message.
    *        New chat is initialized and created.
    * Case2: Chat exists and new message is added. Chat is updated.
    * Then method updates local react state to display new message.
@@ -63,12 +63,11 @@ const useChatHook = (initialData, createChat, sendMessage, incMessageData, newCh
 
   /**
    * Function for adding new chats to chatState when another user creates them
-   * @param {*} data 
+   * @param {*} data
    */
   const addNewChat = data => {
     if (data === null) return
     console.log('creating new chat', data)
-    var newChatState = chatState
     var newChatObject = {
       chat_id: data.chat_id,
       chatName: data.chatName || null,
@@ -104,16 +103,16 @@ const useChatHook = (initialData, createChat, sendMessage, incMessageData, newCh
           console.log('message to currentchat', newChatState[index].messages)
           setCurrentChat(newChatState[index])
         }
-      } catch (e) { }
+      } catch (e) { console.log(e) }
       setChatState(newChatState)
       console.log(chatState)
     }
   }
 
   /**
-   * Function that sets active chat state. Is separate function for setting unreadMessages -value 
+   * Function that sets active chat state. Is separate function for setting unreadMessages -value
    * If chat has previous activity it gets no unread messages value
-   * @param {*} chat Chat that user clicks from chat column 
+   * @param {*} chat Chat that user clicks from chat column
    */
   const selectChat = (chat) => {
     console.log('setting chat to', chat)

@@ -66,7 +66,7 @@ const ListItem = ({ user, group }) => {
               <option value="Käyttäjä">Käyttäjä</option>
               <option value="Ylläpitäjä">Ylläpitäjä</option>
             </select> :
-            "Käyttäjä"}</td>
+            'Käyttäjä'}</td>
           <td>{buttons(userState)}</td>
         </tr>
       </>

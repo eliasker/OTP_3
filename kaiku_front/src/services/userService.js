@@ -20,12 +20,12 @@ const createUser = async (username, password, name) => {
     name
   }
   const result = await axios.post(baseUrl, user, configAsAdmin)
-  return result.data;
+  return result.data
 }
 
 const getAllUsers = async (token) => {
   const result = await axios.get(baseUrl, configAsAdmin)
-  return result.data;
+  return result.data
 }
 
 const deleteById = (id) => {

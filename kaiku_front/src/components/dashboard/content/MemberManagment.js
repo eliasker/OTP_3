@@ -23,7 +23,7 @@ const MemberManagment = () => {
   }
 
   const handleOptionClick = id => {
-    if (id === "none" || tempGroup.members.find(m => m === id)) return
+    if (id === 'none' || tempGroup.members.find(m => m === id)) return
 
     setTempGroup(
       { ...tempGroup, members: tempGroup.members.concat(id) }

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import UsersColumn from './users/UsersColumn'
 import ChatColumn from './chat/ChatColumn'
 import CurrentChat from '../providers/CurrentChat'
@@ -15,13 +15,6 @@ const Chat = () => {
   const { chatState, postMessage, receiveMessage, currentChat, selectChat } = useChatHook(initialData, createChat, sendMessage, incMessageData, newChatData)
   const [showModal, setShowModal] = useState(false)
 
-  /*
-  console.log('currentchat cjat js', currentChat)
-
-  useEffect(() => {
-    console.log('helloworld')
-  }, [currentChat])
-*/
   return (
     <>
       <CurrentChat.Provider value={{ chatState, postMessage, receiveMessage, currentChat, selectChat, showModal, setShowModal }}>

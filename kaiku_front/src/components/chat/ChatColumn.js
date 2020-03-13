@@ -20,7 +20,7 @@ const ChatColumn = ({ profileState, userState, currentChat }) => {
   const messagesEndRef = useRef(null)
   const newMessage = useField('text')
   const scrollToBottom = () => {
-    if (messagesEndRef.current !== null) messagesEndRef.current.scrollIntoView({ behavior: "auto" })
+    if (messagesEndRef.current !== null) messagesEndRef.current.scrollIntoView({ behavior: 'auto' })
   }
 
   //console.log('curr chat in column', currentChat)

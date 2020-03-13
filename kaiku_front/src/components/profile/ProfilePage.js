@@ -48,7 +48,7 @@ const ProfilePage = ({ profileState }) => {
               <span className="input-group-text" id="inputGroupPrepend2">@</span>
             </div>
             <input type="text" className="form-control" id="user-username" placeholder="Käyttäjänimi" aria-describedby="inputGroupPrepend2"
-            value={username} onChange={e => setUsername(e.target.value)} required />
+              value={username} onChange={e => setUsername(e.target.value)} required />
           </div>
           <input type="password" className="form-control" value={password} onChange={e => setPassword(e.target.value)} placeholder="Uusi salasana" />
           <input type="password" className="form-control" value={rePassword} onChange={e => setRePassword(e.target.value)} placeholder="Varmenna salasana" />

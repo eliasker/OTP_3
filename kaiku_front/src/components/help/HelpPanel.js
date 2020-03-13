@@ -23,7 +23,7 @@ const HelpPanel = () => {
           </div>
           <div className="help-button-container">
             <div className="help-button-group">
-              <button className={(showHelpBtn && help.indexOf(tip)+1 === help.length) ? "btn btn-outline-dark mr-1": "d-none"} onClick={() => setShowHelpBtn(false) || setShowModal(!showModal)}>Piilota</button>
+              <button className={(showHelpBtn && help.indexOf(tip)+1 === help.length) ? 'btn btn-outline-dark mr-1': 'd-none'} onClick={() => setShowHelpBtn(false) || setShowModal(!showModal)}>Piilota</button>
               <button className="btn btn-outline-dark help-pre" onClick={() => nextTip(-1)}><i className="fas fa-caret-left"></i> Edellinen</button>
               <button className="btn btn-outline-dark help-nxt" onClick={() => nextTip(1)}>Seuraava <i className="fas fa-caret-right"></i></button>
             </div>
@@ -33,7 +33,7 @@ const HelpPanel = () => {
           </div>
         </div>
       </div>
-      <div className={showHelpBtn ? "help-button d-none d-sm-block": "d-none"}>
+      <div className={showHelpBtn ? 'help-button d-none d-sm-block': 'd-none'}>
         <i className="fas fa-info" onClick={() => setShowModal(!showModal)}></i>
       </div>
     </>

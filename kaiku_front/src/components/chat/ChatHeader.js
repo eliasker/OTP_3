@@ -9,7 +9,7 @@ const ChatHeader = ({ searchInput, setSearchInput }) => {
       <div className="row marginy-0">
         {(currentChat !== null && currentChat.image !== undefined) ?
           <img src={currentChat.image ? currentChat.image : '/kaikuthumb.png'}
-            alt="profiilikuva" className="profile-thumb alpha-1" className={`${currentChat.color} profile-thumb`} /> :
+            alt="profiilikuva" className={`${currentChat.color} profile-thumb alpha-1`} /> :
           <img src="/kaikuthumb.png" alt="chatin kuva" className="profile-thumb alpha-1" />
         }
         <p className="d-none d-lg-block">{currentChat.type === 'private' ? currentChat.name : currentChat.chatName}</p>

@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react';
-import socketIOClient from 'socket.io-client';
+import { useRef, useState } from 'react'
+import socketIOClient from 'socket.io-client'
 
 const SocketService = () => {
   var socketRef = useRef()
@@ -8,7 +8,7 @@ const SocketService = () => {
   const [newChatData, setNewChatData] = useState(null)
 
   const createSocketConnection = (token, id) => {
-    const socketUrl = 'http://localhost:9991';
+    const socketUrl = 'http://localhost:9991'
     loggedUserID = id
 
     socketRef.current = socketIOClient.connect(
@@ -17,25 +17,25 @@ const SocketService = () => {
     )
 
     socketRef.current.on('connect', function (data) {
-      console.log('connect event');
-      console.log('connected users: ', data);
-    });
+      console.log('connect event')
+      console.log('connected users: ', data)
+    })
 
     socketRef.current.on('chatEvent', function (data) {
       if (loggedUserID === data.user_id) return
       setIncMsgData(data)
-    });
+    })
 
     /**
      * @param data object { id: String, loggedIn: false }
      */
-    socketRef.current.on('disconnect', function (data) {
+    socketRef.current.on('disconnect', function () {
 
-      console.log('disconnect');
-    });
+      console.log('disconnect')
+    })
 
     socketRef.current.on('createChatEvent', function (data) {
-      console.log('createChatEvent', data);
+      console.log('createChatEvent', data)
       setNewChatData(data)
     })
     console.log('setting socket to: _socket', socketRef.current)
@@ -49,7 +49,7 @@ const SocketService = () => {
       chat_id
     }
 
-    socketRef.current.emit('chatEvent', obj);
+    socketRef.current.emit('chatEvent', obj)
     console.log('sernding message', message, 'from', user_id, 'to', chat_id)
   }
 
@@ -62,9 +62,9 @@ const SocketService = () => {
       messages
     }
 
-    console.log('create: ', obj);
+    console.log('create: ', obj)
 
-    socketRef.current.emit('createChatEvent', obj);
+    socketRef.current.emit('createChatEvent', obj)
   }
 
   const disconnect = () => {

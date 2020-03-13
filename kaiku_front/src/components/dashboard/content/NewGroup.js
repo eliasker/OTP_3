@@ -25,7 +25,7 @@ const NewGroup = () => {
   }
 
   const handleOptionClick = id => {
-    if (id === "none" || addedList.find(u => u._Id === id)) return
+    if (id === 'none' || addedList.find(u => u._Id === id)) return
     const addedUser = initialData.users.find(u => u._Id === id)
     setAddedList(
       addedList.concat(addedUser)

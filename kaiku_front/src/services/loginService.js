@@ -10,10 +10,10 @@ const login = async (username, password) => {
         password
       }
     )
-    return response.data;
+    return response.data
 
   } catch (error) {
-    console.log('REST: login error', error);
+    console.log('REST: login error', error)
   }
 }
 

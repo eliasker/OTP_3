@@ -17,7 +17,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "server": "json-server -p3001 db.json",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -38,6 +40,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "cypress": "^4.0.2",
+    "eslint-plugin-jest": "^23.8.2",
     "json-server": "^0.15.1"
   }
 }

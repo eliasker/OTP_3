@@ -34,12 +34,12 @@ const Discussions = ({ setDisplayUser, chat }) => {
   return (
     <div className="group-chat dropdown pos-rel">
       <div className={`${displayUsers ? 'bg-primary-1' : 'bg-primary-2'} profile row`} onClick={() => handleDiscussionClick()}>
-        <img src="kaikuthumb.png" alt="profiili" className={`profile-thumb alpha-1`} />
+        <img src="kaikuthumb.png" alt="profiili" className={'profile-thumb alpha-1'} />
         <div>
           <p>{chat.chatName}</p>
         </div>
       </div>
-      <div className={`${displayUsers ? "" : "d-none"}`}>
+      <div className={`${displayUsers ? '' : 'd-none'}`}>
         {listUsers()}
       </div>
     </div>
