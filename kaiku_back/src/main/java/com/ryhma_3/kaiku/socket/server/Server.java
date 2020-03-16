@@ -201,7 +201,7 @@ public class Server implements IServer {
 			//initialize connected users list
 			UserObject[] users = userDAO.getAllUsers();
 			for(UserObject user: users) {
-				connectedUsers.put(user.get_Id(), false);
+				connectedUsers.put(user.getUser_id(), false);
 			}
 		}catch (Exception e) {
 			System.out.println("SERVER INIT: FAIL");

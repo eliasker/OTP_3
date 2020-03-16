@@ -62,7 +62,7 @@ public class UserResourceController {
 			/*
 			 * complete user info
 			 */
-			String user_id = userFromDb.get_Id();
+			String user_id = userFromDb.getUser_id();
 			String name = userFromDb.getName();
 			boolean online = true;
 
@@ -78,7 +78,7 @@ public class UserResourceController {
 			 * Gather chats, remove deleted or archived
 			 * CHATS don't have to have messages at this point!!!
 			 */
-    		ChatObject[] chats = chatDAO.getChats(userFromDb.get_Id());
+    		ChatObject[] chats = chatDAO.getChats(userFromDb.getUser_id());
     		
     		for(int i=0; i<chats.length; i++) {
     			String type = chats[i].getType();
@@ -93,7 +93,7 @@ public class UserResourceController {
 			 */
 			for (int i = 0; i < chats.length; i++) {
 				if(chats[i] != null) {
-	    			MessageObject[] messages = messageDAO.getAllMessages(userFromDb.get_Id());
+	    			MessageObject[] messages = messageDAO.getAllMessages(userFromDb.getUser_id());
 					chats[i].setMessages(messages);
 				}
 			}
@@ -158,7 +158,7 @@ public class UserResourceController {
 			 */
 			ChatObject global = chatDAO.getChatObject(new ChatObject(null, "global", null, null, null));
 			String[] users = Arrays.copyOf(global.getMembers(), global.getMembers().length + 1);
-			users[users.length-1] = userObject.get_Id();
+			users[users.length-1] = userObject.getUser_id();
 			global.setMembers(users);
 			
 			System.out.println(global.getMembers());
