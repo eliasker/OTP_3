@@ -1,9 +1,6 @@
 package com.ryhma_3.kaiku.socket.server;
 
-import java.lang.reflect.Constructor;
-import java.util.UUID;
-
-import com.ryhma_3.kaiku.utility.Token;
+import com.ryhma_3.kaiku.model.cast_object.ChatObject;
 
 /**
  * @author Panu Lindqvist
@@ -23,5 +20,11 @@ public interface IServer {
 	 */
 	void stopServer();
 	
+	
+	 /**
+	  * Send createChatEvent from outside
+	 * @param chat {@link ChatObject}
+	 */
+	void sendCreateChatEvent(ChatObject chat);
 
 }

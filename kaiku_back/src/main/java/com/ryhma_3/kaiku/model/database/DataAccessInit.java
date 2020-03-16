@@ -8,10 +8,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 /**
- * DataAccessInit
+ * Common tasks necessary for Data Access Objects
  */
 public abstract class DataAccessInit {
     
+    /**
+     * Fetches MongoDB authentication string from a file
+     * @param filename filename containing authentication string
+     * @return Authentication string contained in the file
+     */
     protected String getMongoURI(String filename) {
         String filepath = "./secrets/" + filename;
 		try {
@@ -33,6 +38,11 @@ public abstract class DataAccessInit {
         }
     }
 
+    /**
+     * URL encodes strings
+     * @param string
+     * @return Encoded string
+     */
     protected String urlEncode(String string) {
         try {
             return URLEncoder.encode(string, StandardCharsets.UTF_8.toString());

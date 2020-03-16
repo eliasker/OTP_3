@@ -5,7 +5,7 @@ const InMessage = ({ content, user }) => {
     <div className="in-container">
       <div className="in-message">
         <p>
-          <span className={`${user.color} msg-senda bg-none`}>{user.name}</span>
+          <span className={`${user.color} msg-senda bg-none`}>{user.username}</span>
           <br />
           {content}
         </p>

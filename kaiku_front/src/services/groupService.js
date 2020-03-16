@@ -11,31 +11,43 @@ const configAsAdmin = {
  * Gets and returns all chats from backend
  * @param {*} user_id loggedUser.user_id
  */
-const getAll = async (user_id) => {
+const getAllByID = async (user_id) => {
   try {
     const requestString = baseUrl + `/?user_id=${user_id}`
     console.log(requestString)
-    const response = await axios.get(requestString, configAsAdmin)
+    const response = await axios.get(baseUrl + `/?user_id=${user_id}`, configAsAdmin)
     console.log('response.data', response.data)
     return response.data
   } catch (e) {
     console.log('error: ', e)
   }
-  
 }
 
+
+const getAllChats = async () => {
+  try {
+    const response = await axios.get(baseUrl + '/?user_id', configAsAdmin)
+    console.log('respones.data', response.data)
+    return response.data
+  } catch (e) {
+    console.log('error: ', e)
+  }
+}
+
+
 const create = newObject => {
-  const request = axios.post(baseUrl, newObject)
+  const request = axios.post(baseUrl, newObject, configAsAdmin)
   return request.then(response => response.data)
 }
 
 const update = (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject)
+  const request = axios.put(`${baseUrl}/${id}`, newObject, configAsAdmin)
   return request.then(response => response.data)
 }
 
-const deleteById = (id) =>
-  axios.delete(`${baseUrl}/${id}`)
+const deleteById = (id) => {
+  axios.delete(`${baseUrl}/?chat_id=${id}`, configAsAdmin)
+}
 
 
-export default { getAll, create, update, deleteById }
+export default { getAllChats, getAllByID, create, update, deleteById }

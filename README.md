@@ -44,11 +44,11 @@ _______________
 **4. Kuvankaappaukset (projektista)**\
 Kuvankaappauksia projektista
 ![Etusivu](https://cdn.discordapp.com/attachments/666191461267537923/684763784229027856/gui-kaiku.PNG)
-*Etusivu (kuva 4).*
+*Etusivu (kuva 1).*
 ![Kirjautumissivu](https://cdn.discordapp.com/attachments/666191461267537923/685108197014765598/login.PNG)
-*Kirjautumissivu (kuva 5).*
+*Kirjautumissivu (kuva 2).*
 ![Kojelauta](https://cdn.discordapp.com/attachments/666191461267537923/685108183991058442/kojelauta.PNG)
-*Kojelauta etusivu (kuva 6).*
+*Kojelauta etusivu (kuva 3).*
 _____
 **5. Jatkokehitysideat**
 - Profiilikuva; profiileihin voi lisätä ja muokata omaa kuvaa.
@@ -57,8 +57,8 @@ _____
 - Viesti ilmoitukset (Windows-ilmoitukset)
 _____
 **6. Liitteet**
-- UML: [UML](https://gitlab.com/)
-- Väliraportti: [Väliraportti](https://gitlab.com/)
-- Javadoc: [Javadoc](https://gitlab.com/)
-- URL: [kaiku-app](https://gitlab.com/)
-
+- UML: [UML](http://users.metropolia.fi/~borissj/kaiku-uml.pdf)
+- Testit [Testit](https://users.metropolia.fi/~jessear/OTP1/jacoco/index.html)
+- Väliraportti: [Väliraportti](http://users.metropolia.fi/~borissj/Kaiku-v%c3%a4liraportti.pdf)
+- Javadoc: [Javadoc](https://users.metropolia.fi/~jessear/OTP1/javadocs/index.html)
+- Production build: [kaiku-app](http://10.114.32.19:5000/)

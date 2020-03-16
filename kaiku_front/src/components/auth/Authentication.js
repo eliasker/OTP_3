@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import InitialData from '../../providers/InitialData'
 
 const Authentication = () => {
-  const {initialData, setAuthToken} = useContext(InitialData)
+  const { setAuthToken } = useContext(InitialData)
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -12,7 +12,7 @@ const Authentication = () => {
     setAuthToken(auth)
     window.localStorage.setItem('mastakey', JSON.stringify(auth))
   }
-  
+
   return (
     <div id="login">
       <div className="container text-center login-container">

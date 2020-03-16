@@ -1,12 +1,13 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useState } from 'react'
 import InitialData from '../providers/InitialData'
 import loginService from '../services/loginService'
 import useField from '../hooks/hooks'
 
-const Login = () => {
-  const { initialData, setInitialData, loggedUser, setLoggedUser } = useContext(InitialData)
+const Login = ({ createSocketConnection }) => {
+  const [showPassword, setShowPassword] = useState(false)
+  const { initialData, setLoggedUser } = useContext(InitialData)
   const username = useField('text')
-  const password = useField('text')
+  const password = useField(showPassword ? 'text' : 'password')
 
   // mirka-kissa asgakikk
   // MarkoM asdsaff
@@ -19,25 +20,18 @@ const Login = () => {
       window.localStorage.setItem('loggedKaikuUser', JSON.stringify(initialData))
     } else {
       try {
-        const user = await loginService.login(username.value, password.value)
+        var user = await loginService.login(username.value, password.value)
         if (user === '') throw ('no matching user')
+        console.log('setting loggeduser to ', user)
+        user._Id = user.user_id
         setLoggedUser(user)
-        console.log(user)
+        createSocketConnection(await user.token)
         window.localStorage.setItem('loggedKaikuUser', JSON.stringify(user))
       } catch (e) {
-        console.log('failed login')
+        console.log('failed login', e)
       }
     }
   }
-
-  useEffect(() => {
-    //profile theme color generator
-    if (loggedUser === null) return
-    const colors = ['red', 'navy', 'orange', 'blue', 'green', 'amber', 'turqoise', 'pink', 'brown', 'dark']
-    const generateColor = () => Math.floor(Math.random() * Math.floor(colors.length))
-    setInitialData({ ...loggedUser, users: loggedUser.users.map(u => u = { ...u, color: colors[generateColor()] }) })
-  }, [initialData])
-
 
   const removeReset = (object) => {
     const { reset, ...newObject } = object
@@ -52,14 +46,16 @@ const Login = () => {
 
           <div className="login-form-group">
             <label htmlFor="inputUsername" className="sr-only">Käyttäjätunnus</label>
-            <input type="text" id="inputUsername" className="form-control" placeholder="Käyttäjätunnus"
-              required {...removeReset(username)} />
+            <input id="inputUsername" className="form-control" placeholder="Käyttäjätunnus" required {...removeReset(username)} />
           </div>
 
           <div className="login-form-group">
             <label htmlFor="inputPassword" className="sr-only">Salasana</label>
-            <input type="password" id="inputPassword" className="form-control" placeholder="Salasana"
-              required {...removeReset(password)} />
+            <input id="inputPassword" className="form-control" placeholder="Salasana" required {...removeReset(password)} />
+            <div className="form-check pt-2 pb-0">
+              <input className="form-check-input" type="checkbox" value={showPassword} onChange={() => setShowPassword(!showPassword)} id="defaultCheck1" />
+              <label className="form-check-label" htmlFor="defaultCheck1"> Show password </label>
+            </div>
           </div>
 
           <button className="btn btn-md btn-outline-light btn-block" type="submit">Kirjaudu sisään</button>

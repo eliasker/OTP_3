@@ -1,6 +1,9 @@
 package com.ryhma_3.kaiku.model.database;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.lang.reflect.InvocationTargetException;
+
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -92,6 +95,7 @@ public class ChatDAOTest {
             new ChatObject(null, "testChat", "changed", new String[] {
                 testUserDAO.getUser(new UserObject(null, "TestUser1", null, null)).getUser_id(),
                 testUserDAO.getUser(new UserObject(null, "TestUser3", null, null)).getUser_id()
+
             }, testMessageObjects));
         assertEquals("changed", updated.getType(), "Type change failed after update");
         assertEquals(2, updated.getMembers().length, "Member list update failed");
@@ -111,10 +115,6 @@ public class ChatDAOTest {
             testChatDAO.getChatObject(o);
         });
         testChatDAO.deleteChatObject(o);
-
-        assertThrows(NullPointerException.class, () ->{
-            testChatDAO.getChatObject(o);
-        });
     }
 
     @Test
@@ -127,6 +127,7 @@ public class ChatDAOTest {
             }, testMessageObjects));
         
         assertTrue(testChatDAO.getChats(o.getMembers()[0]).length > 0);
+        assertTrue(testChatDAO.getAllChats().length > 0);
 
         testChatDAO.deleteChatObject(o);
     }

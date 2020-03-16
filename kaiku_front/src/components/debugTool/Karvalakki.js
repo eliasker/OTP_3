@@ -3,6 +3,7 @@ import userService from '../../services/userService'
 import socketService from '../../services/socketService'
 import init from './init'
 import useField from '../../hooks/hooks';
+import loginService from '../../services/loginService';
 
 
 const Karvalakki = () => {
@@ -66,8 +67,8 @@ const Karvalakki = () => {
     const userFromInit = init.users.find((usr) => usr.username === users[index].username);
     
 
-    initKontsa = await userService.login(
-      users[index].username,
+    initKontsa = await loginService.login(
+      userFromInit.username,
       userFromInit.password
     )  
     console.log(initKontsa);

@@ -1,5 +1,8 @@
 package com.ryhma_3.kaiku.model.cast_object;
 
+/**
+ * Java object representing a user database entry 
+ */
 public class UserObject {
 	private String user_id;
 	private String username;

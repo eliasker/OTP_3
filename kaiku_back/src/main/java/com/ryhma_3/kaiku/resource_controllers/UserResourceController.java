@@ -1,7 +1,5 @@
 package com.ryhma_3.kaiku.resource_controllers;
 
-import java.util.Arrays;
-
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -20,6 +18,7 @@ import com.ryhma_3.kaiku.model.database.IMessageDAO;
 import com.ryhma_3.kaiku.model.database.IUserDAO;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ResourceNotFoundException;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ValidationFailedException;
+import com.ryhma_3.kaiku.utility.GlobalChats;
 import com.ryhma_3.kaiku.utility.SecurityTools;
 
 /**
@@ -93,7 +92,7 @@ public class UserResourceController {
 			 */
 			for (int i = 0; i < chats.length; i++) {
 				if(chats[i] != null) {
-	    			MessageObject[] messages = messageDAO.getAllMessages(userFromDb.getUser_id());
+	    			MessageObject[] messages = messageDAO.getAllMessages(chats[i].getChat_id());
 					chats[i].setMessages(messages);
 				}
 			}
@@ -156,14 +155,8 @@ public class UserResourceController {
 			/*			 
 			 * add user to global chat
 			 */
-			ChatObject global = chatDAO.getChatObject(new ChatObject(null, "global", null, null, null));
-			String[] users = Arrays.copyOf(global.getMembers(), global.getMembers().length + 1);
-			users[users.length-1] = userObject.getUser_id();
-			global.setMembers(users);
+			GlobalChats.addMemberToGlobals(userObject);
 			
-			System.out.println(global.getMembers());
-			
-			chatDAO.updateChatObject(global);
 			
 			userObject.setPassword("");
 			

@@ -52,7 +52,10 @@ public class ChatDAO extends DataAccessInit implements IChatDAO {
         d.append("type", chatObject.getType());
         d.append("users", Arrays.asList(chatObject.getMembers()));
         // TODO: add actual messages when it's time for it
-        d.append("messages", "test");
+        if (chatObject.getMessages() == null)
+            d.append("messages", null);
+        else
+            d.append("messages", Arrays.asList(chatObject.getMessages()));
         collection.insertOne(d);
         return new ChatObject(d.getObjectId("_id").toString(), chatObject.getChatName(),
             chatObject.getType(), chatObject.getMembers(), chatObject.getMessages());
@@ -63,10 +66,13 @@ public class ChatDAO extends DataAccessInit implements IChatDAO {
         Document document = new Document("chatName", chatObject.getChatName());
         document.append("type", chatObject.getType());
         document.append("users", Arrays.asList(chatObject.getMembers()));
-        // TODO: add MessageObject[] when messages are actually stored
-        document.append("messages", "");
-		UpdateResult result = collection.updateOne(eq("chatName",
-            chatObject.getChatName()), new Document("$set", document));
+        // TODO: add actual messages when it's time for it
+        if (chatObject.getMessages() == null)
+            document.append("messages", null);
+        else
+            document.append("messages", Arrays.asList(chatObject.getMessages()));
+		UpdateResult result = collection.updateOne(eq("_id",
+            new ObjectId(chatObject.getChat_id())), new Document("$set", document));
         if (result.getMatchedCount() == 0) return null;
         else return getChatObject(chatObject);
 	}

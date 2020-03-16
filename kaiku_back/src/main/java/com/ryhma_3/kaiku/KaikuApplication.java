@@ -5,7 +5,6 @@ import java.util.Scanner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.ryhma_3.kaiku.model.cast_object.ChatObject;
 import com.ryhma_3.kaiku.model.database.ChatDAO;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
@@ -15,7 +14,9 @@ import com.ryhma_3.kaiku.model.database.UserDAO;
 import com.ryhma_3.kaiku.socket.init.IServerInit;
 import com.ryhma_3.kaiku.socket.init.ServerInitAuth;
 import com.ryhma_3.kaiku.socket.init.ServerInitNoAuth;
+import com.ryhma_3.kaiku.socket.server.IServer;
 import com.ryhma_3.kaiku.socket.server.Server;
+import com.ryhma_3.kaiku.utility.GlobalChats;
 
 @SpringBootApplication
 public class KaikuApplication {
@@ -26,30 +27,25 @@ public class KaikuApplication {
 	static IChatDAO chatDAO = null;
 	static IMessageDAO messageDAO = null;
 	static IUserDAO userDAO = null;
-
+	
 	public static void main(String[] args) {
 		commandLineSetup();
-		
+				
 		initializeState();
-		
+
 		SpringApplication.run(KaikuApplication.class, args);
-		
 
 		server.start();
 	}
 	
 	
+	/**
+	 * Make sure global chats are initialized
+	 */
 	private static void initializeState() {
-		
-		//confirm global chat exists
-		ChatObject global = null;
-		try {
-			global = chatDAO.getChatObject(new ChatObject(null, "global", "global", null, null));
-		} catch (Exception e) {
-			String[] empty = { };
-			global = new ChatObject(null, "global", "global", empty, null);
-			chatDAO.createChatObject(global);
-		}
+	
+		new GlobalChats();
+		GlobalChats.globalChatsInit();
 	}
 
 
@@ -128,4 +124,9 @@ public class KaikuApplication {
 	public static IChatDAO getChatDAO() {
 		return chatDAO;
 	}
+	
+	public static IServer getServer() {
+		return server;
+	}
+	
 }

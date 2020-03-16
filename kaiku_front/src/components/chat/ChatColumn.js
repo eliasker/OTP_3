@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect, useContext } from 'react'
 
 import useField from '../../hooks/hooks'
 import keyGen from '../../util/keyGen'
-import useChat from '../../hooks/useChat'
 import messageValidation from '../../util/inputValidation'
 import InitialData from '../../providers/InitialData'
 import InMessage from './message/InMessage'
@@ -14,20 +13,20 @@ import MessageForm from './MessageForm'
 import ChatHeader from './ChatHeader'
 import CurrentChat from '../../providers/CurrentChat'
 
-const ChatColumn = ({ profileState, userState }) => {
+const ChatColumn = ({ profileState, userState, currentChat }) => {
   const { initialData, loggedUser } = useContext(InitialData)
-  const { addMessage, currentChat } = useContext(CurrentChat)
-  const { sendMessage } = useChat(loggedUser.id, currentChat, addMessage)
+  const { postMessage } = useContext(CurrentChat)
   const [searchInput, setSearchInput] = useState('')
   const messagesEndRef = useRef(null)
   const newMessage = useField('text')
-
   const scrollToBottom = () => {
     if (messagesEndRef.current !== null) messagesEndRef.current.scrollIntoView({ behavior: "auto" })
   }
 
+  //console.log('curr chat in column', currentChat)
+
   const getUser = (user_id) => {
-    const user = initialData.users.find(user => user.id === user_id) || { name: '', color: 'red' }
+    const user = initialData.users.find(user => user._Id === user_id)
     return user
   }
 
@@ -36,11 +35,15 @@ const ChatColumn = ({ profileState, userState }) => {
     if (currentChat.messages === undefined || currentChat.messages.length === 0) return <DefaultMessage />
     const filteredMsgs = currentChat.messages.filter(msg => msg.content.includes(searchInput))
     return filteredMsgs.map(m =>
-      m.user_id === loggedUser.id ?
+      m.user_id === loggedUser.user_id ?
         <OutMessage key={keyGen.generateKey(m.content)} content={m.content} /> :
         <InMessage key={keyGen.generateKey(m.content)} content={m.content} user={getUser(m.user_id)} />)
   }
-
+  /*
+    useEffect(() => {
+      console.log('testi', currentChat)
+    }, [currentChat])
+  */
   useEffect(scrollToBottom, [initialData, currentChat])
 
   const removeReset = (object) => {
@@ -53,10 +56,10 @@ const ChatColumn = ({ profileState, userState }) => {
     if (messageValidation(newMessage.value)) {
       const newMessageObj = {
         content: newMessage.value,
-        id: keyGen.generateId(),
+        message_id: null,
         user_id: loggedUser.user_id
       }
-      sendMessage(newMessageObj)
+      postMessage(newMessageObj, currentChat.chat_id)
       newMessage.reset()
     }
   }
