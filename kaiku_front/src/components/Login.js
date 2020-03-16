@@ -23,7 +23,7 @@ const Login = ({ createSocketConnection }) => {
         var user = await loginService.login(username.value, password.value)
         if (user === '') throw ('no matching user')
         console.log('setting loggeduser to ', user)
-        user._Id = user.user_id
+        user.user_id = user.user_id
         setLoggedUser(user)
         createSocketConnection(await user.token)
         window.localStorage.setItem('loggedKaikuUser', JSON.stringify(user))

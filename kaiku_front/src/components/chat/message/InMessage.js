@@ -1,6 +1,7 @@
 import React from 'react'
 
 const InMessage = ({ content, user }) => {
+  if (user === undefined) user = {color: 'green', username: ''}
   return (
     <div className="in-container">
       <div className="in-message">

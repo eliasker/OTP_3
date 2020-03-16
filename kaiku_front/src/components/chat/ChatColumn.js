@@ -26,7 +26,7 @@ const ChatColumn = ({ profileState, userState, currentChat }) => {
   //console.log('curr chat in column', currentChat)
 
   const getUser = (user_id) => {
-    const user = initialData.users.find(user => user._Id === user_id)
+    const user = initialData.users.find(user => user.user_id === user_id)
     return user
   }
 
@@ -39,11 +39,6 @@ const ChatColumn = ({ profileState, userState, currentChat }) => {
         <OutMessage key={keyGen.generateKey(m.content)} content={m.content} /> :
         <InMessage key={keyGen.generateKey(m.content)} content={m.content} user={getUser(m.user_id)} />)
   }
-  /*
-    useEffect(() => {
-      console.log('testi', currentChat)
-    }, [currentChat])
-  */
   useEffect(scrollToBottom, [initialData, currentChat])
 
   const removeReset = (object) => {

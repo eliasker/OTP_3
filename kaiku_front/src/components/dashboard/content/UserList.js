@@ -7,7 +7,7 @@ const UserList = () => {
   const { users } = useContext(Context)
   const getUserList = () => {
     if (users === undefined) return
-    return users.map(u => <ListItem key={u._Id} user={u} />)
+    return users.map(u => <ListItem key={u.user_id} user={u} />)
   }
 
   return (

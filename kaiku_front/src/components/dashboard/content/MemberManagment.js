@@ -33,18 +33,18 @@ const MemberManagment = () => {
   const getUserList = () => {
     if (!tempGroup.members) return
     console.log(initialData)
-    const memberList = tempGroup.members.map(m => initialData.users.find(u => u._Id === m))
+    const memberList = tempGroup.members.map(m => initialData.users.find(u => u.user_id === m))
     console.log(memberList)
     return memberList.map(m =>
-      <span className="badge badge-primary m-1 font-2" key={m._Id}>
-        {m.username} <i className="fas fa-times h-red" onClick={() => handleDelete(m._Id)}></i>
+      <span className="badge badge-primary m-1 font-2" key={m.user_id}>
+        {m.username} <i className="fas fa-times h-red" onClick={() => handleDelete(m.user_id)}></i>
       </span>
     )
   }
 
   const generateOptions = () => (!initialData) ?
     <option value="...">Ladataan...</option> :
-    initialData.users.map(u => <option value={u._Id} key={u._Id}>{u.username}</option>)
+    initialData.users.map(u => <option value={u.user_id} key={u.user_id}>{u.username}</option>)
 
 
   if (!currentGroup.chatName) return <></>

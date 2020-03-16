@@ -54,7 +54,7 @@ const useChatHook = (initialData, createChat, sendMessage, incMessageData, newCh
         const index = newChatState.indexOf(newChatObject)
         newChatState[index].messages.push(newMessage)
         setCurrentChat(newChatState[index])
-        sendMessage(newMessage, loggedUser._Id, chatID)
+        sendMessage(newMessage, loggedUser.user_id, chatID)
       }
     }
     setChatState(newChatState)
@@ -89,7 +89,7 @@ const useChatHook = (initialData, createChat, sendMessage, incMessageData, newCh
   const receiveMessage = data => {
     if (data === null) return
     if (data !== undefined) {
-      console.log('msg received from', data.user_id, 'loggeduserid', loggedUser._Id, 'message', data)
+      console.log('msg received from', data.user_id, 'loggeduserid', loggedUser.user_id, 'message', data)
       var newChatState = chatState
       var newChatObject = findChatByID(data.chat_id)
       try {
