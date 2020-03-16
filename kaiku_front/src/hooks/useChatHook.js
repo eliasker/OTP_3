@@ -6,19 +6,10 @@ import groupService from '../services/groupService'
  * Custom hook for chat state management in front end
  * @param {*} initialData 
  */
-const useChatHook = (initialData, createChat, sendMessage, incMessageData, newChatData) => {
+const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
   const { loggedUser } = useContext(InitialData)
   const [chatState, setChatState] = useState(null)
   const [currentChat, setCurrentChat] = useState(null)
-
-  /*
-  useEffect(() => {
-    if (initialData.chats === undefined) return console.log('initialData pending...')
-    console.log('setting chatState to', initialData.chats)
-    setChatState(initialData.chats)
-    setCurrentChat(initialData.chats[0])
-  }, [initialData])
-  */
 
   useEffect(() => {
     (async () => {
@@ -100,6 +91,7 @@ const useChatHook = (initialData, createChat, sendMessage, incMessageData, newCh
    */
   const receiveMessage = data => {
     if (data === null) return
+    if (data.user_id === loggedUser.user_id) return
     if (data !== undefined) {
       console.log('msg received from', data.user_id, 'loggeduserid', loggedUser.user_id, 'message', data)
       var newChatState = chatState
