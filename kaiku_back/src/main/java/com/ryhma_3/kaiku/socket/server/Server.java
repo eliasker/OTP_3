@@ -133,7 +133,14 @@ public class Server implements IServer {
 					//Create chat
 					ChatObject result = null;
 					
-					try {						
+					try {					
+						/*
+						 * NullPointerException if no messages
+						 * 1. Store messages from data object
+						 * 2. remove messages from data object (messages dont go to chats db)
+						 * 3. Create chat in db
+						 * 4. create db message collection from stored messages
+						 */
 						MessageObject[] messages = data.getMessages();
 						
 						data.setMessages(null);
@@ -151,7 +158,11 @@ public class Server implements IServer {
 						result = chatDAO.createChatObject(data);
 					}
 					
-					
+
+					//trying if ackwonledgement (request for the chat object) is required
+					if(ackSender.isAckRequested()) {
+						ackSender.sendAckData(result);
+					}
 										
 					System.out.println("created chat: " + result.getChatName() + ", with ID: " + result.getChat_id());
 										
