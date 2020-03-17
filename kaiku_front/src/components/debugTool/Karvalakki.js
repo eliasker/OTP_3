@@ -82,7 +82,7 @@ const Karvalakki = () => {
 
   const handleSendMessage = (target, message) => {
     const target_id = initKontsa.chats.find((chat) => chat.chatName === target);
-    const result = sendMessage(message, initKontsa._Id, target_id);
+    const result = sendMessage(message, initKontsa.user_id, target_id);
 
     console.log(result);
     

@@ -24,8 +24,8 @@ const ListItem = ({ user, group }) => {
 
   const deleteUser = (object) => {
     if (!window.confirm('Haluatko poistaa ' + object.username + 'n tiedot')) return
-    userService.deleteById(object._Id)
-    const updatedUsers = users.filter(u => u._Id !== object._Id)
+    userService.deleteById(object.user_id)
+    const updatedUsers = users.filter(u => u.user_id !== object.user_id)
     setUsers(updatedUsers)
   }
 

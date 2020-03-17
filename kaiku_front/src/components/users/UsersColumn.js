@@ -27,19 +27,19 @@ const UsersColumn = ({ setDisplayProfile, userState }) => {
 
   const findChat = (targetUser) => {
     try {
-      const searchResult = chatState.find(chat => (chat.type === 'private' && chat.members.includes(targetUser._Id)))
+      const searchResult = chatState.find(chat => (chat.type === 'private' && chat.members.includes(targetUser.user_id)))
       if (searchResult) return { ...searchResult, name: targetUser.username }
     } catch (e) { }
-    return { name: targetUser.username, type: 'private', members: [loggedUser.user_id, targetUser._Id], messages: [] }
+    return { name: targetUser.username, type: 'private', members: [loggedUser.user_id, targetUser.user_id], messages: [] }
   }
 
   // Lists last direct message from other users 
   const listMessages = () => {
     if (initialData.users === undefined) return
     const filteredUsers = filterUtil(initialData.users.map(u => u.name), searchInput)
-    console.log(initialData.users, loggedUser._Id)
+    console.log(initialData.users, loggedUser.user_id)
     return initialData.users
-      .filter(u => u._Id !== loggedUser._Id)
+      .filter(u => u.user_id !== loggedUser.user_id)
       .filter(u => filteredUsers.find(e => u.name === e))
       .map(u => <DirectUser key={keyGen.generateKey(u.name)} privateChat={findChat(u)} user={u} setDisplayUser={setDisplayUser} />)
   }

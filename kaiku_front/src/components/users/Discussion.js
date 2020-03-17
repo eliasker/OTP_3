@@ -11,16 +11,16 @@ const Discussions = ({ setDisplayUser, chat }) => {
   const [displayUsers, setDisplayUsers] = useState(currentChat === chat)
 
   const findChat = (targetUser) => {
-    const searchResult = chatState.find(chat => (chat.type === 'private' && chat.members.includes(targetUser._Id)))
+    const searchResult = chatState.find(chat => (chat.type === 'private' && chat.members.includes(targetUser.user_id)))
     if (searchResult) return { ...searchResult, name: targetUser.username }
     else {
-      return { name: targetUser.username, type: 'private', members: [loggedUser.user_id, targetUser._Id], messages: [] }
+      return { name: targetUser.username, type: 'private', members: [loggedUser.user_id, targetUser.user_id], messages: [] }
     }
   }
 
   const listUsers = () => {
     if (initialData.users === undefined) return console.log('initialData pending...')
-    const filteredUsers = chat.members.map(m => initialData.users.find(u => u._Id === m))
+    const filteredUsers = chat.members.map(m => initialData.users.find(u => u.user_id === m))
     return filteredUsers
       .map(u => <User key={keyGen.generateKey(u.name)} setDisplayUser={setDisplayUser} user={u} privateChat={findChat(u)} />)
   }
