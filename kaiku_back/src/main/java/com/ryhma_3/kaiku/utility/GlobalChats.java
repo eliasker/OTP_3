@@ -92,9 +92,7 @@ public class GlobalChats {
 				String[] members = chat.getMembers();
 				members = Arrays.copyOf(members, members.length+1);
 				members[members.length-1] = member.getUser_id();
-				
-				System.out.println(members[members.length - 1]);
-				
+				chat.setMembers(members);
 				
 				ChatObject updated = chatDAO.updateChatObject(chat);
 				System.out.println("new user added to; " + updated.getChatName());
