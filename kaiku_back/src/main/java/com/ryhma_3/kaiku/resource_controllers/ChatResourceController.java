@@ -86,6 +86,8 @@ public class ChatResourceController {
 		boolean valid = token.equals("kaiku");
 		
 		if(valid) {
+		
+			chat.setMessages(null);
 			
 			ChatObject result = chatDAO.createChatObject(chat);
 			if(result!=null) {

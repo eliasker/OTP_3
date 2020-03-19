@@ -66,7 +66,7 @@ public class Server implements IServer {
 		server.addConnectListener(new ConnectListener() {			
 			@Override
 			public void onConnect(SocketIOClient client) {
-				System.out.println("connect event");
+				debugger("connect event");
 				
 				//register client
 				String tokenString = client.getHandshakeData().getSingleUrlParam("Authorization");
@@ -75,7 +75,7 @@ public class Server implements IServer {
 								
 				Token cloneOfToken = SecurityTools.getCloneOfToken(tokenString);
 				
-				System.out.println("client:" + cloneOfToken.getUser_id() + 
+				debugger("client:" + cloneOfToken.getUser_id() + 
 						" verified, token:" + cloneOfToken.getTokenString() + 
 						" UUID:" + cloneOfToken.getSessionID());
 				
@@ -99,7 +99,7 @@ public class Server implements IServer {
 				
 				UUID sessionID = client.getSessionId();
 				
-				System.out.println(client);
+				debugger(client.toString());
 
 				try {
 					//get token of disconnecting client
@@ -114,9 +114,9 @@ public class Server implements IServer {
 					//remove sessionID form storage
 					SecurityTools.attachSessionToToken(cloneOfToken.getTokenString(), null);
 					
-					System.out.println("UUID:" + cloneOfToken.getSessionID().toString() + " disconnected cleanly");
+					debugger("UUID:" + cloneOfToken.getSessionID().toString() + " disconnected cleanly");
 				} catch (Exception e) {
-					System.out.println("Disconnected uncleanly");
+					debugger("Disconnected uncleanly");
 					
 					//TODO find a way to cleanup connectedUsers
 				}
@@ -133,7 +133,14 @@ public class Server implements IServer {
 					//Create chat
 					ChatObject result = null;
 					
-					try {						
+					try {					
+						/*
+						 * NullPointerException if no messages
+						 * 1. Store messages from data object
+						 * 2. remove messages from data object (messages dont go to chats db)
+						 * 3. Create chat in db
+						 * 4. create db message collection from stored messages
+						 */
 						MessageObject[] messages = data.getMessages();
 						
 						data.setMessages(null);
@@ -142,18 +149,22 @@ public class Server implements IServer {
 						
 						messageDAO.createMessage(messages[0], result.getChat_id());
 						
-						System.out.println("Chat created with initial message");
+						debugger("Chat created with initial message");
 						
 					} catch(Exception e) {
 						
-						System.out.println("no initial message");
+						debugger("no initial message");
 						
 						result = chatDAO.createChatObject(data);
 					}
 					
-					
+
+					//trying if ackwonledgement (request for the chat object) is required
+					if(ackSender.isAckRequested()) {
+						ackSender.sendAckData(result);
+					}
 										
-					System.out.println("created chat: " + result.getChatName() + ", with ID: " + result.getChat_id());
+					debugger("created chat: " + result.getChatName() + ", with ID: " + result.getChat_id());
 										
 					//go through all  members
 					for(String member : data.getMembers()) {
@@ -161,16 +172,23 @@ public class Server implements IServer {
 						//check if member is online
 						if(connectedUsers.get(member)) {
 							
+							Token user = SecurityTools.getCloneOfToken(member);
+							
+							//Do not send createChatEvent to the creator client
+							if(user.getSessionID().toString().equals(client.getSessionId().toString())){
+								continue;
+							}
+							
 							//send event realtime
-							SocketIOClient receiver = server.getClient(SecurityTools.getCloneOfToken(member).getSessionID());
+							SocketIOClient receiver = server.getClient(user.getSessionID());
 							receiver.sendEvent("createChatEvent", result);
 							
-							System.out.println("sent event to: " + receiver.getSessionId().toString());
+							debugger("sent event to: " + receiver.getSessionId().toString());
 							
 						}
 					}
 				} catch(Exception e) {
-					System.out.println("Create chat failed");
+					debugger("Create chat failed");
 					e.printStackTrace();
 				}
 			}
@@ -184,14 +202,14 @@ public class Server implements IServer {
 				
 				try {
 					
-					System.out.println("chats in store:  " + chats.size());
+					debugger("chats in store:  " + chats.size());
 				
 					//find correct chat
 					for(ChatObject chat : chats) {
 						if(chat.getChat_id().equals(data.getChat_id())) {
 						
 							MessageObject message = messageDAO.createMessage(data, chat.getChat_id());
-							System.out.println("Created message: " + message.getContent() + ",  to: " + message.getChat_id());
+							debugger("Created message: " + message.getContent() + ",  to: " + message.getChat_id());
 							
 							//run through all users
 							for(String user : chat.getMembers()) {
@@ -200,9 +218,9 @@ public class Server implements IServer {
 								try {
 									UUID sessionID = SecurityTools.getCloneOfToken(user).getSessionID();
 									server.getClient(sessionID).sendEvent("chatEvent", message);
-									System.out.println("sent message to UUID: " + sessionID);
+									debugger("sent message to UUID: " + sessionID);
 								} catch (NullPointerException ne) {
-									System.out.println("skipping client on return msg");
+									debugger("skipping client on return msg");
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
@@ -211,7 +229,7 @@ public class Server implements IServer {
 						}
 					}
 				}catch (Exception e) {
-					System.out.println("chatEvent: FAIL");
+					debugger("chatEvent: FAIL");
 					e.printStackTrace();
 				}
 			}
@@ -219,7 +237,7 @@ public class Server implements IServer {
 		
 		server.start();
 		
-		System.out.println("server started");
+		debugger("server started");
 	}
 	
 	
@@ -240,11 +258,11 @@ public class Server implements IServer {
 					SocketIOClient receiver = server.getClient(SecurityTools.getCloneOfToken(member).getSessionID());
 					receiver.sendEvent("createChatEvent", chat);
 					
-					System.out.println("sent event to: " + receiver.getSessionId().toString());				
+					debugger("sent event to: " + receiver.getSessionId().toString());				
 				}
 			}
 		} catch(Exception e) {
-			System.out.println("Exception in sendCreateChatEvent");
+			debugger("Exception in sendCreateChatEvent");
 		}
 	}
 
@@ -266,10 +284,10 @@ public class Server implements IServer {
 			//initialize connected users list
 			UserObject[] users = userDAO.getAllUsers();
 			for(UserObject user: users) {
-				connectedUsers.put(user.get_Id(), false);
+				connectedUsers.put(user.getUser_id(), false);
 			}
 		}catch (Exception e) {
-			System.out.println("SERVER INIT: FAIL");
+			debugger("SERVER INIT: FAIL");
 			e.printStackTrace();
 		}
 	}
@@ -295,9 +313,17 @@ public class Server implements IServer {
 //		});
 	}
 	
-	
 	@Override
 	public void stopServer() {
 		server.stop();
+	}
+	
+	
+	/**
+	 * Log debugging messages
+	 * @param info
+	 */
+	private void debugger(String info) {
+		System.out.println("SERVER: " + info);
 	}
 }

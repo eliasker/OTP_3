@@ -61,9 +61,6 @@ const SocketService = () => {
       members,
       messages
     }
-
-    console.log('create: ', obj);
-
     socketRef.current.emit('createChatEvent', obj);
   }
 

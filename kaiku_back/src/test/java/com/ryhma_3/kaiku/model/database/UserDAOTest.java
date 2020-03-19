@@ -22,7 +22,7 @@ public class UserDAOTest {
         UserDAO testUserDAO = new UserDAO();
         UserObject u = testUserDAO.createUser(
             new UserObject(null, "CreateTestUser", "password", "test user"));
-        assertNotNull(u.get_Id(), "_id not retrieved properly");
+        assertNotNull(u.getUser_id(), "_id not retrieved properly");
         assertEquals("CreateTestUser", u.getUsername(), "Username incorrect");
         assertEquals("password", u.getPassword(), "Password incorrect");
         assertEquals("test user", u.getName(), "Username incorrect");
@@ -41,7 +41,7 @@ public class UserDAOTest {
         assertEquals("GetTestUser", u.getUsername(), "Creating sample user for deletion failed");
 
         UserObject userFromDB = testUserDAO.getUser(u);
-        assertNotNull(userFromDB.get_Id(), "_id not retrieved properly");
+        assertNotNull(userFromDB.getUser_id(), "_id not retrieved properly");
         assertEquals("GetTestUser", userFromDB.getUsername(), "Username incorrect");
         assertEquals("password", userFromDB.getPassword(), "Password incorrect");
         assertEquals("test user", userFromDB.getName(), "Username incorrect");
@@ -73,7 +73,7 @@ public class UserDAOTest {
                 "Creating sample user for deletion failed");
 
         UserObject updatedUser =
-            new UserObject(u.get_Id(), "UpdateTestUser", "changed", "changed");
+            new UserObject(u.getUser_id(), "UpdateTestUser", "changed", "changed");
         u = testUserDAO.updateUser(updatedUser);
         assertEquals("UpdateTestUser", u.getUsername(), "Username incorrect");
         assertEquals("changed", u.getPassword(), "Password change failed");

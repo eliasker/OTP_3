@@ -12,7 +12,7 @@ const NewGroup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const memberList = addedList.map(u => u._Id)
+    const memberList = addedList.map(u => u.user_id)
     if (!window.confirm('Haluatko luoda ' + newGroup.chatName + ' ryhmän?')) return
     groupService.create({ ...newGroup, members: memberList, type: 'group' })
     setContent('g/all')
@@ -20,13 +20,13 @@ const NewGroup = () => {
 
   const handleDelete = user => {
     setAddedList(
-      addedList.filter(u => u._Id !== user._Id)
+      addedList.filter(u => u.user_id !== user.user_id)
     )
   }
 
   const handleOptionClick = id => {
-    if (id === "none" || addedList.find(u => u._Id === id)) return
-    const addedUser = initialData.users.find(u => u._Id === id)
+    if (id === "none" || addedList.find(u => u.user_id === id)) return
+    const addedUser = initialData.users.find(u => u.user_id === id)
     setAddedList(
       addedList.concat(addedUser)
     )
@@ -34,11 +34,11 @@ const NewGroup = () => {
 
   const generateOptions = () => (!initialData) ?
     <option value="...">Ladataan...</option> :
-    initialData.users.map(u => <option value={u._Id} key={u._Id}>{u.username}</option>)
+    initialData.users.map(u => <option value={u.user_id} key={u.user_id}>{u.username}</option>)
 
   const generatePreview = () => {
     return addedList.map(u =>
-      <span className="badge badge-primary m-1" key={u._Id}>
+      <span className="badge badge-primary m-1" key={u.user_id}>
         {u.username} <i className="fas fa-times" onClick={() => handleDelete(u)}></i>
       </span>
     )

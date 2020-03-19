@@ -32,7 +32,8 @@ public class UserResourceController {
 	private IChatDAO chatDAO = KaikuApplication.getChatDAO();
 	private IMessageDAO messageDAO = KaikuApplication.getMessageDAO();
 	private IUserDAO userDAO = KaikuApplication.getUserDAO();
-		
+	
+	
 	/**
 	 * <pre>
 	 * Request invoked when user starts a session. This entry point compiles all necessary data needed to initialize front end application.
@@ -60,7 +61,7 @@ public class UserResourceController {
 			/*
 			 * complete user info
 			 */
-			String user_id = userFromDb.get_Id();
+			String user_id = userFromDb.getUser_id();
 			String name = userFromDb.getName();
 			boolean online = true;
 
@@ -76,7 +77,7 @@ public class UserResourceController {
 			 * Gather chats, remove deleted or archived
 			 * CHATS don't have to have messages at this point!!!
 			 */
-    		ChatObject[] chats = chatDAO.getChats(userFromDb.get_Id());
+    		ChatObject[] chats = chatDAO.getChats(userFromDb.getUser_id());
     		
     		for(int i=0; i<chats.length; i++) {
     			String type = chats[i].getType();
@@ -151,20 +152,12 @@ public class UserResourceController {
 			userObject = userDAO.createUser(userObject);
 			
 			
-			/*
-			 * Add user to token collection
-			 */
-			SecurityTools.createOrUpdateToken(userObject.get_Id());
-			
-			
 			/*			 
 			 * add user to global chat
 			 */
 			GlobalChats.addMemberToGlobals(userObject);
 			
-			/*
-			 * hide psw
-			 */
+			
 			userObject.setPassword("");
 			
 			return userObject;
@@ -219,7 +212,7 @@ public class UserResourceController {
 			@RequestBody UserObject user) {
 		System.out.println("REST: update user");
 		
-		boolean valid = SecurityTools.verifySession(token) || token.equals("kaiku");
+		boolean valid = SecurityTools.verifySession(token);
 		
 		if(valid) {
 			
@@ -253,38 +246,12 @@ public class UserResourceController {
 		
 		if(valid) {
 			
-			System.out.println("delete user with id: " + user_id);
+			System.out.println("id: " + user_id);
 			
 			boolean success = userDAO.deleteUser(new UserObject(user_id, null, null ,null));
 			
 			if(!success) {
 				throw new ResourceNotFoundException();
-			}
-			
-			//remove id ref from all chats
-			try {
-				ChatObject[] chats = chatDAO.getChats(user_id);
-				for(ChatObject chat : chats) {
-					
-					String[] members = chat.getMembers();
-					String[] newMembers = new String[members.length-1];
-	
-					for(int i=0; i<members.length; i++) {
-						//pop the toBe deleted user
-						if(!members[i].equals(user_id)) {
-							newMembers[i] = members[i];
-						}
-					}
-					
-					chat.setMembers(newMembers);
-					
-					System.out.println("Deleting user from: " + chat.getChatName());
-					chatDAO.updateChatObject(chat);
-				}
-				
-			} catch(Exception e) {
-				System.out.println("issue deleting user_id from chats");
-				e.printStackTrace();
 			}
 			
 			return success;

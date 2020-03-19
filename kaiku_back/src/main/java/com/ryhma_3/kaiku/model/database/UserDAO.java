@@ -59,7 +59,7 @@ public class UserDAO extends DataAccessInit implements IUserDAO {
         document.append("name", userObject.getName());
         document.append("password", userObject.getPassword());
 		UpdateResult result = collection.updateOne(eq("_id",
-            new ObjectId(userObject.get_Id())), new Document("$set", document));
+            new ObjectId(userObject.getUser_id())), new Document("$set", document));
         if (result.getMatchedCount() == 0) return null;
         // TODO: find a cleaner solution to get udated documents id
         else return getUser(userObject);
@@ -68,7 +68,7 @@ public class UserDAO extends DataAccessInit implements IUserDAO {
 	@Override
 	public boolean deleteUser(UserObject userObject) {
         System.out.println(userObject.getUsername());
-		DeleteResult result = collection.deleteOne(eq("_id", new ObjectId(userObject.get_Id())));
+		DeleteResult result = collection.deleteOne(eq("_id", new ObjectId(userObject.getUser_id())));
         if (result.getDeletedCount() > 0) {
             System.out.println("deleted");
             return true;

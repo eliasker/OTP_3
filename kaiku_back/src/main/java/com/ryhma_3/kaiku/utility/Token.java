@@ -9,7 +9,6 @@ public class Token {
 	private UUID sessionID;
 	private String user_id;
 	private String tokenString;
-	private boolean online = false;
 	
     /**
      * Create token

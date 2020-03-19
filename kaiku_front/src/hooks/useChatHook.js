@@ -1,21 +1,24 @@
 import { useState, useEffect, useContext } from 'react'
 import InitialData from '../providers/InitialData'
+import groupService from '../services/groupService'
 
 /**
  * Custom hook for chat state management in front end
  * @param {*} initialData 
  */
-const useChatHook = (initialData, createChat, sendMessage, incMessageData, newChatData) => {
+const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
   const { loggedUser } = useContext(InitialData)
   const [chatState, setChatState] = useState(null)
   const [currentChat, setCurrentChat] = useState(null)
 
   useEffect(() => {
-    if (initialData.chats === undefined) return console.log('initialData pending...')
-    console.log('setting chatState to', initialData.chats)
-    setChatState(initialData.chats)
-    setCurrentChat(initialData.chats[0])
-  }, [initialData])
+    (async () => {
+      const chats = await groupService.getAllByID(loggedUser.user_id)
+      console.log('setting chats to:', chats)
+      setChatState(chats)
+      setCurrentChat(chats[0])
+    })()
+  }, [loggedUser])
 
   useEffect(() => {
     receiveMessage(incMessageData)
@@ -54,7 +57,7 @@ const useChatHook = (initialData, createChat, sendMessage, incMessageData, newCh
         const index = newChatState.indexOf(newChatObject)
         newChatState[index].messages.push(newMessage)
         setCurrentChat(newChatState[index])
-        sendMessage(newMessage, loggedUser._Id, chatID)
+        sendMessage(newMessage, loggedUser.user_id, chatID)
       }
     }
     setChatState(newChatState)
@@ -88,8 +91,9 @@ const useChatHook = (initialData, createChat, sendMessage, incMessageData, newCh
    */
   const receiveMessage = data => {
     if (data === null) return
+    if (data.user_id === loggedUser.user_id) return
     if (data !== undefined) {
-      console.log('msg received from', data.user_id, 'loggeduserid', loggedUser._Id, 'message', data)
+      console.log('msg received from', data.user_id, 'loggeduserid', loggedUser.user_id, 'message', data)
       var newChatState = chatState
       var newChatObject = findChatByID(data.chat_id)
       try {
