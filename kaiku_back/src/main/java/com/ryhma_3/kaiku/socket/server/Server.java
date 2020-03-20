@@ -200,10 +200,7 @@ public class Server implements IServer {
 			@Override
 			public void onData(SocketIOClient client, MessageObject data, AckRequest ackSender) throws Exception {
 				
-				try {
-					
-					debugger("chats in store:  " + chats.size());
-				
+				try {				
 					//find correct chat
 					for(ChatObject chat : chats) {
 						if(chat.getChat_id().equals(data.getChat_id())) {
