@@ -149,6 +149,8 @@ public class Server implements IServer {
 						
 						messageDAO.createMessage(messages[0], result.getChat_id());
 						
+						result.setMessages(messageDAO.getAllMessages(result.getChat_id()));
+						
 						debugger("Chat created with initial message");
 						
 					} catch(Exception e) {
