@@ -116,8 +116,7 @@ public class Server implements IServer {
 					
 					debugger("UUID:" + cloneOfToken.getSessionID().toString() + " disconnected cleanly");
 				} catch (Exception e) {
-					debugger("Disconnected uncleanly");
-					
+          debugger("Disconnected uncleanly\n" + e.getMessage());					
 					//TODO find a way to cleanup connectedUsers
 				}
 			}
