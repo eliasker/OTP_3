@@ -55,7 +55,7 @@ const SocketService = () => {
 
   const createChat = (chatName, type, members, messages) => {
     return new Promise((resolve, reject) => {
-      console.log('creating new chat', members, 'chatname', chatName, 'type', type)
+      console.log('creating new chat', members, 'chatname', chatName, 'type', type, 'messsages', messages)
       const obj = {
         chatName,
         type,
