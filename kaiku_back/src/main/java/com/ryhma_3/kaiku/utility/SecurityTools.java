@@ -359,7 +359,7 @@ public class SecurityTools {
 	 */
 	private static void releaseObjectLock(String location, boolean show) {
 		if(show) {
-			System.out.println("SECURITYTOOLS: " + location);
+			Logger.log("SECURITYTOOLS: " + location);
 		}
 		operatingTokens = false;
 		lock.notifyAll();

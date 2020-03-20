@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ResourceNotFoundException;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ValidationFailedException;
+import com.ryhma_3.kaiku.utility.Logger;
 
 @ControllerAdvice
 public class ControllerExceptionHandlers {
@@ -14,13 +15,13 @@ public class ControllerExceptionHandlers {
 	@ExceptionHandler(ValidationFailedException.class)
 	@ResponseStatus(value=HttpStatus.UNAUTHORIZED)
 	public void handleValidationFailedException(ValidationFailedException ex) {
-		System.out.println("Validation error");
+		Logger.log("Validation error");
 	}
 	
 	
 	@ExceptionHandler(ResourceNotFoundException.class)
 	@ResponseStatus(value=HttpStatus.NO_CONTENT)
 	public void handleResourceNotFoundException(ResourceNotFoundException ex) {
-		System.out.println("Resource not found");
+		Logger.log("Resource not found");
 	}
 }

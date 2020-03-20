@@ -14,6 +14,7 @@ import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ResourceNotFoundException;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ValidationFailedException;
+import com.ryhma_3.kaiku.utility.Logger;
 import com.ryhma_3.kaiku.utility.SecurityTools;
 
 /**
@@ -38,6 +39,7 @@ public class ChatResourceController {
 			@RequestHeader("Authorization") String token,
 			@RequestParam String user_id) {
 		
+		debugger("chats get");
 		boolean valid = token.equals("kaiku") || SecurityTools.verifySession(token);
 		
 		if(valid) {
@@ -81,7 +83,7 @@ public class ChatResourceController {
 	public ChatObject createChat(
 			@RequestBody ChatObject chat,
 			@RequestHeader("Authorization") String token) {
-		System.out.println("REST: chat create");
+		debugger("chat create");
 		
 		boolean valid = token.equals("kaiku");
 		
@@ -113,7 +115,7 @@ public class ChatResourceController {
 	public ChatObject updateChat(
 			@RequestBody ChatObject chat,
 			@RequestHeader("Authorization") String token) {
-		System.out.println("REST: chat update");
+		debugger("chat update");
 		
 		boolean valid = token.equals("kaiku");
 		
@@ -141,7 +143,7 @@ public class ChatResourceController {
 	public boolean deleteChat(
 			@RequestParam String chat_id,
 			@RequestHeader("Authorization") String token) {
-		System.out.println("REST: chat delete");
+		debugger("chat delete");
 		
 		boolean valid = token.equals("kaiku");
 		
@@ -156,5 +158,9 @@ public class ChatResourceController {
 		}
 		
 		throw new ValidationFailedException();
+	}
+	
+	private void debugger(String data) {
+		Logger.log("CHAT REST: " + data);
 	}
 }

@@ -1,6 +1,7 @@
 package com.ryhma_3.kaiku.socket.server;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -19,6 +20,7 @@ import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
 import com.ryhma_3.kaiku.model.database.IUserDAO;
 import com.ryhma_3.kaiku.socket.init.IServerInit;
+import com.ryhma_3.kaiku.utility.Logger;
 import com.ryhma_3.kaiku.utility.SecurityTools;
 import com.ryhma_3.kaiku.utility.Token;
 
@@ -117,8 +119,17 @@ public class Server implements IServer {
 					debugger("UUID:" + cloneOfToken.getSessionID().toString() + " disconnected cleanly");
 				} catch (Exception e) {
 					debugger("Disconnected uncleanly");
+					e.printStackTrace();
+										
+					//reset list
+					connectedUsers.forEach((k, v) -> v = false);
 					
-					//TODO find a way to cleanup connectedUsers
+					//iterate all online users
+					Collection<SocketIOClient> users = server.getAllClients();
+					for(SocketIOClient u : users) {
+						Token token = SecurityTools.getCloneOfToken(u.getSessionId());	
+						connectedUsers.put(token.getUser_id(), true);
+					}
 				}
 			}
 		});
@@ -340,6 +351,6 @@ public class Server implements IServer {
 	 * @param info String
 	 */
 	private void debugger(String info) {
-		System.out.println("SERVER: " + info);
+		Logger.log("SERVER: " + info);
 	}
 }
