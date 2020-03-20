@@ -160,6 +160,8 @@ public class Server implements IServer {
 						result = chatDAO.createChatObject(data);
 					}
 					
+					//add resulted chat into local storage
+					chats.add(result);
 
 					//trying if ackwonledgement (request for the chat object) is required
 					if(ackSender.isAckRequested()) {
@@ -251,6 +253,9 @@ public class Server implements IServer {
 	public void sendCreateChatEvent(ChatObject chat) {
 		
 		try {
+			
+			int d_activeMembers = 0;
+			
 			//go through all  members
 			for(String member : chat.getMembers()) {
 				
@@ -260,10 +265,15 @@ public class Server implements IServer {
 					//send event realtime
 					SocketIOClient receiver = server.getClient(SecurityTools.getCloneOfToken(member).getSessionID());
 					receiver.sendEvent("createChatEvent", chat);
-					
-					debugger("sent event to: " + receiver.getSessionId().toString());				
+				
+					d_activeMembers++;
 				}
 			}
+			
+			//add chat to local storage
+			chats.add(chat);
+			
+			debugger("sent createChat event to: " + d_activeMembers + " active users");
 		} catch(Exception e) {
 			debugger("Exception in sendCreateChatEvent");
 		}
