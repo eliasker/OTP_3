@@ -26,6 +26,7 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
 
   useEffect(() => {
     addNewChat(newChatData)
+    console.log(newChatData)
   }, [newChatData])
 
   const findChatByID = id => {
@@ -48,8 +49,9 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
     if (chatID === undefined) {
       currentChat.messages.push(newMessage)
 
-      createChat('chat', currentChat.type, currentChat.members, currentChat.messages)
-      newChatState.push(currentChat)
+      await createChat('chat', currentChat.type, currentChat.members, currentChat.messages)
+      //newChatState.push(currentChat)
+      setChatState(chatState.concat(currentChat))
     } else {
       console.log('message to existing chat', newMessage, '\n', 'chatID', chatID)
       if (chatID !== undefined) {
@@ -71,7 +73,6 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
   const addNewChat = data => {
     if (data === null) return
     console.log('creating new chat', data)
-    var newChatState = chatState
     var newChatObject = {
       chat_id: data.chat_id,
       chatName: data.chatName || null,
@@ -79,7 +80,9 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
       members: data.members,
       messages: data.messages
     }
-    console.log(newChatObject)
+    setChatState(chatState.concat(newChatObject))
+    selectChat(newChatObject)
+    console.log(chatState)
   }
 
   /**

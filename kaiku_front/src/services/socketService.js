@@ -63,6 +63,7 @@ const SocketService = () => {
     }
     socketRef.current.emit('createChatEvent', obj, function (ack) {
       console.log('acknowledgement', ack);
+      setNewChatData(ack)
     });
   }
 
