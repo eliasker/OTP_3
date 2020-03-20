@@ -51,6 +51,13 @@ public class UserDAO extends DataAccessInit implements IUserDAO {
         this.mongoClient = MongoClients.create(connString);
         this.mongoDatabase = mongoClient.getDatabase("metadata");
         this.collection = mongoDatabase.getCollection("users");
+        Document index = new Document("username", 1);
+        // Ensure username field is unique by adding an index, if it does not exist
+        try {
+            this.collection.createIndex(index, new IndexOptions().unique(true));
+        } catch (Exception e) {
+            
+        }
     }
     
 	@Override
