@@ -134,30 +134,33 @@ public class Server implements IServer {
 					ChatObject result = null;
 					
 					try {					
+
 						/*
-						 * NullPointerException if no messages
-						 * 1. Store messages from data object
-						 * 2. remove messages from data object (messages dont go to chats db)
-						 * 3. Create chat in db
-						 * 4. create db message collection from stored messages
+						 * extract messages
 						 */
 						MessageObject[] messages = data.getMessages();
-						
 						data.setMessages(null);
 						
+						//create chat
 						result = chatDAO.createChatObject(data);
 						
-						messageDAO.createMessage(messages[0], result.getChat_id());
-						
-						result.setMessages(messageDAO.getAllMessages(result.getChat_id()));
-						
-						debugger("Chat created with initial message");
-						
+						try {
+							//will throw exception without messages
+							messageDAO.createMessage(messages[0], result.getChat_id());
+							
+							result.setMessages(messageDAO.getAllMessages(result.getChat_id()));
+							
+							debugger("Chat created with initial message");
+							
+						} catch(NullPointerException ne) {
+							
+							debugger("no initial message");
+
+						}
 					} catch(Exception e) {
 						
-						debugger("no initial message");
+						debugger("Error creating a chat");
 						
-						result = chatDAO.createChatObject(data);
 					}
 					
 					//add resulted chat into local storage
