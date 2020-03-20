@@ -61,7 +61,9 @@ const SocketService = () => {
       members,
       messages
     }
-    socketRef.current.emit('createChatEvent', obj);
+    socketRef.current.emit('createChatEvent', obj, function (ack) {
+      console.log('acknowledgement', ack);
+    });
   }
 
   const disconnect = () => {

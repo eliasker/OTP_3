@@ -120,12 +120,12 @@ public class SecurityTools {
 					break;
 				}
 	
-				releaseObjectLock("clone: success");
+				releaseObjectLock("clone: success", false);
 				return searched;
 				
 			} catch(Exception e) {
 				e.printStackTrace();
-				releaseObjectLock("clone: exception");
+				releaseObjectLock("clone: exception", true);
 				return null;
 			}
 		}
@@ -158,11 +158,11 @@ public class SecurityTools {
 					break;
 				}
 	
-				releaseObjectLock("clone: success");
+				releaseObjectLock("clone: success", false);
 				return searched;
 				
 			} catch(Exception e) {
-				releaseObjectLock("clone: exception");
+				releaseObjectLock("clone: exception", true);
 				return null;
 			}
 		}
@@ -197,7 +197,7 @@ public class SecurityTools {
 					//update success
 					searched = new Token(null, user_id, genRandomString());
 					tokenDataStore.set(i, searched);					
-					releaseObjectLock("update token: success");
+					releaseObjectLock("update token: success", false);
 					return new Token(searched);
 				}
 				
@@ -206,12 +206,12 @@ public class SecurityTools {
 				Token tokenToAdd = new Token(null, user_id, genRandomString());
 				tokenDataStore.add(tokenToAdd);
 				
-				releaseObjectLock("create token: success");
+				releaseObjectLock("create token: success", false);
 				return new Token(tokenToAdd);
 		
 			} catch(Exception e) {
 				e.printStackTrace();
-				releaseObjectLock("create token: exception");
+				releaseObjectLock("create token: exception", true);
 				return null;
 			}
 		}
@@ -248,7 +248,7 @@ public class SecurityTools {
 					searched = new Token(searched.getSessionID(), user_id, tokenString);
 					tokenDataStore.set(i, searched);
 
-					releaseObjectLock("update token: success");
+					releaseObjectLock("update token: success", false);
 					return new Token(searched);
 				}
 				
@@ -257,12 +257,12 @@ public class SecurityTools {
 				Token tokenToAdd = new Token(null, user_id, tokenString);
 				tokenDataStore.add(tokenToAdd);
 				
-				releaseObjectLock("create token: success");
+				releaseObjectLock("create token: success", false);
 				return new Token(tokenToAdd);
 		
 			} catch(Exception e) {
 				e.printStackTrace();
-				releaseObjectLock("create token: exception");
+				releaseObjectLock("create token: exception", true);
 				return null;
 			}
 		}
@@ -292,17 +292,17 @@ public class SecurityTools {
 					}
 					
 					//task succeeded
-					releaseObjectLock("token verified: success");
+					releaseObjectLock("token verified: success", false);
 					return true;
 				}
 							
 				//task failed / not found
-				releaseObjectLock("token verified: fail");
+				releaseObjectLock("token verified: fail", false);
 				return false;
 				
 			} catch(Exception e) {
 				e.printStackTrace();
-				releaseObjectLock("token verified: exception");
+				releaseObjectLock("token verified: exception", true);
 				//Task failed / exception
 				return false;
 			}
@@ -336,28 +336,31 @@ public class SecurityTools {
 					//task succeeded					
 					searched = new Token(sessionID, searched.getUser_id(), searched.getTokenString());
 					tokenDataStore.set(i, searched);										
-					releaseObjectLock("connect UUID to token: success");
+					releaseObjectLock("connect UUID to token: success", true);
 					return;
 				}
 				
 				//task failed
-				releaseObjectLock("connect UUID to token: fail");
+				releaseObjectLock("connect UUID to token: fail", true);
 				return;
 				
 			} catch(Exception e) {
-				releaseObjectLock("connect UUID to token: exception");
+				releaseObjectLock("connect UUID to token: exception", true);
 				e.printStackTrace();
 				return;
 			}
 		}
 	}	
 	
+
 	/**
-	 * Release monitor that handles token operations
-	 * logs operations
+	 * @param location String (message)
+	 * @param show boolean
 	 */
-	private static void releaseObjectLock(String location) {
-		System.out.println("SECURITYTOOLS: " + location);
+	private static void releaseObjectLock(String location, boolean show) {
+		if(show) {
+			System.out.println("SECURITYTOOLS: " + location);
+		}
 		operatingTokens = false;
 		lock.notifyAll();
 	}

@@ -211,6 +211,9 @@ public class Server implements IServer {
 							MessageObject message = messageDAO.createMessage(data, chat.getChat_id());
 							debugger("Created message: " + message.getContent() + ",  to: " + message.getChat_id());
 							
+							int d_activeusers = 0;
+							int d_inactiveusers = 0;
+							
 							//run through all users
 							for(String user : chat.getMembers()) {
 								
@@ -218,13 +221,14 @@ public class Server implements IServer {
 								try {
 									UUID sessionID = SecurityTools.getCloneOfToken(user).getSessionID();
 									server.getClient(sessionID).sendEvent("chatEvent", message);
-									debugger("sent message to UUID: " + sessionID);
+									d_activeusers++;
 								} catch (NullPointerException ne) {
-									debugger("skipping client on return msg");
+									d_inactiveusers++;
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
 							}
+							debugger("Sent message to " + d_activeusers + ", skipped " + d_inactiveusers + " inactive  users");
 							break;
 						}
 					}
@@ -320,8 +324,8 @@ public class Server implements IServer {
 	
 	
 	/**
-	 * Log debugging messages
-	 * @param info
+	 * Log debugging messages to Sysout
+	 * @param info String
 	 */
 	private void debugger(String info) {
 		System.out.println("SERVER: " + info);
