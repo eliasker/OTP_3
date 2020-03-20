@@ -47,11 +47,9 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
   const postMessage = async (newMessage, chatID) => {
     var newChatState = chatState
     if (chatID === undefined) {
-      currentChat.messages.push(newMessage)
-
-      await createChat('chat', currentChat.type, currentChat.members, currentChat.messages)
-      //newChatState.push(currentChat)
-      setChatState(chatState.concat(currentChat))
+      //await createChat('chat', currentChat.type, currentChat.members, [newMessage])
+      const newChat = createChat('chat', currentChat.type, currentChat.members, currentChat.messages)
+      chatState.concat(await newChat)
     } else {
       console.log('message to existing chat', newMessage, '\n', 'chatID', chatID)
       if (chatID !== undefined) {
@@ -62,7 +60,6 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
         sendMessage(newMessage, loggedUser.user_id, chatID)
       }
     }
-    setChatState(newChatState)
     console.log(chatState)
   }
 

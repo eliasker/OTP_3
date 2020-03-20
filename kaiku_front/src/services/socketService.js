@@ -54,17 +54,19 @@ const SocketService = () => {
   }
 
   const createChat = (chatName, type, members, messages) => {
-    console.log('creating new chat', members, 'chatname', chatName, 'type', type)
-    const obj = {
-      chatName,
-      type,
-      members,
-      messages
-    }
-    socketRef.current.emit('createChatEvent', obj, function (ack) {
-      console.log('acknowledgement', ack);
-      setNewChatData(ack)
-    });
+    return new Promise((resolve, reject) => {
+      console.log('creating new chat', members, 'chatname', chatName, 'type', type)
+      const obj = {
+        chatName,
+        type,
+        members,
+        messages
+      }
+      socketRef.current.emit('createChatEvent', obj, function (ack) {
+        console.log('acknowledgement', ack);
+        resolve(ack);
+      })
+    })
   }
 
   const disconnect = () => {
@@ -83,9 +85,9 @@ const SocketService = () => {
       type,
       members
     }
-
+ 
     console.log("create: ", obj);
-
+ 
     socketRef.current.emit("createChatEvent", obj);
   }
   */
