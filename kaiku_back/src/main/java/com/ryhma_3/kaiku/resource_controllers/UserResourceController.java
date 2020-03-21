@@ -16,6 +16,7 @@ import com.ryhma_3.kaiku.model.cast_object.UserObject;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
 import com.ryhma_3.kaiku.model.database.IUserDAO;
+import com.ryhma_3.kaiku.resource_controllers.exceptions.BadUserInputException;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ResourceNotFoundException;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ValidationFailedException;
 import com.ryhma_3.kaiku.utility.GlobalChats;
@@ -143,13 +144,15 @@ public class UserResourceController {
 			 * enrcypt password
 			 */
 			userObject.setPassword(SecurityTools.encrypt(userObject.getPassword()));
-			
-			
+		
 			/*
 			 * post user to db
 			 */
 			userObject = userDAO.createUser(userObject);
 			
+			if(userObject == null) {
+				throw new BadUserInputException();
+			}
 			
 			/*			 
 			 * add user to global chat
@@ -160,7 +163,7 @@ public class UserResourceController {
 			userObject.setPassword("");
 			
 			return userObject;
-			
+
 		} 
 		
 		throw new ValidationFailedException();
