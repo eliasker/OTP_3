@@ -310,12 +310,14 @@ public class SecurityTools {
 	}
 	
 	
+
 	/**
-	 * When client connects trough socket, attach client UUID to a token.
-	 * @param tokenString
-	 * @param sessionID
+	 * Try to connect connecting UUID to a user token
+	 * @param tokenString String
+	 * @param sessionID UUID
+	 * @return success Boolean
 	 */
-	public static void attachSessionToToken(String tokenString, UUID sessionID) {
+	public static boolean attachSessionToToken(String tokenString, UUID sessionID) {
 		synchronized (lock) {
 			try {
 
@@ -337,17 +339,17 @@ public class SecurityTools {
 					searched = new Token(sessionID, searched.getUser_id(), searched.getTokenString());
 					tokenDataStore.set(i, searched);										
 					releaseObjectLock("connect UUID to token: success", true);
-					return;
+					return true;
 				}
 				
 				//task failed
 				releaseObjectLock("connect UUID to token: fail", true);
-				return;
+				return false;
 				
 			} catch(Exception e) {
 				releaseObjectLock("connect UUID to token: exception", true);
 				e.printStackTrace();
-				return;
+				return false;
 			}
 		}
 	}	

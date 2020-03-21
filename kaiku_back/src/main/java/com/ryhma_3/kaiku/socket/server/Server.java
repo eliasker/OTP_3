@@ -68,18 +68,20 @@ public class Server implements IServer {
 		server.addConnectListener(new ConnectListener() {			
 			@Override
 			public void onConnect(SocketIOClient client) {
-				debugger("connect event");
+				debugger("connect event", true);
 				
 				//register client
 				String tokenString = client.getHandshakeData().getSingleUrlParam("Authorization");
 				
-				SecurityTools.attachSessionToToken(tokenString, client.getSessionId());
+				
+				if(SecurityTools.attachSessionToToken(tokenString, client.getSessionId())) {
 								
 				Token cloneOfToken = SecurityTools.getCloneOfToken(tokenString);
 				
 				debugger("client:" + cloneOfToken.getUser_id() + 
 						" verified, token:" + cloneOfToken.getTokenString() + 
-						" UUID:" + cloneOfToken.getSessionID());
+						" UUID:" + cloneOfToken.getSessionID()
+						, true);
 				
 				
 				//update connectedUsers
@@ -90,6 +92,13 @@ public class Server implements IServer {
 				
 				//update other clients about this user
 				server.getBroadcastOperations().sendEvent("connectionEvent", new UserStatusObject(cloneOfToken.getUser_id(), true));
+				
+				} else {
+					
+					debugger("disconnecting client", true);
+					client.disconnect();
+					
+				}
 			}
 		});
 		
@@ -101,7 +110,7 @@ public class Server implements IServer {
 				
 				UUID sessionID = client.getSessionId();
 				
-				debugger(client.toString());
+				debugger(client.toString(), false);
 
 				try {
 					//get token of disconnecting client
@@ -116,10 +125,10 @@ public class Server implements IServer {
 					//remove sessionID form storage
 					SecurityTools.attachSessionToToken(cloneOfToken.getTokenString(), null);
 					
-					debugger("UUID:" + cloneOfToken.getSessionID().toString() + " disconnected cleanly");
+					debugger("UUID:" + cloneOfToken.getSessionID().toString() + " disconnected cleanly", true);
 				} catch (Exception e) {
-					debugger("Disconnected uncleanly");
-					e.printStackTrace();
+					
+					debugger("Disconnected uncleanly", true);
 										
 					//reset list
 					connectedUsers.forEach((k, v) -> v = false);
@@ -161,16 +170,16 @@ public class Server implements IServer {
 							
 							result.setMessages(messageDAO.getAllMessages(result.getChat_id()));
 							
-							debugger("Chat created with initial message");
+							debugger("Chat created with initial message", true);
 							
 						} catch(NullPointerException ne) {
 							
-							debugger("no initial message");
+							debugger("no initial message",true);
 
 						}
 					} catch(Exception e) {
 						
-						debugger("Error creating a chat");
+						debugger("Error creating a chat", true);
 						
 					}
 					
@@ -182,7 +191,7 @@ public class Server implements IServer {
 						ackSender.sendAckData(result);
 					}
 										
-					debugger("created chat: " + result.getChatName() + ", with ID: " + result.getChat_id());
+					debugger("created chat: " + result.getChatName() + ", with ID: " + result.getChat_id(), true);
 										
 					//go through all  members
 					for(String member : data.getMembers()) {
@@ -201,12 +210,12 @@ public class Server implements IServer {
 							SocketIOClient receiver = server.getClient(user.getSessionID());
 							receiver.sendEvent("createChatEvent", result);
 							
-							debugger("sent event to: " + receiver.getSessionId().toString());
+							debugger("sent event to: " + receiver.getSessionId().toString(), true);
 							
 						}
 					}
 				} catch(Exception e) {
-					debugger("Create chat failed");
+					debugger("Create chat failed", true);
 					e.printStackTrace();
 				}
 			}
@@ -224,7 +233,7 @@ public class Server implements IServer {
 						if(chat.getChat_id().equals(data.getChat_id())) {
 						
 							MessageObject message = messageDAO.createMessage(data, chat.getChat_id());
-							debugger("Created message: " + message.getContent() + ",  to: " + message.getChat_id());
+							debugger("Created message: " + message.getContent() + ",  to: " + message.getChat_id(), true);
 							
 							int d_activeusers = 0;
 							int d_inactiveusers = 0;
@@ -243,12 +252,12 @@ public class Server implements IServer {
 									e.printStackTrace();
 								}
 							}
-							debugger("Sent message to " + d_activeusers + ", skipped " + d_inactiveusers + " inactive  users");
+							debugger("Sent message to " + d_activeusers + ", skipped " + d_inactiveusers + " inactive  users", true);
 							break;
 						}
 					}
 				}catch (Exception e) {
-					debugger("chatEvent: FAIL");
+					debugger("chatEvent: FAIL", true);
 					e.printStackTrace();
 				}
 			}
@@ -256,7 +265,7 @@ public class Server implements IServer {
 		
 		server.start();
 		
-		debugger("server started");
+		debugger("server started", true);
 	}
 	
 	
@@ -287,9 +296,9 @@ public class Server implements IServer {
 			//add chat to local storage
 			chats.add(chat);
 			
-			debugger("sent createChat event to: " + d_activeMembers + " active users");
+			debugger("sent createChat event to: " + d_activeMembers + " active users", false);
 		} catch(Exception e) {
-			debugger("Exception in sendCreateChatEvent");
+			debugger("Exception in sendCreateChatEvent", true);
 		}
 	}
 
@@ -314,7 +323,7 @@ public class Server implements IServer {
 				connectedUsers.put(user.getUser_id(), false);
 			}
 		}catch (Exception e) {
-			debugger("SERVER INIT: FAIL");
+			debugger("SERVER INIT: FAIL", true);
 			e.printStackTrace();
 		}
 	}
@@ -350,7 +359,9 @@ public class Server implements IServer {
 	 * Log debugging messages to Sysout
 	 * @param info String
 	 */
-	private void debugger(String info) {
-		Logger.log("SERVER: " + info);
+	private void debugger(String info, boolean show) {
+		if(show) {
+			Logger.log("SERVER: " + info);
+		}
 	}
 }
