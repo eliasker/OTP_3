@@ -37,7 +37,6 @@ const UsersColumn = ({ setDisplayProfile, userState }) => {
   const listMessages = () => {
     if (initialData.users === undefined) return
     const filteredUsers = filterUtil(initialData.users.map(u => u.name), searchInput)
-    console.log(initialData.users, loggedUser.user_id)
     return initialData.users
       .filter(u => u.user_id !== loggedUser.user_id)
       .filter(u => filteredUsers.find(e => u.name === e))

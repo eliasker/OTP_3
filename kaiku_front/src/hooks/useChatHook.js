@@ -25,15 +25,17 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
     receiveMessage(incMessageData)
   }, [incMessageData])
 
-  /*
+  
   useEffect(() => {
     addNewChat(newChatData)
     console.log(newChatData)
   }, [newChatData])
-*/
+
   const findChatByID = id => {
     if (chatState === null) return
-    return chatState.find(c => c.chat_id === id)
+    const found = chatState.find(c => c.chat_id === id)
+    console.log('found chat', found)
+    return found
   }
 
   /**
@@ -47,12 +49,19 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
    * @param {*} chatID of currentChat, undefined by default
    */
   const postMessage = async (newMessage, chatID) => {
+    console.log('chatstate currently', chatState)
     var newChatState = chatState
     if (chatID === undefined) {
-      //await createChat('chat', currentChat.type, currentChat.members, [newMessage])
       const newChat = await createChat('chat', currentChat.type, currentChat.members, [newMessage])
-      setChatState(chatState.concat(newChat))
-      selectChat(newChat)
+      //newChat.messages = [newMessage]
+      addNewChat(newChat)
+      //setChatState(newChatState.concat(newChat))
+      /*
+      setChatState({ newState: newChatState.concat(newChat) }, () => {
+        selectChat(findChatByID(newChat.chat_id))
+      })
+      */
+
     } else {
       console.log('message to existing chat', newMessage, '\n', 'chatID', chatID)
       if (chatID !== undefined) {
@@ -80,9 +89,8 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
       members: data.members,
       messages: data.messages
     }
-    setChatState(chatState.concat(newChatObject))
+    setChatState(chatState.concat(newChatObject), () =>  console.log(chatState))
     selectChat(newChatObject)
-    console.log(chatState)
   }
 
   /**
@@ -124,9 +132,9 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
    */
   const selectChat = (chat) => {
     console.log('setting chat to', chat)
-    const newChatState = chatState
+    //const newChatState = chatState
     //if (newChatState[chat.id]) newChatState[chat.id].unreadMessages = false
-    setChatState(newChatState)
+    //setChatState(newChatState)
     setCurrentChat(chat)
   }
 
