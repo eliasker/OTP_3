@@ -107,10 +107,12 @@ public class Server implements IServer {
 		server.addDisconnectListener(new DisconnectListener() {
 			@Override
 			public void onDisconnect(SocketIOClient client) {
+								
+				debugger(client.getSessionId().toString(), true);
+				
 				
 				UUID sessionID = client.getSessionId();
-				
-				debugger(client.toString(), false);
+
 
 				try {
 					//get token of disconnecting client

@@ -148,20 +148,30 @@ public class SecurityTools {
 				
 				Token searched = null;
 				
-				for (Token token : tokenDataStore) {
+				for(Token token : tokenDataStore) {
+					
 					searched = new Token(token);
 					
-					if(!searched.getSessionID().toString().equals(sessionID.toString())) {
-						searched = null;
+					//discount null id's
+					if(searched.getSessionID() == null) {
 						continue;
 					}
-					break;
+					
+					//discount wrong id's
+					if(!searched.getSessionID().equals(sessionID)) {
+						searched = null;
+						continue;
+					} else {
+						releaseObjectLock("clone: success", false);
+						return searched;
+					}
 				}
-	
-				releaseObjectLock("clone: success", false);
+				
+				releaseObjectLock("clone: no matching token foudn", true);
 				return searched;
 				
 			} catch(Exception e) {
+				e.printStackTrace();
 				releaseObjectLock("clone: exception", true);
 				return null;
 			}
