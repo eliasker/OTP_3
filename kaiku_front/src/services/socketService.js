@@ -26,6 +26,11 @@ const SocketService = () => {
       setIncMsgData(data)
     });
 
+    socketRef.current.on('connectionEvent', function (data) {
+      console.log('user: ', data.user_id, 'isOnline=', data.online);
+    })
+
+
     /**
      * @param data object { id: String, loggedIn: false }
      */

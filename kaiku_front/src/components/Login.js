@@ -23,10 +23,15 @@ const Login = ({ createSocketConnection }) => {
         var user = await loginService.login(username.value, password.value)
         if (user === '') throw ('no matching user')
         console.log('setting loggeduser to ', user)
-        user.user_id = user.user_id
-        setLoggedUser(user)
+        const newLoggedUser = {
+          user_id: user.user_id,
+          name: user.name,
+          username: user.username,
+          token: user.token
+        }
+        setLoggedUser(newLoggedUser)
         createSocketConnection(await user.token)
-        window.localStorage.setItem('loggedKaikuUser', JSON.stringify(user))
+        window.localStorage.setItem('loggedKaikuUser', JSON.stringify(newLoggedUser))
       } catch (e) {
         console.log('failed login', e)
       }

@@ -10,6 +10,7 @@ const configAsAdmin = {
 /**
  * Gets and returns all chats from backend
  * @param {*} user_id loggedUser.user_id
+ * @param {*} token loggedUser.token
  */
 const getAllByID = async (user_id, token) => {
   try {
