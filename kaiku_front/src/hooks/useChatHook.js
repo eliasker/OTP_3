@@ -50,8 +50,8 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
     var newChatState = chatState
     if (chatID === undefined) {
       //await createChat('chat', currentChat.type, currentChat.members, [newMessage])
-      const newChat = createChat('chat', currentChat.type, currentChat.members, [newMessage])
-      setChatState(chatState.concat(await newChat))
+      const newChat = await createChat('chat', currentChat.type, currentChat.members, [newMessage])
+      setChatState(chatState.concat(newChat))
       selectChat(newChat)
     } else {
       console.log('message to existing chat', newMessage, '\n', 'chatID', chatID)
