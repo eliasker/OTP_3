@@ -14,6 +14,7 @@ import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.ryhma_3.kaiku.model.cast_object.ChatObject;
 import com.ryhma_3.kaiku.model.cast_object.MessageObject;
+import com.ryhma_3.kaiku.utility.Logger;
 
 import static com.mongodb.client.model.Filters.*;
 
@@ -66,13 +67,16 @@ public class ChatDAO extends DataAccessInit implements IChatDAO {
         Document document = new Document("chatName", chatObject.getChatName());
         document.append("type", chatObject.getType());
         document.append("users", Arrays.asList(chatObject.getMembers()));
+
         // TODO: add actual messages when it's time for it
         if (chatObject.getMessages() == null)
             document.append("messages", null);
         else
             document.append("messages", Arrays.asList(chatObject.getMessages()));
+
 		UpdateResult result = collection.updateOne(eq("_id",
             new ObjectId(chatObject.getChat_id())), new Document("$set", document));
+
         if (result.getMatchedCount() == 0) return null;
         else return getChatObject(chatObject);
 	}
@@ -93,15 +97,20 @@ public class ChatDAO extends DataAccessInit implements IChatDAO {
 
 	@Override
 	public ChatObject getChatObject(ChatObject chatObject) {
-        Document d = (Document)collection
-            .find(eq("chatName", chatObject.getChatName())).first();
+        try {
+            Document d = (Document)collection
+                .find(eq("_id", new ObjectId(chatObject.getChat_id()))).first();
+            String[] temp = new String[d.getList("users", String.class).size()];
+            temp = d.getList("users", String.class).toArray(temp);
+            
+            // TODO: fix when MessageObjects are actually stored
+            return new ChatObject(d.getObjectId("_id").toString(), d.getString("chatName"),
+                d.getString("type"), temp, new MessageObject[]{});
+        } catch (Exception e) {
+            Logger.log("Chat not found");
+            return null;
+        }
 
-        String[] temp = new String[d.getList("users", String.class).size()];
-        temp = d.getList("users", String.class).toArray(temp);
-        
-        // TODO: fix when MessageObjects are actually stored
-	    return new ChatObject(d.getObjectId("_id").toString(), d.getString("chatName"),
-            d.getString("type"), temp, new MessageObject[]{});
 	}
 
     @Override

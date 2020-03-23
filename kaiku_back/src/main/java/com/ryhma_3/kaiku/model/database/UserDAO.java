@@ -13,6 +13,7 @@ import com.mongodb.client.model.Indexes;
 import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import com.ryhma_3.kaiku.model.cast_object.UserObject;
+import com.ryhma_3.kaiku.utility.Logger;
 
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -96,17 +97,16 @@ public class UserDAO extends DataAccessInit implements IUserDAO {
             System.out.println("Username already taken");
             return null;
         }
-        System.out.println("id on last added: " + document.getObjectId("_id"));
+        Logger.log("id on last added: " + document.getObjectId("_id"));
         return new UserObject(document.getObjectId("_id").toString(),
             userObject.getUsername(), userObject.getPassword(), userObject.getName());
     }
 
-    // TODO: refactor to use ObjectId for filtering instead of username
 	@Override
 	public UserObject getUser(UserObject userObject) {
         try {
             Document d = (Document)collection
-                .find(eq("username", userObject.getUsername())).first();
+                .find(eq("_id", new ObjectId(userObject.getUser_id()))).first();
             
             return new UserObject(d.getObjectId("_id").toString(),
                 d.getString("username"), d.getString("password"), d.getString("name"));
