@@ -27,13 +27,12 @@ package com.ryhma_3.kaiku.model.cast_object;
 	 *  }]
  */
 public class InitializationObject {
-	public InitializationObject(String user_id, String name, String username, String token, boolean online, ChatObject[] chats, UserObject[] users) {
+	public InitializationObject(String user_id, String name, String username, String token, ChatObject[] chats, UserObject[] users) {
 		super();
 		this.user_id = user_id;
 		this.name = name;
 		this.username = username;
 		this.token = token;
-		this.online = online;
 		this.chats = chats;
 		this.users = users;
 	}
@@ -78,14 +77,6 @@ public class InitializationObject {
 
 	public void setToken(String token) {
 		this.token = token;
-	}
-
-	public ChatObject[] getChats() {
-		return chats;
-	}
-
-	public void setChats(ChatObject[] chats) {
-		this.chats = chats;
 	}
 
 	public void setOnline(boolean online) {

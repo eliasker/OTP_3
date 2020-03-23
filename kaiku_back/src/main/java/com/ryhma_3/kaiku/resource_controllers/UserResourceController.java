@@ -70,7 +70,6 @@ public class UserResourceController {
 			 */
 			String user_id = userFromDb.getUser_id();
 			String name = userFromDb.getName();
-			boolean online = true;
 
 			
 			/*
@@ -119,7 +118,7 @@ public class UserResourceController {
 			/*
 			 * Construct a InitialObject
 			 */
-			InitializationObject init = new InitializationObject(user_id, name, username, tokenString, online, chats, users);
+			InitializationObject init = new InitializationObject(user_id, name, username, tokenString, chats, users);
 
 			return init;
 
