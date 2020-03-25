@@ -29,8 +29,6 @@ const NewUser = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    // uname pass name
-    console.log('unae', username, 'pass', password, 'name', name)
     await userService.createUser(username, password, name)
   }
 

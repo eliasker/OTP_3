@@ -15,7 +15,6 @@ const DashBoard = () => {
   useEffect(() => {
     (async () => {
       const groups = await groupService.getAllChats()
-      console.log('response from groupserv', groups)
       setChats(groups)
     })()
   }, [])
@@ -23,7 +22,6 @@ const DashBoard = () => {
   useEffect(() => {
     (async () => {
       const users = await userService.getAllUsers()
-      console.log('response from userserv', users)
       setUsers(users)
     })()
   }, [])

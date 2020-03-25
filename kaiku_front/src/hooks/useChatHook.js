@@ -29,13 +29,11 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
 
   useEffect(() => {
     addNewChat(newChatData)
-    console.log(newChatData)
   }, [newChatData])
 
   const findChatByID = id => {
     if (chatState === null) return
     const found = chatState.find(c => c.chat_id === id)
-    console.log('found chat', found)
     return found
   }
 

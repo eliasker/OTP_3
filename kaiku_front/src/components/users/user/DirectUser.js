@@ -10,6 +10,7 @@ const DirectUser = ({ user, privateChat }) => {
   const handleShowChat = () => {
     selectChat({ ...privateChat, image: '/profile-thumb-nobg.png', color: user.color })
   }
+
   lastMessage = privateChat.messages[privateChat.messages.length - 1]
   return (
     <div className="profile pr-user row" onClick={handleShowChat}>
