@@ -14,6 +14,7 @@ const Chat = () => {
   const [displayUser, setDisplayUser] = useState(undefined)
   const { chatState, postMessage, receiveMessage, currentChat, selectChat } = useChatHook(createChat, sendMessage, incMessageData, newChatData)
   const [showModal, setShowModal] = useState(false)
+  const [displayKarvalakki, setDisplayKarvalakki] = useState(false)
 
   return (
     <>
@@ -25,7 +26,8 @@ const Chat = () => {
           </div>
           <HelpPanel />
         </div>
-        <Karvalakki />
+        <button onClick={() => setDisplayKarvalakki(!displayKarvalakki)}>Toggle Karvalakki :D</button>
+        {displayKarvalakki ? <Karvalakki /> : null}
       </CurrentChat.Provider>
     </>
   )
