@@ -15,6 +15,7 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
     if (loggedUser.user_id === undefined) return
     (async () => {
       const chats = await groupService.getAllByID(loggedUser.user_id, loggedUser.token)
+      if (chats === undefined) return
       console.log('setting chats to:', chats)
       setChatState(chats)
       setCurrentChat(chats[0])
@@ -25,7 +26,7 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
     receiveMessage(incMessageData)
   }, [incMessageData])
 
-  
+
   useEffect(() => {
     addNewChat(newChatData)
     console.log(newChatData)
@@ -53,15 +54,7 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
     var newChatState = chatState
     if (chatID === undefined) {
       const newChat = await createChat('chat', currentChat.type, currentChat.members, [newMessage])
-      //newChat.messages = [newMessage]
       addNewChat(newChat)
-      //setChatState(newChatState.concat(newChat))
-      /*
-      setChatState({ newState: newChatState.concat(newChat) }, () => {
-        selectChat(findChatByID(newChat.chat_id))
-      })
-      */
-
     } else {
       console.log('message to existing chat', newMessage, '\n', 'chatID', chatID)
       if (chatID !== undefined) {
@@ -89,7 +82,7 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
       members: data.members,
       messages: data.messages
     }
-    setChatState(chatState.concat(newChatObject), () =>  console.log(chatState))
+    setChatState(chatState.concat(newChatObject), () => console.log(chatState))
     selectChat(newChatObject)
   }
 
