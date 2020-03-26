@@ -33,7 +33,7 @@ const MemberManagment = () => {
 
   const getUserList = () => {
     if (!tempGroup.members) return
-    const memberList = tempGroup.members.map(m => initialData.users.find(u => u.user_id === m))
+    const memberList = tempGroup.members.map(m => initialData.users.find(u => u.user_id === m)).filter(u => u !== undefined)
     return memberList.map(m =>
       <span className="badge badge-primary m-1 font-2" key={m.user_id}>
         {m.username} <i className="fas fa-times h-red" onClick={() => handleDelete(m.user_id)}></i>

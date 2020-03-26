@@ -27,7 +27,6 @@ const Discussions = ({ setDisplayUser, chat }) => {
 
   const handleDiscussionClick = () => {
     setDisplayUsers(!displayUsers)
-    console.log('selecting chat', chat)
     selectChat(chat)
   }
   //  unread msgs pallura: <i className="fas fa-circle">

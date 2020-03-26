@@ -3,7 +3,7 @@ import CurrentChat from '../../providers/CurrentChat'
 
 const ChatHeader = ({ searchInput, setSearchInput }) => {
   const { currentChat } = useContext(CurrentChat)
-  console.log(currentChat)
+
   if (currentChat === null || currentChat === undefined) return (<></>)
   return (
     <div className="chat-header row justify-content-between bg-primary-0">
