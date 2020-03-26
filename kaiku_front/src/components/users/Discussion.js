@@ -20,7 +20,7 @@ const Discussions = ({ setDisplayUser, chat }) => {
 
   const listUsers = () => {
     if (initialData.users === undefined) return console.log('initialData pending...')
-    const filteredUsers = chat.members.map(m => initialData.users.find(u => u.user_id === m))
+    var filteredUsers = chat.members.map(m => initialData.users.find(u => u.user_id === m)).filter(u => u !== undefined)
     return filteredUsers
       .map(u => <User key={keyGen.generateKey(u.name)} setDisplayUser={setDisplayUser} user={u} privateChat={findChat(u)} />)
   }
