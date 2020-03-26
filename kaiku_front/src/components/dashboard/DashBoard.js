@@ -15,16 +15,18 @@ const DashBoard = () => {
   useEffect(() => {
     (async () => {
       const groups = await groupService.getAllChats()
+      console.log('dashboard: setting groups')
       setChats(groups)
     })()
-  }, [])
+  }, [content])
 
   useEffect(() => {
     (async () => {
       const users = await userService.getAllUsers()
+      console.log('dashboard: setting users')
       setUsers(users)
     })()
-  }, [])
+  }, [content])
 
   return (
     <div id="dashboard">

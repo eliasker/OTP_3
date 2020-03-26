@@ -8,9 +8,11 @@ const MemberManagment = () => {
   const { currentGroup, setContent } = useContext(Context)
   const [tempGroup, setTempGroup] = useState(currentGroup)
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault()
+    console.log('submit')
     if (!window.confirm('Haluatko päivittää tämän ryhmän?')) return
+    console.log(tempGroup)
     groupService.update(tempGroup.chat_id, tempGroup)
     setContent('g/all')
   }
@@ -48,7 +50,7 @@ const MemberManagment = () => {
 
   return (
     <>
-      <form className="form-row" onSubmit={e => handleSubmit(e)}>
+      <form className="form-row" onSubmit={(e) => handleSubmit(e)}>
         <div className="col-12 col-md-6 mb-2">
           <div className="form-group">
             <label htmlFor="user-name">Ryhmän nimi</label>

@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import dictionary from '../../../util/dictionary'
 import userService from '../../../services/userService'
+import Context from '../../../providers/Context'
 
 const NewUser = () => {
   const [name, setName] = useState('')
@@ -9,6 +10,8 @@ const NewUser = () => {
   const [rePassword, setRePassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const { nouns, adjectives, capitalize } = dictionary
+  const { setContent } = useContext(Context)
+
 
   const generateUser = () => {
     const nounIndex = Math.floor(Math.random() * nouns.length)
@@ -30,6 +33,7 @@ const NewUser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     await userService.createUser(username, password, name)
+    setContent('u/all')
   }
 
   return (
