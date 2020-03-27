@@ -62,7 +62,7 @@ public class ChatDAO extends DataAccessInit implements IChatDAO {
 	}
 
 	@Override
-	public ChatObject updateChatObject(ChatObject chatObject) {
+	public synchronized ChatObject updateChatObject(ChatObject chatObject) {
         Document document = new Document("chatName", chatObject.getChatName());
         document.append("type", chatObject.getType());
         document.append("users", Arrays.asList(chatObject.getMembers()));
@@ -78,7 +78,7 @@ public class ChatDAO extends DataAccessInit implements IChatDAO {
 	}
 
 	@Override
-	public boolean deleteChatObject(ChatObject chatObject) {
+	public synchronized boolean deleteChatObject(ChatObject chatObject) {
 		DeleteResult result = collection.deleteOne(
             eq("_id", new ObjectId(chatObject.getChat_id())));
         if (result.getDeletedCount() > 0) {
@@ -92,7 +92,7 @@ public class ChatDAO extends DataAccessInit implements IChatDAO {
 	}
 
 	@Override
-	public ChatObject getChatObject(ChatObject chatObject) {
+	public synchronized ChatObject getChatObject(ChatObject chatObject) {
         Document d = (Document)collection
             .find(eq("chatName", chatObject.getChatName())).first();
 
@@ -105,7 +105,7 @@ public class ChatDAO extends DataAccessInit implements IChatDAO {
 	}
 
     @Override
-	public ChatObject[] getChats(String userId) {
+	public synchronized ChatObject[] getChats(String userId) {
         MongoCursor<Document> cursor = collection.find().iterator();
         ArrayList<ChatObject> chatList = new ArrayList<>();
 
@@ -135,7 +135,7 @@ public class ChatDAO extends DataAccessInit implements IChatDAO {
 	}
 
 	@Override
-	public ChatObject[] getAllChats() {
+	public synchronized ChatObject[] getAllChats() {
         MongoCursor<Document> cursor = collection.find().iterator();
         ArrayList<ChatObject> chatList = new ArrayList<>();
 
