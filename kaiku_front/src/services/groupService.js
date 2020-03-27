@@ -10,13 +10,12 @@ const configAsAdmin = {
 /**
  * Gets and returns all chats from backend
  * @param {*} user_id loggedUser.user_id
+ * @param {*} token loggedUser.token
  */
-const getAllByID = async (user_id) => {
+const getAllByID = async (user_id, token) => {
   try {
     const requestString = baseUrl + `/?user_id=${user_id}`
-    console.log(requestString)
-    const response = await axios.get(baseUrl + `/?user_id=${user_id}`, configAsAdmin)
-    console.log('response.data', response.data)
+    const response = await axios.get(baseUrl + `/?user_id=${user_id}`, { headers: { Authorization: token } })
     return response.data
   } catch (e) {
     console.log('error: ', e)
@@ -27,7 +26,6 @@ const getAllByID = async (user_id) => {
 const getAllChats = async () => {
   try {
     const response = await axios.get(baseUrl + '/?user_id', configAsAdmin)
-    console.log('respones.data', response.data)
     return response.data
   } catch (e) {
     console.log('error: ', e)

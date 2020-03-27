@@ -16,9 +16,11 @@ import com.ryhma_3.kaiku.model.cast_object.UserObject;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
 import com.ryhma_3.kaiku.model.database.IUserDAO;
+import com.ryhma_3.kaiku.resource_controllers.exceptions.BadUserInputException;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ResourceNotFoundException;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ValidationFailedException;
 import com.ryhma_3.kaiku.utility.GlobalChats;
+import com.ryhma_3.kaiku.utility.Logger;
 import com.ryhma_3.kaiku.utility.SecurityTools;
 
 /**
@@ -43,13 +45,11 @@ public class UserResourceController {
 	 */
 	@RequestMapping(value = "/api/users/**", method=RequestMethod.POST)
 	public InitializationObject getInit(@RequestBody UserObject user) {
-		System.out.println("REST: login");
+		debugger("REST: login");
 
 		String username = user.getUsername();
 		String password = user.getPassword();
 		
-		System.out.println("creds: " + username + "  " + password);
-
 		/*
 		 * Get user with matching username from database. COmpare encrypted password with one submitted
 		 */
@@ -70,7 +70,7 @@ public class UserResourceController {
 			 * Generate token, get token String
 			 */
 			String tokenString = SecurityTools.createOrUpdateToken(user_id).getTokenString();
-			System.out.println("created token: " + tokenString);
+			debugger("created token: " + tokenString);
 		
 
 			/*
@@ -131,7 +131,7 @@ public class UserResourceController {
 	public UserObject createUser(
 			@RequestBody UserObject userObject, 
 			@RequestHeader("Authorization") String token) {
-		System.out.println("REST: create user");
+		debugger("create user");
 		
 		/*
 		 * Compare token and token storage
@@ -144,13 +144,15 @@ public class UserResourceController {
 			 * enrcypt password
 			 */
 			userObject.setPassword(SecurityTools.encrypt(userObject.getPassword()));
-			
-			
+		
 			/*
 			 * post user to db
 			 */
 			userObject = userDAO.createUser(userObject);
 			
+			if(userObject == null) {
+				throw new BadUserInputException();
+			}
 			
 			/*			 
 			 * add user to global chat
@@ -161,7 +163,7 @@ public class UserResourceController {
 			userObject.setPassword("");
 			
 			return userObject;
-			
+
 		} 
 		
 		throw new ValidationFailedException();
@@ -176,7 +178,7 @@ public class UserResourceController {
 	@RequestMapping(value="/api/users", method=RequestMethod.GET)
 	public UserObject[] getUsers(
 			@RequestHeader("Authorization") String token){
-		System.out.println("REST: get users");
+		debugger("get users");
 		
 		/*
 		 * compare token with token storage
@@ -210,7 +212,7 @@ public class UserResourceController {
 	public UserObject updateUser(
 			@RequestHeader("Authorization") String token,
 			@RequestBody UserObject user) {
-		System.out.println("REST: update user");
+		debugger("update user");
 		
 		boolean valid = SecurityTools.verifySession(token);
 		
@@ -240,13 +242,13 @@ public class UserResourceController {
 	public boolean deleteUser(
 			@RequestHeader("Authorization") String token,
 			@RequestParam String user_id){
-		System.out.println("REST: delete user");
+		debugger("delete user");
 		
 		boolean valid = token.equals("kaiku");
 		
 		if(valid) {
 			
-			System.out.println("id: " + user_id);
+			debugger("id: " + user_id);
 			
 			boolean success = userDAO.deleteUser(new UserObject(user_id, null, null ,null));
 			
@@ -258,6 +260,11 @@ public class UserResourceController {
 		}
 		
 		throw new ValidationFailedException();
+	}
+	
+	
+	private void debugger(String data) {
+		Logger.log("USER REST: " + data);
 	}
 	
 }

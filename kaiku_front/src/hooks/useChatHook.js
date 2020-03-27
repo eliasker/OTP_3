@@ -12,8 +12,10 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
   const [currentChat, setCurrentChat] = useState(null)
 
   useEffect(() => {
+    if (loggedUser.user_id === undefined) return
     (async () => {
-      const chats = await groupService.getAllByID(loggedUser.user_id)
+      const chats = await groupService.getAllByID(loggedUser.user_id, loggedUser.token)
+      if (chats === undefined) return
       console.log('setting chats to:', chats)
       setChatState(chats)
       setCurrentChat(chats[0])
@@ -24,13 +26,15 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
     receiveMessage(incMessageData)
   }, [incMessageData])
 
+
   useEffect(() => {
     addNewChat(newChatData)
   }, [newChatData])
 
   const findChatByID = id => {
     if (chatState === null) return
-    return chatState.find(c => c.chat_id === id)
+    const found = chatState.find(c => c.chat_id === id)
+    return found
   }
 
   /**
@@ -44,12 +48,11 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
    * @param {*} chatID of currentChat, undefined by default
    */
   const postMessage = async (newMessage, chatID) => {
+    console.log('chatstate currently', chatState)
     var newChatState = chatState
     if (chatID === undefined) {
-      currentChat.messages.push(newMessage)
-
-      createChat('chat', currentChat.type, currentChat.members, currentChat.messages)
-      newChatState.push(currentChat)
+      const newChat = await createChat('chat', currentChat.type, currentChat.members, [newMessage])
+      addNewChat(newChat)
     } else {
       console.log('message to existing chat', newMessage, '\n', 'chatID', chatID)
       if (chatID !== undefined) {
@@ -60,26 +63,30 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
         sendMessage(newMessage, loggedUser.user_id, chatID)
       }
     }
-    setChatState(newChatState)
     console.log(chatState)
   }
 
   /**
-   * Function for adding new chats to chatState when another user creates them
+   * Function for adding new chats to chatState
    * @param {*} data 
    */
   const addNewChat = data => {
     if (data === null) return
-    console.log('creating new chat', data)
     var newChatState = chatState
     var newChatObject = {
       chat_id: data.chat_id,
       chatName: data.chatName || null,
       type: data.type,
       members: data.members,
-      messages: data.messages
+      messages: data.messages,
+      image: currentChat.image,
+      color: currentChat.color
     }
-    console.log(newChatObject)
+    console.log('created new chat', newChatObject)
+    newChatState.push(newChatObject)
+    setChatState(newChatState)
+    console.log('new', newChatState, 'did update?', chatState)
+    selectChat(newChatObject)
   }
 
   /**
@@ -122,7 +129,13 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
   const selectChat = (chat) => {
     console.log('setting chat to', chat)
     const newChatState = chatState
-    //if (newChatState[chat.id]) newChatState[chat.id].unreadMessages = false
+    const found = findChatByID(chat.chat_id)
+    if (found !== undefined) {
+      const index = chatState.indexOf(found)
+      const newChatObject = chat
+      newChatObject.unreadMessages = false
+      newChatState[index] = newChatObject
+    }
     setChatState(newChatState)
     setCurrentChat(chat)
   }

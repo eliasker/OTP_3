@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import UsersColumn from './users/UsersColumn'
 import ChatColumn from './chat/ChatColumn'
 import CurrentChat from '../providers/CurrentChat'
@@ -14,14 +14,8 @@ const Chat = () => {
   const [displayUser, setDisplayUser] = useState(undefined)
   const { chatState, postMessage, receiveMessage, currentChat, selectChat } = useChatHook(createChat, sendMessage, incMessageData, newChatData)
   const [showModal, setShowModal] = useState(false)
+  const [displayKarvalakki, setDisplayKarvalakki] = useState(false)
 
-  /*
-  console.log('currentchat cjat js', currentChat)
-
-  useEffect(() => {
-    console.log('helloworld')
-  }, [currentChat])
-*/
   return (
     <>
       <CurrentChat.Provider value={{ chatState, postMessage, receiveMessage, currentChat, selectChat, showModal, setShowModal }}>
@@ -32,7 +26,8 @@ const Chat = () => {
           </div>
           <HelpPanel />
         </div>
-        <Karvalakki />
+        <button onClick={() => setDisplayKarvalakki(!displayKarvalakki)}>Toggle Karvalakki :D</button>
+        {displayKarvalakki ? <Karvalakki /> : null}
       </CurrentChat.Provider>
     </>
   )

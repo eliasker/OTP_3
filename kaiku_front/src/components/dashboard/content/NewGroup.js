@@ -10,11 +10,11 @@ const NewGroup = () => {
   const { initialData } = useContext(InitialData)
   const { setContent } = useContext(Context)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const memberList = addedList.map(u => u.user_id)
     if (!window.confirm('Haluatko luoda ' + newGroup.chatName + ' ryhmän?')) return
-    groupService.create({ ...newGroup, members: memberList, type: 'group' })
+    await groupService.create({ ...newGroup, members: memberList, type: 'group' })
     setContent('g/all')
   }
 

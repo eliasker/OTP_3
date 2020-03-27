@@ -9,7 +9,6 @@ const User = ({ user, privateChat, setDisplayUser }) => {
 
   // tässä tarvitaan logiikka uuden keskustelun aloittamiseksi
   const handleShowChat = () => {
-    console.log('handleShowChat clicked', privateChat)
     selectChat({ ...privateChat, image: '/profile-thumb-nobg.png', color: user.color })
   }
   return (

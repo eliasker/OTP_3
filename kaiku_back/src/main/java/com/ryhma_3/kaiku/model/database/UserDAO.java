@@ -51,10 +51,17 @@ public class UserDAO extends DataAccessInit implements IUserDAO {
         this.mongoClient = MongoClients.create(connString);
         this.mongoDatabase = mongoClient.getDatabase("metadata");
         this.collection = mongoDatabase.getCollection("users");
+        Document index = new Document("username", 1);
+        // Ensure username field is unique by adding an index, if it does not exist
+        try {
+            this.collection.createIndex(index, new IndexOptions().unique(true));
+        } catch (Exception e) {
+            
+        }
     }
     
 	@Override
-	public UserObject updateUser(UserObject userObject) {
+	public synchronized UserObject updateUser(UserObject userObject) {
         Document document = new Document("username", userObject.getUsername());
         document.append("name", userObject.getName());
         document.append("password", userObject.getPassword());
@@ -66,7 +73,7 @@ public class UserDAO extends DataAccessInit implements IUserDAO {
 	}
 
 	@Override
-	public boolean deleteUser(UserObject userObject) {
+	public synchronized boolean deleteUser(UserObject userObject) {
         System.out.println(userObject.getUsername());
 		DeleteResult result = collection.deleteOne(eq("_id", new ObjectId(userObject.getUser_id())));
         if (result.getDeletedCount() > 0) {
@@ -96,7 +103,7 @@ public class UserDAO extends DataAccessInit implements IUserDAO {
 
     // TODO: refactor to use ObjectId for filtering instead of username
 	@Override
-	public UserObject getUser(UserObject userObject) {
+	public synchronized UserObject getUser(UserObject userObject) {
         try {
             Document d = (Document)collection
                 .find(eq("username", userObject.getUsername())).first();
@@ -111,7 +118,7 @@ public class UserDAO extends DataAccessInit implements IUserDAO {
 	}
 
     @Override
-	public UserObject[] getAllUsers() {
+	public synchronized UserObject[] getAllUsers() {
         MongoCursor<Document> cursor = collection.find().iterator();
         ArrayList<UserObject> userList = new ArrayList<>();
 

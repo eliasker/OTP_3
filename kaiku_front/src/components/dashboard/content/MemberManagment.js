@@ -8,11 +8,12 @@ const MemberManagment = () => {
   const { currentGroup, setContent } = useContext(Context)
   const [tempGroup, setTempGroup] = useState(currentGroup)
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault()
+    console.log('submit')
     if (!window.confirm('Haluatko päivittää tämän ryhmän?')) return
-    groupService.update(tempGroup.chat_id, tempGroup)
     console.log(tempGroup)
+    groupService.update(tempGroup.chat_id, tempGroup)
     setContent('g/all')
   }
 
@@ -32,9 +33,7 @@ const MemberManagment = () => {
 
   const getUserList = () => {
     if (!tempGroup.members) return
-    console.log(initialData)
-    const memberList = tempGroup.members.map(m => initialData.users.find(u => u.user_id === m))
-    console.log(memberList)
+    const memberList = tempGroup.members.map(m => initialData.users.find(u => u.user_id === m)).filter(u => u !== undefined)
     return memberList.map(m =>
       <span className="badge badge-primary m-1 font-2" key={m.user_id}>
         {m.username} <i className="fas fa-times h-red" onClick={() => handleDelete(m.user_id)}></i>
@@ -51,7 +50,7 @@ const MemberManagment = () => {
 
   return (
     <>
-      <form className="form-row" onSubmit={e => handleSubmit(e)}>
+      <form className="form-row" onSubmit={(e) => handleSubmit(e)}>
         <div className="col-12 col-md-6 mb-2">
           <div className="form-group">
             <label htmlFor="user-name">Ryhmän nimi</label>

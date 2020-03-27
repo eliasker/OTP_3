@@ -7,6 +7,7 @@ import './styles/App.css'
 import DashBoard from './components/dashboard/DashBoard'
 import Authentication from './components/auth/Authentication'
 import socketService from './services/socketService'
+import userService from './services/userService'
 
 const App = () => {
   const [loggedUser, setLoggedUser] = useState(null)
@@ -15,11 +16,13 @@ const App = () => {
   const { createSocketConnection, createChat, sendMessage, disconnect, incMessageData, newChatData } = socketService()
 
   useEffect(() => {
-    if (loggedUser === null || loggedUser.users === undefined) return
-    const colors = ['red', 'navy', 'orange', 'blue', 'green', 'amber', 'turqoise', 'pink', 'brown', 'dark']
-    const generateColor = () => Math.floor(Math.random() * Math.floor(colors.length))
-
-    setInitialData({ ...loggedUser, users: loggedUser.users.map(u => u = { ...u, color: colors[generateColor()] }) })
+    if (loggedUser === null) return
+    (async () => {
+      const colors = ['red', 'navy', 'orange', 'blue', 'green', 'amber', 'turqoise', 'pink', 'brown', 'dark']
+      const allUsers = await userService.getAllUsers(loggedUser.token)
+      const generateColor = () => Math.floor(Math.random() * Math.floor(colors.length))
+      setInitialData({ ...loggedUser, users: allUsers.map(u => u = { ...u, color: colors[generateColor()] }) })
+    })()
   }, [loggedUser])
 
   useEffect(() => {
