@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import com.corundumstudio.socketio.AckRequest;
 import com.corundumstudio.socketio.SocketIOClient;
@@ -26,19 +28,11 @@ import com.ryhma_3.kaiku.utility.Token;
 
 /**
  * @author Panu Lindqvist
- * A socket server that implements IServer. Contains listeners to listen incoming connections and messages and has 
- * multiplexing functionality to facilitate unnumbered amount of chats.
+ * A socket server that implements IServer. Contains listeners to listen incoming connections.
  * Collects incoming traffic and utilises database Data Access Objects.
  */
 public class Server implements IServer {
-	
-	/**
-	 * user_id, onlineStatus
-	 */
-	private static Map<String, Boolean> connectedUsers = new HashMap<>(); 
-	
-//	Discarded due to implementation difficuties
-//	private static final ArrayList<SocketIONamespace> namespaces = new ArrayList<>(); 
+
 	
 	private static ArrayList<ChatObject> chats = new ArrayList<>();
 
@@ -85,10 +79,10 @@ public class Server implements IServer {
 				
 				
 				//update connectedUsers
-				connectedUsers.put(cloneOfToken.getUser_id(), true);
+				SecurityTools.setUserStatus(cloneOfToken.getUser_id(), true);
 				
 				//send client current user statuses
-				client.sendEvent("connect", connectedUsers);
+				client.sendEvent("connect", SecurityTools.getUserStatusMap());
 				
 				//update other clients about this user
 				server.getBroadcastOperations().sendEvent("connectionEvent", new UserStatusObject(cloneOfToken.getUser_id(), true));
@@ -119,7 +113,7 @@ public class Server implements IServer {
 					Token cloneOfToken = SecurityTools.getCloneOfToken(sessionID);
 					
 					//set user as disconnected
-					connectedUsers.put(cloneOfToken.getUser_id(), false);
+					SecurityTools.setUserStatus(cloneOfToken.getUser_id(), false);
 					
 					//broadcast info
 					server.getBroadcastOperations().sendEvent("connectionEvent", new UserStatusObject(cloneOfToken.getUser_id(), false));
@@ -132,15 +126,12 @@ public class Server implements IServer {
 					
 					debugger("Disconnected uncleanly", true);
 										
-					//reset list
-					connectedUsers.forEach((k, v) -> v = false);
-					
-					//iterate all online users
-					Collection<SocketIOClient> users = server.getAllClients();
-					for(SocketIOClient u : users) {
-						Token token = SecurityTools.getCloneOfToken(u.getSessionId());	
-						connectedUsers.put(token.getUser_id(), true);
-					}
+					//Take a snapshot of connected UUIDs and force update on token base
+					Collection<UUID> users = server.getAllClients()
+							.stream()
+							.map(u -> u.getSessionId())
+							.collect(Collectors.toList());
+					SecurityTools.updateEveryUserStatus(users);
 				}
 			}
 		});
@@ -199,7 +190,7 @@ public class Server implements IServer {
 					for(String member : data.getMembers()) {
 						
 						//check if member is online
-						if(connectedUsers.get(member)) {
+						if(SecurityTools.getCloneOfToken(member).isOnline()) {
 							
 							Token user = SecurityTools.getCloneOfToken(member);
 							
@@ -285,7 +276,7 @@ public class Server implements IServer {
 			for(String member : chat.getMembers()) {
 				
 				//check if member is online
-				if(connectedUsers.get(member)) {
+				if(SecurityTools.getCloneOfToken(member).isOnline()) {
 					
 					//send event realtime
 					SocketIOClient receiver = server.getClient(SecurityTools.getCloneOfToken(member).getSessionID());
@@ -319,37 +310,12 @@ public class Server implements IServer {
 				chats.add(chatObject);
 			}
 			
-			//initialize connected users list
-			UserObject[] users = userDAO.getAllUsers();
-			for(UserObject user: users) {
-				connectedUsers.put(user.getUser_id(), false);
-			}
 		}catch (Exception e) {
 			debugger("SERVER INIT: FAIL", true);
 			e.printStackTrace();
 		}
 	}
 	
-	
-	/**
-	 * @param server
-	 * @param chatObject
-	 * Running chat objects through this method creates new server namespaces with proper attributes attached.
-	 * 
-	 * @deprecated for the time being
-	 */ 
-	private void setupNamespace(SocketIOServer server, ChatObject chatObject) {
-//		SocketIONamespace namespace = server.addNamespace("/" + chatObject.getChat_id());
-//		namespaces.add(namespace);
-		
-//		namespace.addEventListener("chatEvent", MessageObject.class, new DataListener<MessageObject>() {
-//			@Override
-//			public void onData(SocketIOClient client, MessageObject data, AckRequest ackSender) throws Exception {
-//				messageDAO.createMessage(data,chatObject.getChat_id());
-//				namespace.getBroadcastOperations().sendEvent("chatEvent", data);
-//			}
-//		});
-	}
 	
 	@Override
 	public void stopServer() {

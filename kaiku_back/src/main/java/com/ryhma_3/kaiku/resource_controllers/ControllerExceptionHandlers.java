@@ -16,7 +16,7 @@ public class ControllerExceptionHandlers {
 	@ExceptionHandler(ValidationFailedException.class)
 	@ResponseStatus(value=HttpStatus.UNAUTHORIZED)
 	public void handleValidationFailedException(ValidationFailedException ex) {
-		debugger(HttpStatus.UNAUTHORIZED + " ralidation error");
+		debugger(HttpStatus.UNAUTHORIZED + " validation error");
 	}
 	
 	
