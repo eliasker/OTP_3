@@ -57,6 +57,7 @@ public class Token {
     	this.sessionID = toClone.getSessionID();
     	this.user_id = toClone.getUser_id();
     	this.tokenString = toClone.getTokenString();
+    	this.online = toClone.isOnline();
     }
 }
 
