@@ -1,6 +1,8 @@
 package com.ryhma_3.kaiku.utility;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.UUID;
 
 import org.jasypt.util.password.BasicPasswordEncryptor;
@@ -363,6 +365,81 @@ public class SecurityTools {
 			}
 		}
 	}	
+	
+	
+	/**
+	 * Remove token from tokenstorage
+	 * @param user_id 
+	 * @return boolean success
+	 */
+	public static boolean removeToken(String user_id) {
+		synchronized (lock) {
+			try {
+				while(operatingTokens) {
+					lock.wait();
+				}
+				operatingTokens = true;
+				
+				tokenDataStore.remove(getCloneOfToken(user_id));
+				
+				releaseObjectLock("removed token", false);
+				return true;
+				
+			}catch(Exception e) {
+				releaseObjectLock("remove token exception", true);
+				e.printStackTrace();
+				return false;
+			}
+		}
+	}
+	
+	
+	/**
+	 * Get a map portraying user base's online status'
+	 * @return HashMap<user_id, online> map
+	 */
+	public static HashMap<String, Boolean> getUserStatusMap(){
+		HashMap<String, Boolean> map = new HashMap<>();
+		for(Token u : tokenDataStore) {
+			map.put(u.getUser_id(), u.isOnline());
+		}
+		return map;
+	}
+	
+	
+	/**
+	 * Set user's status online
+	 * @param id String
+	 * @param online boolean
+	 */
+	public static void setUserStatus(String id, boolean online) {
+		synchronized (lock) {
+			for(Token t : tokenDataStore) {
+				if(t.getUser_id().equals(id)) {
+					t.setOnline(online);
+					break;
+				}
+			}
+		}
+	}
+
+	
+	
+	/**
+	 * Iterate through all of token base and confirm user token set online is found in snapshot of serverclients
+	 * @param users Collectin<UUID>
+	 */
+	public static void updateEveryUserStatus(Collection<UUID> users) {
+		synchronized (lock) {
+			for(Token t : tokenDataStore) {
+				if(t.isOnline()) {
+					users.contains(t.getSessionID());
+				} else {
+					t.setOnline(false);
+				}
+			}
+		}
+	}
 	
 
 	/**

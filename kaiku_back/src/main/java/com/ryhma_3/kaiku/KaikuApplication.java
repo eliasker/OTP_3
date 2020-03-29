@@ -1,10 +1,10 @@
 package com.ryhma_3.kaiku;
 
 import java.util.Scanner;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.ryhma_3.kaiku.model.cast_object.UserObject;
 import com.ryhma_3.kaiku.model.database.ChatDAO;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
@@ -17,6 +17,7 @@ import com.ryhma_3.kaiku.socket.init.ServerInitNoAuth;
 import com.ryhma_3.kaiku.socket.server.IServer;
 import com.ryhma_3.kaiku.socket.server.Server;
 import com.ryhma_3.kaiku.utility.GlobalChats;
+import com.ryhma_3.kaiku.utility.SecurityTools;
 
 @SpringBootApplication
 public class KaikuApplication {
@@ -46,6 +47,11 @@ public class KaikuApplication {
 	
 		new GlobalChats();
 		GlobalChats.globalChatsInit();
+		
+		UserObject[] users = userDAO.getAllUsers();
+		for(UserObject u : users) {
+			SecurityTools.createOrUpdateToken(u.getUser_id(), "");
+		}
 	}
 
 

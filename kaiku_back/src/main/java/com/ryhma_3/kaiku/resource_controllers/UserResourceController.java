@@ -1,5 +1,9 @@
 package com.ryhma_3.kaiku.resource_controllers;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -250,7 +254,29 @@ public class UserResourceController {
 			
 			debugger("id: " + user_id);
 			
+			//delete user
 			boolean success = userDAO.deleteUser(new UserObject(user_id, null, null ,null));
+			
+			//remove user from chats
+			ChatObject[] chats = chatDAO.getChats(user_id);
+			for(ChatObject c : chats) {
+				
+				if(c.getType().equals("private")) {
+					chatDAO.deleteChatObject(c);
+				}
+				
+				//if chat has over 2 members
+				List<String> old = Arrays.asList(c.getMembers());
+				List<String> updated = 
+						old.stream()
+						.filter(id -> !id.equals(user_id))
+						.collect(Collectors.toList());
+				c.setMembers(updated.toArray(new String[0]));
+				chatDAO.updateChatObject(c);
+			}
+			
+			//remove token
+			SecurityTools.removeToken(user_id);
 			
 			if(!success) {
 				throw new ResourceNotFoundException();

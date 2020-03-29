@@ -9,6 +9,7 @@ public class Token {
 	private UUID sessionID;
 	private String user_id;
 	private String tokenString;
+	private boolean online = false;
 	
     /**
      * Create token
@@ -39,9 +40,14 @@ public class Token {
 	public String getTokenString() {
 		return tokenString;
 	}
-
-
-
+	
+	public boolean isOnline() {
+		return online;
+	}
+	
+	public void setOnline(boolean online){
+		this.online = online;
+	}
 
 	/**
 	 * This constructor clones another token
@@ -51,6 +57,7 @@ public class Token {
     	this.sessionID = toClone.getSessionID();
     	this.user_id = toClone.getUser_id();
     	this.tokenString = toClone.getTokenString();
+    	this.online = toClone.isOnline();
     }
 }
 
