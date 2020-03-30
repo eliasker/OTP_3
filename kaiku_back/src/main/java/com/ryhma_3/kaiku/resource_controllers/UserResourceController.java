@@ -261,6 +261,7 @@ public class UserResourceController {
 			ChatObject[] chats = chatDAO.getChats(user_id);
 			for(ChatObject c : chats) {
 				
+				//if chat has less than 3 members
 				if(c.getType().equals("private")) {
 					chatDAO.deleteChatObject(c);
 				}
