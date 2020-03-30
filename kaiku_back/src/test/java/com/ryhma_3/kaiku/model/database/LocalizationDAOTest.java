@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.HashMap;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -16,8 +18,8 @@ class LocalizationDAOTest {
 	LocalizationObject localeEn;
 	LocalizationObject localeSe;
 
-	@BeforeAll
-	void beforeAll() {
+	@BeforeEach
+	void beforeEach() {
 		loc = new LocalizationDAO();
 		
 		localeFi = new LocalizationObject("fi-FI");
@@ -36,8 +38,8 @@ class LocalizationDAOTest {
 		assertEquals(retLoc.getIdenticator(), localeFi.getIdenticator());
 	}
 	
-	@org.junit.jupiter.api.AfterAll
-	void afterAll() {
+	@AfterEach
+	void afterEach() {
 		loc.deleteLocalization(localeFi.getIdenticator());
 		loc.deleteLocalization(localeEn.getIdenticator());
 		loc.deleteLocalization(localeSe.getIdenticator());
