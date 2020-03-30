@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
 import { Text, View, StyleSheet } from 'react-native'
-import { Context } from '../context/BlogContext'
+import { Context } from '../context/AuthContext'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
 
 const IndexScreen = ({ navigation }) => {
-  const { state, add } = useContext(Context)
+  const { state } = useContext(Context)
   
   const singlePost = (user) => (
     <TouchableOpacity onPress={() => navigation.navigate('Single', { user })}>
