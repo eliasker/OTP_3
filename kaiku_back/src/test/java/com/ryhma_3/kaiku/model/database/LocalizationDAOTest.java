@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 
 import com.ryhma_3.kaiku.model.cast_object.LocalizationObject;
 
-@Disabled
 class LocalizationDAOTest {
 	ILocalizationDAO loc;
 	LocalizationObject localeFi;
@@ -29,7 +28,8 @@ class LocalizationDAOTest {
 		localeEn.setItems(getLanguageset("en-GB"));
 		localeSe.setItems(getLanguageset("fi-SE"));
 	}
-	
+
+	@Disabled
 	@Test
 	void putNewLocalizationTest() {
 		LocalizationObject retLoc = loc.putLocalization(localeFi);
