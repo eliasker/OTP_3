@@ -5,18 +5,20 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.HashMap;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.ryhma_3.kaiku.model.cast_object.LocalizationObject;
 
+@Disabled
 class LocalizationDAOTest {
 	ILocalizationDAO loc;
 	LocalizationObject localeFi;
 	LocalizationObject localeEn;
 	LocalizationObject localeSe;
-	
+
 	@BeforeAll
-	void BeforeAll() {
+	void beforeAll() {
 		loc = new LocalizationDAO();
 		
 		localeFi = new LocalizationObject("fi-FI");
@@ -35,7 +37,7 @@ class LocalizationDAOTest {
 	}
 	
 	@org.junit.jupiter.api.AfterAll
-	void AfterAll() {
+	void afterAll() {
 		loc.deleteLocalization(localeFi.getIdenticator());
 		loc.deleteLocalization(localeEn.getIdenticator());
 		loc.deleteLocalization(localeSe.getIdenticator());
