@@ -1,29 +1,90 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Text, View, StyleSheet } from 'react-native'
-import { Context } from '../context/AuthContext'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
+import { ActivityIndicator } from 'react-native'
+import { Image, ListItem } from 'react-native-elements'
+
+const data = [
+  {
+    username: 'mirka-kissa',
+    name: 'mirka'
+  },
+  {
+    username: 'mirka-koira',
+    name: 'koira'
+  },
+  {
+    username: 'mirka-lehmä',
+    name: 'lehmä'
+  },
+  {
+    username: 'mirka-kukko',
+    name: 'kukko'
+  },
+  {
+    username: 'mirka-omena',
+    name: 'omena'
+  },
+  {
+    username: 'mirka-asd',
+    name: 'mirka'
+  },
+  {
+    username: 'mirka-123',
+    name: 'koira'
+  },
+  {
+    username: 'mirka-23',
+    name: 'lehmä'
+  },
+  {
+    username: 'mirka-3',
+    name: 'kukko'
+  },
+  {
+    username: 'mirka-1',
+    name: 'omena'
+  }
+]
 
 const IndexScreen = ({ navigation }) => {
-  const { state } = useContext(Context)
-  
-  const singlePost = (user) => (
-    <TouchableOpacity onPress={() => navigation.navigate('Single', { user })}>
-      <View style={styles.row} >
-        <TouchableOpacity onPress={() => deleteBlog(user.id)}>
-          <Feather name='circle' style={styles.icon} />
-        </TouchableOpacity>
+  const image = require('../image/placeholder-profile.png')
+  const groupPlaceholder = require('../image/kaikuthumb.png')
 
-        <TouchableOpacity style={styles.flex1}>
-          <Text style={styles.text} >{user.name}</Text>
-        </TouchableOpacity>
-      </View>
-    </TouchableOpacity>
+  const renderUser = (item) => (
+    <TouchableOpacity onPress={() => console.log('to single page')}>
+      <ListItem
+        title={item.name}
+        subtitle={item.username}
+        leftAvatar={{ source: image }}
+        containerStyle={{backgroundColor: '#3d4f64'}}
+        titleStyle={{color: 'white'}}
+        subtitleStyle={{color: '#fffa'}}
+        bottomDivider
+        chevron
+      />
+    </TouchableOpacity> 
   )
 
+  const renderGroup = (item) => (
+    <TouchableOpacity onPress={() => console.log('to single page')} style={{backgroundColor: '#3d4f64'}}>
+      <ListItem
+        leftAvatar={{ source: groupPlaceholder }}
+        containerStyle={{backgroundColor: '#3d4f64', paddingLeft: 12, paddingRight: 0, paddingBottom: 0}}
+        contentContainerStyle={{padding: 0, margin: 0}}
+        titleStyle={{color: 'white'}}
+        subtitleStyle={{color: '#fffa'}}
+      />
+      <Text style={{paddingBottom: 16, alignSelf: 'center', paddingHorizontal: 8, backgroundColor: '#3d4f64', color: '#fffa'}}>{item.username}</Text>
+    </TouchableOpacity> 
+  )
+  
   return (
-    <View>
-      <FlatList keyExtractor={(item) => item.username} data={state} renderItem={({ item }) => singlePost(item)} />
+    <View style={styles.container}>
+      <FlatList keyExtractor={(item) => item.username} data={data} renderItem={({ item }) => renderGroup(item)}
+        horizontal={true} showsHorizontalScrollIndicator={false}/>
+      <FlatList keyExtractor={(item) => item.username} data={data} renderItem={({ item }) => renderUser(item)} />
     </View>
   )
 }
@@ -38,17 +99,21 @@ IndexScreen.navigationOptions = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#2d3f54',
+    flex: 1
+  },
   row: {
-    marginHorizontal: 25,
-    paddingVertical: 15,
-    borderBottomColor: 'grey',
+    marginHorizontal: 2,
+    paddingVertical: 18,
+    paddingHorizontal: 8,
+    borderBottomColor: '#5d6f84',
     borderBottomWidth: 1,
     flexDirection: 'row',
   },
   text: {
     fontSize: 24,
-    //borderColor: 'black', //for testing
-    //borderWidth: 1,
+    color: 'white'
   },
   icon: {
     fontSize: 40,
