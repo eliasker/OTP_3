@@ -34,8 +34,8 @@ const ChatColumn = ({ profileState, userState, currentChat }) => {
     const filteredMsgs = currentChat.messages.filter(msg => msg.content.includes(searchInput))
     return filteredMsgs.map(m =>
       m.user_id === loggedUser.user_id ?
-        <OutMessage key={keyGen.generateKey(m.content)} content={m.content} /> :
-        <InMessage key={keyGen.generateKey(m.content)} content={m.content} user={getUser(m.user_id)} />)
+        <OutMessage key={keyGen.generateKey(m.content)} message={m} /> :
+        <InMessage key={keyGen.generateKey(m.content)} message={m} user={getUser(m.user_id)} />)
   }
 
   useEffect(scrollToBottom, [initialData, currentChat, incMessageData])
