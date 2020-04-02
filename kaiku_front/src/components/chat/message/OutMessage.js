@@ -1,17 +1,14 @@
 import React from 'react'
-import formatTimeStamp from '../../../util/formatTime'
+import formatTime from '../../../util/formatTime'
 
 const OutMessage = ({ message }) => {
-  console.log(message)
-
   return (
     <div className="out-container">
       <div className="out-message">
-        <p>
-          <span>{formatTimeStamp(message.timestamp)}</span>
-          <br />
-          {message.content}</p>
-        <span className="message-date"> </span>
+        <p>{message.content}</p>
+        {message.message_id === null ?
+          <span className="out-message-date">{message.timestamp}</span> :
+          <span className="out-message-date">{formatTime.formatTimeStamp(message.timestamp)}</span>}
       </div>
     </div>
   )

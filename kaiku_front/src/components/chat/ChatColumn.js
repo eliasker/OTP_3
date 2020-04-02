@@ -12,6 +12,7 @@ import UserPage from '../profile/UserPage'
 import MessageForm from './MessageForm'
 import ChatHeader from './ChatHeader'
 import CurrentChat from '../../providers/CurrentChat'
+import formatTime from '../../util/formatTime'
 
 const ChatColumn = ({ profileState, userState, currentChat }) => {
   const { initialData, loggedUser, incMessageData } = useContext(InitialData)
@@ -48,11 +49,13 @@ const ChatColumn = ({ profileState, userState, currentChat }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
+    console.log(formatTime.getCurrentTimestamp())
     if (messageValidation(newMessage.value)) {
       const newMessageObj = {
         content: newMessage.value,
         message_id: null,
-        user_id: loggedUser.user_id
+        user_id: loggedUser.user_id,
+        timestamp: 'Tänään ' + formatTime.getCurrentTimestamp()
       }
       postMessage(newMessageObj, currentChat.chat_id)
       newMessage.reset()
