@@ -12,7 +12,6 @@ import UserPage from '../profile/UserPage'
 import MessageForm from './MessageForm'
 import ChatHeader from './ChatHeader'
 import CurrentChat from '../../providers/CurrentChat'
-import formatTime from '../../util/formatTime'
 
 const ChatColumn = ({ profileState, userState, currentChat }) => {
   const { initialData, loggedUser, incMessageData } = useContext(InitialData)
