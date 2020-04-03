@@ -18,8 +18,6 @@ const switchNavigator = createSwitchNavigator({
   mainFlow: createStackNavigator({
     Index: IndexScreen,
     Chat: ChatScreen
-  },{
-    headerTintColor: 'black'
   }),
 })
 

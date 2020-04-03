@@ -53,12 +53,12 @@ const IndexScreen = ({ navigation }) => {
   const groupPlaceholder = require('../image/kaikuthumb.png')
 
   const renderUser = (item) => (
-    <TouchableOpacity onPress={() => console.log('to single page')}>
+    <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
       <ListItem
         title={item.name}
         subtitle={item.username}
         leftAvatar={{ source: image }}
-        containerStyle={{backgroundColor: '#3d4f64'}}
+        containerStyle={{backgroundColor: '#45566b'}}
         titleStyle={{color: 'white'}}
         subtitleStyle={{color: '#fffa'}}
         bottomDivider
@@ -68,7 +68,7 @@ const IndexScreen = ({ navigation }) => {
   )
 
   const renderGroup = (item) => (
-    <TouchableOpacity onPress={() => console.log('to single page')} style={{backgroundColor: '#3d4f64'}}>
+    <TouchableOpacity onPress={() => navigation.navigate('Chat')} style={{backgroundColor: '#3d4f64'}}>
       <ListItem
         leftAvatar={{ source: groupPlaceholder }}
         containerStyle={{backgroundColor: '#3d4f64', paddingLeft: 12, paddingRight: 0, paddingBottom: 0}}
@@ -83,7 +83,7 @@ const IndexScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <FlatList keyExtractor={(item) => item.username} data={data} renderItem={({ item }) => renderGroup(item)}
-        horizontal={true} showsHorizontalScrollIndicator={false}/>
+        horizontal={true} showsHorizontalScrollIndicator={false} style={styles.rowList}/>
       <FlatList keyExtractor={(item) => item.username} data={data} renderItem={({ item }) => renderUser(item)} />
     </View>
   )
@@ -92,9 +92,18 @@ const IndexScreen = ({ navigation }) => {
 IndexScreen.navigationOptions = ({ navigation }) => {
   return {
     headerLeft: () => (
-    <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+    <TouchableOpacity onPress={() => console.log('Drawer menu')}>
       <Feather name='menu' style={styles.menu} />
-    </TouchableOpacity>)
+    </TouchableOpacity>),
+    title: 'Kaiku',
+    headerStyle: {
+      backgroundColor: '#2d3f54',
+    },
+    headerTintColor: '#fffc',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+
   }
 }
 
@@ -127,7 +136,13 @@ const styles = StyleSheet.create({
   menu: {
     fontSize: 24,
     marginLeft: 12,
-    color: 'grey'
+    color: '#fffa'
+  },
+  rowList: {
+    paddingBottom: 8,
+    borderColor: '#0005',
+    backgroundColor: '#3d4f64',
+    borderBottomWidth: 1
   }
 })
 
