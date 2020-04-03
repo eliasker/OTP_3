@@ -49,13 +49,11 @@ const ChatColumn = ({ profileState, userState, currentChat }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    console.log(formatTime.getCurrentTimestamp())
     if (messageValidation(newMessage.value)) {
       const newMessageObj = {
         content: newMessage.value,
         message_id: null,
-        user_id: loggedUser.user_id,
-        timestamp: 'Tänään ' + formatTime.getCurrentTimestamp()
+        user_id: loggedUser.user_id
       }
       postMessage(newMessageObj, currentChat.chat_id)
       newMessage.reset()
