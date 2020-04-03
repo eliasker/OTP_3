@@ -92,7 +92,7 @@ public class ChatDAOTest {
             }, testMessageObjects));
 
         ChatObject updated = testChatDAO.updateChatObject(
-            new ChatObject(null, "testChat", "changed", new String[] {
+            new ChatObject(o.getChat_id(), "testChat", "changed", new String[] {
                 testUserDAO.getUser(new UserObject(null, "TestUser1", null, null)).getUser_id(),
                 testUserDAO.getUser(new UserObject(null, "TestUser3", null, null)).getUser_id()
 

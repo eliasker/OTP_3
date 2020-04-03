@@ -1,11 +1,12 @@
 import React from 'react'
+import formatTime from '../../../util/formatTime'
 
-const OutMessage = ({ content }) => {
+const OutMessage = ({ message }) => {
   return (
     <div className="out-container">
       <div className="out-message">
-        <p>{content}</p>
-        <span className="message-date"> </span>
+        <p>{message.content}</p>
+        <span className="out-message-date">{formatTime.formatTimeStamp(message.timestamp)}</span>
       </div>
     </div>
   )

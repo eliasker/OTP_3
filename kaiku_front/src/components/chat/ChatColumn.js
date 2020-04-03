@@ -12,6 +12,7 @@ import UserPage from '../profile/UserPage'
 import MessageForm from './MessageForm'
 import ChatHeader from './ChatHeader'
 import CurrentChat from '../../providers/CurrentChat'
+import formatTime from '../../util/formatTime'
 
 const ChatColumn = ({ profileState, userState, currentChat }) => {
   const { initialData, loggedUser, incMessageData } = useContext(InitialData)
@@ -34,8 +35,8 @@ const ChatColumn = ({ profileState, userState, currentChat }) => {
     const filteredMsgs = currentChat.messages.filter(msg => msg.content.includes(searchInput))
     return filteredMsgs.map(m =>
       m.user_id === loggedUser.user_id ?
-        <OutMessage key={keyGen.generateKey(m.content)} content={m.content} /> :
-        <InMessage key={keyGen.generateKey(m.content)} content={m.content} user={getUser(m.user_id)} />)
+        <OutMessage key={keyGen.generateKey(m.content)} message={m} /> :
+        <InMessage key={keyGen.generateKey(m.content)} message={m} user={getUser(m.user_id)} />)
   }
 
   useEffect(scrollToBottom, [initialData, currentChat, incMessageData])
