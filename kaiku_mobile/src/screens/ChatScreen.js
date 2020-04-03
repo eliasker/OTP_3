@@ -31,7 +31,6 @@ const data = [
 const ChatScreen = () => {
 
   const renderMessage = (message) => {
-    console.log(message)
     return (
       (message.message.includes('orj')) ? <InMessage message={message} />: <OutMessage message={message} />
     )

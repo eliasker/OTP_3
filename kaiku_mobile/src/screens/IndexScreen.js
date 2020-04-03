@@ -92,7 +92,7 @@ const IndexScreen = ({ navigation }) => {
 IndexScreen.navigationOptions = ({ navigation }) => {
   return {
     headerLeft: () => (
-    <TouchableOpacity onPress={() => console.log('Drawer menu')}>
+    <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
       <Feather name='menu' style={styles.menu} />
     </TouchableOpacity>),
     title: 'Kaiku',
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   },
   rowList: {
     paddingBottom: 8,
-    borderColor: '#0005',
+    borderColor: '#6664',
     backgroundColor: '#3d4f64',
     borderBottomWidth: 1
   }

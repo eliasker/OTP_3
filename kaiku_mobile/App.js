@@ -1,24 +1,31 @@
 import React from 'react'
 import {  createAppContainer, createSwitchNavigator } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
-import { createBottomTabNavigator } from 'react-navigation-tabs'
+import { createDrawerNavigator } from 'react-navigation-drawer';
 import { Provider } from './src/context/AuthContext'
 import { setNavigator } from './src/navigationRef'
 import { ThemeProvider } from 'react-native-elements'
 
 import IndexScreen from './src/screens/IndexScreen'
 import ChatScreen from './src/screens/ChatScreen'
-import GroupScreen from './src/screens/GroupScreen'
 import SigninScreen from './src/screens/SigninScreen'
+import LoadingScreen from './src/screens/LoadingScreen'
+import LogoutHandler from './src/components/LogoutHandler'
 
 const switchNavigator = createSwitchNavigator({
+  Loading: LoadingScreen,
   loginFlow: createStackNavigator({
     Signin: SigninScreen,
   }),
-  mainFlow: createStackNavigator({
-    Index: IndexScreen,
-    Chat: ChatScreen
-  }),
+  mainFlow: createDrawerNavigator({
+    Home: createStackNavigator({
+      Index: IndexScreen,
+      Chat: ChatScreen
+    }),
+    Logout: LogoutHandler,
+  }, {
+    drawerBackgroundColor: '#1d2f44'
+  })
 })
 
 const App = createAppContainer(switchNavigator)
@@ -58,7 +65,7 @@ export default () => {
   return(
     <Provider>
       <ThemeProvider theme={theme}>
-        <App ref={(navigator) => {setNavigator(navigator)} } />
+        <App theme="dark" ref={(navigator) => {setNavigator(navigator)} } />
       </ThemeProvider>
     </Provider>
   )
