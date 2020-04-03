@@ -18,26 +18,31 @@ const authReducer = (state, action) => {
 const logIn = (dispatch) => async (credentials) => {
   try {
     const res = 'token' //TODO: POST LOGIN
-    dispatch({ type: 'log_in', payload: { token: res } }) //response.data.token
+    dispatch({ type: 'log_in', payload: { token: res } }) //response.data.token    
     await AsyncStorage.setItem('token', 'token')
-    navigate('home')
+    navigate('Home')
   } catch(e){
     dispatch({ type: 'add_error', payload: {eMessage: 'Wrong credentials'} })
   }  
 }
 
-const logOut = (dispatch) => (credentials, callback) => {
-  dispatch({ type: 'log_in', payload: {...credentials} })
-  callback()
+const logOut = (dispatch) => async () => {
+  try {
+    dispatch({ type: 'log_out' })
+    await AsyncStorage.removeItem('token')
+    navigate('loginFlow')
+  }catch(e){
+    dispatch({ type: 'add_error', payload: {eMessage: 'Sum-Ting Wong'} })
+  }
 }
-
+ 
 const trySignIn = (dispatch) => async () => {
   try{
     const token = await AsyncStorage.getItem('token')
     if(!token) return navigate('Signin')
 
     dispatch({ type: 'log_in', payload: token })
-    //navigate('home') //enable for auto login
+    navigate('Index') //enable for auto login
   }catch(e){}
 }
 

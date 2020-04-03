@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import { StyleSheet, View, Image } from 'react-native'
 import { Input, Text, Button } from 'react-native-elements'
 import { Feather } from '@expo/vector-icons'
@@ -13,11 +13,7 @@ const showIcon = (iconName) => (
 const SigninScreen = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const { logIn, state, trySignIn } = useContext(AuthContext)
-
-  useEffect(() => {
-    trySignIn()
-  }, [])
+  const { logIn, state } = useContext(AuthContext)
 
   const handleLogIn = () => {
     logIn({username, password})

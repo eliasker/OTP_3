@@ -4,7 +4,7 @@ import CurrentChat from '../../../providers/CurrentChat'
 const DirectUser = ({ user, privateChat }) => {
   const { selectChat } = useContext(CurrentChat)
   var lastMessage = undefined
-  const formatMessage = (message, maxLength) => message.length < 40 ?
+  const formatMessage = (message, maxLength) => message.length < maxLength ?
     message.slice(0, maxLength) : message.slice(0, maxLength) + '...'
 
   const handleShowChat = () => {
@@ -19,10 +19,11 @@ const DirectUser = ({ user, privateChat }) => {
         <p>{user.name}</p>
         {lastMessage !== undefined ?
           <span className="text-sm">{lastMessage.user_id === user.user_id ? user.username + ': ' : 'Sinä: '}
-            {formatMessage(lastMessage.content, 40)}</span> :
+            {formatMessage(lastMessage.content, 30)}</span> :
           <span className="text-sm">Lähetä ensimmäinen viesti</span>
         }
       </div>
+      {privateChat.unreadMessages === true ? <i className="fas fa-circle unread-messages" /> : null}
     </div>
   )
 }

@@ -29,7 +29,7 @@ const Discussions = ({ setDisplayUser, chat }) => {
     setDisplayUsers(!displayUsers)
     selectChat(chat)
   }
-  //  unread msgs pallura: <i className="fas fa-circle">
+
   return (
     <div className="group-chat dropdown pos-rel">
       <div className={`${displayUsers ? 'bg-primary-1' : 'bg-primary-2'} profile row`} onClick={() => handleDiscussionClick()}>
@@ -37,6 +37,7 @@ const Discussions = ({ setDisplayUser, chat }) => {
         <div>
           <p>{chat.chatName}</p>
         </div>
+        {chat.unreadMessages === true ? <i className="fas fa-circle unread-messages" /> : null}
       </div>
       <div className={`${displayUsers ? "" : "d-none"}`}>
         {listUsers()}
