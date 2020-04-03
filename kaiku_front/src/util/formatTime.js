@@ -16,7 +16,6 @@ const formatTimeStamp = (timestamp) => {
 const getCurrentTimestamp = () => {
   const date = new Date()
   const timestamp = date.getHours() + '.' + date.getMinutes()
-  console.log(timestamp)
   return timestamp
 }
 
