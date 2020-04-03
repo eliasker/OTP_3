@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, ImageBackground, Image } from 'react-native'
 import { TextInput, TouchableOpacity, FlatList } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
 import OutMessage from '../components/OutMessage'
@@ -38,9 +38,10 @@ const ChatScreen = () => {
 
   return (
     <View style={styles.container}>
+      <Image source={require('../image/kaiku-bg.png')} style={styles.backgroundImage} />
       <FlatList keyExtractor={(e) => e.id} data={data} renderItem={({ item }) => renderMessage(item)}
         style={styles.messageContainer}/>
-      <View style={{position: "absolute", bottom: 0, flexDirection: 'row', backgroundColor: '#3d4f57', paddingVertical: 5}}>
+      <View style={{position: "absolute", bottom: 0, flexDirection: 'row', backgroundColor: '#2d3f47', paddingVertical: 5, zIndex: 1}}>
         <TextInput style={styles.input} />
         <TouchableOpacity>
           <Feather name="send" style={styles.sendBtn} />
@@ -71,7 +72,7 @@ ChatScreen.navigationOptions = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#5d6f84',
+    backgroundColor: '#4d5f74',
     paddingBottom: 52
   },
   messageContainer: {
@@ -99,6 +100,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     color: '#fffa'
   },
+  backgroundImage: {
+    position:"absolute",
+    top: -5,
+    resizeMode: "repeat",
+    overflow : 'visible',
+    backfaceVisibility: 'hidden',
+    opacity: 0.02,
+    zIndex: -1
+  }
 })
 
 export default ChatScreen
