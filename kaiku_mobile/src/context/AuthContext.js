@@ -37,7 +37,7 @@ const trySignIn = (dispatch) => async () => {
     if(!token) return navigate('Signin')
 
     dispatch({ type: 'log_in', payload: token })
-    //navigate('home') //enable for auto login
+    navigate('Index') //enable for auto login
   }catch(e){}
 }
 

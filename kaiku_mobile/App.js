@@ -15,16 +15,10 @@ const switchNavigator = createSwitchNavigator({
   loginFlow: createStackNavigator({
     Signin: SigninScreen,
   }),
-  mainFlow: createBottomTabNavigator({
-    home: createStackNavigator({
-      Index: IndexScreen,
-      Chat: ChatScreen
-    }),
-    group: createStackNavigator({
-      Group: GroupScreen,
-      Chat: ChatScreen
-    })
-  })
+  mainFlow: createStackNavigator({
+    Index: IndexScreen,
+    Chat: ChatScreen
+  }),
 })
 
 const App = createAppContainer(switchNavigator)
