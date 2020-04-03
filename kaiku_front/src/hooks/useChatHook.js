@@ -114,6 +114,9 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
         if (data.chat_id === currentChat.chat_id) {
           console.log('message to currentchat', newChatState[index].messages)
           setCurrentChat(newChatState[index])
+        } else if (data.chat_id !== currentChat.chat_id) {
+          console.log('message to another chat')
+          newChatState[index].unreadMessages = true
         }
       } catch (e) { }
       setChatState(newChatState)
