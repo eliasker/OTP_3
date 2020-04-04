@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { StyleSheet, View, Image } from 'react-native'
+import { StyleSheet, View, Image, KeyboardAvoidingView } from 'react-native'
 import { Input, Text, Button } from 'react-native-elements'
 import { Feather } from '@expo/vector-icons'
 import { Context as AuthContext } from '../context/AuthContext'
@@ -20,22 +20,26 @@ const SigninScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
+    
+      <View style={styles.container}>
       <Image style={styles.banner} source={require('../image/banner.png')} />
-      <Spacer>
-        <Input label="Username" inputStyle={{color: 'white'}}
-          value={username} onChangeText={setUsername} leftIcon={showIcon('user')}/>
-      </Spacer>
-      <Spacer>
-        <Input secureTextEntry label="Password" inputStyle={{color: 'white'}}
-          value={password} onChangeText={setPassword} leftIcon={showIcon('lock')}/>
-      </Spacer>
 
-      {state.errorText ? <Text style={styles.error}>{state.errorText}</Text>: null}
+      <KeyboardAvoidingView behavior='padding'>
+        <Spacer>
+          <Input label="Username" inputStyle={{color: 'white'}}
+            value={username} onChangeText={setUsername} leftIcon={showIcon('user')}/>
+        </Spacer>
+        <Spacer>
+          <Input secureTextEntry label="Password" inputStyle={{color: 'white'}}
+            value={password} onChangeText={setPassword} leftIcon={showIcon('lock')}/>
+        </Spacer>
 
-      <Spacer>
-        <Button title="Sign in" type='outline' raised={true} style={{margin: 50}} onPress={handleLogIn} />
-      </Spacer>
+        {state.errorText ? <Text style={styles.error}>{state.errorText}</Text>: null}
+
+        <Spacer>
+          <Button title="Sign in" type='outline' raised={true} style={{margin: 50}} onPress={handleLogIn} />
+        </Spacer>
+      </KeyboardAvoidingView>
     </View>
   )
 }
@@ -49,7 +53,7 @@ SigninScreen.navigationOptions = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: 150,
+    paddingBottom: 100,
     backgroundColor: '#2d3f56',
     justifyContent: 'center'
   },

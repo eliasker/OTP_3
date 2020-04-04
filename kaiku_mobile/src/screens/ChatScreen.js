@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, ImageBackground, Image } from 'react-native'
+import { StyleSheet, Text, View, ImageBackground, Image, KeyboardAvoidingView } from 'react-native'
 import { TextInput, TouchableOpacity, FlatList } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
 import OutMessage from '../components/OutMessage'
@@ -25,11 +25,11 @@ const data = [
   {
     id: "5",
     message: 'Morjens'
-  },
+  }
 ]
 
 const ChatScreen = () => {
-
+  
   const renderMessage = (message) => {
     return (
       (message.message.includes('orj')) ? <InMessage message={message} />: <OutMessage message={message} />
@@ -41,12 +41,15 @@ const ChatScreen = () => {
       <Image source={require('../image/kaiku-bg.png')} style={styles.backgroundImage} />
       <FlatList keyExtractor={(e) => e.id} data={data} renderItem={({ item }) => renderMessage(item)}
         style={styles.messageContainer}/>
-      <View style={{position: "absolute", bottom: 0, flexDirection: 'row', backgroundColor: '#2d3f47', paddingVertical: 5, zIndex: 1}}>
-        <TextInput style={styles.input} />
-        <TouchableOpacity>
-          <Feather name="send" style={styles.sendBtn} />
-        </TouchableOpacity>
-      </View>
+
+      
+        <View style={{flexDirection: 'row', margin: 4, alignSelf: 'flex-end'}}>
+          <TextInput style={styles.input} />
+          <TouchableOpacity>
+            <Feather name="send" style={styles.sendBtn} />
+          </TouchableOpacity>
+        </View>
+      <KeyboardAvoidingView behavior={'padding'} keyboardVerticalOffset={80} />
     </View>
   )
 }
@@ -73,7 +76,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#4d5f74',
-    paddingBottom: 52
   },
   messageContainer: {
     flex: 1
@@ -84,7 +86,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderColor: '#0003',
     borderWidth: 1,
-    flex: 1
+    flex: 1,
+    paddingHorizontal: 5,
   },
   sendBtn: {
     backgroundColor: '#1d2f44',
