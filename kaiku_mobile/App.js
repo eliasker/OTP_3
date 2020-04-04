@@ -27,11 +27,11 @@ const switchNavigator = createSwitchNavigator({
       Chat: ChatScreen,
       
     }),
-    Settings: createStackNavigator({
-      settings: SettingsScreen, 
-    }),
     Account: createStackNavigator({
       account: AccountScreen,
+    }),
+    Settings: createStackNavigator({
+      settings: SettingsScreen, 
     }),
     Logout: LogoutHandler,
   }, {
