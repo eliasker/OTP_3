@@ -3,7 +3,7 @@ import { Text, View, StyleSheet } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
 import { ActivityIndicator } from 'react-native'
-import { Image, ListItem } from 'react-native-elements'
+import { Image, ListItem, Icon } from 'react-native-elements'
 
 const data = [
   {
@@ -71,8 +71,8 @@ const IndexScreen = ({ navigation }) => {
     <TouchableOpacity onPress={() => navigation.navigate('Chat')} style={{backgroundColor: '#3d4f64'}}>
       <ListItem
         leftAvatar={{ source: groupPlaceholder }}
-        containerStyle={{backgroundColor: '#3d4f64', paddingLeft: 12, paddingRight: 0, paddingBottom: 0}}
-        contentContainerStyle={{padding: 0, margin: 0}}
+        containerStyle={{backgroundColor: '#3d4f64', paddingLeft: 12, paddingRight: 0, paddingBottom: 0, alignSelf: 'center'}}
+        contentContainerStyle={{display: 'none'}}
         titleStyle={{color: 'white'}}
         subtitleStyle={{color: '#fffa'}}
       />
@@ -103,7 +103,6 @@ IndexScreen.navigationOptions = ({ navigation }) => {
     headerTitleStyle: {
       fontWeight: 'bold',
     },
-
   }
 }
 

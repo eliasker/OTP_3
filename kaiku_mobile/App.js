@@ -11,6 +11,10 @@ import ChatScreen from './src/screens/ChatScreen'
 import SigninScreen from './src/screens/SigninScreen'
 import LoadingScreen from './src/screens/LoadingScreen'
 import LogoutHandler from './src/components/LogoutHandler'
+import SettingsScreen from './src/screens/SettingsScreen';
+import AccountScreen from './src/screens/AccountScreen';
+import CustomDrawer from './src/components/CustomDrawer';
+
 
 const switchNavigator = createSwitchNavigator({
   Loading: LoadingScreen,
@@ -20,11 +24,19 @@ const switchNavigator = createSwitchNavigator({
   mainFlow: createDrawerNavigator({
     Home: createStackNavigator({
       Index: IndexScreen,
-      Chat: ChatScreen
+      Chat: ChatScreen,
+      
+    }),
+    Settings: createStackNavigator({
+      settings: SettingsScreen, 
+    }),
+    Account: createStackNavigator({
+      account: AccountScreen,
     }),
     Logout: LogoutHandler,
   }, {
-    drawerBackgroundColor: '#1d2f44'
+    drawerBackgroundColor: '#1d2f44',
+    contentComponent: CustomDrawer
   })
 })
 
@@ -32,32 +44,7 @@ const App = createAppContainer(switchNavigator)
 
 const theme = {
   colors: {
-    primary: '#4d5f76',
-    secondary: 'green',
-    grey0: 'yellow',
-    grey1: 'red',
-    grey2: 'blue',
-    grey3: 'white',
-    grey4: 'white',
-    grey5: 'white',
-    greyOutline: 'white',
-    searchBg: 'white',
-    platform: {
-      android: {
-        primary: 'white',
-        secondary: 'white',
-        success: 'white',
-        error: 'white',
-        warning: 'white',
-      },
-      ios: {
-        primary: 'white',
-        secondary: 'white',
-        success: 'white',
-        error: 'white',
-        warning: 'white',
-      },
-    }
+    primary: '#4d5f76'
   }
 }
 
