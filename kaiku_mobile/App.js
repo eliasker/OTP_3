@@ -11,7 +11,6 @@ import ChatScreen from './src/screens/ChatScreen'
 import SigninScreen from './src/screens/SigninScreen'
 import LoadingScreen from './src/screens/LoadingScreen'
 import LogoutHandler from './src/components/LogoutHandler'
-import SettingsScreen from './src/screens/SettingsScreen';
 import AccountScreen from './src/screens/AccountScreen';
 import CustomDrawer from './src/components/CustomDrawer';
 
@@ -29,9 +28,6 @@ const switchNavigator = createSwitchNavigator({
     }),
     Account: createStackNavigator({
       account: AccountScreen,
-    }),
-    Settings: createStackNavigator({
-      settings: SettingsScreen, 
     }),
     Logout: LogoutHandler,
   }, {

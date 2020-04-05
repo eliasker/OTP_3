@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   message: {
     margin: 8,
-    backgroundColor: 'white',
+    backgroundColor: '#babad0',
     color: 'black',
     padding: 8,
     fontSize: 16,

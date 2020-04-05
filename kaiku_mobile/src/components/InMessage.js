@@ -4,7 +4,11 @@ import { StyleSheet, View, Text } from 'react-native'
 const OutMessage = ({ message }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.message}>{message.message}</Text>
+      <View style={styles.message}>
+        <Text style={styles.senderName}>Mirka</Text>
+        <Text>{message.message}</Text>
+      </View>
+      
     </View>
   )
 }
@@ -24,6 +28,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderBottomLeftRadius: 0,    
   },
+  senderName: {
+    fontWeight: 'bold'
+  }
 })
 
 export default OutMessage
