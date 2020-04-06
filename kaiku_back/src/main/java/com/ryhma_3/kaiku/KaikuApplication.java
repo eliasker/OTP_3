@@ -5,7 +5,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.ryhma_3.kaiku.model.cast_object.UserObject;
+import com.ryhma_3.kaiku.model.database.AdminDAO;
 import com.ryhma_3.kaiku.model.database.ChatDAO;
+import com.ryhma_3.kaiku.model.database.IAdminDAO;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
 import com.ryhma_3.kaiku.model.database.IUserDAO;
@@ -28,6 +30,7 @@ public class KaikuApplication {
 	static IChatDAO chatDAO = null;
 	static IMessageDAO messageDAO = null;
 	static IUserDAO userDAO = null;
+    static IAdminDAO adminDAO = null;
 	
 	public static void main(String[] args) {
 		commandLineSetup();
@@ -74,6 +77,7 @@ public class KaikuApplication {
 		
 		if(select.equals("")) {
 			userDAO = new UserDAO();
+            adminDAO = new AdminDAO();
 			messageDAO = new MessageDAO();
 			chatDAO = new ChatDAO();
 			init = new ServerInitNoAuth();
@@ -95,6 +99,7 @@ public class KaikuApplication {
 		
 		
 		userDAO = new UserDAO(URI);
+        adminDAO = new AdminDAO(URI);
 		messageDAO = new MessageDAO(URI);
 		chatDAO = new ChatDAO(URI);
 
@@ -131,6 +136,13 @@ public class KaikuApplication {
 		return chatDAO;
 	}
 	
+	/**
+	 * @return AdminDAO
+	 */
+	public static IAdminDAO getAdminDAO() {
+		return adminDAO;
+	}
+
 	public static IServer getServer() {
 		return server;
 	}

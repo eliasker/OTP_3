@@ -17,6 +17,7 @@ import com.ryhma_3.kaiku.model.cast_object.ChatObject;
 import com.ryhma_3.kaiku.model.cast_object.InitializationObject;
 import com.ryhma_3.kaiku.model.cast_object.MessageObject;
 import com.ryhma_3.kaiku.model.cast_object.UserObject;
+import com.ryhma_3.kaiku.model.database.IAdminDAO;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
 import com.ryhma_3.kaiku.model.database.IUserDAO;
@@ -38,7 +39,7 @@ public class UserResourceController {
 	private IChatDAO chatDAO = KaikuApplication.getChatDAO();
 	private IMessageDAO messageDAO = KaikuApplication.getMessageDAO();
 	private IUserDAO userDAO = KaikuApplication.getUserDAO();
-	
+    private IAdminDAO adminDAO = KaikuApplication.getAdminDAO();
 	
 	/**
 	 * <pre>
@@ -140,7 +141,8 @@ public class UserResourceController {
 		/*
 		 * Compare token and token storage
 		 */
-		boolean valid = token.equals("kaiku");
+		// boolean valid = token.equals("kaiku");
+        boolean valid = adminDAO.getId((SecurityTools.getCloneOfToken(token).getUser_id()));
 		
 		if(valid) {
 			

@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react'
 import dictionary from '../../../util/dictionary'
 import userService from '../../../services/userService'
 import Context from '../../../providers/Context'
+import InitialData from '../../../providers/InitialData'
 
 const NewUser = () => {
   const [name, setName] = useState('')
@@ -11,6 +12,7 @@ const NewUser = () => {
   const [showPassword, setShowPassword] = useState(false)
   const { nouns, adjectives, capitalize } = dictionary
   const { setContent } = useContext(Context)
+  const { loggedUser } = useContext(InitialData)
 
 
   const generateUser = () => {
@@ -32,7 +34,14 @@ const NewUser = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    await userService.createUser(username, password, name)
+    console.log('ATHOUENETHOUNHAOEUTEOAUHTEUOAHTEOAUTN')
+    console.log(loggedUser.token)
+    const adminHeader = {
+      headers: {
+        Authorization: loggedUser.token
+      }
+    }
+    await userService.createUser(username, password, name, adminHeader)
     setContent('u/all')
   }
 

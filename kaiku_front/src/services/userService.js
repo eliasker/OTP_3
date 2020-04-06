@@ -12,14 +12,14 @@ const update = (id, newObject) => {
   return request.then(response => response.data)
 }
 
-const createUser = async (username, password, name) => {
+const createUser = async (username, password, name, token) => {
   const user = {
     id: null,
     username,
     password,
     name
   }
-  const result = await axios.post(baseUrl, user, configAsAdmin)
+  const result = await axios.post(baseUrl, user, token)
   return result.data;
 }
 
