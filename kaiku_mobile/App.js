@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {  createAppContainer, createSwitchNavigator } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 import { createDrawerNavigator } from 'react-navigation-drawer';
-import { Provider } from './src/context/AuthContext'
+import { Provider as AuthProvider } from './src/context/AuthContext'
+import { Provider as LangProvider } from './src/context/LangContext'
 import { setNavigator } from './src/navigationRef'
 import { ThemeProvider } from 'react-native-elements'
+import { Feather } from '@expo/vector-icons'
 
 import IndexScreen from './src/screens/IndexScreen'
 import ChatScreen from './src/screens/ChatScreen'
@@ -13,7 +15,7 @@ import LoadingScreen from './src/screens/LoadingScreen'
 import LogoutHandler from './src/components/LogoutHandler'
 import AccountScreen from './src/screens/AccountScreen';
 import CustomDrawer from './src/components/CustomDrawer';
-
+import LanguageScreen from './src/screens/settings/LanguageScreen';
 
 const switchNavigator = createSwitchNavigator({
   Loading: LoadingScreen,
@@ -21,15 +23,39 @@ const switchNavigator = createSwitchNavigator({
     Signin: SigninScreen,
   }),
   mainFlow: createDrawerNavigator({
-    Home: createStackNavigator({
-      Index: IndexScreen,
-      Chat: ChatScreen,
-      
-    }),
-    Account: createStackNavigator({
-      account: AccountScreen,
-    }),
-    Logout: LogoutHandler,
+    Home: {
+      screen: createStackNavigator({
+        Index: IndexScreen,
+        Chat: ChatScreen,
+      }),
+      navigationOptions: {
+        drawerLabel: 'Home',
+        drawerIcon: ({ tintColor }) => (
+          <Feather name="home" size={24} style={{ color: tintColor }} />
+        ),
+      },
+    },
+    Account: {
+      screen: createStackNavigator({
+        account: AccountScreen,
+        language: LanguageScreen,
+      }),
+      navigationOptions: {
+        drawerLabel: 'Account',
+        drawerIcon: ({ tintColor }) => (
+          <Feather name="user" size={24} style={{ color: tintColor }} />
+        ),
+      },
+    },
+    Logout: {
+      screen: LogoutHandler,
+      navigationOptions: {
+        drawerLabel: 'Log out',
+        drawerIcon: ({ tintColor }) => (
+          <Feather name="log-out" size={24} style={{ color: tintColor }} />
+        ),
+      },
+    },
   }, {
     drawerBackgroundColor: '#1d2f44',
     contentComponent: CustomDrawer
@@ -46,10 +72,12 @@ const theme = {
 
 export default () => {
   return(
-    <Provider>
-      <ThemeProvider theme={theme}>
-        <App theme="dark" ref={(navigator) => {setNavigator(navigator)} } />
-      </ThemeProvider>
-    </Provider>
+    <AuthProvider>
+      <LangProvider>
+        <ThemeProvider theme={theme}>
+          <App theme="dark" ref={(navigator) => {setNavigator(navigator)} } />
+        </ThemeProvider>
+      </LangProvider>
+    </AuthProvider>
   )
 }

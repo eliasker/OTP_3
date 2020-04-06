@@ -21,7 +21,7 @@ const CustomDrawer = (props) => {
         <DrawerItems { ...props }/>
       </ScrollView>
     </SafeAreaView>
-  )
+  ) 
 }
 
 export default CustomDrawer

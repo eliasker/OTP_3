@@ -1,20 +1,23 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { Context as LangContext } from '../context/LangContext'
 import { StyleSheet, Text, SafeAreaView } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler'
 import { ListItem, Avatar } from 'react-native-elements'
+import Spacer from '../components/Spacer'
 
 
 const showIcon = (iconName) => (
   <Feather name={iconName} style={styles.icon} />
 )
 
-const AccountScreen = () => {
+const AccountScreen = ({ navigation }) => {
+  const { account_title, settings_title, change_name_label, change_password_label, change_lang_label, delete_user_label, help_label } = useContext(LangContext).state.lang
   const placeholder = require('../image/placeholder-profile.png')
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Account</Text>
+      <Text style={styles.title}>{account_title}</Text>
       <ListItem
         title="Mirka"
         subtitle="mirka-kissa"
@@ -26,7 +29,7 @@ const AccountScreen = () => {
       <ScrollView style={styles.scrollView}>
         <TouchableOpacity>
           <ListItem
-            title="Change name"
+            title={change_name_label}
             containerStyle={{backgroundColor: '#45566b'}}
             titleStyle={{color: 'white'}}
             subtitleStyle={{color: '#fffa'}}
@@ -35,17 +38,17 @@ const AccountScreen = () => {
         </TouchableOpacity>
         <TouchableOpacity>
           <ListItem
-            title="Change password"
+            title={change_password_label}
             containerStyle={{backgroundColor: '#45566b'}}
             titleStyle={{color: 'white'}}
             subtitleStyle={{color: '#fffa'}}
             chevron />
         </TouchableOpacity>
         
-        <Text style={styles.title}>Settings</Text>
-        <TouchableOpacity>
+        <Text style={styles.title}>{settings_title}</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('language')}>
           <ListItem
-            title="Language"
+            title={change_lang_label}
             containerStyle={{backgroundColor: '#45566b'}}
             titleStyle={{color: 'white'}}
             subtitleStyle={{color: '#fffa'}}
@@ -54,7 +57,16 @@ const AccountScreen = () => {
         </TouchableOpacity>
         <TouchableOpacity>
           <ListItem
-            title="Delete user"
+            title={help_label}
+            containerStyle={{backgroundColor: '#45566b'}}
+            titleStyle={{color: 'white'}}
+            subtitleStyle={{color: '#fffa'}}
+            chevron />
+        </TouchableOpacity>
+        <Spacer />
+        <TouchableOpacity>
+          <ListItem
+            title={delete_user_label}
             containerStyle={{backgroundColor: '#45566b'}}
             titleStyle={{color: 'white'}}
             subtitleStyle={{color: '#fffa'}}
