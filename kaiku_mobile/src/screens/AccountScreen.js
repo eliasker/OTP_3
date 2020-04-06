@@ -5,6 +5,7 @@ import { Feather } from '@expo/vector-icons'
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler'
 import { ListItem, Avatar } from 'react-native-elements'
 import Spacer from '../components/Spacer'
+import Title from '../components/Title'
 
 
 const showIcon = (iconName) => (
@@ -17,7 +18,7 @@ const AccountScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>{account_title}</Text>
+      <Title title={account_title} />
       <ListItem
         title="Mirka"
         subtitle="mirka-kissa"
@@ -93,7 +94,6 @@ AccountScreen.navigationOptions = ({ navigation }) => {
     headerTitleStyle: {
       fontWeight: 'bold',
     },
-
   }
 }
 

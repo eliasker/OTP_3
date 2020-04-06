@@ -1,9 +1,10 @@
 import React from 'react'
-import { StyleSheet, Text, View, ImageBackground, Image, KeyboardAvoidingView } from 'react-native'
+import { StyleSheet, Text, View, ImageBackground, Image, KeyboardAvoidingView, Platform, SafeAreaView } from 'react-native'
 import { TextInput, TouchableOpacity, FlatList } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
 import OutMessage from '../components/OutMessage'
 import InMessage from '../components/InMessage'
+import ChatHeader from '../components/ChatHeader'
 
 const data = [
   {
@@ -37,37 +38,39 @@ const ChatScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <ChatHeader name='Marko' />
       <Image source={require('../image/kaiku-bg.png')} style={styles.backgroundImage} />
       <FlatList keyExtractor={(e) => e.id} data={data} renderItem={({ item }) => renderMessage(item)}
         style={styles.messageContainer}/>
 
-      
+      <KeyboardAvoidingView behavior={'padding'} >
         <View style={{flexDirection: 'row', margin: 4, alignSelf: 'flex-end'}}>
           <TextInput style={styles.input} />
           <TouchableOpacity>
             <Feather name="send" style={styles.sendBtn} />
           </TouchableOpacity>
         </View>
-      <KeyboardAvoidingView behavior={'padding'} keyboardVerticalOffset={80} />
-    </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   )
 }
 
 ChatScreen.navigationOptions = ({ navigation }) => {
   return {
-    headerRight: () => (
-    <TouchableOpacity onPress={() => console.log('Drawer menu')}>
-      <Feather name='more-vertical' style={styles.menu} />
-    </TouchableOpacity>),
-    title: 'Mirka',
-    headerStyle: {
-      backgroundColor: '#2d3f54',
-    },
-    headerTintColor: '#fffc',
-    headerTitleStyle: {
-      fontWeight: 'bold',
-    },
+    headerShown: false
+    // headerRight: () => (
+    // <TouchableOpacity onPress={() => console.log('Drawer menu')}>
+    //   <Feather name='more-vertical' style={styles.menu} />
+    // </TouchableOpacity>),
+    // title: 'Mirka',
+    // headerStyle: {
+    //   backgroundColor: '#2d3f54',
+    // },
+    // headerTintColor: '#fffc',
+    // headerTitleStyle: {
+    //   fontWeight: 'bold',
+    // },
 
   }
 }
@@ -111,7 +114,7 @@ const styles = StyleSheet.create({
     backfaceVisibility: 'hidden',
     opacity: 0.02,
     zIndex: -1
-  }
+  },
 })
 
 export default ChatScreen

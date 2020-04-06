@@ -16,6 +16,7 @@ export default (
       change_name_label: 'Vaihda nimi',
       change_password_label: 'Vaihda salasana',
       change_lang_label: 'Kieliasetukset',
+      change_lang_desc: 'Valitse kieli. Kielen valinta vaikuttaa vain käyttöliittymän ulkonäköön. Asetuksen vaihtaminen ei vaikuta käyttöjärjestelmään kuten esimerkiksi näppäimistön kielivalintaan.',
       help_label: 'Apua',
       delete_user_label: 'Poista oma käyttäjä',
       /** Profile page */
@@ -38,6 +39,7 @@ export default (
       change_name_label: 'Change name',
       change_password_label: 'Change password',
       change_lang_label: 'Language',
+      change_lang_desc: 'Choose language below. This option affects only user interface. Choosing language does not affect your options in operating system for example your input language.',
       help_label: 'Help',
       delete_user_label: 'Delete user',
       /** Profile update page */
@@ -63,6 +65,7 @@ export default (
       change_name_label: 'изменить имя',
       change_password_label: 'изменить пароль',
       change_lang_label: 'выбор языка',
+      change_lang_desc: 'Выберите язык снизу.', //TODO: change this
       help_label: 'помощь',
       delete_user_label: 'удалить пользователя',
       /** Profile update page */

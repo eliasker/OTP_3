@@ -3,6 +3,7 @@ import { StyleSheet, View, Text } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import { Context as LangContext } from '../../context/LangContext'
 import { ListItem } from 'react-native-elements'
+import Title from '../../components/Title'
 
 const LanguageScreen = () => {
   const { getLangMeta, setLang, state } = useContext(LangContext)
@@ -23,7 +24,8 @@ const LanguageScreen = () => {
   
   return (
     <View style={styles.container}>
-      <Text style={styles.title} >{state.lang.change_lang_label}</Text>
+      <Title title={state.lang.change_lang_label} />
+      <Text style={{padding: 14, color: '#fffa', fontSize: 16}}>{state.lang.change_lang_desc}</Text>
       <FlatList keyExtractor={(item) => item.identifier} data={langMeta} renderItem={({ item }) => langItem(item)} />
     </View>
   )
