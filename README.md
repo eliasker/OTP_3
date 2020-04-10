@@ -20,7 +20,7 @@ __________________
 **2. Määritelmät**
 
 - Kanta URL-osoite: http://localhost:3000/
-- Stack: Node, React, Socket io, Java Spring, Mongo
+- Stack: Node, React, React Native, Socket io, Java Spring, Mongo
 
 ____________________
 
@@ -35,6 +35,10 @@ ____________________
   - `npm run eject`: Tuhoaa projektin. Älä missään nimessä käytä tätä komentoa.
 * Backend komennot:
   - `mwnv spring-boot:run`: Aja komento serverin root hakemistossa, configuroi springin ja käynnistää serverin
+* Mobiili komennot:
+  - `expo start --tunnel` käynnistää projektin expo serverillä
+  - `expo start --tunnel -c` käynnistää projektin expo serverillä ja poistaa evästeet
+  - `npm start` käynnistää projektin (puhelimen pitää olla samassa verkossa)
 
 Serverin käynnistyessä täytyy käynnistäjän antaa lähtöparametrit terminaalin kautta:
   -  configuraatiotyyppi: autentikaatio middlewaren kanssa tai ilman
@@ -49,12 +53,14 @@ Kuvankaappauksia projektista
 *Kirjautumissivu (kuva 2).*
 ![Kojelauta](https://cdn.discordapp.com/attachments/666191461267537923/685108183991058442/kojelauta.PNG)
 *Kojelauta etusivu (kuva 3).*
+![Mobiilikäyttöliittymä](https://cdn.discordapp.com/attachments/671656325264179230/698250090581852281/mobile-gui.png)
+*Mobiilikäyttöliittymä. Oikealta vasemmalle Kirjautumisnäkymä, Etusivu, Sivunavigointi, Asetusnäkymä ja Keskustelunäkymä (kuva 4).*
 _____
 **5. Jatkokehitysideat**
 - Profiilikuva; profiileihin voi lisätä ja muokata omaa kuvaa.
 - Salasana pystytään palauttamaan sähköpostitse 'unohditko salasanasi' linkistä.
-- Mobiiliapplikaatio käyttöliittymästä
-- Viesti ilmoitukset (Windows-ilmoitukset)
+- ~~Mobiiliapplikaatio käyttöliittymästä~~
+- ~~Viesti ilmoitukset (Windows-ilmoitukset)~~
 _____
 **6. Liitteet**
 - UML: [UML](http://users.metropolia.fi/~borissj/kaiku-uml.pdf)
