@@ -28,7 +28,7 @@ const AccountScreen = ({ navigation }) => {
         subtitleStyle={{color: '#fffa'}} />
 
       <ScrollView style={styles.scrollView}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('nameForm')}>
           <ListItem
             title={change_name_label}
             containerStyle={{backgroundColor: '#45566b'}}
@@ -37,7 +37,7 @@ const AccountScreen = ({ navigation }) => {
             bottomDivider
             chevron />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('passwordForm')}>
           <ListItem
             title={change_password_label}
             containerStyle={{backgroundColor: '#45566b'}}
@@ -56,7 +56,7 @@ const AccountScreen = ({ navigation }) => {
             bottomDivider
             chevron />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('help')}>
           <ListItem
             title={help_label}
             containerStyle={{backgroundColor: '#45566b'}}

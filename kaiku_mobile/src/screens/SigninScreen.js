@@ -25,7 +25,7 @@ const SigninScreen = () => {
     logIn({username, password})
   }
 
-  const showLanguages = () => langMeta.map(l => <LanguageLink id={l.id} lang={langMeta[l.id]} />)
+  const showLanguages = () => langMeta.map(l => <LanguageLink key={l.id} id={l.id} lang={langMeta[l.id]} />)
 
   return (
       <View style={styles.container}>

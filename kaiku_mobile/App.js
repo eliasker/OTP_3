@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import {  createAppContainer, createSwitchNavigator } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
-import { createDrawerNavigator } from 'react-navigation-drawer';
+import { createDrawerNavigator } from 'react-navigation-drawer'
 import { Provider as AuthProvider } from './src/context/AuthContext'
 import { Provider as LangProvider } from './src/context/LangContext'
 import { setNavigator } from './src/navigationRef'
@@ -13,9 +13,13 @@ import ChatScreen from './src/screens/ChatScreen'
 import SigninScreen from './src/screens/SigninScreen'
 import LoadingScreen from './src/screens/LoadingScreen'
 import LogoutHandler from './src/components/LogoutHandler'
-import AccountScreen from './src/screens/AccountScreen';
-import CustomDrawer from './src/components/CustomDrawer';
-import LanguageScreen from './src/screens/settings/LanguageScreen';
+import AccountScreen from './src/screens/AccountScreen'
+import CustomDrawer from './src/components/CustomDrawer'
+import LanguageScreen from './src/screens/settings/LanguageScreen'
+import HelpScreen from './src/screens/settings/HelpScreen'
+import ChangeNameForm from './src/screens/settings/ChangeNameForm'
+import ChangePasswordForm from './src/screens/settings/ChangePasswordForm'
+
 
 const switchNavigator = createSwitchNavigator({
   Loading: LoadingScreen,
@@ -39,6 +43,9 @@ const switchNavigator = createSwitchNavigator({
       screen: createStackNavigator({
         account: AccountScreen,
         language: LanguageScreen,
+        nameForm: ChangeNameForm,
+        passwordForm: ChangePasswordForm,
+        help: HelpScreen
       }),
       navigationOptions: {
         drawerLabel: 'Account',
