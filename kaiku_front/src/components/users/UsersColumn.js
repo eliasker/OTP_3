@@ -8,7 +8,8 @@ import UsersHeader from './UsersHeader'
 import DirectUser from './user/DirectUser'
 
 const UsersColumn = ({ setDisplayProfile, userState }) => {
-  const { initialData, loggedUser } = useContext(InitialData)
+  const { initialData, loggedUser, useLang } = useContext(InitialData)
+  const string = (ref) => useLang.getString(ref);
   const { chatState } = useContext(CurrentChat)
 
   const { setDisplayUser } = userState
@@ -44,7 +45,7 @@ const UsersColumn = ({ setDisplayProfile, userState }) => {
   }
 
   const showInput = () => chatType === 'direct' ?
-    <input className="form-control find-user-input" placeholder="Etsi käyttäjä"
+    <input className="form-control find-user-input" placeholder={string('u_col_searchuser')}
       value={searchInput} onChange={e => setSearchInput(e.target.value)} />:
     <></>
 
