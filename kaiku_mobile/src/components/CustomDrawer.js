@@ -9,7 +9,7 @@ const CustomDrawer = (props) => {
 
   return (
     <SafeAreaView style={{flex: 1}} >
-      <Image source={require('../image/kaikuthumb.png')} style={{height: 100, width: 100, alignSelf: 'center', marginVertical: 69}}/>
+      <Image source={require('../../assets/icon.png')} style={{height: 100, width: 100, alignSelf: 'center', marginVertical: 69}}/>
       <ListItem
         title="Mirka"
         subtitle="@mirka-kissa"

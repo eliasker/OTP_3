@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import {  createAppContainer, createSwitchNavigator } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 import { createDrawerNavigator } from 'react-navigation-drawer'
@@ -64,7 +64,7 @@ const switchNavigator = createSwitchNavigator({
       },
     },
   }, {
-    drawerBackgroundColor: '#1d2f44',
+    drawerBackgroundColor: '#1D2637',
     contentComponent: CustomDrawer
   })
 })
