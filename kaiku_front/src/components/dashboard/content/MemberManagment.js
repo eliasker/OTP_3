@@ -4,14 +4,16 @@ import Context from '../../../providers/Context'
 import groupService from '../../../services/groupService'
 
 const MemberManagment = () => {
-  const { initialData } = useContext(InitialData)
+  const { initialData, useLang } = useContext(InitialData)
+  const string = (ref) => useLang.getString(ref)
+
   const { currentGroup, setContent } = useContext(Context)
   const [tempGroup, setTempGroup] = useState(currentGroup)
 
   const handleSubmit = (e) => {
     e.preventDefault()
     console.log('submit')
-    if (!window.confirm('Haluatko päivittää tämän ryhmän?')) return
+    if (!window.confirm(string('dash_confirm_updategroup'))) return
     console.log(tempGroup)
     groupService.update(tempGroup.chat_id, tempGroup)
     setContent('g/all')
@@ -42,7 +44,7 @@ const MemberManagment = () => {
   }
 
   const generateOptions = () => (!initialData) ?
-    <option value="...">Ladataan...</option> :
+    <option value="...">{string('dash_loading')}</option> :
     initialData.users.map(u => <option value={u.user_id} key={u.user_id}>{u.username}</option>)
 
 
@@ -53,12 +55,12 @@ const MemberManagment = () => {
       <form className="form-row" onSubmit={(e) => handleSubmit(e)}>
         <div className="col-12 col-md-6 mb-2">
           <div className="form-group">
-            <label htmlFor="user-name">Ryhmän nimi</label>
-            <input type="text" className="form-control" id="user-name" placeholder="Ryhmän nimi"
+            <label htmlFor="user-name">{string('dash_label_groupname')}</label>
+            <input type="text" className="form-control" id="user-name" placeholder={string('dash_ph_groupname')}
               value={tempGroup.chatName} onChange={e => setTempGroup({ ...tempGroup, chatName: e.target.value })} required />
           </div>
           <div className="form-group">
-            <p className="mb-1">Lisää käyttäjä</p>
+            <p className="mb-1">{string('dash_adduser')}</p>
             <select defaultValue="none" className="custom-select" onChange={e => handleOptionClick(e.target.value)}>
               <option value="none">-</option>
               {generateOptions()}
@@ -66,11 +68,11 @@ const MemberManagment = () => {
           </div>
         </div>
         <div className="col-12 col-md-6">
-          <p>Ryhmän jäsenet:</p>
+          <p>{string('dash_groupmembers')}</p>
           {getUserList()}
         </div>
-        <button type='submit' className="btn btn-primary mr-1">Tallenna</button>
-        <button onClick={() => setContent('g/all')} className="btn btn-outline-primary">Peru</button>
+        <button type='submit' className="btn btn-primary mr-1">{string('dash_groupsave')}</button>
+        <button onClick={() => setContent('g/all')} className="btn btn-outline-primary">{string('dash_groupcancel')}</button>
       </form>
     </>
   )

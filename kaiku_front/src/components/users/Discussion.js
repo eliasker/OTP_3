@@ -5,7 +5,8 @@ import User from './user/User'
 import CurrentChat from '../../providers/CurrentChat'
 
 const Discussions = ({ setDisplayUser, chat }) => {
-  const { initialData, loggedUser } = useContext(InitialData)
+  const { initialData, loggedUser, useLang } = useContext(InitialData)
+  const string = (ref) => useLang.getString(ref)
   const { currentChat, chatState, selectChat } = useContext(CurrentChat)
   //const membersOnline = chat.members === undefined ? 0 : chat.members.length;
   const [displayUsers, setDisplayUsers] = useState(currentChat === chat)
@@ -33,7 +34,7 @@ const Discussions = ({ setDisplayUser, chat }) => {
   return (
     <div className="group-chat dropdown pos-rel">
       <div className={`${displayUsers ? 'bg-primary-1' : 'bg-primary-2'} profile row`} onClick={() => handleDiscussionClick()}>
-        <img src="kaikuthumb.png" alt="profiili" className={`profile-thumb alpha-1`} />
+        <img src="kaikuthumb.png" alt={[string('prof_alt_profile')]} className={`profile-thumb alpha-1`} />
         <div>
           <p>{chat.chatName}</p>
         </div>

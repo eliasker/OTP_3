@@ -8,12 +8,18 @@ import DashBoard from './components/dashboard/DashBoard'
 import Authentication from './components/auth/Authentication'
 import socketService from './services/socketService'
 import userService from './services/userService'
+import langHook from './hooks/langHook';
 
 const App = () => {
   const [loggedUser, setLoggedUser] = useState(null)
   const [initialData, setInitialData] = useState([])
   const [authToken, setAuthToken] = useState()
   const { createSocketConnection, createChat, sendMessage, disconnect, incMessageData, newChatData } = socketService()
+  const useLang = langHook(); 
+
+  useEffect(()=>{
+    useLang.setLocale();
+  },[])
 
   useEffect(() => {
     if (loggedUser === null) return
@@ -49,7 +55,7 @@ const App = () => {
   return (
     <div className="App">
       <Router>
-        <InitialData.Provider value={{ initialData, incMessageData, newChatData, sendMessage, disconnect, createChat, loggedUser, setLoggedUser, setAuthToken }}>
+        <InitialData.Provider value={{ initialData, incMessageData, newChatData, sendMessage, disconnect, createChat, loggedUser, setLoggedUser, setAuthToken, useLang }}>
           <Route exact path="/" render={() => (loggedUser === null) ? <Login createSocketConnection={createSocketConnection} /> : <Chat />} />
           <Route exact path="/dashboard" render={showContent} />
         </InitialData.Provider>

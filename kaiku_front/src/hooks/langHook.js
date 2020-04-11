@@ -5,14 +5,14 @@ const _default = 'NO_STRING_FOUND';
 const useLang = () => {
   const[pack, setPack] = useState({});
   
-  const getString = (ref) => {
-    if(pack.ref === undefined) return _default;
-    return pack.red;
+  const getString = (ref) => {        
+    if(pack[ref] === undefined) return _default;
+    return pack[ref];
   }
 
-  const setLocale = (identifier) => {
+  const setLocale = async (identifier) => {
     const langPack = ls.setLangPack(identifier);
-    setPack(langPack);
+    setPack(await langPack);
   }
 
 
