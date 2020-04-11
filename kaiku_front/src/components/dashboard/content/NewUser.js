@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react'
 import dictionary from '../../../util/dictionary'
 import userService from '../../../services/userService'
 import Context from '../../../providers/Context'
+import InitialData from '../../../providers/InitialData'
 
 const NewUser = () => {
   const [name, setName] = useState('')
@@ -11,6 +12,8 @@ const NewUser = () => {
   const [showPassword, setShowPassword] = useState(false)
   const { nouns, adjectives, capitalize } = dictionary
   const { setContent } = useContext(Context)
+  const { useLang } = useContext(InitialData);
+  const string = (ref) => useLang.getString(ref);
 
 
   const generateUser = () => {
@@ -42,25 +45,25 @@ const NewUser = () => {
         <form className="p-5 mt-5 bg-light" onSubmit={(e) => handleSubmit(e)}>
           <div className="form-row">
             <div className="col-md-6 mb-2">
-              <label htmlFor="user-name">Nimi</label>
-              <input type="text" className="form-control" id="user-name" placeholder="Nimi" value={name} onChange={e => setName(e.target.value)} required />
+              <label htmlFor="user-name">{string('dash_form_name')}</label>
+              <input type="text" className="form-control" id="user-name" placeholder={string('dash_form_ph_name')} value={name} onChange={e => setName(e.target.value)} required />
             </div>
             <div className="col-md-6 mb-2">
-              <label htmlFor="user-username">Käyttäjänimi</label>
+              <label htmlFor="user-username">{string('dash_form_username')}</label>
               <div className="input-group">
                 <div className="input-group-prepend">
                   <span className="input-group-text" id="inputGroupPrepend2">@</span>
                 </div>
-                <input type="text" className="form-control" id="user-username" placeholder="Käyttäjänimi" aria-describedby="inputGroupPrepend2"
+                <input type="text" className="form-control" id="user-username" placeholder={string('dash_form_ph_username')} aria-describedby="inputGroupPrepend2"
                   value={username} onChange={e => setUsername(e.target.value)} required />
               </div>
             </div>
           </div>
           <div className="form-row">
             <div className="col-md-6 mb-2">
-              <label htmlFor="user-password">Salasana</label>
+              <label htmlFor="user-password">{string('dash_form_pwd')}</label>
               <div className="input-group">
-                <input type={`${showPassword ? 'text' : 'password'}`} className="form-control" id="user-password" placeholder="Salasana"
+                <input type={`${showPassword ? 'text' : 'password'}`} className="form-control" id="user-password" placeholder={string('dash_form_ph_pwd')}
                   aria-describedby="inputGroupAppepend2" value={password} onChange={e => setPassword(e.target.value)} required />
 
                 <div className="input-group-append">
@@ -71,13 +74,13 @@ const NewUser = () => {
               </div>
             </div>
             <div className="col-md-6 mb-2">
-              <label htmlFor="user-repassword">Toista salasana</label>
-              <input type="password" className="form-control" id="user-password" placeholder="Toista salasana"
+              <label htmlFor="user-repassword">{string('dash_form_pwd_repeat')}</label>
+              <input type="password" className="form-control" id="user-password" placeholder={string('dash_form_ph_pwd_repeat')}
                 value={rePassword} onChange={e => setRePassword(e.target.value)} required />
             </div>
           </div>
-          <button type="button" className="btn btn-outline-primary mt-3 mr-2" onClick={generateUser}>Generoi käyttäjä</button>
-          <button type="submit" className="btn btn-primary mt-3" >Luo käyttäjä</button>
+          <button type="button" className="btn btn-outline-primary mt-3 mr-2" onClick={generateUser}>{string('dash_gen_user')}</button>
+          <button type="submit" className="btn btn-primary mt-3" >{string('dash_createuser')}</button>
         </form>
       </div>
     </>

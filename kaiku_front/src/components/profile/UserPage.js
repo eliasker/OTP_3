@@ -1,7 +1,10 @@
-import React from 'react'
+import React, {useContext} from 'react'
+import InitialData from '../../providers/InitialData'
 
 const UserPage = ({ userState }) => {
   const {displayUser, setDisplayUser} = userState
+  const { useLang } = useContext(InitialData);
+  const string = (ref) => useLang.getString(ref)
 
   if( displayUser === undefined ) return <></>
 
@@ -11,12 +14,12 @@ const UserPage = ({ userState }) => {
         <span className="exit-profile" onClick={() => setDisplayUser(undefined)}>
           <i className="fas fa-times"></i>
         </span>
-        <p className="text-center py-2">Poistu</p>
+        <p className="text-center py-2">{string('prof_exit')}</p>
       </div>
       <div className="profile-page">
         <div className="profile-image-container">
           <div>
-            <img src="profile-thumb-nobg.png" alt="profiili" className={`${displayUser.color} profile-page-thumb`} />
+            <img src="profile-thumb-nobg.png" alt={string('prof_alt_profile')} className={`${displayUser.color} profile-page-thumb`} />
           </div>
         </div>
         <h2 className="profile-page-heading text-center">{displayUser.name}</h2>
