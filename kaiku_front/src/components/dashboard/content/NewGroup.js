@@ -8,7 +8,7 @@ const NewGroup = () => {
   const [newGroup, setNewGroup] = useState({ chatName: '', members: [] })
   const [addedList, setAddedList] = useState([])
   const { initialData, useLang } = useContext(InitialData)
-  const string = (ref) => useLang.getString(ref);
+  const string = (ref) => useLang.getString(ref)
   const { setContent } = useContext(Context)
 
   const handleSubmit = async (e) => {
@@ -26,13 +26,8 @@ const NewGroup = () => {
   }
 
   const handleOptionClick = id => {
-<<<<<<< HEAD
-    if (id === 'none' || addedList.find(u => u._Id === id)) return
-    const addedUser = initialData.users.find(u => u._Id === id)
-=======
-    if (id === "none" || addedList.find(u => u.user_id === id)) return
+    if (id === 'none' || addedList.find(u => u.user_id === id)) return
     const addedUser = initialData.users.find(u => u.user_id === id)
->>>>>>> front-strings-to-variables
     setAddedList(
       addedList.concat(addedUser)
     )

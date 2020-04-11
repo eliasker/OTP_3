@@ -1,14 +1,10 @@
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 import InitialData from '../../providers/InitialData'
 
 const UserPage = ({ userState }) => {
-<<<<<<< HEAD
   const { displayUser, setDisplayUser } = userState
-=======
-  const {displayUser, setDisplayUser} = userState
-  const { useLang } = useContext(InitialData);
+  const { useLang } = useContext(InitialData)
   const string = (ref) => useLang.getString(ref)
->>>>>>> front-strings-to-variables
 
   if( displayUser === undefined ) return <></>
 

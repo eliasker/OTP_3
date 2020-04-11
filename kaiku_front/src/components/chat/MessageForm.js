@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import InitialData from '../../providers/InitialData'
 
 const MessageForm = ({ removeReset, newMessage, handleSubmit }) => {
-  const { useLang } = useContext(InitialData);
+  const { useLang } = useContext(InitialData)
   const string = (ref) => useLang.getString(ref)
 
   return (

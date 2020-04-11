@@ -70,11 +70,7 @@ const ListItem = ({ user, group }) => {
               <option value={string('li_opt_user')}>{string('li_opt_user')}</option>
               <option value={string('li_opt_admin')}>{string('li_opt_admin')}</option>
             </select> :
-<<<<<<< HEAD
-            'Käyttäjä'}</td>
-=======
             string('li_opt_user')}</td>
->>>>>>> front-strings-to-variables
           <td>{buttons(userState)}</td>
         </tr>
       </>

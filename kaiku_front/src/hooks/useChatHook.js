@@ -67,21 +67,12 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
   }
 
   /**
-<<<<<<< HEAD
-   * Function for adding new chats to chatState when another user creates them
+   * Function for adding new chats to chatState
    * @param {*} data
    */
   const addNewChat = data => {
     if (data === null) return
-    console.log('creating new chat', data)
-=======
-   * Function for adding new chats to chatState
-   * @param {*} data 
-   */
-  const addNewChat = data => {
-    if (data === null) return
     var newChatState = chatState
->>>>>>> front-strings-to-variables
     var newChatObject = {
       chat_id: data.chat_id,
       chatName: data.chatName || null,

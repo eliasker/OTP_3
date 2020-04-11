@@ -24,15 +24,10 @@ const SocketService = () => {
     socketRef.current.on('chatEvent', function (data) {
       if (loggedUserID === data.user_id) return
       setIncMsgData(data)
-<<<<<<< HEAD
     })
-=======
-      setIncMsgData(null)
-    });
->>>>>>> front-strings-to-variables
 
     socketRef.current.on('connectionEvent', function (data) {
-      console.log('user: ', data.user_id, 'isOnline=', data.online);
+      console.log('user: ', data.user_id, 'isOnline=', data.online)
     })
 
 
@@ -64,19 +59,6 @@ const SocketService = () => {
   }
 
   const createChat = (chatName, type, members, messages) => {
-<<<<<<< HEAD
-    console.log('creating new chat', members, 'chatname', chatName, 'type', type)
-    const obj = {
-      chatName,
-      type,
-      members,
-      messages
-    }
-
-    console.log('create: ', obj)
-
-    socketRef.current.emit('createChatEvent', obj)
-=======
     return new Promise((resolve, reject) => {
       console.log('creating new chat', members, 'chatname', chatName, 'type', type, 'messsages', messages)
       const obj = {
@@ -86,11 +68,10 @@ const SocketService = () => {
         messages
       }
       socketRef.current.emit('createChatEvent', obj, function (ack) {
-        console.log('acknowledgement', ack);
-        resolve(ack);
+        console.log('acknowledgement', ack)
+        resolve(ack)
       })
     })
->>>>>>> front-strings-to-variables
   }
 
   const disconnect = () => {
@@ -109,9 +90,9 @@ const SocketService = () => {
       type,
       members
     }
- 
+
     console.log("create: ", obj);
- 
+
     socketRef.current.emit("createChatEvent", obj);
   }
   */

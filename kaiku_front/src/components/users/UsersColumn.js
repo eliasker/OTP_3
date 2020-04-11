@@ -9,7 +9,7 @@ import DirectUser from './user/DirectUser'
 
 const UsersColumn = ({ setDisplayProfile, userState }) => {
   const { initialData, loggedUser, useLang } = useContext(InitialData)
-  const string = (ref) => useLang.getString(ref);
+  const string = (ref) => useLang.getString(ref)
   const { chatState } = useContext(CurrentChat)
 
   const { setDisplayUser } = userState
@@ -30,13 +30,8 @@ const UsersColumn = ({ setDisplayProfile, userState }) => {
     try {
       const searchResult = chatState.find(chat => (chat.type === 'private' && chat.members.includes(targetUser.user_id)))
       if (searchResult) return { ...searchResult, name: targetUser.username }
-<<<<<<< HEAD
     } catch (e) { console.log(e) }
     return { name: targetUser.username, type: 'private', members: [loggedUser.user_id, targetUser._Id], messages: [] }
-=======
-    } catch (e) { }
-    return { name: targetUser.username, type: 'private', members: [loggedUser.user_id, targetUser.user_id], messages: [] }
->>>>>>> front-strings-to-variables
   }
 
   // Lists last direct message from other users

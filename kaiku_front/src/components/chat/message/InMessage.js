@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
 import formatTime from '../../../util/formatTime'
-import InitialData from '../../../providers/InitialData';
+import InitialData from '../../../providers/InitialData'
 
 const InMessage = ({ message, user }) => {
-  const { useLang } = useContext(InitialData);
+  const { useLang } = useContext(InitialData)
   const string = (ref) => useLang.getString(ref)
 
   if (user === undefined) user = { color: 'green', username: '' }

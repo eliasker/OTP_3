@@ -13,53 +13,28 @@ const init = {
       'id': '2'
     },
     {
-<<<<<<< HEAD
       'name': 'Makedius',
-      'username': 'suidekaM',
-      'password': 'asijafj',
+      'username': 'makedius',
+      'password': 'qwed',
       'id': '3'
     },
     {
       'name': 'markus',
-      'username': 'xXxmaRkUsxXx',
-      'password': 'lkjökkpko',
+      'username': 'markus',
+      'password': 'qwed',
       'id': '4'
     },
     {
       'name': 'Mikko',
-      'username': 'mixu666',
-      'password': 'uihiehaf',
+      'username': 'mikko',
+      'password': 'qwed',
       'id': '5'
     },
     {
       'name': 'Make',
-      'username': 'maKKKe',
-      'password': 'wrtwqqqtwt',
+      'username': 'make',
+      'password': 'qwed',
       'id': '6'
-=======
-      "name": "Makedius",
-      "username": "makedius",
-      "password": "qwed",
-      "id": "3"
-    },
-    {
-      "name": "markus",
-      "username": "markus",
-      "password": "qwed",
-      "id": "4"
-    },
-    {
-      "name": "Mikko",
-      "username": "mikko",
-      "password": "qwed",
-      "id": "5"
-    },
-    {
-      "name": "Make",
-      "username": "make",
-      "password": "qwed",
-      "id": "6"
->>>>>>> front-strings-to-variables
     }
   ],
   'chats': [

@@ -18,29 +18,16 @@ const TopNav = () => {
   }
 
   return(
-<<<<<<< HEAD
     <>
       <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 cursor-def">
-        <span className="navbar-brand col-sm-3 col-md-2 mr-0">Kaiku takahuone</span>
+        <span className="navbar-brand col-sm-3 col-md-2 mr-0">{string('topnav_backroom')}</span>
         <ul className="navbar-nav px-3">
           <li className="nav-item text-nowrap">
-            <span className="nav-link" onClick={handleQuit}>Keskustelut</span>
+            <span className="nav-link" onClick={handleQuit}>{string('topnav_conversations')}</span>
           </li>
         </ul>
       </nav>
     </>
-=======
-  <>
-    <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 cursor-def">
-      <span className="navbar-brand col-sm-3 col-md-2 mr-0">{string('topnav_backroom')}</span>
-      <ul className="navbar-nav px-3">
-        <li className="nav-item text-nowrap">
-          <span className="nav-link" onClick={handleQuit}>{string('topnav_conversations')}</span>
-        </li>
-      </ul>
-    </nav>
-  </>
->>>>>>> front-strings-to-variables
   )
 }
 

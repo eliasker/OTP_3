@@ -24,11 +24,7 @@ const UsersHeader = ({ chatTypeState, setDisplayProfile }) => {
   return (
     <div className="user-header-container">
       <div className="user-header row justify-content-between">
-<<<<<<< HEAD
-        <img src="profile-thumb-nobg.png" alt="profiili" className={'dark profile-thumb pointer'} onClick={() => handleShowProfile()} />
-=======
-        <img src="profile-thumb-nobg.png" alt={string('prof_alt_profile')} className={`dark profile-thumb pointer`} onClick={() => handleShowProfile()} />
->>>>>>> front-strings-to-variables
+        <img src="profile-thumb-nobg.png" alt={string('prof_alt_profile')} className={'dark profile-thumb pointer'} onClick={() => handleShowProfile()} />
 
         <div className="dropdown">
           <span role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

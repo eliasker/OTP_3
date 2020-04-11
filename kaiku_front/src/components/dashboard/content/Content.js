@@ -10,7 +10,7 @@ import Breadcrumb from '../Breadcrumb'
 
 const Content = () => {
   const { content, setContent } = useContext(Context)
-  const { useLang } = useContext(InitialData);
+  const { useLang } = useContext(InitialData)
   const string = (ref) => useLang.getString(ref)
 
   const showContent = () => {
@@ -31,30 +31,19 @@ const Content = () => {
   }
 
   return(
-<<<<<<< HEAD
     <>
       <div className="col-md-9 ml-sm-auto col-lg-10 px-4">
         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-5 pb-2 mb-3 border-bottom">
-          <h1 className="h2">Kojelauta</h1>
+          <h1 className="h2">{string('dash_header')}</h1>
           <div className="btn-toolbar mb-2 mb-md-0">
             <div className="btn-group mr-2">
-              <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setContent('u/new')}>Luo käyttäjä</button>
-              <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setContent('g/new')}>Luo ryhmä</button>
+              <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setContent('u/new')}>{string('dash_createuser')}</button>
+              <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setContent('g/new')}>{string('dash_creategroup')}</button>
             </div>
-=======
-  <>
-    <div className="col-md-9 ml-sm-auto col-lg-10 px-4">
-      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-5 pb-2 mb-3 border-bottom">
-  <h1 className="h2">{string('dash_header')}</h1>
-        <div className="btn-toolbar mb-2 mb-md-0">
-          <div className="btn-group mr-2">
-            <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() => setContent('u/new')}>{string('dash_createuser')}</button>
-  <button type="button" className="btn btn-sm btn-outline-secondary" onClick={() =>setContent('g/new')}>{string('dash_creategroup')}</button>
->>>>>>> front-strings-to-variables
           </div>
+          <Breadcrumb />
+          {showContent()}
         </div>
-        <Breadcrumb />
-        {showContent()}
       </div>
     </>
   )

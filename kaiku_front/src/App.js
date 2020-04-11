@@ -8,17 +8,17 @@ import DashBoard from './components/dashboard/DashBoard'
 import Authentication from './components/auth/Authentication'
 import socketService from './services/socketService'
 import userService from './services/userService'
-import langHook from './hooks/langHook';
+import langHook from './hooks/langHook'
 
 const App = () => {
   const [loggedUser, setLoggedUser] = useState(null)
   const [initialData, setInitialData] = useState([])
   const [authToken, setAuthToken] = useState()
   const { createSocketConnection, createChat, sendMessage, disconnect, incMessageData, newChatData } = socketService()
-  const useLang = langHook(); 
+  const useLang = langHook()
 
-  useEffect(()=>{
-    useLang.setLocale();
+  useEffect(() => {
+    useLang.setLocale()
   },[])
 
   useEffect(() => {
