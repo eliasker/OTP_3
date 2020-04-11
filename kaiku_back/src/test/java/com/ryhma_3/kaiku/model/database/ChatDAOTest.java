@@ -56,9 +56,9 @@ public class ChatDAOTest {
     public void createChatTest() {
         ChatObject o = testChatDAO.createChatObject(
             new ChatObject(null, "testChat", "test", new String[] {
-                testUserDAO.getUser(new UserObject(null, "TestUser1", null, null)).get_Id(),
-                testUserDAO.getUser(new UserObject(null, "TestUser2", null, null)).get_Id(),
-                testUserDAO.getUser(new UserObject(null, "TestUser3", null, null)).get_Id()
+                testUserDAO.getUser(new UserObject(null, "TestUser1", null, null)).getUser_id(),
+                testUserDAO.getUser(new UserObject(null, "TestUser2", null, null)).getUser_id(),
+                testUserDAO.getUser(new UserObject(null, "TestUser3", null, null)).getUser_id()
             }, testMessageObjects));
         assertEquals("test", o.getType(), "Chat type not retrieved successfully");
         assertNotNull(o.getMembers(), "Chat type not retrieved successfully");
@@ -70,9 +70,9 @@ public class ChatDAOTest {
     public void getChatObjectTest() {
         ChatObject o = testChatDAO.createChatObject(
             new ChatObject(null, "testChat", "test", new String[] {
-                testUserDAO.getUser(new UserObject(null, "TestUser1", null, null)).get_Id(),
-                testUserDAO.getUser(new UserObject(null, "TestUser2", null, null)).get_Id(),
-                testUserDAO.getUser(new UserObject(null, "TestUser3", null, null)).get_Id()
+                testUserDAO.getUser(new UserObject(null, "TestUser1", null, null)).getUser_id(),
+                testUserDAO.getUser(new UserObject(null, "TestUser2", null, null)).getUser_id(),
+                testUserDAO.getUser(new UserObject(null, "TestUser3", null, null)).getUser_id()
             }, testMessageObjects));
         ChatObject got = testChatDAO.getChatObject(o);
         assertEquals("testChat", got.getChatName(), "Chat name retrieval failed");
@@ -86,15 +86,16 @@ public class ChatDAOTest {
     public void updateChatTest() {
         ChatObject o = testChatDAO.createChatObject(
             new ChatObject(null, "testChat", "test", new String[] {
-                testUserDAO.getUser(new UserObject(null, "TestUser1", null, null)).get_Id(),
-                testUserDAO.getUser(new UserObject(null, "TestUser2", null, null)).get_Id(),
-                testUserDAO.getUser(new UserObject(null, "TestUser3", null, null)).get_Id()
+                testUserDAO.getUser(new UserObject(null, "TestUser1", null, null)).getUser_id(),
+                testUserDAO.getUser(new UserObject(null, "TestUser2", null, null)).getUser_id(),
+                testUserDAO.getUser(new UserObject(null, "TestUser3", null, null)).getUser_id()
             }, testMessageObjects));
 
         ChatObject updated = testChatDAO.updateChatObject(
             new ChatObject(o.getChat_id(), "testChat", "changed", new String[] {
-                testUserDAO.getUser(new UserObject(null, "TestUser1", null, null)).get_Id(),
-                testUserDAO.getUser(new UserObject(null, "TestUser3", null, null)).get_Id()
+                testUserDAO.getUser(new UserObject(null, "TestUser1", null, null)).getUser_id(),
+                testUserDAO.getUser(new UserObject(null, "TestUser3", null, null)).getUser_id()
+
             }, testMessageObjects));
         assertEquals("changed", updated.getType(), "Type change failed after update");
         assertEquals(2, updated.getMembers().length, "Member list update failed");
@@ -106,9 +107,9 @@ public class ChatDAOTest {
     public void deleteChatTest() {
         ChatObject o = testChatDAO.createChatObject(
             new ChatObject(null, "testChat", "test", new String[] {
-                testUserDAO.getUser(new UserObject(null, "TestUser1", null, null)).get_Id(),
-                testUserDAO.getUser(new UserObject(null, "TestUser2", null, null)).get_Id(),
-                testUserDAO.getUser(new UserObject(null, "TestUser3", null, null)).get_Id()
+                testUserDAO.getUser(new UserObject(null, "TestUser1", null, null)).getUser_id(),
+                testUserDAO.getUser(new UserObject(null, "TestUser2", null, null)).getUser_id(),
+                testUserDAO.getUser(new UserObject(null, "TestUser3", null, null)).getUser_id()
             }, testMessageObjects));
         assertDoesNotThrow(() -> {
             testChatDAO.getChatObject(o);
@@ -120,9 +121,9 @@ public class ChatDAOTest {
     public void getAllChatsTest() {
         ChatObject o = testChatDAO.createChatObject(
             new ChatObject(null, "testChat", "test", new String[] {
-                testUserDAO.getUser(new UserObject(null, "TestUser1", null, null)).get_Id(),
-                testUserDAO.getUser(new UserObject(null, "TestUser2", null, null)).get_Id(),
-                testUserDAO.getUser(new UserObject(null, "TestUser3", null, null)).get_Id()
+                testUserDAO.getUser(new UserObject(null, "TestUser1", null, null)).getUser_id(),
+                testUserDAO.getUser(new UserObject(null, "TestUser2", null, null)).getUser_id(),
+                testUserDAO.getUser(new UserObject(null, "TestUser3", null, null)).getUser_id()
             }, testMessageObjects));
         
         assertTrue(testChatDAO.getChats(o.getMembers()[0]).length > 0);

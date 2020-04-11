@@ -3,7 +3,9 @@ import InitialData from '../../providers/InitialData'
 
 // Mikäli tarkasteltava profiili on kirjautuneen käyttäjän oma renderöidään muokkausmahdollisuudet
 const ProfilePage = ({ profileState }) => {
-  const { loggedUser } = useContext(InitialData)
+  const { loggedUser, useLang } = useContext(InitialData)
+  const string = (ref) => useLang.getString(ref);
+
   const { displayProfile, setDisplayProfile } = profileState
   const [displayUpload, setDisplayUpload] = useState('d-none')
   const [name, setName] = useState(loggedUser.name)
@@ -29,14 +31,14 @@ const ProfilePage = ({ profileState }) => {
         <span className="exit-profile" onClick={() => setDisplayProfile('d-none')}>
           <i className="fas fa-times"></i>
         </span>
-        <p className="text-center py-2">Poistu</p>
+        <p className="text-center py-2">{string('prof_exit')}</p>
       </div>
       <div className="profile-page">
         <h2 className="profile-page-heading text-center">{loggedUser.name}</h2>
         <h5 className="profile-page-heading text-center">@{loggedUser.username}</h5>
         <div className="profile-image-container">
           <div>
-            <img src="kaikuthumb.png" alt="profiili" className="profile-page-thumb" />
+            <img src="kaikuthumb.png" alt={string('prof_alt_profile')} className="profile-page-thumb" />
             <span onClick={() => setDisplayUpload('')}><i className="fas fa-upload"></i></span>
           </div>
         </div>
@@ -47,12 +49,17 @@ const ProfilePage = ({ profileState }) => {
             <div className="input-group-prepend">
               <span className="input-group-text" id="inputGroupPrepend2">@</span>
             </div>
+<<<<<<< HEAD
             <input type="text" className="form-control" id="user-username" placeholder="Käyttäjänimi" aria-describedby="inputGroupPrepend2"
               value={username} onChange={e => setUsername(e.target.value)} required />
+=======
+            <input type="text" className="form-control" id="user-username" placeholder={string('prof_username')} aria-describedby="inputGroupPrepend2"
+            value={username} onChange={e => setUsername(e.target.value)} required />
+>>>>>>> front-strings-to-variables
           </div>
-          <input type="password" className="form-control" value={password} onChange={e => setPassword(e.target.value)} placeholder="Uusi salasana" />
-          <input type="password" className="form-control" value={rePassword} onChange={e => setRePassword(e.target.value)} placeholder="Varmenna salasana" />
-          <button type="submit" className="btn btn-dark btn-block">Tallenna</button>
+          <input type="password" className="form-control" value={password} onChange={e => setPassword(e.target.value)} placeholder={string('prof_newpwd')} />
+          <input type="password" className="form-control" value={rePassword} onChange={e => setRePassword(e.target.value)} placeholder={string('prof_newpwd_repeat')} />
+          <button type="submit" className="btn btn-dark btn-block">{string('prof_save')}</button>
         </form>
       </div>
 
@@ -60,9 +67,9 @@ const ProfilePage = ({ profileState }) => {
         <div className="upload-form">
           <form>
             <input type="file" />
-            <button type="submit" onClick={e => e.preventDefault()}>lataa</button>
+            <button type="submit" onClick={e => e.preventDefault()}>{string('prof_upload')}</button>
           </form>
-          <button onClick={() => setDisplayUpload('d-none')}>peruuta</button>
+          <button onClick={() => setDisplayUpload('d-none')}>{string('prof_cancel')}</button>
         </div>
       </div>
     </div>

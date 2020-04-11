@@ -8,7 +8,8 @@ import UsersHeader from './UsersHeader'
 import DirectUser from './user/DirectUser'
 
 const UsersColumn = ({ setDisplayProfile, userState }) => {
-  const { initialData, loggedUser } = useContext(InitialData)
+  const { initialData, loggedUser, useLang } = useContext(InitialData)
+  const string = (ref) => useLang.getString(ref);
   const { chatState } = useContext(CurrentChat)
 
   const { setDisplayUser } = userState
@@ -27,25 +28,29 @@ const UsersColumn = ({ setDisplayProfile, userState }) => {
 
   const findChat = (targetUser) => {
     try {
-      const searchResult = chatState.find(chat => (chat.type === 'private' && chat.members.includes(targetUser._Id)))
+      const searchResult = chatState.find(chat => (chat.type === 'private' && chat.members.includes(targetUser.user_id)))
       if (searchResult) return { ...searchResult, name: targetUser.username }
+<<<<<<< HEAD
     } catch (e) { console.log(e) }
     return { name: targetUser.username, type: 'private', members: [loggedUser.user_id, targetUser._Id], messages: [] }
+=======
+    } catch (e) { }
+    return { name: targetUser.username, type: 'private', members: [loggedUser.user_id, targetUser.user_id], messages: [] }
+>>>>>>> front-strings-to-variables
   }
 
   // Lists last direct message from other users
   const listMessages = () => {
     if (initialData.users === undefined) return
     const filteredUsers = filterUtil(initialData.users.map(u => u.name), searchInput)
-    console.log(initialData.users, loggedUser._Id)
     return initialData.users
-      .filter(u => u._Id !== loggedUser._Id)
+      .filter(u => u.user_id !== loggedUser.user_id)
       .filter(u => filteredUsers.find(e => u.name === e))
       .map(u => <DirectUser key={keyGen.generateKey(u.name)} privateChat={findChat(u)} user={u} setDisplayUser={setDisplayUser} />)
   }
 
   const showInput = () => chatType === 'direct' ?
-    <input className="form-control find-user-input" placeholder="Etsi käyttäjä"
+    <input className="form-control find-user-input" placeholder={string('u_col_searchuser')}
       value={searchInput} onChange={e => setSearchInput(e.target.value)} />:
     <></>
 

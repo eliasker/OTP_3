@@ -1,6 +1,8 @@
 package com.ryhma_3.kaiku.utility;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.UUID;
 
 import org.jasypt.util.password.BasicPasswordEncryptor;
@@ -120,12 +122,12 @@ public class SecurityTools {
 					break;
 				}
 	
-				releaseObjectLock("clone: success");
+				releaseObjectLock("clone: success", false);
 				return searched;
 				
 			} catch(Exception e) {
 				e.printStackTrace();
-				releaseObjectLock("clone: exception");
+				releaseObjectLock("clone: exception", true);
 				return null;
 			}
 		}
@@ -148,21 +150,31 @@ public class SecurityTools {
 				
 				Token searched = null;
 				
-				for (Token token : tokenDataStore) {
+				for(Token token : tokenDataStore) {
+					
 					searched = new Token(token);
 					
-					if(!searched.getSessionID().toString().equals(sessionID.toString())) {
-						searched = null;
+					//discount null id's
+					if(searched.getSessionID() == null) {
 						continue;
 					}
-					break;
+					
+					//discount wrong id's
+					if(!searched.getSessionID().equals(sessionID)) {
+						searched = null;
+						continue;
+					} else {
+						releaseObjectLock("clone: success", false);
+						return searched;
+					}
 				}
-	
-				releaseObjectLock("clone: success");
+				
+				releaseObjectLock("clone: no matching token foudn", true);
 				return searched;
 				
 			} catch(Exception e) {
-				releaseObjectLock("clone: exception");
+				e.printStackTrace();
+				releaseObjectLock("clone: exception", true);
 				return null;
 			}
 		}
@@ -197,7 +209,7 @@ public class SecurityTools {
 					//update success
 					searched = new Token(null, user_id, genRandomString());
 					tokenDataStore.set(i, searched);					
-					releaseObjectLock("update token: success");
+					releaseObjectLock("update token: success", false);
 					return new Token(searched);
 				}
 				
@@ -206,12 +218,12 @@ public class SecurityTools {
 				Token tokenToAdd = new Token(null, user_id, genRandomString());
 				tokenDataStore.add(tokenToAdd);
 				
-				releaseObjectLock("create token: success");
+				releaseObjectLock("create token: success", false);
 				return new Token(tokenToAdd);
 		
 			} catch(Exception e) {
 				e.printStackTrace();
-				releaseObjectLock("create token: exception");
+				releaseObjectLock("create token: exception", true);
 				return null;
 			}
 		}
@@ -248,7 +260,7 @@ public class SecurityTools {
 					searched = new Token(searched.getSessionID(), user_id, tokenString);
 					tokenDataStore.set(i, searched);
 
-					releaseObjectLock("update token: success");
+					releaseObjectLock("update token: success", false);
 					return new Token(searched);
 				}
 				
@@ -257,12 +269,12 @@ public class SecurityTools {
 				Token tokenToAdd = new Token(null, user_id, tokenString);
 				tokenDataStore.add(tokenToAdd);
 				
-				releaseObjectLock("create token: success");
+				releaseObjectLock("create token: success", false);
 				return new Token(tokenToAdd);
 		
 			} catch(Exception e) {
 				e.printStackTrace();
-				releaseObjectLock("create token: exception");
+				releaseObjectLock("create token: exception", true);
 				return null;
 			}
 		}
@@ -292,17 +304,17 @@ public class SecurityTools {
 					}
 					
 					//task succeeded
-					releaseObjectLock("token verified: success");
+					releaseObjectLock("token verified: success", false);
 					return true;
 				}
 							
 				//task failed / not found
-				releaseObjectLock("token verified: fail");
+				releaseObjectLock("token verified: fail", false);
 				return false;
 				
 			} catch(Exception e) {
 				e.printStackTrace();
-				releaseObjectLock("token verified: exception");
+				releaseObjectLock("token verified: exception", true);
 				//Task failed / exception
 				return false;
 			}
@@ -310,12 +322,14 @@ public class SecurityTools {
 	}
 	
 	
+
 	/**
-	 * When client connects trough socket, attach client UUID to a token.
-	 * @param tokenString
-	 * @param sessionID
+	 * Try to connect connecting UUID to a user token
+	 * @param tokenString String
+	 * @param sessionID UUID
+	 * @return success Boolean
 	 */
-	public static void attachSessionToToken(String tokenString, UUID sessionID) {
+	public static boolean attachSessionToToken(String tokenString, UUID sessionID) {
 		synchronized (lock) {
 			try {
 
@@ -336,28 +350,106 @@ public class SecurityTools {
 					//task succeeded					
 					searched = new Token(sessionID, searched.getUser_id(), searched.getTokenString());
 					tokenDataStore.set(i, searched);										
-					releaseObjectLock("connect UUID to token: success");
-					return;
+					releaseObjectLock("connect UUID to token: success", true);
+					return true;
 				}
 				
 				//task failed
-				releaseObjectLock("connect UUID to token: fail");
-				return;
+				releaseObjectLock("connect UUID to token: fail", true);
+				return false;
 				
 			} catch(Exception e) {
-				releaseObjectLock("connect UUID to token: exception");
+				releaseObjectLock("connect UUID to token: exception", true);
 				e.printStackTrace();
-				return;
+				return false;
 			}
 		}
 	}	
 	
+	
 	/**
-	 * Release monitor that handles token operations
-	 * logs operations
+	 * Remove token from tokenstorage
+	 * @param user_id 
+	 * @return boolean success
 	 */
-	private static void releaseObjectLock(String location) {
-		System.out.println("SECURITYTOOLS: " + location);
+	public static boolean removeToken(String user_id) {
+		synchronized (lock) {
+			try {
+				while(operatingTokens) {
+					lock.wait();
+				}
+				operatingTokens = true;
+				
+				tokenDataStore.remove(getCloneOfToken(user_id));
+				
+				releaseObjectLock("removed token", false);
+				return true;
+				
+			}catch(Exception e) {
+				releaseObjectLock("remove token exception", true);
+				e.printStackTrace();
+				return false;
+			}
+		}
+	}
+	
+	
+	/**
+	 * Get a map portraying user base's online status'
+	 * @return HashMap<user_id, online> map
+	 */
+	public static HashMap<String, Boolean> getUserStatusMap(){
+		HashMap<String, Boolean> map = new HashMap<>();
+		for(Token u : tokenDataStore) {
+			map.put(u.getUser_id(), u.isOnline());
+		}
+		return map;
+	}
+	
+	
+	/**
+	 * Set user's status online
+	 * @param id String
+	 * @param online boolean
+	 */
+	public static void setUserStatus(String id, boolean online) {
+		synchronized (lock) {
+			for(Token t : tokenDataStore) {
+				if(t.getUser_id().equals(id)) {
+					t.setOnline(online);
+					break;
+				}
+			}
+		}
+	}
+
+	
+	
+	/**
+	 * Iterate through all of token base and confirm user token set online is found in snapshot of serverclients
+	 * @param users Collectin<UUID>
+	 */
+	public static void updateEveryUserStatus(Collection<UUID> users) {
+		synchronized (lock) {
+			for(Token t : tokenDataStore) {
+				if(t.isOnline()) {
+					users.contains(t.getSessionID());
+				} else {
+					t.setOnline(false);
+				}
+			}
+		}
+	}
+	
+
+	/**
+	 * @param location String (message)
+	 * @param show boolean
+	 */
+	private static void releaseObjectLock(String location, boolean show) {
+		if(show) {
+			Logger.log("SECURITYTOOLS: " + location);
+		}
 		operatingTokens = false;
 		lock.notifyAll();
 	}

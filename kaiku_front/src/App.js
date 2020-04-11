@@ -7,19 +7,28 @@ import './styles/App.css'
 import DashBoard from './components/dashboard/DashBoard'
 import Authentication from './components/auth/Authentication'
 import socketService from './services/socketService'
+import userService from './services/userService'
+import langHook from './hooks/langHook';
 
 const App = () => {
   const [loggedUser, setLoggedUser] = useState(null)
   const [initialData, setInitialData] = useState([])
   const [authToken, setAuthToken] = useState()
   const { createSocketConnection, createChat, sendMessage, disconnect, incMessageData, newChatData } = socketService()
+  const useLang = langHook(); 
+
+  useEffect(()=>{
+    useLang.setLocale();
+  },[])
 
   useEffect(() => {
-    if (loggedUser === null || loggedUser.users === undefined) return
-    const colors = ['red', 'navy', 'orange', 'blue', 'green', 'amber', 'turqoise', 'pink', 'brown', 'dark']
-    const generateColor = () => Math.floor(Math.random() * Math.floor(colors.length))
-
-    setInitialData({ ...loggedUser, users: loggedUser.users.map(u => u = { ...u, color: colors[generateColor()] }) })
+    if (loggedUser === null) return
+    (async () => {
+      const colors = ['red', 'navy', 'orange', 'blue', 'green', 'amber', 'turqoise', 'pink', 'brown', 'dark']
+      const allUsers = await userService.getAllUsers(loggedUser.token)
+      const generateColor = () => Math.floor(Math.random() * Math.floor(colors.length))
+      setInitialData({ ...loggedUser, users: allUsers.map(u => u = { ...u, color: colors[generateColor()] }) })
+    })()
   }, [loggedUser])
 
   useEffect(() => {
@@ -46,7 +55,7 @@ const App = () => {
   return (
     <div className="App">
       <Router>
-        <InitialData.Provider value={{ initialData, incMessageData, newChatData, sendMessage, disconnect, createChat, loggedUser, setLoggedUser, setAuthToken }}>
+        <InitialData.Provider value={{ initialData, incMessageData, newChatData, sendMessage, disconnect, createChat, loggedUser, setLoggedUser, setAuthToken, useLang }}>
           <Route exact path="/" render={() => (loggedUser === null) ? <Login createSocketConnection={createSocketConnection} /> : <Chat />} />
           <Route exact path="/dashboard" render={showContent} />
         </InitialData.Provider>

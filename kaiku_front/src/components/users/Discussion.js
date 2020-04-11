@@ -5,39 +5,44 @@ import User from './user/User'
 import CurrentChat from '../../providers/CurrentChat'
 
 const Discussions = ({ setDisplayUser, chat }) => {
-  const { initialData, loggedUser } = useContext(InitialData)
+  const { initialData, loggedUser, useLang } = useContext(InitialData)
+  const string = (ref) => useLang.getString(ref)
   const { currentChat, chatState, selectChat } = useContext(CurrentChat)
   //const membersOnline = chat.members === undefined ? 0 : chat.members.length;
   const [displayUsers, setDisplayUsers] = useState(currentChat === chat)
 
   const findChat = (targetUser) => {
-    const searchResult = chatState.find(chat => (chat.type === 'private' && chat.members.includes(targetUser._Id)))
+    const searchResult = chatState.find(chat => (chat.type === 'private' && chat.members.includes(targetUser.user_id)))
     if (searchResult) return { ...searchResult, name: targetUser.username }
     else {
-      return { name: targetUser.username, type: 'private', members: [loggedUser.user_id, targetUser._Id], messages: [] }
+      return { name: targetUser.username, type: 'private', members: [loggedUser.user_id, targetUser.user_id], messages: [] }
     }
   }
 
   const listUsers = () => {
     if (initialData.users === undefined) return console.log('initialData pending...')
-    const filteredUsers = chat.members.map(m => initialData.users.find(u => u._Id === m))
+    var filteredUsers = chat.members.map(m => initialData.users.find(u => u.user_id === m)).filter(u => u !== undefined)
     return filteredUsers
       .map(u => <User key={keyGen.generateKey(u.name)} setDisplayUser={setDisplayUser} user={u} privateChat={findChat(u)} />)
   }
 
   const handleDiscussionClick = () => {
     setDisplayUsers(!displayUsers)
-    console.log('selecting chat', chat)
     selectChat(chat)
   }
-  //  unread msgs pallura: <i className="fas fa-circle">
+
   return (
     <div className="group-chat dropdown pos-rel">
       <div className={`${displayUsers ? 'bg-primary-1' : 'bg-primary-2'} profile row`} onClick={() => handleDiscussionClick()}>
+<<<<<<< HEAD
         <img src="kaikuthumb.png" alt="profiili" className={'profile-thumb alpha-1'} />
+=======
+        <img src="kaikuthumb.png" alt={[string('prof_alt_profile')]} className={`profile-thumb alpha-1`} />
+>>>>>>> front-strings-to-variables
         <div>
           <p>{chat.chatName}</p>
         </div>
+        {chat.unreadMessages === true ? <i className="fas fa-circle unread-messages" /> : null}
       </div>
       <div className={`${displayUsers ? '' : 'd-none'}`}>
         {listUsers()}

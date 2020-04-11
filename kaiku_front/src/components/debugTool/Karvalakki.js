@@ -81,10 +81,15 @@ const Karvalakki = () => {
 
 
   const handleSendMessage = (target, message) => {
+<<<<<<< HEAD
     const target_id = initKontsa.chats.find((chat) => chat.chatName === target)
     const result = sendMessage(message, initKontsa._Id, target_id)
 
     console.log(result)
+=======
+    const target_id = initKontsa.chats.find((chat) => chat.chatName === target);
+    const result = sendMessage(message, initKontsa.user_id, target_id);
+>>>>>>> front-strings-to-variables
 
   }
 

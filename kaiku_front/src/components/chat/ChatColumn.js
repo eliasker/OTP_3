@@ -14,7 +14,7 @@ import ChatHeader from './ChatHeader'
 import CurrentChat from '../../providers/CurrentChat'
 
 const ChatColumn = ({ profileState, userState, currentChat }) => {
-  const { initialData, loggedUser } = useContext(InitialData)
+  const { initialData, loggedUser, incMessageData } = useContext(InitialData)
   const { postMessage } = useContext(CurrentChat)
   const [searchInput, setSearchInput] = useState('')
   const messagesEndRef = useRef(null)
@@ -23,10 +23,8 @@ const ChatColumn = ({ profileState, userState, currentChat }) => {
     if (messagesEndRef.current !== null) messagesEndRef.current.scrollIntoView({ behavior: 'auto' })
   }
 
-  //console.log('curr chat in column', currentChat)
-
   const getUser = (user_id) => {
-    const user = initialData.users.find(user => user._Id === user_id)
+    const user = initialData.users.find(user => user.user_id === user_id)
     return user
   }
 
@@ -36,15 +34,12 @@ const ChatColumn = ({ profileState, userState, currentChat }) => {
     const filteredMsgs = currentChat.messages.filter(msg => msg.content.includes(searchInput))
     return filteredMsgs.map(m =>
       m.user_id === loggedUser.user_id ?
-        <OutMessage key={keyGen.generateKey(m.content)} content={m.content} /> :
-        <InMessage key={keyGen.generateKey(m.content)} content={m.content} user={getUser(m.user_id)} />)
+        <OutMessage key={keyGen.generateKey(m.content)} message={m} /> :
+        <InMessage key={keyGen.generateKey(m.content)} message={m} user={getUser(m.user_id)} />)
   }
-  /*
-    useEffect(() => {
-      console.log('testi', currentChat)
-    }, [currentChat])
-  */
-  useEffect(scrollToBottom, [initialData, currentChat])
+
+  useEffect(scrollToBottom, [initialData, currentChat, incMessageData])
+
 
   const removeReset = (object) => {
     const { reset, ...newObject } = object
@@ -67,7 +62,6 @@ const ChatColumn = ({ profileState, userState, currentChat }) => {
     <div className="chat-col col-7">
       <UserPage userState={userState} />
       <ProfilePage loggedUser={loggedUser} profileState={profileState} />
-
       <div>
         <ChatHeader searchInput={searchInput} setSearchInput={setSearchInput} />
         <div className="read-container">
@@ -77,8 +71,8 @@ const ChatColumn = ({ profileState, userState, currentChat }) => {
               <div id="beginning" ref={messagesEndRef}></div>
             </div>
           </div>
+          <MessageForm newMessage={newMessage} removeReset={removeReset} handleSubmit={handleSubmit} />
         </div>
-        <MessageForm newMessage={newMessage} removeReset={removeReset} handleSubmit={handleSubmit} />
       </div>
     </div>
   )

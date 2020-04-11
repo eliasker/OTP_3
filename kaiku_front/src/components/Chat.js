@@ -9,11 +9,12 @@ import useChatHook from '../hooks/useChatHook'
 import Karvalakki from './debugTool/Karvalakki'
 
 const Chat = () => {
-  const { initialData, createChat, sendMessage, incMessageData, newChatData } = useContext(InitialData)
+  const { createChat, sendMessage, incMessageData, newChatData } = useContext(InitialData)
   const [displayProfile, setDisplayProfile] = useState('d-none')
   const [displayUser, setDisplayUser] = useState(undefined)
-  const { chatState, postMessage, receiveMessage, currentChat, selectChat } = useChatHook(initialData, createChat, sendMessage, incMessageData, newChatData)
+  const { chatState, postMessage, receiveMessage, currentChat, selectChat } = useChatHook(createChat, sendMessage, incMessageData, newChatData)
   const [showModal, setShowModal] = useState(false)
+  const [displayKarvalakki, setDisplayKarvalakki] = useState(false)
 
   return (
     <>
@@ -25,7 +26,8 @@ const Chat = () => {
           </div>
           <HelpPanel />
         </div>
-        <Karvalakki />
+        <button onClick={() => setDisplayKarvalakki(!displayKarvalakki)}>Toggle Karvalakki :D</button>
+        {displayKarvalakki ? <Karvalakki /> : null}
       </CurrentChat.Provider>
     </>
   )

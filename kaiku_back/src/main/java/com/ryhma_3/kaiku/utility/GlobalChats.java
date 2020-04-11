@@ -50,7 +50,7 @@ public class GlobalChats {
 		} catch(NullPointerException ne) {
 			System.out.println("No global chats exist, creating.");
 			
-			String[] empty = new String[0];
+			String[] empty = {};
 			ChatObject global  = chatDAO.createChatObject(new ChatObject(null, "global", "global", empty, null));
 			globals.add(global);
 		}
@@ -91,7 +91,8 @@ public class GlobalChats {
 				
 				String[] members = chat.getMembers();
 				members = Arrays.copyOf(members, members.length+1);
-				members[members.length-1] = member.get_Id();
+				members[members.length-1] = member.getUser_id();
+				chat.setMembers(members);
 				
 				ChatObject updated = chatDAO.updateChatObject(chat);
 				System.out.println("new user added to; " + updated.getChatName());
@@ -133,7 +134,7 @@ public class GlobalChats {
 		String[] newUsers = new String[allUsers.length];
 		
 		for(int i=0; i<allUsers.length; i++) {
-			newUsers[i] = allUsers[i].get_Id();		
+			newUsers[i] = allUsers[i].getUser_id();		
 		}
 		
 		return newUsers;

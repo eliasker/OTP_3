@@ -13,6 +13,7 @@ const init = {
       'id': '2'
     },
     {
+<<<<<<< HEAD
       'name': 'Makedius',
       'username': 'suidekaM',
       'password': 'asijafj',
@@ -35,6 +36,30 @@ const init = {
       'username': 'maKKKe',
       'password': 'wrtwqqqtwt',
       'id': '6'
+=======
+      "name": "Makedius",
+      "username": "makedius",
+      "password": "qwed",
+      "id": "3"
+    },
+    {
+      "name": "markus",
+      "username": "markus",
+      "password": "qwed",
+      "id": "4"
+    },
+    {
+      "name": "Mikko",
+      "username": "mikko",
+      "password": "qwed",
+      "id": "5"
+    },
+    {
+      "name": "Make",
+      "username": "make",
+      "password": "qwed",
+      "id": "6"
+>>>>>>> front-strings-to-variables
     }
   ],
   'chats': [

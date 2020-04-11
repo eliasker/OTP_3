@@ -20,11 +20,11 @@ public class UserObject {
 		this.name = name;
 	}
 	
-	public String get_Id() {
+	public String getUser_id() {
 		return user_id;
 	}
-	public void set_Id(String id) {
-		this.user_id = id;
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
 	}
 	public String getUsername() {
 		return username;

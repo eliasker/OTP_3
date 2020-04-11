@@ -1,15 +1,20 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import formatTime from '../../../util/formatTime'
+import InitialData from '../../../providers/InitialData';
 
-const InMessage = ({ content, user }) => {
+const InMessage = ({ message, user }) => {
+  const { useLang } = useContext(InitialData);
+  const string = (ref) => useLang.getString(ref)
+
+  if (user === undefined) user = { color: 'green', username: '' }
   return (
     <div className="in-container">
       <div className="in-message">
         <p>
           <span className={`${user.color} msg-senda bg-none`}>{user.username}</span>
-          <br />
-          {content}
+          <br />{message.content}
         </p>
-        <span className="message-date"> </span>
+        <span className="in-message-date">{string('time_today') + formatTime.formatTimeStamp(message.timestamp)}</span>
       </div>
     </div>
   )

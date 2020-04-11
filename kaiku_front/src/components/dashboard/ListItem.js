@@ -1,10 +1,14 @@
 import React, { useState, useContext } from 'react'
 import Context from '../../providers/Context'
+import InitialData from '../../providers/InitialData'
 import groupService from '../../services/groupService'
 import userService from '../../services/userService'
 
 const ListItem = ({ user, group }) => {
   const { chats, setChats, users, setUsers, setCurrentGroup, setContent } = useContext(Context)
+  const { useLang } = useContext(InitialData);
+  const string = (ref) => useLang.getString(ref);
+
   const [userState, setUserState] = useState(user)
   const [groupState, setGroupState] = useState(group)
   const [editMode, setEditMode] = useState(false)
@@ -14,23 +18,23 @@ const ListItem = ({ user, group }) => {
   const handleDelete = (object) => object.username === undefined ? deleteGroup(object) : deleteUser(object)
 
   const saveUser = (object) => {
-    if (!window.confirm('Haluatko muuttaa pysyvästi ' + object.username + 'n tiedot')) return
+    if (!window.confirm(string('li_confirm_editperm_1') + object.username + string('li_confirm_editperm_2'))) return
     setEditMode(!editMode)
   }
   const saveGroup = (object) => {
-    if (!window.confirm('Haluatko muuttaa pysyvästi ' + object.chatName + 'n tiedot')) return
+    if (!window.confirm(string('li_confirm_editperm_1') + object.chatName + string('li_confirm_editperm_2'))) return
     setEditMode(!editMode)
   }
 
   const deleteUser = (object) => {
-    if (!window.confirm('Haluatko poistaa ' + object.username + 'n tiedot')) return
-    userService.deleteById(object._Id)
-    const updatedUsers = users.filter(u => u._Id !== object._Id)
+    if (!window.confirm(string('li_confirm_delete_1') + object.username + string('li_confirm_delete_2'))) return
+    userService.deleteById(object.user_id)
+    const updatedUsers = users.filter(u => u.user_id !== object.user_id)
     setUsers(updatedUsers)
   }
 
   const deleteGroup = (object) => {
-    if (!window.confirm('Haluatko poistaa ' + object.chatName + 'n tiedot')) return
+    if (!window.confirm(string('li_confirm_delete_1') + object.chatName + string('li_confirm_delete_2'))) return
     groupService.deleteById(object.chat_id)
     const updatedChats = chats.filter(c => c.chat_id !== object.chat_id)
     setChats(updatedChats)
@@ -43,13 +47,13 @@ const ListItem = ({ user, group }) => {
   const buttons = (object) => {
     return editMode ?
       <>
-        <button className="btn btn-sm btn-success mr-1" onClick={() => handleSave(object)}>Tallenna</button>
-        <button className="btn btn-sm btn-primary mr-1" onClick={toggleEdit}>Peru</button>
+        <button className="btn btn-sm btn-success mr-1" onClick={() => handleSave(object)}>{string('li_save')}</button>
+        <button className="btn btn-sm btn-primary mr-1" onClick={toggleEdit}>{string('li_cancel')}</button>
       </> :
       <>
         <button className="btn btn-sm btn-outline-primary mr-1"
-          onClick={() => group ? toggleMemberManagment() : toggleEdit()} >Muokkaa</button>
-        <button className="btn btn-sm btn-danger" onClick={() => handleDelete(object)}>Poista</button>
+          onClick={() => group ? toggleMemberManagment() : toggleEdit()} >{string('li_edit')}</button>
+        <button className="btn btn-sm btn-danger" onClick={() => handleDelete(object)}>{string('li_delete')}</button>
       </>
   }
 
@@ -63,10 +67,14 @@ const ListItem = ({ user, group }) => {
           <td>{editMode ?
             <select defaultValue="-" className="user-role">
               <option value="-">-</option>
-              <option value="Käyttäjä">Käyttäjä</option>
-              <option value="Ylläpitäjä">Ylläpitäjä</option>
+              <option value={string('li_opt_user')}>{string('li_opt_user')}</option>
+              <option value={string('li_opt_admin')}>{string('li_opt_admin')}</option>
             </select> :
+<<<<<<< HEAD
             'Käyttäjä'}</td>
+=======
+            string('li_opt_user')}</td>
+>>>>>>> front-strings-to-variables
           <td>{buttons(userState)}</td>
         </tr>
       </>

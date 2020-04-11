@@ -5,8 +5,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.ryhma_3.kaiku.resource_controllers.exceptions.BadUserInputException;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ResourceNotFoundException;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ValidationFailedException;
+import com.ryhma_3.kaiku.utility.Logger;
 
 @ControllerAdvice
 public class ControllerExceptionHandlers {
@@ -14,13 +16,24 @@ public class ControllerExceptionHandlers {
 	@ExceptionHandler(ValidationFailedException.class)
 	@ResponseStatus(value=HttpStatus.UNAUTHORIZED)
 	public void handleValidationFailedException(ValidationFailedException ex) {
-		System.out.println("Validation error");
+		debugger(HttpStatus.UNAUTHORIZED + " validation error");
 	}
 	
 	
 	@ExceptionHandler(ResourceNotFoundException.class)
 	@ResponseStatus(value=HttpStatus.NO_CONTENT)
 	public void handleResourceNotFoundException(ResourceNotFoundException ex) {
-		System.out.println("Resource not found");
+		debugger(HttpStatus.NO_CONTENT + " resource not found");
+	}
+	
+	@ExceptionHandler(BadUserInputException.class)
+	@ResponseStatus(value=HttpStatus.BAD_REQUEST)
+	public void handleBadUserInputException(BadUserInputException ex) {
+		debugger(HttpStatus.BAD_REQUEST + " bad user input");
+	}
+	
+	
+	private void debugger(String data) {
+		Logger.log("REST response: " +  data);
 	}
 }

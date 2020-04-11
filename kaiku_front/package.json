@@ -19,7 +19,8 @@
     "server": "json-server -p3001 db.json",
     "cypress:open": "cypress open",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix"
+    "lint:fix": "eslint --fix",
+    "server:L": "json-server -p3003 lang.json",
   },
   "eslintConfig": {
     "extends": "react-app"

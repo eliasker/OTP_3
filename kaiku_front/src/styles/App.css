@@ -132,6 +132,17 @@
   border: 1px solid #0000 !important;
 }
 
+.unread-messages {
+  margin-right: 1rem;
+  margin-top: 2rem;
+  color: rgb(240, 240,240);
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  position: absolute;
+  right: 0;
+}
+
 .chat-type p{
   margin: 0;
   padding: 0.5rem;
@@ -318,8 +329,16 @@
   cursor: pointer;
 }
 
-.message-date {
+.in-message-date {
   font-style: italic;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.out-message-date {
+  font-style: italic;
+  font-size: 12px;
+  opacity: 0.7;
 }
 
 .out-container {
@@ -859,7 +878,7 @@ input::-webkit-input-placeholder {
 .pr-user
 { background-color: #394257 !important}
 
-.txt-light, .chat-header, .user-header, .message-date, .chat-type, .profile
+.txt-light, .chat-header, .user-header, .in-message-date, .out-message-date, .chat-type, .profile
 { color: rgba(240, 240, 240, 0.9) !important }
 
 .chat-type
