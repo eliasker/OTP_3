@@ -121,6 +121,9 @@ public class LocalizationDAO extends DataAccessInit implements ILocalizationDAO 
 		setOfKeys.remove(d.get("identicator"));
 		setOfKeys.remove("_id");
 		for(String key : setOfKeys) {
+			if(key.equals("identicator")) {
+				continue;
+			}
 			toBeitems.put(key, d.getString(key));
 		}
 		return toBeitems;

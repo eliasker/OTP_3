@@ -53,13 +53,16 @@ public class UserResourceController {
 
 		String username = user.getUsername();
 		String password = user.getPassword();
+
+		boolean valid = false;
 		
 		/*
 		 * Get user with matching username from database. COmpare encrypted password with one submitted
 		 */
-
 	    UserObject userFromDb = userDAO.getUser(new UserObject(null, username, null ,null));
-		boolean valid = SecurityTools.compare(userFromDb.getPassword(), password) ? true : false;
+	    if(userFromDb!=null) {	    
+	    	valid = SecurityTools.compare(userFromDb.getPassword(), password) ? true : false;
+	    }
 		
 		if (valid) {
 			/*
