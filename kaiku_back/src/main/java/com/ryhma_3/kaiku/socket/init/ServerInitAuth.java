@@ -6,6 +6,7 @@ import com.corundumstudio.socketio.HandshakeData;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.ryhma_3.kaiku.model.database.ChatDAO;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
+import com.ryhma_3.kaiku.model.database.ILocalizationDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
 import com.ryhma_3.kaiku.model.database.IUserDAO;
 import com.ryhma_3.kaiku.model.database.MessageDAO;
@@ -36,6 +37,8 @@ public class ServerInitAuth implements IServerInit {
 	
 	private IUserDAO userDAO = null;
 	
+    private ILocalizationDAO localizationDAO = null;
+
 	/**
 	 * Default configuration, see port & hostname
 	 */
@@ -114,5 +117,15 @@ public class ServerInitAuth implements IServerInit {
 	@Override
 	public IUserDAO getUserDAO() {
 		return userDAO;
+	}
+
+	@Override
+	public void setLocalizationDAO(ILocalizationDAO localizationDAO) {
+		this.localizationDAO = localizationDAO;
+	}
+
+	@Override
+	public ILocalizationDAO getLocalizationDAO() {
+		return this.localizationDAO;
 	}
 }
