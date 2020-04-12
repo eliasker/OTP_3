@@ -18,7 +18,7 @@ const App = () => {
   const useLang = langHook(); 
 
   useEffect(()=>{
-    useLang.setLocale();
+    useLang.init()
   },[])
 
   useEffect(() => {
