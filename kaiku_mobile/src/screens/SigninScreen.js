@@ -64,11 +64,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingBottom: 100,
-    backgroundColor: '#2d3f56',
+    backgroundColor: '#1D2637',
     justifyContent: 'center'
   },
   banner: {
     width: 300,
+    height: 75,
     alignSelf: 'center',
     marginBottom: 20
   },
