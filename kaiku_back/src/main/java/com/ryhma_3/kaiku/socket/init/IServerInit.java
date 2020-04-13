@@ -2,6 +2,7 @@ package com.ryhma_3.kaiku.socket.init;
 
 import com.corundumstudio.socketio.SocketIOServer;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
+import com.ryhma_3.kaiku.model.database.ILocalizationDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
 import com.ryhma_3.kaiku.model.database.IUserDAO;
 
@@ -31,6 +32,17 @@ public interface IServerInit {
 	 */
 	IChatDAO getChatDAO();
 	
+	/**
+	 * Setup specific LocalizationDAO
+	 * @param chatDAO
+	 */
+	void setLocalizationDAO(ILocalizationDAO localizationDAO);
+	
+	/**
+	 * LocalizationDAO is configurable in initialization class.
+	 * @return ChatDAO
+	 */
+	ILocalizationDAO getLocalizationDAO();
 	
 	/**
 	 * Setup specific messageDAO

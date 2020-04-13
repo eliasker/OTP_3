@@ -6,6 +6,7 @@ import com.corundumstudio.socketio.HandshakeData;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ClientListeners;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
+import com.ryhma_3.kaiku.model.database.ILocalizationDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
 import com.ryhma_3.kaiku.model.database.IUserDAO;
 
@@ -81,6 +82,18 @@ public class ChatServerInit implements IServerInit {
 
 	@Override
 	public IUserDAO getUserDAO() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setLocalizationDAO(ILocalizationDAO localizationDAO) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ILocalizationDAO getLocalizationDAO() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
@@ -47,6 +48,7 @@ public class LocalizationDAO extends DataAccessInit implements ILocalizationDAO 
 		this.collection = mongoDatabase.getCollection("localizations");
 	}
 
+	
 	@Override
 	public synchronized LocalizationObject getLocalization(String locale) {
 		try {
@@ -75,8 +77,44 @@ public class LocalizationDAO extends DataAccessInit implements ILocalizationDAO 
 		}
 	}
 
+	
 	@Override
 	public LocalizationObject putLocalization(LocalizationObject localisation) {
+		/*
+		 * Try to find prior document
+		 */
+		try {
+			Document s = (Document)collection
+					.find(eq("identicator", localisation.getIdenticator())).first();
+			if(s != null) {
+				for(String key : s.keySet()) {
+					if(localisation.getItems().containsKey(key)){
+						s.put(key, localisation.getItems().get(key));
+					}
+				}
+					
+				UpdateResult ur = collection.updateOne(
+							eq("identicator", s.getString("identicator")), new Document("$set", s)
+						);
+								
+				s = (Document)collection
+						.find(eq("identicator", localisation.getIdenticator())).first();
+				
+				/*
+				 * find updated and return
+				 */
+				LocalizationObject res = new LocalizationObject(localisation.getIdenticator());
+				res.setItems(mappify(s));
+				return res;
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		/*
+		 * Document not found,
+		 * create new document.
+		 */
 		Document d = new Document("identicator", localisation.getIdenticator());
 		d = documentify(d, localisation.getItems());
 		try {
@@ -92,6 +130,7 @@ public class LocalizationDAO extends DataAccessInit implements ILocalizationDAO 
 		return loc;
 	}
 
+	
 	@Override
 	public boolean deleteLocalization(String locale) {
 		DeleteResult result = collection.deleteOne(eq("identicator", locale));
@@ -121,6 +160,9 @@ public class LocalizationDAO extends DataAccessInit implements ILocalizationDAO 
 		setOfKeys.remove(d.get("identicator"));
 		setOfKeys.remove("_id");
 		for(String key : setOfKeys) {
+			if(key.equals("identicator")) {
+				continue;
+			}
 			toBeitems.put(key, d.getString(key));
 		}
 		return toBeitems;

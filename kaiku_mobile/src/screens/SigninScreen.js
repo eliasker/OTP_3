@@ -1,9 +1,11 @@
 import React, { useState, useContext } from 'react'
-import { StyleSheet, View, Image, KeyboardAvoidingView } from 'react-native'
-import { Input, Text, Button } from 'react-native-elements'
+import { StyleSheet, View, Image, KeyboardAvoidingView, Text } from 'react-native'
+import { Input, Button } from 'react-native-elements'
 import { Feather } from '@expo/vector-icons'
 import { Context as AuthContext } from '../context/AuthContext'
+import { Context as LangContext } from '../context/LangContext'
 import Spacer from '../components/Spacer'
+import LanguageLink from '../components/LanguageLink'
 
 
 const showIcon = (iconName) => (
@@ -15,30 +17,38 @@ const SigninScreen = () => {
   const [password, setPassword] = useState('')
   const { logIn, state } = useContext(AuthContext)
 
+  const langMeta = useContext(LangContext).getLangMeta()
+  const { log_in, password_label, username_label } = useContext(LangContext).state.lang
+  //console.log(langMeta);
+
   const handleLogIn = () => {
     logIn({username, password})
   }
 
+  const showLanguages = () => langMeta.map(l => <LanguageLink key={l.id} id={l.id} lang={langMeta[l.id]} />)
+
   return (
-    
       <View style={styles.container}>
       <Image style={styles.banner} source={require('../image/banner.png')} />
 
       <KeyboardAvoidingView behavior='padding'>
         <Spacer>
-          <Input label="Username" inputStyle={{color: 'white'}}
+          <Input label={username_label} inputStyle={{color: 'white'}}
             value={username} onChangeText={setUsername} leftIcon={showIcon('user')}/>
         </Spacer>
         <Spacer>
-          <Input secureTextEntry label="Password" inputStyle={{color: 'white'}}
+          <Input secureTextEntry label={password_label} inputStyle={{color: 'white'}}
             value={password} onChangeText={setPassword} leftIcon={showIcon('lock')}/>
         </Spacer>
 
         {state.errorText ? <Text style={styles.error}>{state.errorText}</Text>: null}
 
         <Spacer>
-          <Button title="Sign in" type='outline' raised={true} style={{margin: 50}} onPress={handleLogIn} />
+          <Button title={log_in} type='outline' raised={true} style={{margin: 50}} onPress={handleLogIn} />
         </Spacer>
+        <View style={{flexDirection: "row", justifyContent: 'center'}}>
+          {showLanguages()}
+        </View>
       </KeyboardAvoidingView>
     </View>
   )
@@ -54,11 +64,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingBottom: 100,
-    backgroundColor: '#2d3f56',
+    backgroundColor: '#1D2637',
     justifyContent: 'center'
   },
   banner: {
     width: 300,
+    height: 75,
     alignSelf: 'center',
     marginBottom: 20
   },

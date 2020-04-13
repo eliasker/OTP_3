@@ -3,7 +3,8 @@ import { Text, View, StyleSheet } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
 import { ActivityIndicator } from 'react-native'
-import { Image, ListItem, Icon } from 'react-native-elements'
+import { Image, ListItem, Icon, Divider } from 'react-native-elements'
+import Title from '../components/Title'
 
 const data = [
   {
@@ -76,14 +77,16 @@ const IndexScreen = ({ navigation }) => {
         titleStyle={{color: 'white'}}
         subtitleStyle={{color: '#fffa'}}
       />
-      <Text style={{paddingBottom: 16, alignSelf: 'center', paddingHorizontal: 8, backgroundColor: '#3d4f64', color: '#fffa'}}>{item.username}</Text>
+      <Text style={{paddingBottom: 30, alignSelf: 'center', paddingHorizontal: 8, backgroundColor: '#3d4f64', color: '#fffa'}}>{item.username}</Text>
     </TouchableOpacity> 
   )
   
   return (
     <View style={styles.container}>
+      <Title title="Groups" backgroundColor='#3d4f64' />
       <FlatList keyExtractor={(item) => item.username} data={data} renderItem={({ item }) => renderGroup(item)}
         horizontal={true} showsHorizontalScrollIndicator={false} style={styles.rowList}/>
+      <Title title="Users" backgroundColor='#45566b' />
       <FlatList keyExtractor={(item) => item.username} data={data} renderItem={({ item }) => renderUser(item)} />
     </View>
   )
@@ -96,12 +99,14 @@ IndexScreen.navigationOptions = ({ navigation }) => {
       <Feather name='menu' style={styles.menu} />
     </TouchableOpacity>),
     title: 'Kaiku',
-    headerStyle: {
-      backgroundColor: '#2d3f54',
-    },
-    headerTintColor: '#fffc',
+    headerTintColor: '#fff',
     headerTitleStyle: {
       fontWeight: 'bold',
+    },
+    headerStyle: {
+      backgroundColor: '#3d4f64',
+      elevation: 0, // remove shadow on Android
+      shadowOpacity: 0, // remove shadow on iOS
     },
   }
 }

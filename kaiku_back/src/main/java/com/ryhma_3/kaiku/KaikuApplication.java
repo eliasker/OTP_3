@@ -9,8 +9,10 @@ import com.ryhma_3.kaiku.model.database.AdminDAO;
 import com.ryhma_3.kaiku.model.database.ChatDAO;
 import com.ryhma_3.kaiku.model.database.IAdminDAO;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
+import com.ryhma_3.kaiku.model.database.ILocalizationDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
 import com.ryhma_3.kaiku.model.database.IUserDAO;
+import com.ryhma_3.kaiku.model.database.LocalizationDAO;
 import com.ryhma_3.kaiku.model.database.MessageDAO;
 import com.ryhma_3.kaiku.model.database.UserDAO;
 import com.ryhma_3.kaiku.socket.init.IServerInit;
@@ -31,6 +33,7 @@ public class KaikuApplication {
 	static IMessageDAO messageDAO = null;
 	static IUserDAO userDAO = null;
     static IAdminDAO adminDAO = null;
+    static ILocalizationDAO localizationDAO = null;
 	
 	public static void main(String[] args) {
 		commandLineSetup();
@@ -80,6 +83,7 @@ public class KaikuApplication {
             adminDAO = new AdminDAO();
 			messageDAO = new MessageDAO();
 			chatDAO = new ChatDAO();
+            localizationDAO = new LocalizationDAO();
 			init = new ServerInitNoAuth();
 			server = new Server(init);
 			return;
@@ -102,10 +106,12 @@ public class KaikuApplication {
         adminDAO = new AdminDAO(URI);
 		messageDAO = new MessageDAO(URI);
 		chatDAO = new ChatDAO(URI);
+        localizationDAO = new LocalizationDAO(URI);
 
 		init.setChatDAO(chatDAO);
 		init.setMessageDAO(messageDAO);
 		init.setUserDAO(userDAO);
+        init.setLocalizationDAO(localizationDAO);
 		
 		server = new Server(init);
 	
@@ -146,5 +152,13 @@ public class KaikuApplication {
 	public static IServer getServer() {
 		return server;
 	}
+
+    public static ILocalizationDAO getLocalizationDAO() {
+        return localizationDAO;
+    }
+
+    public static void setLocalizationDAO(ILocalizationDAO localizationDAO) {
+        KaikuApplication.localizationDAO = localizationDAO;
+    }
 	
 }

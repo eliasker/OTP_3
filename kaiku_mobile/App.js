@@ -1,19 +1,24 @@
 import React from 'react'
 import {  createAppContainer, createSwitchNavigator } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
-import { createDrawerNavigator } from 'react-navigation-drawer';
-import { Provider } from './src/context/AuthContext'
+import { createDrawerNavigator } from 'react-navigation-drawer'
+import { Provider as AuthProvider } from './src/context/AuthContext'
+import { Provider as LangProvider } from './src/context/LangContext'
 import { setNavigator } from './src/navigationRef'
 import { ThemeProvider } from 'react-native-elements'
+import { Feather } from '@expo/vector-icons'
 
 import IndexScreen from './src/screens/IndexScreen'
 import ChatScreen from './src/screens/ChatScreen'
 import SigninScreen from './src/screens/SigninScreen'
 import LoadingScreen from './src/screens/LoadingScreen'
 import LogoutHandler from './src/components/LogoutHandler'
-import SettingsScreen from './src/screens/SettingsScreen';
-import AccountScreen from './src/screens/AccountScreen';
-import CustomDrawer from './src/components/CustomDrawer';
+import AccountScreen from './src/screens/AccountScreen'
+import CustomDrawer from './src/components/CustomDrawer'
+import LanguageScreen from './src/screens/settings/LanguageScreen'
+import HelpScreen from './src/screens/settings/HelpScreen'
+import ChangeNameForm from './src/screens/settings/ChangeNameForm'
+import ChangePasswordForm from './src/screens/settings/ChangePasswordForm'
 
 
 const switchNavigator = createSwitchNavigator({
@@ -22,20 +27,44 @@ const switchNavigator = createSwitchNavigator({
     Signin: SigninScreen,
   }),
   mainFlow: createDrawerNavigator({
-    Home: createStackNavigator({
-      Index: IndexScreen,
-      Chat: ChatScreen,
-      
-    }),
-    Settings: createStackNavigator({
-      settings: SettingsScreen, 
-    }),
-    Account: createStackNavigator({
-      account: AccountScreen,
-    }),
-    Logout: LogoutHandler,
+    Home: {
+      screen: createStackNavigator({
+        Index: IndexScreen,
+        Chat: ChatScreen,
+      }),
+      navigationOptions: {
+        drawerLabel: 'Home',
+        drawerIcon: ({ tintColor }) => (
+          <Feather name="home" size={24} style={{ color: tintColor }} />
+        ),
+      },
+    },
+    Account: {
+      screen: createStackNavigator({
+        account: AccountScreen,
+        language: LanguageScreen,
+        nameForm: ChangeNameForm,
+        passwordForm: ChangePasswordForm,
+        help: HelpScreen
+      }),
+      navigationOptions: {
+        drawerLabel: 'Account',
+        drawerIcon: ({ tintColor }) => (
+          <Feather name="user" size={24} style={{ color: tintColor }} />
+        ),
+      },
+    },
+    Logout: {
+      screen: LogoutHandler,
+      navigationOptions: {
+        drawerLabel: 'Log out',
+        drawerIcon: ({ tintColor }) => (
+          <Feather name="log-out" size={24} style={{ color: tintColor }} />
+        ),
+      },
+    },
   }, {
-    drawerBackgroundColor: '#1d2f44',
+    drawerBackgroundColor: '#1D2637',
     contentComponent: CustomDrawer
   })
 })
@@ -50,10 +79,12 @@ const theme = {
 
 export default () => {
   return(
-    <Provider>
-      <ThemeProvider theme={theme}>
-        <App theme="dark" ref={(navigator) => {setNavigator(navigator)} } />
-      </ThemeProvider>
-    </Provider>
+    <AuthProvider>
+      <LangProvider>
+        <ThemeProvider theme={theme}>
+          <App theme="dark" ref={(navigator) => {setNavigator(navigator)} } />
+        </ThemeProvider>
+      </LangProvider>
+    </AuthProvider>
   )
 }
