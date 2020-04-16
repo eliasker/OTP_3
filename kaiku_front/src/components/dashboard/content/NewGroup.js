@@ -14,7 +14,8 @@ const NewGroup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     const memberList = addedList.map(u => u.user_id)
-    if (!window.confirm(string('dash_confirm_creategroup_1') + newGroup.chatName + string('dash_confirm_creategroup_2'))) return
+    //if (!window.confirm(string('dash_confirm_creategroup_1') + newGroup.chatName + string('dash_confirm_creategroup_2'))) return
+    if (!window.confirm(string('dash_confirm_creategroup_1') + newGroup.chatName)) return
     await groupService.create({ ...newGroup, members: memberList, type: 'group' })
     setContent('g/all')
   }
