@@ -1,5 +1,6 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:8080/api/chats'
+import config from '../util/config'
+const BASEURI = config.BASEURI
 
 const configAsAdmin = {
   headers: {
@@ -14,8 +15,7 @@ const configAsAdmin = {
  */
 const getAllByID = async (user_id, token) => {
   try {
-    const requestString = baseUrl + `/?user_id=${user_id}`
-    const response = await axios.get(baseUrl + `/?user_id=${user_id}`, { headers: { Authorization: token } })
+    const response = await axios.get(`${BASEURI}api/chats/?user_id=${user_id}`, { headers: { Authorization: token } })
     return response.data
   } catch (e) {
     console.log('error: ', e)
@@ -25,7 +25,7 @@ const getAllByID = async (user_id, token) => {
 
 const getAllChats = async () => {
   try {
-    const response = await axios.get(baseUrl + '/?user_id', configAsAdmin)
+    const response = await axios.get(`${BASEURI}api/chats/?user_id`, configAsAdmin)
     return response.data
   } catch (e) {
     console.log('error: ', e)
@@ -34,17 +34,17 @@ const getAllChats = async () => {
 
 
 const create = newObject => {
-  const request = axios.post(baseUrl, newObject, configAsAdmin)
+  const request = axios.post(`${BASEURI}api/chats`, newObject, configAsAdmin)
   return request.then(response => response.data)
 }
 
 const update = (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject, configAsAdmin)
+  const request = axios.put(`${BASEURI}api/chats/${id}`, newObject, configAsAdmin)
   return request.then(response => response.data)
 }
 
 const deleteById = (id) => {
-  axios.delete(`${baseUrl}/?chat_id=${id}`, configAsAdmin)
+  axios.delete(`${BASEURI}api/chats/?chat_id=${id}`, configAsAdmin)
 }
 
 

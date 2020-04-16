@@ -1,14 +1,15 @@
 import axios from 'axios'
+import config from '../util/config'
+
 const jsonBaseUrl = 'http://localhost:3001/lang';
-const baseUrl = 'http://localhost:8080/'
+const BASEURI = config.BASEURI
 
 //get lang pack from server  && store & return
 const setLangPack = async (reference) => {
   try{
     const response = await axios.get(
-      `${baseUrl}api/locale/?identicator=${reference}`
+      `${BASEURI}api/locale/?identicator=${reference}`
       )
-
       updateStorage(response.data)
       return response.data
   } catch(e){
