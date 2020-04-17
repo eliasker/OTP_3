@@ -1,5 +1,5 @@
 import React from 'react'
-import {  createAppContainer, createSwitchNavigator } from 'react-navigation'
+import { createAppContainer, createSwitchNavigator } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 import { createDrawerNavigator } from 'react-navigation-drawer'
 import { Provider as AuthProvider } from './src/context/AuthContext'
@@ -19,7 +19,6 @@ import LanguageScreen from './src/screens/settings/LanguageScreen'
 import HelpScreen from './src/screens/settings/HelpScreen'
 import ChangeNameForm from './src/screens/settings/ChangeNameForm'
 import ChangePasswordForm from './src/screens/settings/ChangePasswordForm'
-
 
 const switchNavigator = createSwitchNavigator({
   Loading: LoadingScreen,
@@ -70,7 +69,7 @@ const switchNavigator = createSwitchNavigator({
 })
 
 const App = createAppContainer(switchNavigator)
-
+console.log('hello world')
 const theme = {
   colors: {
     primary: '#4d5f76'
@@ -78,11 +77,11 @@ const theme = {
 }
 
 export default () => {
-  return(
+  return (
     <AuthProvider>
       <LangProvider>
         <ThemeProvider theme={theme}>
-          <App theme="dark" ref={(navigator) => {setNavigator(navigator)} } />
+          <App theme="dark" ref={(navigator) => { setNavigator(navigator) }} />
         </ThemeProvider>
       </LangProvider>
     </AuthProvider>

@@ -380,12 +380,11 @@ public class SecurityTools {
 				}
 				operatingTokens = true;
 				
-				//Find and destroy token
-				Iterator<Token> iterator = tokenDataStore.iterator();
-				while(iterator.hasNext()) {
+				//Find and destroy token				
+				for(Iterator<Token> iterator = tokenDataStore.iterator(); iterator.hasNext();) {
 					Token token = iterator.next();
 					if(token.getUser_id().equals(user_id)) {
-						tokenDataStore.remove(token);
+						iterator.remove();
 					}
 				}
 				
