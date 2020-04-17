@@ -7,6 +7,7 @@ import HelpPanel from './help/HelpPanel'
 import useChatHook from '../hooks/useChatHook'
 
 import Karvalakki from './debugTool/Karvalakki'
+import Settings from './Settings'
 
 const Chat = () => {
   const { createChat, sendMessage, incMessageData, newChatData } = useContext(InitialData)
@@ -25,6 +26,7 @@ const Chat = () => {
             <ChatColumn profileState={{ displayProfile, setDisplayProfile }} currentChat={currentChat} userState={{ displayUser, setDisplayUser }} />
           </div>
           <HelpPanel />
+          <Settings />
         </div>
         <button onClick={() => setDisplayKarvalakki(!displayKarvalakki)}>Toggle Karvalakki :D</button>
         {displayKarvalakki ? <Karvalakki /> : null}
