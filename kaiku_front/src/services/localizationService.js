@@ -1,7 +1,6 @@
 import axios from 'axios'
 import config from '../util/config'
 
-const jsonBaseUrl = 'http://localhost:3001/lang';
 const BASEURI = config.BASEURI
 
 //get lang pack from server  && store & return
@@ -22,7 +21,12 @@ const getCurrentLangPack = () => {
   return data;
 }
 
-export default { setLangPack, getCurrentLangPack }
+
+const getPackIdenticators = () => {
+  return ["fi-FI", "en-EN"]
+}
+
+export default { setLangPack, getCurrentLangPack, getPackIdenticators }
 
 
 //**********************************************************************/
