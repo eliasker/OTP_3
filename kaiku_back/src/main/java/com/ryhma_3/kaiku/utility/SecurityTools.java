@@ -3,6 +3,7 @@ package com.ryhma_3.kaiku.utility;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.UUID;
 
 import org.jasypt.util.password.BasicPasswordEncryptor;
@@ -332,7 +333,6 @@ public class SecurityTools {
 	public static boolean attachSessionToToken(String tokenString, UUID sessionID) {
 		synchronized (lock) {
 			try {
-
 				//wait for monitor
 				while(operatingTokens){
 					lock.wait();
@@ -380,9 +380,16 @@ public class SecurityTools {
 				}
 				operatingTokens = true;
 				
-				tokenDataStore.remove(getCloneOfToken(user_id));
+				//Find and destroy token
+				Iterator<Token> iterator = tokenDataStore.iterator();
+				while(iterator.hasNext()) {
+					Token token = iterator.next();
+					if(token.getUser_id().equals(user_id)) {
+						tokenDataStore.remove(token);
+					}
+				}
 				
-				releaseObjectLock("removed token", false);
+				releaseObjectLock("removed token", true);
 				return true;
 				
 			}catch(Exception e) {

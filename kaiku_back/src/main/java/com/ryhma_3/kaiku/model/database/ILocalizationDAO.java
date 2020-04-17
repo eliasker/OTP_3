@@ -1,5 +1,8 @@
 package com.ryhma_3.kaiku.model.database;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import com.ryhma_3.kaiku.model.cast_object.LocalizationObject;
 
 public interface ILocalizationDAO {
@@ -10,6 +13,14 @@ public interface ILocalizationDAO {
 	 * @return {@link LocalizationObject}
 	 */
 	public LocalizationObject getLocalization(String locale);
+	
+	
+	/**
+	 * Collect identicators from all localization packs and return them as a ArrayList of Strings
+	 * @return Identifiers {@link ArrayList}
+	 */
+	public ArrayList<String> getLocalizationIdenticators();
+	
 	
 	/**
 	 * Add new localization obj to database
