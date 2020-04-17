@@ -1,5 +1,6 @@
 package com.ryhma_3.kaiku.model.database;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -76,6 +77,26 @@ public class LocalizationDAO extends DataAccessInit implements ILocalizationDAO 
 			}
 		}
 	}
+	
+	
+	@Override
+	public ArrayList<String> getLocalizationIdenticators() {
+		ArrayList<String> identicators = new ArrayList<>();
+		MongoCursor<Document> iterator = collection.find().iterator();
+		
+		try {
+			while(iterator.hasNext()) {
+				Document d = iterator.next();
+				identicators.add(d.getString("identicator"));
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			iterator.close();
+		}
+		
+		return identicators;
+	}
 
 	
 	@Override
@@ -147,6 +168,7 @@ public class LocalizationDAO extends DataAccessInit implements ILocalizationDAO 
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 	
 	
 	/**
@@ -187,4 +209,5 @@ public class LocalizationDAO extends DataAccessInit implements ILocalizationDAO 
 	private void debugger(String data) {
 		Logger.log("LocalizationDAO: " + data);
 	}
+
 }
