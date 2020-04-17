@@ -74,7 +74,6 @@ public class UserDAO extends DataAccessInit implements IUserDAO {
 
 	@Override
 	public synchronized boolean deleteUser(UserObject userObject) {
-        System.out.println(userObject.getUsername());
 		DeleteResult result = collection.deleteOne(eq("_id", new ObjectId(userObject.getUser_id())));
         if (result.getDeletedCount() > 0) {
             System.out.println("deleted");

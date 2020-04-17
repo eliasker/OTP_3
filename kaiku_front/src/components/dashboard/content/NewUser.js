@@ -15,7 +15,11 @@ const NewUser = () => {
   const { loggedUser } = useContext(InitialData)
   const { useLang } = useContext(InitialData);
   const string = (ref) => useLang.getString(ref);
-
+  const adminHeader = {
+    headers: {
+      Authorization: loggedUser.token
+    }
+  }
 
   const generateUser = () => {
     const nounIndex = Math.floor(Math.random() * nouns.length)
@@ -37,12 +41,12 @@ const NewUser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     console.log(loggedUser.token)
-    const adminHeader = {
-      headers: {
-        Authorization: loggedUser.token
-      }
-    }
-    await userService.createUser(username, password, name, adminHeader)
+    await userService.createUser(
+      username,
+      password,
+      name,
+      { headers: { Authorization: loggedUser.token } }
+    )
     setContent('u/all')
   }
 

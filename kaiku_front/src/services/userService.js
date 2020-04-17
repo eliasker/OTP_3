@@ -28,8 +28,21 @@ const getAllUsers = async (token) => {
   return result.data;
 }
 
-const deleteById = (id) => {
-  axios.delete(`${baseUrl}/?user_id=${id}`, configAsAdmin)
+const deleteById = (id, token) => {
+  const user = {
+    id,
+    username: null,
+    password: null,
+    name: null
+  }
+  const result = axios.delete(`${baseUrl}/${id}`,
+    {
+    headers: {
+      Authorization: token
+    }
+  }
+  )
+  return result
 }
 
 export default { update, createUser, getAllUsers, deleteById }

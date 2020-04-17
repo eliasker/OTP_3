@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -247,13 +249,17 @@ public class UserResourceController {
 	 * @param user_id
 	 * @return boolan
 	 */
-	@RequestMapping(value="/api/users/**", method=RequestMethod.DELETE)
+	@RequestMapping(value="/api/users/{user_id}", method=RequestMethod.DELETE)
 	public boolean deleteUser(
 			@RequestHeader("Authorization") String token,
-			@RequestParam String user_id){
+			@PathVariable String user_id){
 		debugger("delete user");
 		
-		boolean valid = token.equals("kaiku");
+        // boolean valid = true;
+		// boolean valid = token.equals("kaiku");
+        boolean valid = adminDAO.getId((SecurityTools.getCloneOfToken(token).getUser_id()));
+        // String user_id = userObject.getUser_id();
+        // String user_id = userObject;
 		
 		if(valid) {
 			

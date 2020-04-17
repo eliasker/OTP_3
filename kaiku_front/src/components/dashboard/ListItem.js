@@ -6,7 +6,7 @@ import userService from '../../services/userService'
 
 const ListItem = ({ user, group }) => {
   const { chats, setChats, users, setUsers, setCurrentGroup, setContent } = useContext(Context)
-  const { useLang } = useContext(InitialData);
+  const { useLang, loggedUser } = useContext(InitialData);
   const string = (ref) => useLang.getString(ref);
 
   const [userState, setUserState] = useState(user)
@@ -15,7 +15,7 @@ const ListItem = ({ user, group }) => {
   const toggleEdit = () => setEditMode(!editMode)
 
   const handleSave = (object) => object.username === undefined ? saveGroup(object) : saveUser(object)
-  const handleDelete = (object) => object.username === undefined ? deleteGroup(object) : deleteUser(object)
+  const handleDelete = (object) => object.username === undefined ? deleteGroup(object) : deleteUser(object, loggedUser.token)
 
   const saveUser = (object) => {
     if (!window.confirm(string('li_confirm_editperm_1') + object.username + string('li_confirm_editperm_2'))) return
@@ -26,9 +26,9 @@ const ListItem = ({ user, group }) => {
     setEditMode(!editMode)
   }
 
-  const deleteUser = (object) => {
+  const deleteUser = (object, token) => {
     if (!window.confirm(string('li_confirm_delete_1') + object.username + string('li_confirm_delete_2'))) return
-    userService.deleteById(object.user_id)
+    userService.deleteById(object.user_id, token)
     const updatedUsers = users.filter(u => u.user_id !== object.user_id)
     setUsers(updatedUsers)
   }
