@@ -8,7 +8,7 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.3.0",
+    "react-scripts": "3.4.0",
     "socket.io-client": "^2.3.0"
   },
   "scripts": {
@@ -38,7 +38,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
-    "cypress": "^4.0.2",
+    "cypress": "^4.4.0",
     "json-server": "^0.15.1"
   }
 }

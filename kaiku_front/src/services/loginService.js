@@ -1,10 +1,11 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:8080/'
+import config from '../util/config'
+const BASEURI = config.BASEURI
 
 const login = async (username, password) => {
   try {
     const response = await axios.post(
-      baseUrl + 'api/users/' + username,
+      BASEURI + 'api/users/' + username,
       {
         username,
         password

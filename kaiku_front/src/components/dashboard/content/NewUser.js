@@ -35,8 +35,16 @@ const NewUser = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    await userService.createUser(username, password, name)
-    setContent('u/all')
+    if (password === rePassword) {
+      await userService.createUser(username, password, name)
+      setContent('u/all')
+    } else {
+      // TODO: add string
+      alert('passwords not matching')
+      setPassword('')
+      setRePassword('')
+      return
+    }
   }
 
   return (

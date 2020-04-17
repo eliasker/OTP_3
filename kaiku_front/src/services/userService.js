@@ -1,5 +1,6 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:8080/api/users'
+import config from '../util/config'
+const BASEURI = config.BASEURI
 
 const configAsAdmin = {
   headers: {
@@ -8,7 +9,7 @@ const configAsAdmin = {
 }
 
 const update = (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject)
+  const request = axios.put(`${BASEURI}api/users/${id}`, newObject)
   return request.then(response => response.data)
 }
 
@@ -19,17 +20,17 @@ const createUser = async (username, password, name) => {
     password,
     name
   }
-  const result = await axios.post(baseUrl, user, configAsAdmin)
+  const result = await axios.post(`${BASEURI}api/users`, user, configAsAdmin)
   return result.data;
 }
 
 const getAllUsers = async (token) => {
-  const result = await axios.get(baseUrl, configAsAdmin)
+  const result = await axios.get(`${BASEURI}api/users`, configAsAdmin)
   return result.data;
 }
 
 const deleteById = (id) => {
-  axios.delete(`${baseUrl}/?user_id=${id}`, configAsAdmin)
+  axios.delete(`${BASEURI}api/users/?user_id=${id}`, configAsAdmin)
 }
 
 export default { update, createUser, getAllUsers, deleteById }
