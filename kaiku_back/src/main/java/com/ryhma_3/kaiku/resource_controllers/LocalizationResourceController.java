@@ -23,6 +23,8 @@ import com.ryhma_3.kaiku.utility.SecurityTools;
 
 import static com.ryhma_3.kaiku.utility.Logger.log;
 
+import java.util.ArrayList;
+
 /**
  * LocalizationResourceController
  */
@@ -39,6 +41,17 @@ public class LocalizationResourceController {
         LocalizationObject locale = localizationDAO.getLocalization(identicator);
         if (locale != null)
             return locale;
+
+        throw new ResourceNotFoundException();
+    }
+
+    @RequestMapping(value = "/api/locale/indicators", method = RequestMethod.GET)
+    public ArrayList<String> getLocaleIndicators() {
+        log("REST: Localization indicators GET request");
+
+        ArrayList<String> indicators = localizationDAO.getLocalizationIdenticators();
+        if (localizationDAO != null)
+            return indicators;
 
         throw new ResourceNotFoundException();
     }

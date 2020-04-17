@@ -269,7 +269,7 @@ public class UserResourceController {
 					chatDAO.deleteChatObject(c);
 				}
 				
-				//if chat has over 2 members
+//				if chat has over 2 members
 				List<String> old = Arrays.asList(c.getMembers());
 				List<String> updated = 
 						old.stream()
@@ -285,7 +285,6 @@ public class UserResourceController {
 			if(!success) {
 				throw new ResourceNotFoundException();
 			}
-			
 			return success;
 		}
 		
