@@ -7,9 +7,13 @@ const Settings = () => {
   const string = (ref) => useLang.getString(ref)
   const [identicators, setIdenticators] = useState([]);
 
-  useEffect(() => {
-    setIdenticators(() => localizationService.getPackIdenticators())
-  }, [])
+  useEffect(() => {  
+    async function load () {
+      const data = localizationService.getPackIdenticators();
+      setIdenticators(await data);
+    }
+    load();
+  }, [])  
 
   return(
     <>
@@ -32,8 +36,8 @@ const Buttons = ({list, useLang}) => {
 
   const handleLangChange = (ref) => {
     useLang.setLocale(ref)
-  }
-
+  }  
+  
   return(
     <ul>
       {

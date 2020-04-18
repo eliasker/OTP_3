@@ -22,8 +22,14 @@ const getCurrentLangPack = () => {
 }
 
 
-const getPackIdenticators = () => {
-  return ["fi-FI", "en-EN"]
+const getPackIdenticators = async () => {
+  try {
+    const result = await axios.get(
+      BASEURI + 'api/locale/indicators'
+    )
+
+    return result.data;
+  } catch(e){}
 }
 
 export default { setLangPack, getCurrentLangPack, getPackIdenticators }
