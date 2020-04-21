@@ -8,7 +8,7 @@ const SocketService = () => {
   const [newChatData, setNewChatData] = useState(null)
 
   const createSocketConnection = (token, id) => {
-    const socketUrl = 'http://10.114.32.19:8083';
+    const socketUrl = 'http://localhost:9991';
     loggedUserID = id
 
     socketRef.current = socketIOClient.connect(
