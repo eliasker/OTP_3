@@ -25,7 +25,7 @@ import com.ryhma_3.kaiku.utility.SecurityTools;
 public class KaikuApplication {
 	
 	static IServerInit init = null;
-	static Server server = null;
+	static IServer server = null;
 	
 	static IChatDAO chatDAO = null;
 	static IMessageDAO messageDAO = null;
@@ -33,8 +33,18 @@ public class KaikuApplication {
     static ILocalizationDAO localizationDAO = null;
 	
 	public static void main(String[] args) {
-		commandLineSetup();
-				
+		Object[] objs = new Object[] {chatDAO, messageDAO, userDAO, localizationDAO, server, init};
+		
+		//run boot setup
+		objs = BootApp.run(objs);
+		
+		chatDAO = (IChatDAO) objs[0];
+		messageDAO = (IMessageDAO) objs[1];
+		userDAO = (IUserDAO) objs[2];
+		localizationDAO = (ILocalizationDAO) objs[3];
+		server = (IServer) objs[4];
+		init = (IServerInit) objs[5];
+						
 		initializeState();
 
 		SpringApplication.run(KaikuApplication.class, args);
@@ -57,75 +67,6 @@ public class KaikuApplication {
 		}
 	}
 
-
-	/**
-	 * Input launch parameters
-	 * IMPORTANT: needs to run before launching spring app
-	 */
-	private static void commandLineSetup() {
-		Scanner scanner = new Scanner(System.in);
-		
-		System.out.println("Setup");
-		
-		
-		//select init
-		System.out.println("Select init with or without autentication checks");
-		System.out.println("1: no auth");
-		System.out.println("2: auth");
-		System.out.println("3: no auth / Enter hostname and port manually");
-		System.out.println("just enter to skip setup");
-		String select = scanner.nextLine();
-		
-		if(select.equals("")) {
-			userDAO = new UserDAO();
-			messageDAO = new MessageDAO();
-			chatDAO = new ChatDAO();
-            localizationDAO = new LocalizationDAO();
-			init = new ServerInitNoAuth();
-			server = new Server(init);
-			return;
-		}
-		
-		System.out.println("Give your mongodb URI with username and password:");
-		String URI = scanner.next();
-		
-		if(select.equals("1")) {
-			init = new ServerInitNoAuth();
-		} else if(select.equals("2")) {
-			init = new ServerInitAuth();
-		} else if(select.equals("3")) {
-			System.out.println("Hostname...");
-			String hn = scanner.next();
-			
-			System.out.println("Port...");
-			String p = scanner.next();
-			int port = Integer.parseInt(p);
-			
-			init = new ServerInitAuth(port, hn);
-			
-		} else {
-			System.out.println("bad input");
-			System.exit(-1);
-		}
-		
-		
-		userDAO = new UserDAO(URI);
-		messageDAO = new MessageDAO(URI);
-		chatDAO = new ChatDAO(URI);
-        localizationDAO = new LocalizationDAO(URI);
-
-		init.setChatDAO(chatDAO);
-		init.setMessageDAO(messageDAO);
-		init.setUserDAO(userDAO);
-        init.setLocalizationDAO(localizationDAO);
-		
-		server = new Server(init);
-	
-		//end info
-		System.out.println("Server will run locally, with:");
-		System.out.println("socket in port: " + init.getSocketServer().getConfiguration().getPort());
-		System.out.println("Spring rest in port: 8080");;
-	}
 	
 	/**
 	 * @return UserDAO
@@ -156,8 +97,4 @@ public class KaikuApplication {
         return localizationDAO;
     }
 
-    public static void setLocalizationDAO(ILocalizationDAO localizationDAO) {
-        KaikuApplication.localizationDAO = localizationDAO;
-    }
-	
 }
