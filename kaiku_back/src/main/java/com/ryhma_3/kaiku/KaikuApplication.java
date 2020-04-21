@@ -72,6 +72,7 @@ public class KaikuApplication {
 		System.out.println("Select init with or without autentication checks");
 		System.out.println("1: no auth");
 		System.out.println("2: auth");
+		System.out.println("3: no auth / Enter hostname and port manually");
 		System.out.println("just enter to skip setup");
 		String select = scanner.nextLine();
 		
@@ -92,6 +93,16 @@ public class KaikuApplication {
 			init = new ServerInitNoAuth();
 		} else if(select.equals("2")) {
 			init = new ServerInitAuth();
+		} else if(select.equals("3")) {
+			System.out.println("Hostname...");
+			String hn = scanner.next();
+			
+			System.out.println("Port...");
+			String p = scanner.next();
+			int port = Integer.parseInt(p);
+			
+			init = new ServerInitAuth(port, hn);
+			
 		} else {
 			System.out.println("bad input");
 			System.exit(-1);
