@@ -9,7 +9,7 @@ const SocketService = () => {
   const [newChatData, setNewChatData] = useState(null)
 
   const createSocketConnection = (token, id) => {
-    const socketUrl = config.BASEURI;
+    const socketUrl = config.SOCKETURI;
     loggedUserID = id
 
     socketRef.current = socketIOClient.connect(
