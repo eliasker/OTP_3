@@ -26,6 +26,9 @@ public class AdminDAO extends DataAccessInit implements IAdminDAO {
     private MongoDatabase mongoDatabase;
     private MongoCollection collection;
 
+    /**
+     * Creates database collection for admins if it does not alreay exist.
+     */
     public AdminDAO() {
         this.connString = new ConnectionString(getMongoURI("mongoCredentials.txt"));
         this.mongoClient = MongoClients.create(connString);
@@ -40,6 +43,10 @@ public class AdminDAO extends DataAccessInit implements IAdminDAO {
         }
     }
     
+    /**
+     * Creates database collection for admins if it does not alreay exist.
+     * @param URI The URI of the external database.
+     */
     public AdminDAO(String URI) {
     	this.connString = new ConnectionString(URI);
         this.mongoClient = MongoClients.create(connString);
@@ -53,6 +60,7 @@ public class AdminDAO extends DataAccessInit implements IAdminDAO {
             
         }
     }
+
 	@Override
 	public boolean addId(String id) {
         try {
