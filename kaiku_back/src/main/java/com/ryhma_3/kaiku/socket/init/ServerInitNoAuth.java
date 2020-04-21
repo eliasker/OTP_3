@@ -61,7 +61,7 @@ public class ServerInitNoAuth implements IServerInit {
 		Configuration config = new Configuration();
 		config.setHostname(hostname);
 		config.setPort(port);
-		config.setOrigin("*");
+		config.setOrigin("http://" + hostname + ":" + port);
 		
 		//confirm not null
 		chatDAO = chatDAO == null ? new ChatDAO() : chatDAO;
