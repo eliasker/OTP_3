@@ -59,8 +59,9 @@ public class ServerInitNoAuth implements IServerInit {
 	 */
 	public SocketIOServer getSocketServer() {
 		Configuration config = new Configuration();
-		//config.setHostname(hostname);
+		config.setHostname(hostname);
 		config.setPort(port);
+		config.setOrigin("http://localhost:3000");
 		
 		//confirm not null
 		chatDAO = chatDAO == null ? new ChatDAO() : chatDAO;

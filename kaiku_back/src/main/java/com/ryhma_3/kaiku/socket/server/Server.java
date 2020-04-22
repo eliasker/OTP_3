@@ -258,7 +258,7 @@ public class Server implements IServer {
 		
 		server.start();
 		
-		debugger("server started", true);
+		debugger("server started: " + server.getConfiguration().getPort() + " - " + server.getConfiguration().getHostname(), true);
 	}
 	
 	
