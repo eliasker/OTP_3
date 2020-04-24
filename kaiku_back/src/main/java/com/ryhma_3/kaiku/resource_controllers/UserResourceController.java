@@ -146,10 +146,11 @@ public class UserResourceController {
 		/*
 		 * Compare token and token storage
 		 */
-		// boolean valid = token.equals("kaiku");
+        System.out.println(SecurityTools.getCloneOfToken(token).getUser_id());
         boolean valid = adminDAO.getId((SecurityTools.getCloneOfToken(token).getUser_id()));
 		
-		if(valid) {
+                    // TODO: remove for a better debug token system
+		if(valid || token.equals("kaiku")) {
 			
 			/*
 			 * enrcypt password
@@ -255,13 +256,10 @@ public class UserResourceController {
 			@PathVariable String user_id){
 		debugger("delete user");
 		
-        // boolean valid = true;
-		// boolean valid = token.equals("kaiku");
         boolean valid = adminDAO.getId((SecurityTools.getCloneOfToken(token).getUser_id()));
-        // String user_id = userObject.getUser_id();
-        // String user_id = userObject;
 		
-		if(valid) {
+                    // TODO: remove for a better debug token system
+		if(valid || token.equals("kaiku")) {
 			
 			debugger("id: " + user_id);
 			

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import TopNav from './TopNav'
 import Menu from './Menu'
 import Content from './content/Content'
 import Context from '../../providers/Context'
 import groupService from '../../services/groupService'
+import InitialData from '../../providers/InitialData'
 import userService from '../../services/userService'
 
 const DashBoard = () => {
@@ -11,10 +12,11 @@ const DashBoard = () => {
   const [currentGroup, setCurrentGroup] = useState({})
   const [chats, setChats] = useState([])
   const [users, setUsers] = useState([])
+  const { loggedUser } = useContext(InitialData)
 
   useEffect(() => {
     (async () => {
-      const groups = await groupService.getAllChats()
+      const groups = await groupService.getAllChats(loggedUser.token)
       setChats(groups)
     })()
   }, [content])

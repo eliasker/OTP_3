@@ -23,9 +23,12 @@ const getAllByID = async (user_id, token) => {
 }
 
 
-const getAllChats = async () => {
+const getAllChats = async (token) => {
   try {
-    const response = await axios.get(`${BASEURI}api/chats/?user_id`, configAsAdmin)
+    const response = await axios.get(
+      `${BASEURI}api/chats/?user_id`,
+      { headers: { Authorization: token } }
+    )
     return response.data
   } catch (e) {
     console.log('error: ', e)
@@ -33,8 +36,12 @@ const getAllChats = async () => {
 }
 
 
-const create = newObject => {
-  const request = axios.post(`${BASEURI}api/chats`, newObject, configAsAdmin)
+const create = (newObject, token) => {
+  const request = axios.post(
+    `${BASEURI}api/chats`,
+    newObject,
+    { headers: { Authorization: token } }
+  )
   return request.then(response => response.data)
 }
 

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ryhma_3.kaiku.KaikuApplication;
 import com.ryhma_3.kaiku.model.cast_object.ChatObject;
+import com.ryhma_3.kaiku.model.database.IAdminDAO;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ResourceNotFoundException;
@@ -26,6 +27,7 @@ import com.ryhma_3.kaiku.utility.SecurityTools;
 public class ChatResourceController {
 	private IChatDAO chatDAO = KaikuApplication.getChatDAO();
 	private IMessageDAO messageDAO = KaikuApplication.getMessageDAO();
+    private IAdminDAO adminDAO = KaikuApplication.getAdminDAO();
 	
 	
 	/**
@@ -40,13 +42,16 @@ public class ChatResourceController {
 			@RequestParam String user_id) {
 		
 		debugger("chats get");
-		boolean valid = token.equals("kaiku") || SecurityTools.verifySession(token);
+        boolean isAdmin = adminDAO.getId((SecurityTools.getCloneOfToken(token).getUser_id()));
+		boolean valid = SecurityTools.verifySession(token);
 		
-		if(valid) {
+                            // TODO: remove for a better debug token system
+		if(valid || isAdmin || token.equals("kaiku")) {
 			
 			ChatObject[] results;
 			
-			if(token.equals("kaiku")) {
+                        // TODO: remove for a better debug token system
+			if(isAdmin || token.equals("kaiku")) {
 				//admin gets all chats
 				results = chatDAO.getAllChats();
 				
@@ -85,9 +90,10 @@ public class ChatResourceController {
 			@RequestHeader("Authorization") String token) {
 		debugger("chat create");
 		
-		boolean valid = token.equals("kaiku");
+        boolean valid = adminDAO.getId((SecurityTools.getCloneOfToken(token).getUser_id()));
 		
-		if(valid) {
+                    // TODO: remove for a better debug token system
+		if(valid || token.equals("kaiku")) {
 		
 			chat.setMessages(null);
 			

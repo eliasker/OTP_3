@@ -7,7 +7,7 @@ import Context from '../../../providers/Context'
 const NewGroup = () => {
   const [newGroup, setNewGroup] = useState({ chatName: '', members: [] })
   const [addedList, setAddedList] = useState([])
-  const { initialData, useLang } = useContext(InitialData)
+  const { initialData, useLang, loggedUser } = useContext(InitialData)
   const string = (ref) => useLang.getString(ref);
   const { setContent } = useContext(Context)
 
@@ -16,7 +16,10 @@ const NewGroup = () => {
     const memberList = addedList.map(u => u.user_id)
     //if (!window.confirm(string('dash_confirm_creategroup_1') + newGroup.chatName + string('dash_confirm_creategroup_2'))) return
     if (!window.confirm(string('dash_confirm_creategroup_1') + newGroup.chatName)) return
-    await groupService.create({ ...newGroup, members: memberList, type: 'group' })
+    await groupService.create(
+      { ...newGroup, members: memberList, type: 'group' },
+      loggedUser.token
+    )
     setContent('g/all')
   }
 

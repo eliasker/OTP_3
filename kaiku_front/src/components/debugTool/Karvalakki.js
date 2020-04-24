@@ -53,7 +53,12 @@ const Karvalakki = () => {
 
   const handleCreateUsers = () => {
     init.users.forEach(async (user) => {
-      users.push(await userService.createUser(user.username, user.password, user.name));
+      users.push(await userService.createUser(
+        user.username,
+        user.password,
+        user.name,
+        { headers: { Authorization: "kaiku" } }
+      ))
     })
   }
 
