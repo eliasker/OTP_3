@@ -4,7 +4,7 @@ import Context from '../../../providers/Context'
 import groupService from '../../../services/groupService'
 
 const MemberManagment = () => {
-  const { initialData, useLang } = useContext(InitialData)
+  const { initialData, useLang, loggedUser } = useContext(InitialData)
   const string = (ref) => useLang.getString(ref)
 
   const { currentGroup, setContent } = useContext(Context)
@@ -15,7 +15,7 @@ const MemberManagment = () => {
     console.log('submit')
     if (!window.confirm(string('dash_confirm_updategroup'))) return
     console.log(tempGroup)
-    groupService.update(tempGroup.chat_id, tempGroup)
+    groupService.update(tempGroup.chat_id, tempGroup, loggedUser.token)
     setContent('g/all')
   }
 

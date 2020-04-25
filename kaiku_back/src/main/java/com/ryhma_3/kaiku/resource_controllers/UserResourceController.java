@@ -146,8 +146,12 @@ public class UserResourceController {
 		/*
 		 * Compare token and token storage
 		 */
-        System.out.println(SecurityTools.getCloneOfToken(token).getUser_id());
-        boolean valid = adminDAO.getId((SecurityTools.getCloneOfToken(token).getUser_id()));
+        boolean valid = false;
+        // TODO: remove this abomination
+        try {
+            valid = adminDAO.getId((SecurityTools.getCloneOfToken(token).getUser_id()));
+        } catch (NullPointerException e) {
+        }
 		
                     // TODO: remove for a better debug token system
 		if(valid || token.equals("kaiku")) {

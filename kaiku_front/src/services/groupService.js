@@ -45,8 +45,12 @@ const create = (newObject, token) => {
   return request.then(response => response.data)
 }
 
-const update = (id, newObject) => {
-  const request = axios.put(`${BASEURI}api/chats/${id}`, newObject, configAsAdmin)
+const update = (id, newObject, token) => {
+  const request = axios.put(
+    `${BASEURI}api/chats/${id}`,
+    newObject,
+    { headers: { Authorization: token } }
+  )
   return request.then(response => response.data)
 }
 

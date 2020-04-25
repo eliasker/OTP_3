@@ -89,8 +89,12 @@ public class ChatResourceController {
 			@RequestBody ChatObject chat,
 			@RequestHeader("Authorization") String token) {
 		debugger("chat create");
-		
-        boolean valid = adminDAO.getId((SecurityTools.getCloneOfToken(token).getUser_id()));
+
+        boolean valid = false;
+		try {
+            valid = adminDAO.getId((SecurityTools.getCloneOfToken(token).getUser_id()));
+		} catch (Exception e) {
+		}
 		
                     // TODO: remove for a better debug token system
 		if(valid || token.equals("kaiku")) {
@@ -123,7 +127,11 @@ public class ChatResourceController {
 			@RequestHeader("Authorization") String token) {
 		debugger("chat update");
 		
-		boolean valid = token.equals("kaiku");
+        boolean valid = false;
+		try {
+            valid = adminDAO.getId((SecurityTools.getCloneOfToken(token).getUser_id()));
+		} catch (Exception e) {
+		}
 		
 		if(valid) {
 			
