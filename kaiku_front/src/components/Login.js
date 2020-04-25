@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import InitialData from '../providers/InitialData'
 import loginService from '../services/loginService'
 import useField from '../hooks/hooks'
+import useLang from '../hooks/langHook'
 
 const Login = ({ createSocketConnection }) => {
   const [showPassword, setShowPassword] = useState(false)
@@ -37,7 +38,7 @@ const Login = ({ createSocketConnection }) => {
   }
 
   const handleLangChange = (lang) => {
-    console.log(lang)//TODO: REST-pyyntö tähän
+    useLang.setLocale(lang)
   }
 
   const removeReset = (object) => {

@@ -862,6 +862,13 @@ input::-webkit-input-placeholder {
   cursor: pointer;
 }
 
+.nav-items span {
+  color: #fffd;
+}
+
+.nav-items span:hover {
+  color: #fffa;
+}
 /**
 * 
 * COLOR THEMING

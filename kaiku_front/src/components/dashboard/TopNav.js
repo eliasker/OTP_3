@@ -21,11 +21,20 @@ const TopNav = () => {
   <>
     <nav className="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 cursor-def">
       <span className="navbar-brand col-sm-3 col-md-2 mr-0">{string('topnav_backroom')}</span>
-      <ul className="navbar-nav px-3">
-        <li className="nav-item text-nowrap">
+
+      <div className="row mr-2 nav-items">
+        <span className="nav-item dropdown">
+          <span className="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Valitse kieli</span>
+          <div className="dropdown-menu">
+            <a className="dropdown-item" onClick={() => useLang.setLocale("fi-FI")}>Suomi</a>
+            <a className="dropdown-item" onClick={() => useLang.setLocale("en-EN")}>English</a>
+          </div>
+        </span>
+        <span className="nav-item text-nowrap">
           <span className="nav-link" onClick={handleQuit}>{string('topnav_conversations')}</span>
-        </li>
-      </ul>
+        </span>
+      </div>
+      
     </nav>
   </>
   )

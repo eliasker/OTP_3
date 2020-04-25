@@ -6,11 +6,11 @@ const LangSettings = () => {
   const { showLangSettings, setShowLangSettings } = useContext(CurrentChat)
   const { useLang } = useContext(InitialData)
   const { setTimeFormat } = useContext(CurrentChat)
-  const [ lang, setLang ] = useState("")
+  const [ lang, setLang ] = useState("none")
   const [ format, setFormat] = useState("en-EN")
 
   const handleSubmit = () => {
-    console.log(lang) // TODO: REST-pyyntö tähän
+    if(lang !== 'none') useLang.setLocale(lang)
     
     window.localStorage.setItem('timeFormat', format)
     setTimeFormat(format)

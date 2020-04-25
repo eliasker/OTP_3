@@ -19,9 +19,9 @@ const useLang = () => {
     }
   }
 
-  const setLocale = async (identicator) => {
-    const langPack = ls.setLangPack(identicator);
-    setPack(await langPack);
+  const setLocale = async (identicator) => {        
+    const langPack = await ls.setLangPack(identicator);
+    setPack(langPack);
   }
 
 
