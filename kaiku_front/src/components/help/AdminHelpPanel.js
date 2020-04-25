@@ -7,7 +7,6 @@ const AdminHelpPanel = () => {
   const { useLang } = useContext(InitialData)
   const string = (ref) => useLang.getString(ref)
   const [help, setHelp] = useState(adminHelp);
-  console.log(adminHelp);
   
   useEffect(() => {
     setHelp(
