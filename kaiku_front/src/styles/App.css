@@ -812,7 +812,10 @@ input::-webkit-input-placeholder {
   left: 50%;
   margin-left: -150px;
   top: 50%;
+  margin-top: -50px;
   max-width: 300px;
+  margin-right: 0 !important;
+  width: 300px;
 }
 
 .modal-container {

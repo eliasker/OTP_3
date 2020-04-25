@@ -5,10 +5,15 @@ import InitialData from '../../providers/InitialData'
 const LangSettings = () => {
   const { showLangSettings, setShowLangSettings } = useContext(CurrentChat)
   const { useLang } = useContext(InitialData)
+  const { setTimeFormat } = useContext(CurrentChat)
   const [ lang, setLang ] = useState("")
+  const [ format, setFormat] = useState("en-EN")
 
   const handleSubmit = () => {
     console.log(lang) // TODO: REST-pyyntö tähän
+    
+    window.localStorage.setItem('timeFormat', format)
+    setTimeFormat(format)
     setShowLangSettings(!showLangSettings)
   }
 
@@ -21,11 +26,21 @@ const LangSettings = () => {
             <hr />
           </div>
           <div className="lang-container">
-            <select defaultValue="none" className="custom-select lang-select" onChange={e => setLang(e.target.value)}>
-              <option value="none">-</option>
-              <option value="fi-FI">Suomi</option>
-              <option value="en-EN">English</option>
-            </select>
+            <div className="lang-select">
+              <p className="mb-0 mt-1">Kieli</p>
+              <select defaultValue="none" className="custom-select " onChange={e => setLang(e.target.value)}>
+                <option value="none">-</option>
+                <option value="fi-FI">Suomi</option>
+                <option value="en-EN">English</option>
+              </select>
+              <p className="mb-0 mt-1">Päiväformaatti</p>
+              <select defaultValue="en-EN" className="custom-select" onChange={e => setFormat(e.target.value)}>
+                <option value="none">-</option>
+                <option value="fi-FI">dd/mm/yy</option>
+                <option value="en-US">mm/dd/yy</option>
+              </select>
+            </div>
+            
           </div>
           <div className="help-button-container">
             <div className="help-button-group">
