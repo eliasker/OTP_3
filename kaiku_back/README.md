@@ -8,8 +8,7 @@ CD in to the project root directory and run the following command:
 unix: `./mvnw spring-boot:run`
 
 windows: 
-`(first time setup) mvnv install`
-
+`(first time setup) mvnv install` , 
 `mvnw spring-boot:run`
 
 ### Setup steps when launching on Windows
