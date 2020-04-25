@@ -88,6 +88,7 @@
       "user_openprof": "Katso profiili",
       "u_col_searchuser": "Etsi käyttäjää",
       "u_head_profile": "Profiili",
+      "u_head_lang": "Kielivalinta",
       "u_head_help": "Apua",
       "u_head_logout": "Kirjaudu ulos",
       "u_head_groups": "Ryhmät",
@@ -118,6 +119,26 @@
       "help_content_8": "Jotta pääsisit pällimäisestä paneelista alempaan, on päällimäisempi paneeli suljettava.",
       "help_content_9": "Psst! Löydät tarvittaessa minut myös päävalikosta.",
       "help_content_10": "Saat piilotettua apua -painikkeen klikkaamalla piilota-painiketta.",
+
+      "admin_help_title_1": "Kaikki käyttäjät",
+      "admin_help_title_2": "Kaikki ryhmät",
+      "admin_help_title_3": "Käyttäjän luominen",
+      "admin_help_title_4": "Ryhmän luominen",
+      "admin_help_title_5": "Käyttäjän muokkaaminen",
+      "admin_help_title_6": "Ryhmän muokkaaminen",
+      "admin_help_title_7": "Käyttäjän poistaminen",
+      "admin_help_title_8": "Ryhmän poistaminen",
+      "admin_help_content_1": "Voit löytää kaikki käyttäjät Kaiku-ryhmächatista.",
+      "admin_help_content_2": "Päävalikon voit löytää profiili kuvan oikealta puolelta.",
+      "admin_help_content_3": "Pääset profiilinmuokkaussivulle klikkaamalla omaa profiilikuvaa vasemmasta yläkulmasta tai päävalikosta",
+      "admin_help_content_4": "Voit muokata profiilia muokkaussivulla näpyttämällä tietoja valmiiksi täytettyihin kenttiin. Paina lopuksi Tallenna-painiketta ottakseen käyttöön muokatut tiedot.",
+      "admin_help_content_5": "Keskustelunäkymä näyttää jo aloitetut yksityiset keskustelut. Aloittaksesi uuden keskustelun paina ryhmänäkymästä henkilön nimeä tai etsi henkilö hakukentän avulla.",
+      "admin_help_content_6": "Voit tarkastella muiden profiileja klikkaamalla ryhmäkeskustelunäkymästä haluttua profiilia ja valitsemalla 'Näytä profiili'.",
+      "admin_help_content_7": "Profiilinmuokkaussivu, käyttäjäprofiilien tarkastelu ja chatit ovat päällekkäisiä paneeleita (lueteltu päällimmäisestä alimpaan).",
+      "admin_help_content_8": "Jotta pääsisit pällimäisestä paneelista alempaan, on päällimäisempi paneeli suljettava.",
+
+
+
       "settings_changelang": "Vaihda kieltä"
     }
   }

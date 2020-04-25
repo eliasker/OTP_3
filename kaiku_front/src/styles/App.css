@@ -794,7 +794,8 @@ input::-webkit-input-placeholder {
   }
 }
 .modal-container,
-.help-button-container {
+.help-button-container,
+.lang-container {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -803,6 +804,15 @@ input::-webkit-input-placeholder {
   height: 300px;
   width: 600px;
   padding: 1rem;
+}
+
+.lang-select {
+  position: absolute;
+  z-index: 99999;
+  left: 50%;
+  margin-left: -150px;
+  top: 50%;
+  max-width: 300px;
 }
 
 .modal-container {
@@ -845,6 +855,10 @@ input::-webkit-input-placeholder {
   border-radius: 3px 0 0 3px;
 }
 
+.lang span:hover{
+  cursor: pointer;
+}
+
 /**
 * 
 * COLOR THEMING
@@ -878,7 +892,7 @@ input::-webkit-input-placeholder {
 .pr-user
 { background-color: #394257 !important}
 
-.txt-light, .chat-header, .user-header, .in-message-date, .out-message-date, .chat-type, .profile
+.txt-light, .chat-header, .user-header, .in-message-date, .out-message-date, .chat-type, .profile, .lang span:hover
 { color: rgba(240, 240, 240, 0.9) !important }
 
 .chat-type
