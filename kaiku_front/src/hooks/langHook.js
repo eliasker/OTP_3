@@ -24,13 +24,14 @@ const useLang = () => {
     setPack(await langPack);
   }
 
+
   const init = async () => {
     let langPack = ls.getCurrentLangPack();    
 
-    if(await langPack===null) {
-      langPack = ls.setLangPack('fi-FI')
+    if(langPack===null) {
+      langPack = await ls.setLangPack('fi-FI')      
 
-      if(await langPack === undefined){
+      if( langPack === undefined){        
         langPack = staticLang.lang;
       }
     }

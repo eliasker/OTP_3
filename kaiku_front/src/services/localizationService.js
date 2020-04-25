@@ -7,8 +7,14 @@ const BASEURI = config.BASEURI
 const setLangPack = async (reference) => {
   try{
     const response = await axios.get(
-      `${BASEURI}api/locale/?identicator=${reference}`
+      `${BASEURI}api/locale/?identicator=${reference}`,
+      { timeout : 2000 }
       )
+
+      if(response.data === ""){
+        return undefined;
+      }
+
       updateStorage(response.data)
       return response.data
   } catch(e){
