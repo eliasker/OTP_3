@@ -4,11 +4,17 @@ import config from '../util/config'
 const BASEURI = config.BASEURI
 
 //get lang pack from server  && store & return
-const setLangPack = async (reference) => {
+const setLangPack = async (reference) => {  
   try{
     const response = await axios.get(
-      `${BASEURI}api/locale/?identicator=${reference}`
+      `${BASEURI}api/locale/?identicator=${reference}`,
+      { timeout : 2000 }
       )
+      
+      if(response.data === ""){
+        return undefined;
+      }
+
       updateStorage(response.data)
       return response.data
   } catch(e){
@@ -22,8 +28,14 @@ const getCurrentLangPack = () => {
 }
 
 
-const getPackIdenticators = () => {
-  return ["fi-FI", "en-EN"]
+const getPackIdenticators = async () => {
+  try {
+    const result = await axios.get(
+      BASEURI + 'api/locale/indicators'
+    )
+
+    return result.data;
+  } catch(e){}
 }
 
 export default { setLangPack, getCurrentLangPack, getPackIdenticators }

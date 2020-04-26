@@ -5,6 +5,7 @@ import { Feather } from '@expo/vector-icons'
 import { ActivityIndicator } from 'react-native'
 import { Image, ListItem, Icon, Divider } from 'react-native-elements'
 import Title from '../components/Title'
+import userService from '../services/userService'
 
 const data = [
   {
@@ -49,6 +50,8 @@ const data = [
   }
 ]
 
+
+
 const IndexScreen = ({ navigation }) => {
   const image = require('../image/placeholder-profile.png')
   const groupPlaceholder = require('../image/kaikuthumb.png')
@@ -59,33 +62,33 @@ const IndexScreen = ({ navigation }) => {
         title={item.name}
         subtitle={item.username}
         leftAvatar={{ source: image }}
-        containerStyle={{backgroundColor: '#45566b'}}
-        titleStyle={{color: 'white'}}
-        subtitleStyle={{color: '#fffa'}}
+        containerStyle={{ backgroundColor: '#45566b' }}
+        titleStyle={{ color: 'white' }}
+        subtitleStyle={{ color: '#fffa' }}
         bottomDivider
         chevron
       />
-    </TouchableOpacity> 
+    </TouchableOpacity>
   )
 
   const renderGroup = (item) => (
-    <TouchableOpacity onPress={() => navigation.navigate('Chat')} style={{backgroundColor: '#3d4f64'}}>
+    <TouchableOpacity onPress={() => navigation.navigate('Chat')} style={{ backgroundColor: '#3d4f64' }}>
       <ListItem
         leftAvatar={{ source: groupPlaceholder }}
-        containerStyle={{backgroundColor: '#3d4f64', paddingLeft: 12, paddingRight: 0, paddingBottom: 0, alignSelf: 'center'}}
-        contentContainerStyle={{display: 'none'}}
-        titleStyle={{color: 'white'}}
-        subtitleStyle={{color: '#fffa'}}
+        containerStyle={{ backgroundColor: '#3d4f64', paddingLeft: 12, paddingRight: 0, paddingBottom: 0, alignSelf: 'center' }}
+        contentContainerStyle={{ display: 'none' }}
+        titleStyle={{ color: 'white' }}
+        subtitleStyle={{ color: '#fffa' }}
       />
-      <Text style={{paddingBottom: 30, alignSelf: 'center', paddingHorizontal: 8, backgroundColor: '#3d4f64', color: '#fffa'}}>{item.username}</Text>
-    </TouchableOpacity> 
+      <Text style={{ paddingBottom: 30, alignSelf: 'center', paddingHorizontal: 8, backgroundColor: '#3d4f64', color: '#fffa' }}>{item.username}</Text>
+    </TouchableOpacity>
   )
-  
+
   return (
     <View style={styles.container}>
       <Title title="Groups" backgroundColor='#3d4f64' />
       <FlatList keyExtractor={(item) => item.username} data={data} renderItem={({ item }) => renderGroup(item)}
-        horizontal={true} showsHorizontalScrollIndicator={false} style={styles.rowList}/>
+        horizontal={true} showsHorizontalScrollIndicator={false} style={styles.rowList} />
       <Title title="Users" backgroundColor='#45566b' />
       <FlatList keyExtractor={(item) => item.username} data={data} renderItem={({ item }) => renderUser(item)} />
     </View>
@@ -95,9 +98,9 @@ const IndexScreen = ({ navigation }) => {
 IndexScreen.navigationOptions = ({ navigation }) => {
   return {
     headerLeft: () => (
-    <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-      <Feather name='menu' style={styles.menu} />
-    </TouchableOpacity>),
+      <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+        <Feather name='menu' style={styles.menu} />
+      </TouchableOpacity>),
     title: 'Kaiku',
     headerTintColor: '#fff',
     headerTitleStyle: {

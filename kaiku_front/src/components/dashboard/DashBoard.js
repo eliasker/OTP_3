@@ -6,6 +6,7 @@ import Context from '../../providers/Context'
 import groupService from '../../services/groupService'
 import InitialData from '../../providers/InitialData'
 import userService from '../../services/userService'
+import AdminHelpPanel from '../help/AdminHelpPanel'
 
 const DashBoard = () => {
   const [content, setContent] = useState('g/all')
@@ -39,6 +40,7 @@ const DashBoard = () => {
           </Context.Provider>
         </div>
       </div>
+      <AdminHelpPanel />
     </div>
   )
 }

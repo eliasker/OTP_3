@@ -19,18 +19,19 @@ const useLang = () => {
     }
   }
 
-  const setLocale = async (identicator) => {
-    const langPack = ls.setLangPack(identicator);
-    setPack(await langPack);
+  const setLocale = async (identicator) => {        
+    const langPack = await ls.setLangPack(identicator);
+    setPack(langPack);
   }
+
 
   const init = async () => {
     let langPack = ls.getCurrentLangPack();    
 
-    if(await langPack===null) {
-      langPack = ls.setLangPack('fi-FI')
+    if(langPack===null) {
+      langPack = await ls.setLangPack('fi-FI')      
 
-      if(await langPack === undefined){
+      if( langPack === undefined){        
         langPack = staticLang.lang;
       }
     }
