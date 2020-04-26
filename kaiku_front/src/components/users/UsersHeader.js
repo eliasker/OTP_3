@@ -37,7 +37,7 @@ const UsersHeader = ({ chatTypeState, setDisplayProfile }) => {
 
           <div className="dropdown-menu users-menu" aria-labelledby="dropdownMenuLink">
             <span className="dropdown-item" onClick={() => handleShowProfile()}><i className="fas fa-user"></i> {string('u_head_profile')}</span>
-            <span className="dropdown-item" onClick={() => handleShowSettings()}><i class="fas fa-language"></i> {string('u_head_lang')}</span>
+            <span className="dropdown-item" onClick={() => handleShowSettings()}><i className="fas fa-language"></i> {string('u_head_lang')}</span>
             <span className="dropdown-item" onClick={() => setShowModal(!showModal)}><i className="fas fa-question-circle"></i> {string('u_head_help')}</span>
             <span className="dropdown-item" onClick={() => handleLogout()}><i className="fas fa-door-open"></i> {string('u_head_logout')}</span>
           </div>
