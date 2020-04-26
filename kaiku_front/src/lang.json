@@ -62,7 +62,8 @@
       "li_delete": "Poista",
       "li_opt_user": "Käyttäjä",
       "li_opt_admin": "Ylläpitäjä",
-      "menu_usercontrol": "Käyttäjienhallinta",
+      "menu_usercontrol": "Käyttäjien hallinta",
+      "menu_groupcontrol": "Ryhmien hallinta",
       "menu_allusers": "Kaikki käyttäjät",
       "menu_createuser": "Luo käyttäjä",
       "menu_allgroups": "Kaikki ryhmät",
@@ -99,10 +100,14 @@
       "login_pwd": "Salasana",
       "login_showpwd": "Näytä salasana",
       "time_today": "Tänään ",
+      "lang_select": "Kielivalinta",
+      "lang": "Kieli",
+      "date_format": "Päiväformaatti",
+
       "help_title_1": "Kaikki käyttäjät",
       "help_title_2": "Päävalikko",
       "help_title_3": "Profiilin muokkaussivu",
-      "help_title_4": "'Profiilin päivittäminen",
+      "help_title_4": "Profiilin päivittäminen",
       "help_title_5": "Keskustelun aloitus",
       "help_title_6": "Profiilien tarkastelu",
       "help_title_7": "Paneelit (osa 1)",
@@ -136,8 +141,6 @@
       "admin_help_content_6": "Ryhmän muokkaaminen onnistuu \"Kaikki ryhmät\" -sivulta. Etsi sarake jossa on haluamasi ryhmän tiedot ja paina muokkaa-painiketta. Muokattuasi tiedot haluamaksesi, paina lopuksi tallenna-painiketta.",
       "admin_help_content_7": "Käyttäjän poistaminen onnistuu \"Kaikki käyttäjät\" -sivulta. Etsi sarake jossa on haluamasi käyttäjän tiedot ja paina poista-painiketta. Poisto-toiminto varmistetaan vielä erillisellä dialogilla.",
       "admin_help_content_8": "Ryhmän poistaminen onnistuu \"Kaikki ryhmät\" -sivulta. Etsi sarake jossa on haluamasi ryhmän tiedot ja paina poista-painiketta. Poisto-toiminto varmistetaan vielä erillisellä dialogilla.",
-
-
 
       "settings_changelang": "Vaihda kieltä"
     }

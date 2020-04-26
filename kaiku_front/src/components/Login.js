@@ -66,7 +66,7 @@ const Login = ({ createSocketConnection }) => {
             </div>
           </div>
 
-          <button className="btn btn-md btn-outline-light btn-block" type="submit">{string('login_username')}</button>
+          <button className="btn btn-md btn-outline-light btn-block" type="submit">{string('login')}</button>
         </form>
         
         <p className="mt-5 text-muted">&copy; {string('org_label')}</p>

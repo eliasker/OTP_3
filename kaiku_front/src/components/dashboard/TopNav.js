@@ -24,7 +24,7 @@ const TopNav = () => {
 
       <div className="row mr-2 nav-items">
         <span className="nav-item dropdown">
-          <span className="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Valitse kieli</span>
+          <span className="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{string('lang_select')}</span>
           <div className="dropdown-menu">
             <a className="dropdown-item" onClick={() => useLang.setLocale("fi-FI")}>Suomi</a>
             <a className="dropdown-item" onClick={() => useLang.setLocale("en-EN")}>English</a>
