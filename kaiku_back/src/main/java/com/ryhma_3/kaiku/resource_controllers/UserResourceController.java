@@ -260,7 +260,12 @@ public class UserResourceController {
 			@PathVariable String user_id){
 		debugger("delete user");
 		
-        boolean valid = adminDAO.getId((SecurityTools.getCloneOfToken(token).getUser_id()));
+        boolean valid = false;
+        try {
+            valid = adminDAO.getId((SecurityTools.getCloneOfToken(token).getUser_id()));
+        } catch (Exception e) {
+            //TODO: handle exception
+        }
 		
                     // TODO: remove for a better debug token system
 		if(valid || token.equals("kaiku")) {

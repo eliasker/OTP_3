@@ -3,6 +3,7 @@ package com.ryhma_3.kaiku.socket.init;
 import com.corundumstudio.socketio.Configuration;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.ryhma_3.kaiku.model.database.ChatDAO;
+import com.ryhma_3.kaiku.model.database.IAdminDAO;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.ILocalizationDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
@@ -35,6 +36,7 @@ public class ServerInitNoAuth implements IServerInit {
 
     private ILocalizationDAO localizationDAO = null;
 	
+    private IAdminDAO adminDAO = null;
 	
 	/**
 	 * Default configuration, see port & hostname
@@ -110,6 +112,16 @@ public class ServerInitNoAuth implements IServerInit {
 	@Override
 	public ILocalizationDAO getLocalizationDAO() {
 		return this.localizationDAO;
+	}
+
+	@Override
+	public void setAdminDAO(IAdminDAO adminDAO) {
+        this.adminDAO = adminDAO;
+	}
+
+	@Override
+	public IAdminDAO getAdminDAO() {
+        return this.adminDAO;
 	}
 	
 }

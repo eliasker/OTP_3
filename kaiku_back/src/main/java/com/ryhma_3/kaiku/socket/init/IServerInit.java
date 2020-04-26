@@ -1,6 +1,7 @@
 package com.ryhma_3.kaiku.socket.init;
 
 import com.corundumstudio.socketio.SocketIOServer;
+import com.ryhma_3.kaiku.model.database.IAdminDAO;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.ILocalizationDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
@@ -73,5 +74,16 @@ public interface IServerInit {
 	 */
 	IUserDAO getUserDAO();
 	
+	/**
+	 * setup specific adminDAO
+	 * @param adminDAO
+	 */
+	void setAdminDAO(IAdminDAO adminDAO);
+	
+	/**
+	 * AdminDAO is configurable in initialization class.
+	 * @return adminDAO
+	 */
+	IAdminDAO getAdminDAO();
 	
 }

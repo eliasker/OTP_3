@@ -42,7 +42,12 @@ public class ChatResourceController {
 			@RequestParam String user_id) {
 		
 		debugger("chats get");
-        boolean isAdmin = adminDAO.getId((SecurityTools.getCloneOfToken(token).getUser_id()));
+        SecurityTools.getCloneOfToken(token).getUser_id();
+        boolean isAdmin = false;
+        try {
+            isAdmin = adminDAO.getId((SecurityTools.getCloneOfToken(token).getUser_id()));
+        } catch (Exception e) {
+        }
 		boolean valid = SecurityTools.verifySession(token);
 		
                             // TODO: remove for a better debug token system

@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.util.Scanner;
 
 import com.ryhma_3.kaiku.model.database.ChatDAO;
+import com.ryhma_3.kaiku.model.database.IAdminDAO;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.ILocalizationDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
@@ -42,6 +43,7 @@ public class BootApp {
 		ILocalizationDAO localizationDAO = (ILocalizationDAO) objs[3];
 		IServer server = (IServer) objs[4];
 		IServerInit serverInit = (IServerInit) objs[5];
+        IAdminDAO adminDAO = (IAdminDAO) objs[6];
 		
 		int select = menuMain();
 		switch(select) {
@@ -76,10 +78,19 @@ public class BootApp {
 		serverInit.setLocalizationDAO(localizationDAO);
 		serverInit.setMessageDAO(messageDAO);
 		serverInit.setUserDAO(userDAO);
+		serverInit.setAdminDAO(adminDAO);
 		
 		server = new Server(serverInit);
 		
-		return new Object[] {chatDAO, messageDAO, userDAO, localizationDAO, server, serverInit};
+		return new Object[] {
+            chatDAO,
+            messageDAO,
+            userDAO,
+            localizationDAO,
+            server,
+            serverInit,
+            adminDAO
+        };
 	}
 	
 	

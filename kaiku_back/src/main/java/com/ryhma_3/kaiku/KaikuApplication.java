@@ -36,7 +36,15 @@ public class KaikuApplication {
     static ILocalizationDAO localizationDAO = null;
 	
 	public static void main(String[] args) {
-		Object[] objs = new Object[] {chatDAO, messageDAO, userDAO, localizationDAO, server, init, adminDAO};
+		Object[] objs = new Object[] {
+            chatDAO,
+            messageDAO,
+            userDAO,
+            localizationDAO,
+            server,
+            init,
+            adminDAO
+        };
 		
 		//run boot setup
 		objs = BootApp.run(objs);
