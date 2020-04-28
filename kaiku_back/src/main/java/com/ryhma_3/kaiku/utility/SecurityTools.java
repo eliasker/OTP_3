@@ -18,13 +18,6 @@ import org.jasypt.util.password.BasicPasswordEncryptor;
  */
 public class SecurityTools {
 	
-	public static void main(String[] args) {
-		for(int i=0; i<1000; i++) {
-			System.out.println(genRandomString());
-		}
-	}
-	
-	
 	private final static BasicPasswordEncryptor cryptor = new BasicPasswordEncryptor();
 	
 	private final static Object lock = new Object();
@@ -49,10 +42,10 @@ public class SecurityTools {
 	
 	
 	/**
-	 * Check if encryptedPWS matches PSW
-	 * @param encryptedPSW
-	 * @param PSW
-	 * @return boolean: match
+	 * Check if encryptedPWS matches given PSW
+	 * @param encryptedPSW {@link String}
+	 * @param PSW {@link String}
+	 * @return match {@link Boolean}
 	 */
 	public static boolean compare(String encryptedPSW, String PSW) {
 		boolean match = cryptor.checkPassword(PSW, encryptedPSW) ? true : false;
@@ -97,9 +90,9 @@ public class SecurityTools {
 	
 	
 	/**
-	 * Get a users token with user_id OR tokenString. 
-	 * @param user_id || tokenString
-	 * @return Triple<UUID, user_id, tokenString> token
+	 * Get a users token {@link Token} with user_id OR tokenString. 
+	 * @param user_id || tokenString {@link String}
+	 * @return token {@link Token}
 	 */
 	public static Token getCloneOfToken(String searchInput){
 		synchronized (lock) {
@@ -136,9 +129,9 @@ public class SecurityTools {
 	
 	
 	/**
-	 * Get a users token with user_id OR tokenString. 
-	 * @param sessionID
-	 * @return Triple<UUID, user_id, tokenString> token
+	 * Get a users token with a sessionID
+	 * @param sessionID {@link UUID}
+	 * @return token {@link Token}
 	 */
 	public static Token getCloneOfToken(UUID sessionID) {
 		synchronized (lock) {
@@ -184,10 +177,10 @@ public class SecurityTools {
 	
 	
 	/**
-	 * Create or update a user specific token. On first connect user gets a new list-item, on consecutive connections a new token string 
-	 * is created.
-	 * @param user_id
-	 * @return Triple<UUID, user_id, tokenString> token
+	 * Create or update a user-specific token. On first connect user gets a new entry on tokenDataStore list, on consecutive connections a new token string 
+	 * is created and previous value on tokenDataStorage is replaced.
+	 * @param user_id {@link String}
+	 * @return token {@link Token}
 	 */
 	public static Token createOrUpdateToken(String user_id) {
 		synchronized (lock) {
@@ -234,10 +227,11 @@ public class SecurityTools {
 	
 	/**
 	 * override,
-	 * Create or update a user specific token. On first connect user gets a new list-item, on consecutive connections a new token string 
-	 * is created.
-	 * @param user_id
-	 * @param tokenString
+	 * Create or update a user-specific token. On first connect user gets a new entry on tokenDataStore list, on consecutive connections a new token string 
+	 * is created and previous value on tokenDataStorage is replaced.
+	 * @param user_id {@link String}
+	 * @param tokenString {@link String}
+	 * @return token {@link Token}
 	 */
 	public static Token createOrUpdateToken(String user_id, String tokenString) {
 		synchronized (lock) {
@@ -282,9 +276,9 @@ public class SecurityTools {
 	}
 	
 	/**
-	 * Connect user session id to a token. Acts also as a verification of connecting user.
-	 * @param tokenString
-	 * @return boolean - did the operation succeed
+	 * Verify that submitted tokenString exist
+	 * @param tokenString {@link String}
+	 * @return boolean - did the operation succeed {@link Boolean}
 	 */
 	public static boolean verifySession(String tokenString) {
 		synchronized (lock) {
@@ -325,10 +319,10 @@ public class SecurityTools {
 	
 
 	/**
-	 * Try to connect connecting UUID to a user token
-	 * @param tokenString String
-	 * @param sessionID UUID
-	 * @return success Boolean
+	 * Try to find given tokenString  form tokenDataStorage, and connect given UUID to it.
+	 * @param tokenString {@link String}
+	 * @param sessionID {@link UUID}
+	 * @return success {@link Boolean}
 	 */
 	public static boolean attachSessionToToken(String tokenString, UUID sessionID) {
 		synchronized (lock) {
@@ -368,9 +362,9 @@ public class SecurityTools {
 	
 	
 	/**
-	 * Remove token from tokenstorage
-	 * @param user_id 
-	 * @return boolean success
+	 * Remove token from tokenDataStorage
+	 * @param user_id  {@link String}
+	 * @return boolean success {@link Boolean}
 	 */
 	public static boolean removeToken(String user_id) {
 		synchronized (lock) {
@@ -402,7 +396,7 @@ public class SecurityTools {
 	
 	/**
 	 * Get a map portraying user base's online status'
-	 * @return HashMap<user_id, online> map
+	 * @return map <user_id, isOnline> {@link HashMap}
 	 */
 	public static HashMap<String, Boolean> getUserStatusMap(){
 		HashMap<String, Boolean> map = new HashMap<>();
@@ -415,8 +409,8 @@ public class SecurityTools {
 	
 	/**
 	 * Set user's status online
-	 * @param id String
-	 * @param online boolean
+	 * @param id {@link String}
+	 * @param online {@link Boolean}
 	 */
 	public static void setUserStatus(String id, boolean online) {
 		synchronized (lock) {
@@ -432,7 +426,7 @@ public class SecurityTools {
 	
 	
 	/**
-	 * Iterate through all of token base and confirm user token set online is found in snapshot of serverclients
+	 * Iterate through all of token base and confirm user token set online is found in snapshot of server's clients
 	 * @param users Collectin<UUID>
 	 */
 	public static void updateEveryUserStatus(Collection<UUID> users) {
@@ -449,6 +443,7 @@ public class SecurityTools {
 	
 
 	/**
+	 * Dual function:  1. Release Java syncronization lock   2. Send event to logger.
 	 * @param location String (message)
 	 * @param show boolean
 	 */

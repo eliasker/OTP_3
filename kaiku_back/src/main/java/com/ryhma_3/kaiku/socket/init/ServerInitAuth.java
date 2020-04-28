@@ -24,12 +24,12 @@ public class ServerInitAuth implements IServerInit {
 	 */
 	private int port = 9991;
 	
-	
 	/*
 	 * Default hostname: "localhost"
 	 */
 	private String hostname = "localhost";
 	
+	private SocketIOServer server;
 	
 	private IChatDAO chatDAO = null;
 	
@@ -60,6 +60,10 @@ public class ServerInitAuth implements IServerInit {
 	 */
 	public SocketIOServer getSocketServer() {
 		
+		if(server!=null) {
+			return server;
+		}
+		
 		Configuration config = new Configuration();
 		config.setHostname(hostname);
 		config.setPort(port);
@@ -85,7 +89,8 @@ public class ServerInitAuth implements IServerInit {
 			}
 		});
 		
-		return new SocketIOServer(config);
+		server = new SocketIOServer(config);
+		return server;
 	}
 
 	@Override

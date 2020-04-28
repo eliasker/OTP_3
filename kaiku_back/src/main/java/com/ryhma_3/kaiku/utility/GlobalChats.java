@@ -3,6 +3,8 @@ package com.ryhma_3.kaiku.utility;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.apache.catalina.User;
+
 import com.ryhma_3.kaiku.KaikuApplication;
 import com.ryhma_3.kaiku.model.cast_object.ChatObject;
 import com.ryhma_3.kaiku.model.cast_object.UserObject;
@@ -10,7 +12,10 @@ import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.IUserDAO;
 
 /**
- * Extracted global chats functionality to its own class
+ * Global chats utility is expansive enough that it was extracted to a new Class. In this class
+ * we make sure that when server is started, all users are added to global chats even if database has been manipulated
+ * in other ways than this software. New users are also brought here to be added to all global chats.
+ * 
  * @author Panu Lindqvist
  */
 public class GlobalChats {
@@ -110,13 +115,20 @@ public class GlobalChats {
 	
 	
 	/**
-	 * TODO add new global chats
+	 * Add all users to new global chat
 	 * @param chat
 	 * @return boolean success
 	 */
-	public static boolean putGlobalChat(ChatObject chat) {
+	public static ChatObject putGlobalChat(ChatObject chat) {
+		UserObject[] allUsers = userDAO.getAllUsers();
 		
-		return false;
+		chat.setMembers(usersToIDArray(allUsers));
+		chat = chatDAO.updateChatObject(chat);
+		
+		if(chat!=null) {
+			return chat;
+		}
+		return null;
 	}
 	
 	

@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
+/**
+ * This class sets java spring CORS policy globally for the application
+ */
 public class CorsFilter extends OncePerRequestFilter {
 
 	@Override

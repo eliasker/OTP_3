@@ -21,12 +21,14 @@ import com.ryhma_3.kaiku.socket.server.Server;
 import com.ryhma_3.kaiku.utility.GlobalChats;
 import com.ryhma_3.kaiku.utility.SecurityTools;
 
+/**
+ * Kaiku app backend main execution. Contains initialization measures and handles starting services.
+ */
 @SpringBootApplication
 public class KaikuApplication {
 	
 	static IServerInit init = null;
 	static IServer server = null;
-	
 	static IChatDAO chatDAO = null;
 	static IMessageDAO messageDAO = null;
 	static IUserDAO userDAO = null;

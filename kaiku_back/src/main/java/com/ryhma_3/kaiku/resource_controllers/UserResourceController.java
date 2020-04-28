@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.aop.ThrowsAdvice;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -27,10 +28,11 @@ import com.ryhma_3.kaiku.utility.GlobalChats;
 import com.ryhma_3.kaiku.utility.Logger;
 import com.ryhma_3.kaiku.utility.SecurityTools;
 
+
 /**
- * <pre>
- * AccountController
- * </pre>
+ * @author Panu Lindqvist
+ * REST api for applications go request USER data from. This controller takes in and validates http GET, POST, PUT, DELETE requests and uses model.DAOs
+ * to manipulate and return data from a database.
  */
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -41,11 +43,10 @@ public class UserResourceController {
 	
 	
 	/**
-	 * <pre>
 	 * Request invoked when user starts a session. This entry point compiles all necessary data needed to initialize front end application.
-	 * </pre>
-	 * @param user
-	 * @return {@link InitializationObject} or fail 400
+	 * @param user {@link UserObject} - http request body
+	 * @return initializationObject {@link InitializationObject}
+	 * @throws ValidationFailedException , {@link ValidationFailedException}
 	 */
 	@RequestMapping(value = "/api/users/**", method=RequestMethod.POST)
 	public InitializationObject getInit(@RequestBody UserObject user) {
@@ -130,8 +131,9 @@ public class UserResourceController {
 
 	/**
 	 * Validate sent token and create a new user from Request body. Return nothing;
-	 * @param userObject - user info
-	 * @param token - token for authorization
+	 * @param userObject {@link UserObject} - http request body
+	 * @param token {@link String} - http Authorization header
+	 * @throws ValidationFailedException, {@link ValidationFailedException}
 	 */
 	@RequestMapping(value = "/api/users", method=RequestMethod.POST)
 	public UserObject createUser(
@@ -177,9 +179,10 @@ public class UserResourceController {
 	
 	
 	/**
-	 * With admin token, get all users
-	 * @param token
-	 * @return {@link UserObject}[]
+	 * Submit token as request header to receive an array (JS object after JSON back-and-forth convert) of all user objects. (Without private info!),
+	 * @param token {@link String} - http Authorization header
+	 * @return userObjects[] {@link UserObject}[]
+	 * @throws ValidationFailedException, {@link ValidationFailedException}
 	 */
 	@RequestMapping(value="/api/users", method=RequestMethod.GET)
 	public UserObject[] getUsers(
@@ -209,10 +212,12 @@ public class UserResourceController {
 	
 	
 	/**
-	 * Logged in user can send request to change their user information
-	 * @param token
-	 * @param user
-	 * @return {@link UserObject}
+	 * Submitting a token and replace-values, client can change user's properties.
+	 * @param token {@link String} - http Authorization header
+	 * @param user {@link UserObject} - http request body
+	 * @return user {@link UserObject}
+	 * @throws ResourceNotFoundException, {@link ResourceNotFoundException}
+	 * @throws ValidationFailedException, {@link ValidationFailedException}
 	 */
 	@RequestMapping(value="/api/users", method=RequestMethod.PUT)
 	public UserObject updateUser(
@@ -239,10 +244,12 @@ public class UserResourceController {
 	
 	
 	/**
-	 * With admin token, delete a user
-	 * @param token
-	 * @param user_id
-	 * @return boolan
+	 * Submitting admin token with DELETE request, users can be removed form this service.
+	 * @param token {@link String} - http Authorization header
+	 * @param user_id {@link String} - http URL parameter
+	 * @return success {@link Boolean}
+	 * @throws ResourceNotFoundException, {@link ResourceNotFoundException}
+	 * @throws ValidationFailedException, {@link ValidationFailedException}
 	 */
 	@RequestMapping(value="/api/users/**", method=RequestMethod.DELETE)
 	public boolean deleteUser(

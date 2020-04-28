@@ -26,6 +26,7 @@ public class ServerInitNoAuth implements IServerInit {
 	 */
 	private String hostname = "localhost";
 	
+	private SocketIOServer server;
 	
 	private IChatDAO chatDAO = null;
 	
@@ -58,6 +59,10 @@ public class ServerInitNoAuth implements IServerInit {
 	 * @see Ryhma_3.Kaiku_BE.server.IChatServerInit#getSocketServer()
 	 */
 	public SocketIOServer getSocketServer() {
+		if(server != null) {
+			return server;
+		}
+		
 		Configuration config = new Configuration();
 		config.setHostname(hostname);
 		config.setPort(port);
@@ -68,8 +73,8 @@ public class ServerInitNoAuth implements IServerInit {
 		messageDAO = messageDAO == null ? new MessageDAO() : messageDAO;
 		userDAO = userDAO == null ? new UserDAO() : userDAO;
 		
-		
-		return new SocketIOServer(config);
+		server = new SocketIOServer(config);
+		return server;
 	}
 
 	@Override

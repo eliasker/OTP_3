@@ -3,7 +3,7 @@ package com.ryhma_3.kaiku.utility;
 import java.util.UUID;
 
 /**
- * Token container class
+ * Container class for storing user connection data. Contains sessionID, user_id, tokenString and isOnline status.
  */
 public class Token {
 	private UUID sessionID;

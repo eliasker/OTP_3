@@ -10,6 +10,10 @@ import com.ryhma_3.kaiku.resource_controllers.exceptions.ResourceNotFoundExcepti
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ValidationFailedException;
 import com.ryhma_3.kaiku.utility.Logger;
 
+/**
+ * @author Panu Lindqvist
+ * Java Spring allow handling bad http request with custom exceptions. All thrown custom exceptions in this project ate handled and logged here.
+ */
 @ControllerAdvice
 public class ControllerExceptionHandlers {
 
