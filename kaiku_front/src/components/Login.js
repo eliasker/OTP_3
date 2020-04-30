@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import InitialData from '../providers/InitialData'
 import loginService from '../services/loginService'
 import useField from '../hooks/hooks'
+import useLang from '../hooks/langHook'
 
 const Login = ({ createSocketConnection }) => {
   const [showPassword, setShowPassword] = useState(false)
@@ -36,6 +37,10 @@ const Login = ({ createSocketConnection }) => {
     }
   }
 
+  const handleLangChange = (lang) => {
+    useLang.setLocale(lang)
+  }
+
   const removeReset = (object) => {
     const { reset, ...newObject } = object
     return newObject
@@ -61,10 +66,14 @@ const Login = ({ createSocketConnection }) => {
             </div>
           </div>
 
-          <button className="btn btn-md btn-outline-light btn-block" type="submit">{string('login_username')}</button>
+          <button className="btn btn-md btn-outline-light btn-block" type="submit">{string('login')}</button>
         </form>
-
-        <p className="mt-5 mb-3 text-muted">&copy; {string('org_label')}</p>
+        
+        <p className="mt-5 text-muted">&copy; {string('org_label')}</p>
+        <div className="lang mb-5">
+          <span className="mt-5 p-3 text-muted" onClick={() => handleLangChange("fi-FI")} >Suomi</span>
+          <span className="mt-5 p-3 text-muted" onClick={() => handleLangChange("en-EN")}>English</span>
+        </div>
       </div>
     </div>
   )

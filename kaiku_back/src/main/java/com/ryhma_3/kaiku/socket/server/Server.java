@@ -27,21 +27,37 @@ import com.ryhma_3.kaiku.utility.SecurityTools;
 import com.ryhma_3.kaiku.utility.Token;
 
 /**
+ * A socket server that implements IServer. Contains listeners to listen incoming connections and messages.
+ * All messages are handled, connections validated, database updated and responses are sent from here.
+ * 
+ * In this IServer implementations following event listeners are registered under Server.start():  
+ * 
+ * - onConnect, Register incoming connections. Will register client UUID:s to tokenStorage or boot clients with bad tokens. 
+ * Will also send update event to all clients that 'X' client has come online.   
+ * 
+ * - onDisconnect, Register disconnecting clients, removes their UUID:s from tokenStorage. Will update other clients about disconnection.  
+ * 
+ * - createChatEvent, Natural way of initializing a new conversation is via first message. This event is called and Server uses data-access-objects
+ * to initialize new Chat and new Message to database and then forwards them to recipient clients.  
+ * 
+ * - chatEvent, A new message event. Server recceives a new message, stores it to messageDB and forwards it to
+ * recipient clients.  
+ *
+ *
+ * Server also provides sendCreateChatEvent for situation, where chat is created outside the socket scope, ie. with REST controller.
  * @author Panu Lindqvist
- * A socket server that implements IServer. Contains listeners to listen incoming connections.
- * Collects incoming traffic and utilises database Data Access Objects.
  */
 public class Server implements IServer {
 
 	
 	private static ArrayList<ChatObject> chats = new ArrayList<>();
 
-	IChatDAO chatDAO = null;
-	IMessageDAO messageDAO = null;
-	IUserDAO userDAO = null;
+	private IChatDAO chatDAO = null;
+	private IMessageDAO messageDAO = null;
+	private IUserDAO userDAO = null;
 	
-	final SocketIOServer server;
-	IServerInit init;
+	private final SocketIOServer server;
+	private IServerInit init;
 
 	public Server(IServerInit init) {
 		this.init = init;
@@ -69,23 +85,23 @@ public class Server implements IServer {
 				
 				
 				if(SecurityTools.attachSessionToToken(tokenString, client.getSessionId())) {
-								
-				Token cloneOfToken = SecurityTools.getCloneOfToken(tokenString);
-				
-				debugger("client:" + cloneOfToken.getUser_id() + 
-						" verified, token:" + cloneOfToken.getTokenString() + 
-						" UUID:" + cloneOfToken.getSessionID()
-						, true);
-				
-				
-				//update connectedUsers
-				SecurityTools.setUserStatus(cloneOfToken.getUser_id(), true);
-				
-				//send client current user statuses
-				client.sendEvent("connect", SecurityTools.getUserStatusMap());
-				
-				//update other clients about this user
-				server.getBroadcastOperations().sendEvent("connectionEvent", new UserStatusObject(cloneOfToken.getUser_id(), true));
+									
+					Token cloneOfToken = SecurityTools.getCloneOfToken(tokenString);
+					
+					debugger("client:" + cloneOfToken.getUser_id() + 
+							" verified, token:" + cloneOfToken.getTokenString() + 
+							" UUID:" + cloneOfToken.getSessionID()
+							, true);
+					
+					
+					//update connectedUsers
+					SecurityTools.setUserStatus(cloneOfToken.getUser_id(), true);
+					
+					//send client current user statuses
+					client.sendEvent("connect", SecurityTools.getUserStatusMap());
+					
+					//update other clients about this user
+					server.getBroadcastOperations().sendEvent("connectionEvent", new UserStatusObject(cloneOfToken.getUser_id(), true));
 				
 				} else {
 					
@@ -108,7 +124,7 @@ public class Server implements IServer {
 				UUID sessionID = client.getSessionId();
 
 
-				try {
+				try {	
 					//get token of disconnecting client
 					Token cloneOfToken = SecurityTools.getCloneOfToken(sessionID);
 					
@@ -136,7 +152,7 @@ public class Server implements IServer {
 			}
 		});
 		
-		
+		//Create chat via first message between users
 		server.addEventListener("createChatEvent", ChatObject.class, new DataListener<ChatObject>() {
 			@Override
 			public void onData(SocketIOClient client, ChatObject data, AckRequest ackSender) throws Exception {
@@ -148,9 +164,7 @@ public class Server implements IServer {
 					
 					try {					
 
-						/*
-						 * extract messages
-						 */
+						 //extract messages
 						MessageObject[] messages = data.getMessages();
 						data.setMessages(null);
 						
@@ -179,14 +193,16 @@ public class Server implements IServer {
 					//add resulted chat into local storage
 					chats.add(result);
 
-					//trying if ackwonledgement (request for the chat object) is required
+					//trying if acknowledgement (request for the chat object) is required,
+					//we must try, not do, for compatibility between front-end versions. 
+					// return the resulting chat object
 					if(ackSender.isAckRequested()) {
 						ackSender.sendAckData(result);
 					}
 										
 					debugger("created chat: " + result.getChatName() + ", with ID: " + result.getChat_id(), true);
 										
-					//go through all  members
+					//go through all  members, member == user_id
 					for(String member : data.getMembers()) {
 						
 						//check if member is online
@@ -199,11 +215,11 @@ public class Server implements IServer {
 								continue;
 							}
 							
-							//send event realtime
+							//send event
 							SocketIOClient receiver = server.getClient(user.getSessionID());
 							receiver.sendEvent("createChatEvent", result);
 							
-							debugger("sent event to: " + receiver.getSessionId().toString(), true);
+							debugger("sent event to: " + receiver.getSessionId().toString(), false);
 							
 						}
 					}
@@ -214,7 +230,7 @@ public class Server implements IServer {
 			}
 		});
 		
-		
+		//receive chat, store its contents and forward it to receivers
 		server.addEventListener("chatEvent", MessageObject.class, new DataListener<MessageObject>() {
 			
 			@Override
@@ -225,8 +241,9 @@ public class Server implements IServer {
 					for(ChatObject chat : chats) {
 						if(chat.getChat_id().equals(data.getChat_id())) {
 						
+							//post message to db and receive messageObj
 							MessageObject message = messageDAO.createMessage(data, chat.getChat_id());
-							debugger("Created message: " + message.getContent() + ",  to: " + message.getChat_id(), true);
+							debugger("Created message: " + message.getContent() + ",  to: " + message.getChat_id(), false);
 							
 							int d_activeusers = 0;
 							int d_inactiveusers = 0;
@@ -234,7 +251,7 @@ public class Server implements IServer {
 							//run through all users
 							for(String user : chat.getMembers()) {
 								
-								//get UUID
+								//get UUID, will throw exception if null
 								try {
 									UUID sessionID = SecurityTools.getCloneOfToken(user).getSessionID();
 									server.getClient(sessionID).sendEvent("chatEvent", message);
@@ -245,7 +262,7 @@ public class Server implements IServer {
 									e.printStackTrace();
 								}
 							}
-							debugger("Sent message to " + d_activeusers + ", skipped " + d_inactiveusers + " inactive  users", true);
+							debugger("Sent message to " + d_activeusers + ", skipped " + d_inactiveusers + " inactive  users", false);
 							break;
 						}
 					}
@@ -258,12 +275,13 @@ public class Server implements IServer {
 		
 		server.start();
 		
-		debugger("server started: " + server.getConfiguration().getPort() + " - " + server.getConfiguration().getHostname(), true);
+		debugger("socketIOServer started: " + server.getConfiguration().getPort() + " - " + server.getConfiguration().getHostname(), true);
 	}
 	
 	
 	/**
-	 * Method for rest controller. Admin dashboard uses REST to create chats
+	 * Method for rest controller. Admin dashboard uses REST to create chats. This enables users that are online && participate the chat 
+	 * to receive an event through the socket in real-time. 
 	 * @param chat {@link ChatObject}
 	 */
 	public void sendCreateChatEvent(ChatObject chat) {

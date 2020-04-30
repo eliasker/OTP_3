@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import UsersColumn from './users/UsersColumn'
 import ChatColumn from './chat/ChatColumn'
 import CurrentChat from '../providers/CurrentChat'
@@ -7,26 +7,33 @@ import HelpPanel from './help/HelpPanel'
 import useChatHook from '../hooks/useChatHook'
 
 import Karvalakki from './debugTool/Karvalakki'
-import Settings from './Settings'
+import LangSettings from './language/LangSettings'
 
 const Chat = () => {
   const { createChat, sendMessage, incMessageData, newChatData } = useContext(InitialData)
+  const [timeFormat, setTimeFormat] = useState('en-EN')
   const [displayProfile, setDisplayProfile] = useState('d-none')
   const [displayUser, setDisplayUser] = useState(undefined)
   const { chatState, postMessage, receiveMessage, currentChat, selectChat } = useChatHook(createChat, sendMessage, incMessageData, newChatData)
   const [showModal, setShowModal] = useState(false)
+  const [showLangSettings, setShowLangSettings] = useState(false)
   const [displayKarvalakki, setDisplayKarvalakki] = useState(false)
+
+  useEffect(() => {
+    const format = window.localStorage.getItem('timeFormat')
+    setTimeFormat(format)
+  }, [])
 
   return (
     <>
-      <CurrentChat.Provider value={{ chatState, postMessage, receiveMessage, currentChat, selectChat, showModal, setShowModal }}>
+      <CurrentChat.Provider value={{ chatState, postMessage, receiveMessage, currentChat, selectChat, showModal, setShowModal, showLangSettings, setShowLangSettings, timeFormat, setTimeFormat }}>
         <div id="chat" className="container">
           <div className="chat-container container row">
             <UsersColumn setDisplayProfile={setDisplayProfile} userState={{ displayUser, setDisplayUser }} />
             <ChatColumn profileState={{ displayProfile, setDisplayProfile }} currentChat={currentChat} userState={{ displayUser, setDisplayUser }} />
           </div>
           <HelpPanel />
-          <Settings />
+          <LangSettings />
         </div>
         <button onClick={() => setDisplayKarvalakki(!displayKarvalakki)}>Toggle Karvalakki :D</button>
         {displayKarvalakki ? <Karvalakki /> : null}

@@ -8,13 +8,13 @@ import com.ryhma_3.kaiku.model.database.IUserDAO;
 
 /**
  * @author Panu Lindqvist
- * Interface to initialization class. We use interface, so we can modularly switch initialization class to in example testing mock class.
- *
+ * Interface to SocketServer initialization class. Classes implementing this interface will have contain methods to create or return existing socket servers,
+ * and methods to return Chat, Message, and User data-access-objects
  */
 public interface IServerInit {
 
 	/**
-	 * Give a configured SocketIOServer to requester.
+	 * Get a SocketIOServer. If server is not instatiated, creates and return the server, else returns previously created server.
 	 * @return configured SocketIOServer
 	 */
 	SocketIOServer getSocketServer();

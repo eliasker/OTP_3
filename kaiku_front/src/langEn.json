@@ -5,9 +5,9 @@
     "items":
     {
       "auth_header": "Authentication",
-      "auth_mastakey": "Masta key",
+      "auth_mastakey": "Master key",
       "auth_confirm": "Authenticate",
-      "org_label": "2020 Kaiku group Ltd",
+      "org_label": "2020 Kaiku group Ltd.",
       "msg_startnew": "Send a first message",
       "msg_sendmessage": "Send message",
       "chat_alt_profilepic": "Profile picture",
@@ -63,6 +63,7 @@
       "li_opt_user": "User",
       "li_opt_admin": "Administrator",
       "menu_usercontrol": "User management",
+      "menu_groupcontrol": "Group mangement",
       "menu_allusers": "All users",
       "menu_createuser": "Create user",
       "menu_allgroups": "All groups",
@@ -88,6 +89,7 @@
       "user_openprof": "Open profile",
       "u_col_searchuser": "Search user",
       "u_head_profile": "Profile",
+      "u_head_lang": "Language",
       "u_head_help": "Help",
       "u_head_logout": "Sign out",
       "u_head_groups": "Groups",
@@ -98,6 +100,10 @@
       "login_pwd": "Password",
       "login_showpwd": "Show password",
       "time_today": "Today ",
+      "lang_select": "Select language",
+      "lang": "Language",
+      "date_format": "Date format",
+
       "help_title_1": "All users",
       "help_title_2": "Main menu",
       "help_title_3": "Profile editor",
@@ -118,6 +124,24 @@
       "help_content_8": "You can access lower panels by closing the panels on top.",
       "help_content_9": "Psst! you can always find me from the Main menu when needed.",
       "help_content_10": "You can hide the help button by pressing the 'hide' button.",
+
+      "admin_help_title_1": "All users",
+      "admin_help_title_2": "All groups",
+      "admin_help_title_3": "Creating user",
+      "admin_help_title_4": "Creating group",
+      "admin_help_title_5": "User editing",
+      "admin_help_title_6": "Group editing",
+      "admin_help_title_7": "Deleting user",
+      "admin_help_title_8": "Deleting group",
+      "admin_help_content_1": "You can display all users by clicking \"All users\" from side navigation.",
+      "admin_help_content_2": "You can display all groups by clicking \"All groups\" from side navigation.",
+      "admin_help_content_3": "New user can be added from side navigation link \"New user\". You can also find this link from right top corner below top navigation.",
+      "admin_help_content_4": "New group can be added from side navigation link \"New group\". You can also find this link from right top corner below top navigation.",
+      "admin_help_content_5": "You can edit user from \"All users\" page. Find the user from the list. In row in which user is, click edit-button. When changes are made, remember hit the save button.",
+      "admin_help_content_6": "You can edit group from \"All groups\" page. Find the group from the list. In row in which group is, click edit-button. When changes are made, remember hit the save button.",
+      "admin_help_content_7": "You can delete user from \"All users\" page. Find the user from the list. In row in which user is, click delete-button. Confirm your actions from dialogue.",
+      "admin_help_content_8": "You can delete group from \"All groups\" page. Find the group from the list. In row in which group is, click delete-button. Confirm your actions from dialogue.",
+
       "settings_changelang": "Change language"
     }
   }

@@ -11,4 +11,17 @@ const help = [
   {title: 'Piilota "Apua-nappi"', content: 'Saat piilotettua \'apua\' -painikkeen klikkaamalla piilota-painiketta.'}
 ]
 
+const adminHelp = [
+  {title: 'Kaikki käyttäjät', content: 'Voit selata kaikkia käyttäjiä painamalla sivunavigoinnista \"Kaikki käyttäjät\".'},
+  {title: 'Kaikki ryhmät', content: 'Voit selata kaikkia ryhmiä painamalla sivunavigoinnista \"Kaikki ryhmät\".'},
+  {title: 'Käyttäjän luominen', content: 'Uuden käyttäjän luominen onnistuu painamalla sivunavigoinnista "Uusi käyttäjä". Sama linkki löytyy myös oikealta yläkulmasta.'},
+  {title: 'Ryhmän luominen', content: 'Uuden ryhmän luominen onnistuu painamalla sivunavigoinnista "Uusi ryhmä". Sama linkki löytyy myös oikealta yläkulmasta.'},
+  {title: 'Käyttäjän muokkaaminen', content: 'Käyttäjän muokkaaminen onnistuu \"Kaikki käyttäjät\" -sivulta. Etsi sarake jossa on haluamasi käyttäjän tiedot ja paina muokkaa-painiketta. Muokattuasi tiedot haluamaksesi, paina lopuksi tallenna-painiketta.'},
+  {title: 'Ryhmän muokkaaminen', content: 'Ryhmän muokkaaminen onnistuu \"Kaikki ryhmät\" -sivulta. Etsi sarake jossa on haluamasi ryhmän tiedot ja paina muokkaa-painiketta. Muokattuasi tiedot haluamaksesi, paina lopuksi tallenna-painiketta.'},
+  {title: 'Käyttäjän poistaminen', content: 'Käyttäjän poistaminen onnistuu "Kaikki käyttäjät" -sivulta. Etsi sarake jossa on haluamasi käyttäjän tiedot ja paina poista-painiketta. Poisto-toiminto varmistetaan vielä erillisellä dialogilla.'},
+  {title: 'Ryhmän poistaminen', content: 'Ryhmän poistaminen onnistuu \"Kaikki ryhmät\" -sivulta. Etsi sarake jossa on haluamasi ryhmän tiedot ja paina poista-painiketta. Poisto-toiminto varmistetaan vielä erillisellä dialogilla.'}
+]
+
+export {adminHelp}
+
 export default help

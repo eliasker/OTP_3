@@ -14,12 +14,14 @@ import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ResourceNotFoundException;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ValidationFailedException;
+import com.ryhma_3.kaiku.utility.GlobalChats;
 import com.ryhma_3.kaiku.utility.Logger;
 import com.ryhma_3.kaiku.utility.SecurityTools;
 
 /**
  * @author Panu Lindqvist
- * Controller to allow access to chats via REST api
+ * REST api for applications go request CHAT data from. This controller takes in and validates http GET, POST, PUT, DELETE requests and uses model.DAOs
+ * to manipulate and return data from a database.
  */
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -30,9 +32,11 @@ public class ChatResourceController {
 	
 	/**
 	 * get all user's chats with authorization and user_id
-	 * @param token
-	 * @param user_id
+	 * @param token {@link String} - http Authorization header
+	 * @param user_id {@link String} - http URL parameter
 	 * @return {@link ChatObject}[]
+	 * @throws ResourceNotFoundException, {@link ResourceNotFoundException}
+	 * @throws ValidationFailedException, {@link ValidationFailedException}
 	 */
 	@RequestMapping(value="/api/chats/**", method=RequestMethod.GET)
 	public ChatObject[] getChats(
@@ -75,9 +79,10 @@ public class ChatResourceController {
 	
 	/**
 	 * Create a new chat group, only accessible to admin
-	 * @param chat
-	 * @param token 
+	 * @param chat {@link ChatObject} - http request body
+	 * @param token {@link String} - http Authorization header
 	 * @return {@link ChatObject}
+	 * @throws ValidationFailedException, {@link ValidationFailedException}
 	 */
 	@RequestMapping(value = "/api/chats", method=RequestMethod.POST)
 	public ChatObject createChat(
@@ -97,8 +102,6 @@ public class ChatResourceController {
 				KaikuApplication.getServer().sendCreateChatEvent(result);
 				return result;
 			}
-			
-			throw new ResourceNotFoundException();
 		}
 
 		throw new ValidationFailedException();
@@ -107,9 +110,11 @@ public class ChatResourceController {
 	
 	/**
 	 * Update existing chat group, only accessible to admin
-	 * @param chat
-	 * @param token
-	 * @return {@link ChatObject}
+	 * @param chat {@link ChatObject} - http request body
+	 * @param token {@link String} - http Authorization header
+	 * @return {@link ChatObject} 
+	 * @throws ResourceNotFoundException, {@link ResourceNotFoundException}
+	 * @throws ValidationFailedException, {@link ValidationFailedException}
 	 */
 	@RequestMapping(value = "/api/chats/**", method=RequestMethod.PUT)
 	public ChatObject updateChat(
@@ -123,6 +128,11 @@ public class ChatResourceController {
 			
 			ChatObject result = chatDAO.updateChatObject(chat);
 			if(result!=null) {
+				
+				//initializing global chat is handled in GlobalChats
+				if(result.getType().equals("global"))
+					result = GlobalChats.putGlobalChat(result);
+		
 				return result;
 			}
 			
@@ -135,9 +145,11 @@ public class ChatResourceController {
 	
 	/**
 	 * Delete existing chat, only accessible to admin.
-	 * @param chat_id
-	 * @param token
-	 * @return boolean
+	 * @param chat_id {@link String} - http URL parameter
+	 * @param token {@link String} - http Authorization header
+	 * @return success {@link Boolean}
+	 * @throws ResourceNotFoundException, {@link ResourceNotFoundException}
+	 * @throws ValidationFailedException, {@link ValidationFailedException}
 	 */
 	@RequestMapping(value ="/api/chats/**", method=RequestMethod.DELETE)
 	public boolean deleteChat(

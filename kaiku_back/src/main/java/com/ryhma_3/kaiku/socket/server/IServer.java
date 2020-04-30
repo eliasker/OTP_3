@@ -4,7 +4,7 @@ import com.ryhma_3.kaiku.model.cast_object.ChatObject;
 
 /**
  * @author Panu Lindqvist
- *	This is a server interface, to make the server class interchangeable.
+ *	This is a SockeIOServer interface. Classes implementing this contain socket message listeners, and other methods.
  */
 public interface IServer {
 	
@@ -22,7 +22,7 @@ public interface IServer {
 	
 	
 	 /**
-	  * Send createChatEvent from outside
+	  * Send createChatEvent from other than socket source. (ie. creating a groupchat form admin dashboard happens trhough REST api, not socketIO)
 	 * @param chat {@link ChatObject}
 	 */
 	void sendCreateChatEvent(ChatObject chat);

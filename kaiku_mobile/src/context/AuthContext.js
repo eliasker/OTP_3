@@ -2,6 +2,8 @@ import dataContext from './dataContext'
 import { AsyncStorage } from 'react-native'
 import { navigate } from '../navigationRef'
 import loginService from '../services/loginService'
+import userService from '../services/userService'
+import groupService from '../services/groupService'
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -29,6 +31,11 @@ const logIn = (dispatch) => async (credentials) => {
     console.log(loggedUser)
     dispatch({ type: 'log_in', payload: { token: user.token } }) //response.data.token    
     await AsyncStorage.setItem('token', user.token)
+    await AsyncStorage.setItem('user_id', user.user_id)
+    let allUsers = await userService.getAllUsers(loggedUser.token)
+    console.log('allUsers', allUsers)
+    let allGroups = await groupService.getAllByID(loggedUser.user_id, loggedUser.token)
+    console.log('allGroups', allGroups)
     navigate('Home')
   } catch (e) {
     dispatch({ type: 'add_error', payload: { eMessage: 'Wrong credentials' } })
