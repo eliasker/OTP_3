@@ -27,9 +27,25 @@ import com.ryhma_3.kaiku.utility.SecurityTools;
 import com.ryhma_3.kaiku.utility.Token;
 
 /**
- * @author Panu Lindqvist
  * A socket server that implements IServer. Contains listeners to listen incoming connections and messages.
  * All messages are handled, connections validated, database updated and responses are sent from here.
+ * 
+ * In this IServer implementations following event listeners are registered under Server.start():  
+ * 
+ * - onConnect, Register incoming connections. Will register client UUID:s to tokenStorage or boot clients with bad tokens. 
+ * Will also send update event to all clients that 'X' client has come online.   
+ * 
+ * - onDisconnect, Register disconnecting clients, removes their UUID:s from tokenStorage. Will update other clients about disconnection.  
+ * 
+ * - createChatEvent, Natural way of initializing a new conversation is via first message. This event is called and Server uses data-access-objects
+ * to initialize new Chat and new Message to database and then forwards them to recipient clients.  
+ * 
+ * - chatEvent, A new message event. Server recceives a new message, stores it to messageDB and forwards it to
+ * recipient clients.  
+ *
+ *
+ * Server also provides sendCreateChatEvent for situation, where chat is created outside the socket scope, ie. with REST controller.
+ * @author Panu Lindqvist
  */
 public class Server implements IServer {
 
@@ -264,7 +280,8 @@ public class Server implements IServer {
 	
 	
 	/**
-	 * Method for rest controller. Admin dashboard uses REST to create chats
+	 * Method for rest controller. Admin dashboard uses REST to create chats. This enables users that are online && participate the chat 
+	 * to receive an event through the socket in real-time. 
 	 * @param chat {@link ChatObject}
 	 */
 	public void sendCreateChatEvent(ChatObject chat) {
