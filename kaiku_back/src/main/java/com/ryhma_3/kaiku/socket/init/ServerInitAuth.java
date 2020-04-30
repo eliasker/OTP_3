@@ -67,7 +67,7 @@ public class ServerInitAuth implements IServerInit {
 		Configuration config = new Configuration();
 		config.setHostname(hostname);
 		config.setPort(port);
-		config.setOrigin("*");
+//		config.setOrigin("*");
 		
 		//confirm not null
 		chatDAO = chatDAO == null ? new ChatDAO() : chatDAO;
