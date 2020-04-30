@@ -8,6 +8,7 @@ import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.ILocalizationDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
 import com.ryhma_3.kaiku.model.database.IUserDAO;
+import com.ryhma_3.kaiku.model.database.UserDAO;
 import com.ryhma_3.kaiku.socket.init.IServerInit;
 import com.ryhma_3.kaiku.socket.server.IServer;
 import com.ryhma_3.kaiku.utility.GlobalChats;
@@ -83,12 +84,42 @@ public class KaikuApplication {
 		return chatDAO;
 	}
 	
+	/**
+	 * @return Server
+	 */
 	public static IServer getServer() {
 		return server;
 	}
 
+    /**
+     * @return LocalizationDAO
+     */
     public static ILocalizationDAO getLocalizationDAO() {
         return localizationDAO;
+    }
+    
+    /**
+     * Overwrite userDAO
+     * @param ud {@link UserDAO}
+     */
+    public static void setUserDAO(IUserDAO ud) {
+    	userDAO = ud;
+    }
+    
+    /**
+     * Overwrite ChatDAO
+     * @param cd
+     */
+    public static void setChatDAO(IChatDAO cd) {
+    	chatDAO = cd;
+    }
+    
+    /**
+     * overwrite messageDAO
+     * @param md
+     */
+    public static void setMessageDAO(IMessageDAO md) {
+    	messageDAO = md;
     }
 
 }

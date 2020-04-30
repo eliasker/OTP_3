@@ -41,6 +41,9 @@ public class UserResourceController {
 	private IMessageDAO messageDAO = KaikuApplication.getMessageDAO();
 	private IUserDAO userDAO = KaikuApplication.getUserDAO();
 	
+	public UserResourceController() {
+	}
+	
 	
 	/**
 	 * Request invoked when user starts a session. This entry point compiles all necessary data needed to initialize front end application.
@@ -61,6 +64,7 @@ public class UserResourceController {
 		 * Get user with matching username from database. COmpare encrypted password with one submitted
 		 */
 	    UserObject userFromDb = userDAO.getUser(new UserObject(null, username, null ,null));
+	    
 	    if(userFromDb!=null) {	    
 	    	valid = SecurityTools.compare(userFromDb.getPassword(), password) ? true : false;
 	    }
@@ -166,8 +170,7 @@ public class UserResourceController {
 			 * add user to global chat
 			 */
 			GlobalChats.addMemberToGlobals(userObject);
-			
-			
+						
 			userObject.setPassword("");
 			
 			return userObject;
