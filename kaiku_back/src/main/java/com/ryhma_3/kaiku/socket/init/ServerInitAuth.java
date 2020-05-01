@@ -22,12 +22,12 @@ public class ServerInitAuth implements IServerInit {
 	/*
 	 * Default port: 9991
 	 */
-	private int port = 9991;
+	private int port = 8083;
 	
 	/*
 	 * Default hostname: "localhost"
 	 */
-	private String hostname = "localhost";
+	private String hostname = "10.114.32.19";
 	
 	private SocketIOServer server;
 	
