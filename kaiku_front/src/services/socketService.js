@@ -12,9 +12,14 @@ const SocketService = () => {
     const socketUrl = config.SOCKETURI;
     loggedUserID = id
 
+    var address = window.location.protocol + '//' + window.location.host;  
+    var details = {  
+      resource: (window.location.pathname.split('/').slice(0, -1).join('/') + '/socket.io').substring(1)  
+    };  
+
     socketRef.current = socketIOClient.connect(
-      //socketUrl,
-      { query: `Authorization=${token}` }
+      address, details,
+      { query: `Authorization=${token}`, secure: false, rejectUnauthorized: false }
     )
 
     socketRef.current.on('connect', function (data) {
