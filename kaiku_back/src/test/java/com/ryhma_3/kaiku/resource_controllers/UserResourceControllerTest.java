@@ -7,6 +7,12 @@ import java.util.ArrayList;
 import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.springframework.test.web.client.ExpectedCount;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -17,6 +23,7 @@ import com.ryhma_3.kaiku.model.cast_object.InitializationObject;
 import com.ryhma_3.kaiku.model.cast_object.UserObject;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.IUserDAO;
+import com.ryhma_3.kaiku.resource_controllers.exceptions.ValidationFailedException;
 
 @TestMethodOrder(OrderAnnotation.class)
 class UserResourceControllerTest {
@@ -43,6 +50,9 @@ class UserResourceControllerTest {
 		assertNotEquals("yksi", res.getPassword());
 	}
 	
+	/**
+	 * Test logging in succesfully
+	 */
 	@Test
 	@Order(2)
 	void signInUserTest() {		
@@ -50,6 +60,19 @@ class UserResourceControllerTest {
 		assertNotNull(res);
 		assertEquals("ykkönen", res.getUsername());
 		assertEquals("ykkönen", res.getUsers()[0].getUsername());
+	}
+	
+	
+	@Test
+	@Order(3)
+	@ParameterizedTest
+	@CsvSource({ "kakkonen, yksi", "ykkönen, kaksi" })
+	void signInBadCreds(String one, String two) {
+		RuntimeException re = assertThrows(ValidationFailedException.class, () -> {
+			urc.getInit(new UserObject(null, one, two, null));
+		});
+		
+		assertTrue(re.getClass().equals(ValidationFailedException.class));
 	}
 	
 	
