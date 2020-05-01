@@ -122,4 +122,11 @@ public class KaikuApplication {
     	messageDAO = md;
     }
 
+    /**
+     * Overwrite server
+     * @param aServer
+     */
+    public static void setServer(IServer aServer) {
+    	server = aServer;
+    }
 }

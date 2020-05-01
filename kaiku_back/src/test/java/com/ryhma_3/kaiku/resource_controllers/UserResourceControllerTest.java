@@ -24,6 +24,7 @@ import com.ryhma_3.kaiku.model.cast_object.UserObject;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.IUserDAO;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ValidationFailedException;
+import com.ryhma_3.kaiku.utility.SecurityTools;
 
 @TestMethodOrder(OrderAnnotation.class)
 class UserResourceControllerTest {
@@ -34,8 +35,8 @@ class UserResourceControllerTest {
 	
 	@BeforeAll
 	private static void before() {
-		KaikuApplication.setUserDAO(new DummyUserDAO());
-		KaikuApplication.setChatDAO(new DummyChatDAO());
+		KaikuApplication.setUserDAO(new Dummies().userDAO);
+		KaikuApplication.setChatDAO(new Dummies().chatDAO);
 	}
 	
 	/**
@@ -48,6 +49,7 @@ class UserResourceControllerTest {
 		assertNotNull(res);
 		assertEquals("ykkönen", res.getUsername());
 		assertNotEquals("yksi", res.getPassword());
+		allUsers.add(res);
 	}
 	
 	/**
@@ -63,11 +65,10 @@ class UserResourceControllerTest {
 	}
 	
 	
-	@Test
 	@Order(3)
 	@ParameterizedTest
 	@CsvSource({ "kakkonen, yksi", "ykkönen, kaksi" })
-	void signInBadCreds(String one, String two) {
+	void signInBadCredsTest(String one, String two) {
 		RuntimeException re = assertThrows(ValidationFailedException.class, () -> {
 			urc.getInit(new UserObject(null, one, two, null));
 		});
@@ -76,84 +77,50 @@ class UserResourceControllerTest {
 	}
 	
 	
-	
-	static class DummyChatDAO implements IChatDAO {
-
-		@Override
-		public ChatObject[] getChats(String userId) {
-			if(userId.equals("abc1")) {
-				return new ChatObject[0];
-			}
-			
-			return null;
-		}
-
-		@Override
-		public ChatObject[] getAllChats() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public ChatObject createChatObject(ChatObject chatObject) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public ChatObject updateChatObject(ChatObject chatObject) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public boolean deleteChatObject(ChatObject chatObject) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public ChatObject getChatObject(ChatObject chatObject) {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
+	@Test
+	@Order(4)
+	void getUsersWithTokenTest() {
+		UserObject[] users = urc.getUsers(
+				SecurityTools.getCloneOfToken(
+						allUsers.get(0).getUser_id()).getTokenString());
+		assertNotNull(users);
+		assertEquals(users[0].getUsername(), allUsers.get(0).getUsername());
 	}
 	
 	
-	static class DummyUserDAO implements IUserDAO {
+	@Test
+	@Order(5)
+	void getUsersWithBadTokenTest() {
+		RuntimeException re = assertThrows(ValidationFailedException.class, () -> {
+			urc.getUsers("absKissaKävelee");
+		});
 		
-		@Override
-		public UserObject createUser(UserObject profileObject) {
-			profileObject.setUser_id("abc1");
-			allUsers.add(profileObject);
-			return new UserObject(profileObject.getUser_id(), profileObject.getUsername(), profileObject.getPassword(), profileObject.getName());
-		}
-
-		@Override
-		public UserObject updateUser(UserObject profileObject) {
-			return null;
-		}
-
-		@Override
-		public boolean deleteUser(UserObject profileObject) {
-			return false;
-		}
-
-		@Override
-		public UserObject getUser(UserObject profileObject) {
-			if(profileObject.getUsername()=="ykkönen") {
-				return allUsers.get(0);
-			} else {
-				return null;
-			}
-		}
-
-		@Override
-		public UserObject[] getAllUsers() {
-			UserObject users[] = new UserObject[allUsers.size()];
-			users = allUsers.toArray(users);
-			return users;
-		}
+		assertTrue(re.getClass().equals(ValidationFailedException.class));
+	}
+	
+	
+	@Test
+	@Order(6)
+	void updateUserTest() {
+		UserObject updated = new UserObject(allUsers.get(0).getUser_id(), "kakkonen", "yksi", "y");
+		UserObject res = urc.updateUser(
+				SecurityTools.getCloneOfToken(updated.getUser_id()).getTokenString()
+				, updated);
+		
+		UserObject fetched = urc.getUsers(SecurityTools.getCloneOfToken(updated.getUser_id()).getTokenString())[0];
+		
+		assertEquals(updated.getUsername(), res.getUsername());
+		assertEquals(fetched.getUsername(), updated.getUsername());
+	}
+	
+	
+	@Test
+	@Order(7)
+	void deleteUserTest() {
+		boolean res = urc.deleteUser("kaiku", allUsers.get(0).getUser_id());
+		assertTrue(res);
+		
+		UserObject[] users = urc.getUsers("kaiku");
+		assertEquals(users.length, 0);
 	}
 }

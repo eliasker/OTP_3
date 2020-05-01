@@ -138,6 +138,7 @@ public class UserResourceController {
 	 * @param userObject {@link UserObject} - http request body
 	 * @param token {@link String} - http Authorization header
 	 * @throws ValidationFailedException, {@link ValidationFailedException}
+	 * @throws BadUserInputException, {@link BadUserInputException}
 	 */
 	@RequestMapping(value = "/api/users", method=RequestMethod.POST)
 	public UserObject createUser(
@@ -231,6 +232,8 @@ public class UserResourceController {
 		boolean valid = SecurityTools.verifySession(token);
 		
 		if(valid) {
+			
+			user.setPassword(SecurityTools.encrypt(user.getPassword()));
 			
 			UserObject result = userDAO.updateUser(user);
 			
