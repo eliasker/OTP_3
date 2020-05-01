@@ -19,7 +19,7 @@ const SocketService = () => {
 
     socketRef.current = socketIOClient.connect(
       address, details,
-      { query: `Authorization=${token}`, secure: false, rejectUnauthorized: false }
+      //{ query: `Authorization=${token}`, secure: false, rejectUnauthorized: false }
     )
 
     socketRef.current.on('connect', function (data) {
