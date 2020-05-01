@@ -66,6 +66,7 @@ public class ServerInitNoAuth implements IServerInit {
 		Configuration config = new Configuration();
 		config.setHostname(hostname);
 		config.setPort(port);
+		config.setOrigin("*");
 //		config.setOrigin("http://localhost:5000");
 		
 		//confirm not null
