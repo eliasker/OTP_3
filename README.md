@@ -35,6 +35,7 @@ ____________________
   - `npm run eject`: Tuhoaa projektin. Älä missään nimessä käytä tätä komentoa.
 * Backend komennot:
   - `mwnv spring-boot:run`: Aja komento serverin root hakemistossa, configuroi springin ja käynnistää serverin
+  - Löydä lisää ohjeita Kaiku>kaiku_back README:stä
 * Mobiili komennot:
   - `expo start --tunnel` käynnistää projektin expo serverillä
   - `expo start --tunnel -c` käynnistää projektin expo serverillä ja poistaa evästeet
