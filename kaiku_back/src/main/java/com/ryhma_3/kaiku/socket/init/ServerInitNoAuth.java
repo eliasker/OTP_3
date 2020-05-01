@@ -19,7 +19,7 @@ public class ServerInitNoAuth implements IServerInit {
 	/*
 	 * Default port: 9991
 	 */
-	private int port = 9991;
+	private int port = 8083;
 	
 	/*
 	 * Default hostname: "localhost"
@@ -66,7 +66,7 @@ public class ServerInitNoAuth implements IServerInit {
 		Configuration config = new Configuration();
 		config.setHostname(hostname);
 		config.setPort(port);
-//		config.setOrigin("http://localhost:3000");
+		config.setOrigin(hostname + ":" + port);
 		
 		//confirm not null
 		chatDAO = chatDAO == null ? new ChatDAO() : chatDAO;

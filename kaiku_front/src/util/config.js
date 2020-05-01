@@ -1,2 +1,3 @@
 const BASEURI = 'http://localhost:8080/'
-export default { BASEURI }
+const SOCKETURI = 'http://localhost:8083'
+export default { BASEURI, SOCKETURI }

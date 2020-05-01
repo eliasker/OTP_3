@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import socketIOClient from 'socket.io-client';
+import config from '../util/config'
 
 const SocketService = () => {
   var socketRef = useRef()
@@ -8,11 +9,10 @@ const SocketService = () => {
   const [newChatData, setNewChatData] = useState(null)
 
   const createSocketConnection = (token, id) => {
-    const socketUrl = 'http://localhost:9991';
     loggedUserID = id
 
     socketRef.current = socketIOClient.connect(
-      socketUrl,
+      config.SOCKETURI,
       { query: `Authorization=${token}` }
     )
 

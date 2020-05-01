@@ -88,7 +88,7 @@ public class BootApp {
 		int select = menuNewConfigServerInitType();
 		
 		String[] conf = menuNewConfigServerInitParams();
-		int port = 9991;
+		int port = 8083;
 		String hostname = "localhost";
 		if(conf!=null) {
 			port = Integer.parseInt(conf[0]);
@@ -165,10 +165,10 @@ public class BootApp {
 		int select = readInt();
 		switch(select) {
 		case 1:
-			System.out.println("Port...");
+			System.out.println("Write the port number from which you want to run socket server..");
 			String port = scanner.next();
 			
-			System.out.println("Hostname... (ip address or URL");
+			System.out.println("Write the ip address of your server...");
 			String hn = scanner.next();
 			
 			return new String[] {port, hn};
