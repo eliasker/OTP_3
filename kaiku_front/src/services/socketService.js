@@ -13,7 +13,7 @@ const SocketService = () => {
     loggedUserID = id
 
     socketRef.current = socketIOClient.connect(
-      socketUrl,
+      //socketUrl,
       { query: `Authorization=${token}` }
     )
 
