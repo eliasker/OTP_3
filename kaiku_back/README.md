@@ -1,11 +1,19 @@
 # Kaiku back-end
 
-Listening on port 8080.
+Spring REST is listening by default port 8080.  
+SocketIO is by default on port 8083. 
 
 ### Launching the server
 CD in to the project root directory and run the following command:  
 unix: `./mvnw spring-boot:run`
 windows: `mvnw spring-boot:run`
+
+###Running the application
+Starting the application requires user input via terminal.  
+kaiku_back comes with a guided setup, where:  
+1. mongo location is defined
+2. init type is defined
+3. port, socketio hostname, origin address are defined
 
 ### Setup for external server
 1. Make sure port 8081 (REST api), default:8083 (SocketIO port) are exposed  
