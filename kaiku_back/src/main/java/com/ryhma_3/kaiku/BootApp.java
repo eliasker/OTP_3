@@ -237,7 +237,7 @@ public class BootApp {
 			System.out.println("Write the port number from which you want to run socket server..");
 			String port = scanner.next();
 			
-			System.out.println("Write the ip address of your server...");
+			System.out.println("Write the host name, ie. localhost or 10.114.32.19");
 			String hn = scanner.next();
 			
 			System.out.println("Write the origin of front-end as 'ip:port' ie. 'http://localhost:3000' \n"
