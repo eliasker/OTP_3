@@ -86,13 +86,13 @@ public class LocalizationResourceController {
     }
 
     /**
-     * Adds a language in the localization database.
+     * Deletes a language from the localization database.
      * @param identicator
      * @param token Usertoken for admin privilige checks.
      * @return True if successful.
      */
     @RequestMapping(value = "/api/locale", method = RequestMethod.DELETE)
-    public boolean putLocalization(
+    public boolean deleteLocalization(
             @RequestParam String identicator,
             @RequestHeader("Authorization") String token) {
         log("REST: Localization object request");

@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.ryhma_3.kaiku.model.cast_object.ChatObject;
+import com.ryhma_3.kaiku.model.cast_object.LocalizationObject;
 import com.ryhma_3.kaiku.model.cast_object.MessageObject;
 import com.ryhma_3.kaiku.model.cast_object.UserObject;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
+import com.ryhma_3.kaiku.model.database.ILocalizationDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
 import com.ryhma_3.kaiku.model.database.IUserDAO;
 import com.ryhma_3.kaiku.socket.server.IServer;
@@ -17,7 +19,58 @@ public class Dummies {
 	public DummyUserDAO userDAO = new DummyUserDAO();
 	public DummyMessageDAO messageDAO = new DummyMessageDAO();
 	public DummyServer server = new DummyServer();
-	
+    public DummyLocalizationDAO localizationDAO = new DummyLocalizationDAO();
+
+    /**
+     * DummyLocalizationDAO
+     */
+    public class DummyLocalizationDAO implements ILocalizationDAO {
+
+		@Override
+		public LocalizationObject getLocalization(String locale) {
+            LocalizationObject lo = new LocalizationObject(locale);
+            HashMap<String, String> items = new HashMap<String, String>() {{
+                put("auth_confirm", "Todenna");
+                put("help_last", "Edellinen");
+            }};
+            lo.setItems(items);
+			return lo;
+		}
+
+		@Override
+		public ArrayList<String> getLocalizationIdenticators() {
+            ArrayList<String> indicatorList = new ArrayList<String>() {{
+                add("FI");
+                add("EN");
+            }};
+			return indicatorList;
+		}
+
+		@Override
+		public LocalizationObject putLocalization(LocalizationObject localisation) {
+            if (localisation.getIdenticator().equals("FI")) {
+                return localisation;
+            } else {
+                return null;
+            }
+		}
+
+		@Override
+		public boolean deleteLocalization(String locale) {
+            if (locale.equals("FI")) {
+                return true;
+            }
+			return false;
+		}
+
+		@Override
+		public LocalizationObject updateLocalization(LocalizationObject localizationObject) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+        
+    }
 	
 	class DummyChatDAO implements IChatDAO {
 
