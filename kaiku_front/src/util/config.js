@@ -1,3 +1,4 @@
-const BASEURI = 'http://localhost:8080/'
-const SOCKETURI = 'http://localhost:8083'
+const BASEURI = process.env.REACT_APP_BASEURI
+const SOCKETURI = process.env.REACT_APP_SOCKETURI
+
 export default { BASEURI, SOCKETURI }
