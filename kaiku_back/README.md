@@ -3,10 +3,18 @@
 Spring REST is listening by default port 8080. (can be reconfigured at file application.properties {server.port=***})   
 SocketIO is by default on port 8083. (can be configured in boot config)
 
+### Setup steps when launching on Windows
+1. JAVA_HOME variable to match JDK installation locations
+2. Run command 'mvnw spring-boot:run' at kaiku\kaiku-back
+
 ### Launching the server
 CD in to the project root directory and run the following command:  
 unix: `./mvnw spring-boot:run`
 windows: `mvnw spring-boot:run`
+
+if mvnw is undefined, run:  
+`unix: `./mvnw clean install 
+`windows: ` mvnw clean install
 
 ### Running the application
 Starting the application requires user input via terminal.  
@@ -22,7 +30,3 @@ kaiku_back comes with a guided setup, where:
     set port `8083 / or custom`,  
     hostname ie. `localhost` or `10.10.10.10` and  
     origin, the address where from the fornt-end uses the server, ie. `http://localhost:3000`  
-
-### Setup steps when launching on Windows
-1. JAVA_HOME variable to match JDK installation locations
-2. Run command 'mvnw spring-boot:run' at kaiku\kaiku-back
