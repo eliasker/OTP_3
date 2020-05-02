@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Text, View, StyleSheet } from 'react-native'
 import { FlatList, TouchableOpacity } from 'react-native-gesture-handler'
-import {Context as AuthContext} from '../context/AuthContext'
+import { Context as AuthContext } from '../context/AuthContext'
 import { Feather } from '@expo/vector-icons'
 import { ActivityIndicator } from 'react-native'
 import { Image, ListItem, Icon, Divider } from 'react-native-elements'
@@ -9,13 +9,16 @@ import Title from '../components/Title'
 
 
 const IndexScreen = ({ navigation }) => {
-  const {allUsers, allGroups } = useContext(AuthContext).state
+  const { allUsers, allGroups } = useContext(AuthContext).state
 
   const image = require('../image/placeholder-profile.png')
   const groupPlaceholder = require('../image/kaikuthumb.png')
 
+  const groupChats = allGroups.filter(c => c.type !== 'private')
+  const privateChats = allGroups.filter(c => c.type === 'private')
+
   const renderUser = (item) => (
-    <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
+    <TouchableOpacity onPress={() => navigation.navigate('Chat', { item: item })}>
       <ListItem
         title={item.name}
         subtitle={item.username}
@@ -28,9 +31,9 @@ const IndexScreen = ({ navigation }) => {
       />
     </TouchableOpacity>
   )
-
+  
   const renderGroup = (item) => (
-    <TouchableOpacity onPress={() => navigation.navigate('Chat')} style={{ backgroundColor: '#3d4f64' }}>
+    <TouchableOpacity onPress={() => navigation.navigate('Group', { item: item })} style={{ backgroundColor: '#3d4f64' }}>
       <ListItem
         leftAvatar={{ source: groupPlaceholder }}
         containerStyle={{ backgroundColor: '#3d4f64', paddingLeft: 12, paddingRight: 0, paddingBottom: 0, alignSelf: 'center' }}
@@ -45,7 +48,7 @@ const IndexScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Title title="Groups" backgroundColor='#3d4f64' />
-      <FlatList keyExtractor={(item) => item.chat_id} data={allGroups} renderItem={({ item }) => renderGroup(item)}
+      <FlatList keyExtractor={(item) => item.chat_id} data={groupChats} renderItem={({ item }) => renderGroup(item)}
         horizontal={true} showsHorizontalScrollIndicator={false} style={styles.rowList} />
       <Title title="Users" backgroundColor='#45566b' />
       <FlatList keyExtractor={(item) => item.username} data={allUsers} renderItem={({ item }) => renderUser(item)} />

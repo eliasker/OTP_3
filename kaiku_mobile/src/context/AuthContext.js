@@ -12,7 +12,7 @@ const authReducer = (state, action) => {
     case 'log_out':
       return { ...state, isLoggedIn: false }
     case 'update_all':
-      return { ...state, allUsers: action.payload.allUsers, allGroups: action.payload.allGroups }
+      return { ...state, loggedUser: action.payload.loggedUser, allUsers: action.payload.allUsers, allGroups: action.payload.allGroups }
     case 'add_error':
       return { ...state, errorText: action.payload.eMessage }
     default:
@@ -52,16 +52,11 @@ const logOut = (dispatch) => async () => {
 const trySignIn = (dispatch) => async () => {
   try {
     const loggedUser = JSON.parse(await AsyncStorage.getItem('loggedUser'))
-    console.log('authcontext trysignin loggeduser ', loggedUser)
     if (!loggedUser) return navigate('Signin')
-
     dispatch({ type: 'log_in', payload: loggedUser.token })
-    
     let allUsers = await userService.getAllUsers(loggedUser.token)
-    console.log('authcontext try signin id', loggedUser.user_id)
     let allGroups = await groupService.getAllByID(loggedUser.user_id, loggedUser.token)
-    console.log('groups authcontext:74', allGroups)
-    dispatch({ type: 'update_all', payload: { allGroups, allUsers } })
+    dispatch({ type: 'update_all', payload: { loggedUser, allGroups, allUsers } })
   } catch (e) {
     console.error('error in trysignin')
     console.log(e)

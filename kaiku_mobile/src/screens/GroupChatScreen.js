@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, {useContext} from 'react'
 import { StyleSheet, Text, View, ImageBackground, Image, KeyboardAvoidingView, Platform, SafeAreaView } from 'react-native'
 import { TextInput, TouchableOpacity, FlatList } from 'react-native-gesture-handler'
 import { Context as AuthContext } from '../context/AuthContext'
@@ -7,32 +7,25 @@ import OutMessage from '../components/OutMessage'
 import InMessage from '../components/InMessage'
 import ChatHeader from '../components/ChatHeader'
 
-const findChat = (groups, targetUser) => {
-  return groups.find(chat => (chat.type === 'private' && chat.members.includes(targetUser.user_id)))
-}
+const GroupChatScreen = ({ route, navigation }) => {
+  const { loggedUser, allUsers } = useContext(AuthContext).state
+  const item = navigation.getParam('item')
 
-const ChatScreen = ({ route, navigation }) => {
-  const targetUser = navigation.getParam('item')
-  const { allGroups } = useContext(AuthContext).state
-
-  const found = findChat(allGroups, targetUser)
-  let data = undefined
-  if (found !== undefined) {
-    if (found.messages !== undefined) data = found.messages
+  const findSenderName = (sender_id) => {
+    return allUsers.find(u => (u.user_id === sender_id)).username
   }
 
   const renderMessage = (message) => {
-    try {
-      return (
-        (message.user_id !== targetUser.user_id) ? <InMessage message={message} senderName={targetUser.username}/> : <OutMessage message={message} />
-      )
-    } catch (e) { }
+    return (
+      (message.user_id === loggedUser.user_id) ? <InMessage message={message} senderName={findSenderName(message.user_id)}/> : <OutMessage message={message} />
+    )
   }
+
   return (
     <SafeAreaView style={styles.container}>
-      <ChatHeader name={targetUser.username} />
+      <ChatHeader name={item.chatName} />
       <Image source={require('../image/kaiku-bg.png')} style={styles.backgroundImage} />
-      <FlatList keyExtractor={(e) => e.id} data={data} renderItem={({ item }) => renderMessage(item)}
+      <FlatList keyExtractor={(e) => e.id} data={item.messages} renderItem={({ item }) => renderMessage(item)}
         style={styles.messageContainer} />
 
       <KeyboardAvoidingView behavior={'padding'} >
@@ -47,7 +40,7 @@ const ChatScreen = ({ route, navigation }) => {
   )
 }
 
-ChatScreen.navigationOptions = ({ navigation }) => {
+GroupChatScreen.navigationOptions = ({ navigation }) => {
   return {
     headerShown: false
     // headerRight: () => (
@@ -108,4 +101,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default ChatScreen
+export default GroupChatScreen
