@@ -1,6 +1,6 @@
 # Kaiku backend
 
-Spring REST is listening by default port 8080. (can be reconfigured at file application.properties {server.port=***}) 
+Spring REST is listening by default port 8080. (can be reconfigured at file application.properties {server.port=***})   
 SocketIO is by default on port 8083. (can be configured in boot config)
 
 ### Launching the server
