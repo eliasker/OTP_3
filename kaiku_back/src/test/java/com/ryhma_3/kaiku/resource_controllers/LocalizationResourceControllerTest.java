@@ -5,30 +5,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.springframework.test.web.client.ExpectedCount;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 
 import com.ryhma_3.kaiku.KaikuApplication;
-import com.ryhma_3.kaiku.model.cast_object.ChatObject;
-import com.ryhma_3.kaiku.model.cast_object.InitializationObject;
 import com.ryhma_3.kaiku.model.cast_object.LocalizationObject;
-import com.ryhma_3.kaiku.model.cast_object.UserObject;
-import com.ryhma_3.kaiku.model.database.IChatDAO;
-import com.ryhma_3.kaiku.model.database.IUserDAO;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.BadUserInputException;
-import com.ryhma_3.kaiku.resource_controllers.exceptions.ResourceNotFoundException;
 import com.ryhma_3.kaiku.resource_controllers.exceptions.ValidationFailedException;
-import com.ryhma_3.kaiku.utility.SecurityTools;
 
 /**
  * LocalizationResourceControllerTest
