@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Context as LangContext } from '../../context/LangContext'
@@ -6,9 +6,15 @@ import { Input } from 'react-native-elements'
 import { Feather } from '@expo/vector-icons'
 import Title from '../../components/Title'
 import Spacer from '../../components/Spacer'
+import { Context as AuthContext } from '../../context/AuthContext'
 
 const ChangeNameForm = () => {
   const { state } = useContext(LangContext)
+  const { updateName } = useContext(AuthContext)
+  const { loggedUser } = useContext(AuthContext).state
+  const [ name, setName ] = useState(loggedUser.name)
+  const [ username, setUsername ] = useState(loggedUser.username)
+
 
   return (
     <View style={styles.container}>
@@ -16,11 +22,11 @@ const ChangeNameForm = () => {
       <Text style={{color: '#fffa', fontSize: 14, padding: 8}}>{state.lang.name_desc}</Text>
       <Spacer>
         <Input label={state.lang.name_label} inputStyle={{color: 'white'}} labelStyle={{color: 'white'}}
-          value={0} onChangeText={console.log} leftIcon={() => <Feather name='user' size={20} style={{paddingRight: 4, color: 'white'}}/>}/>
+          value={name} onChangeText={v => setName(v)} leftIcon={() => <Feather name='user' size={20} style={{paddingRight: 4, color: 'white'}}/>}/>
       </Spacer>
       <Spacer>
         <Input label={state.lang.username_label} labelStyle={{color: 'white'}} inputStyle={{color: 'white'}} 
-          value={0} onChangeText={console.log} leftIcon={() => <Text style={{paddingRight: 8, color: 'white'}}>@</Text>}/>
+          value={username} onChangeText={v => setUsername(v)} leftIcon={() => <Text style={{paddingRight: 8, color: 'white'}}>@</Text>}/>
       </Spacer>
       <TouchableOpacity>
         <Text style={styles.button}>{state.lang.save_button}</Text>

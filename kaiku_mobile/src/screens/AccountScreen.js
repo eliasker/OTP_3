@@ -6,6 +6,7 @@ import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler'
 import { ListItem, Avatar } from 'react-native-elements'
 import Spacer from '../components/Spacer'
 import Title from '../components/Title'
+import { Context as AuthContext } from '../context/AuthContext'
 
 
 const showIcon = (iconName) => (
@@ -14,14 +15,15 @@ const showIcon = (iconName) => (
 
 const AccountScreen = ({ navigation }) => {
   const { account_title, settings_title, change_name_label, change_password_label, change_lang_label, delete_user_label, help_label } = useContext(LangContext).state.lang
+  const { loggedUser } = useContext(AuthContext).state
   const placeholder = require('../image/placeholder-profile.png')
 
   return (
     <SafeAreaView style={styles.container}>
       <Title title={account_title} />
       <ListItem
-        title="Mirka"
-        subtitle="mirka-kissa"
+        title={`${loggedUser.name}`}
+        subtitle={`@${loggedUser.username}`}
         leftAvatar={<Avatar rounded size="large" source={ placeholder } />}
         containerStyle={{backgroundColor: '#0000'}}
         titleStyle={{color: 'white'}}

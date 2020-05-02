@@ -69,7 +69,6 @@ const switchNavigator = createSwitchNavigator({
 })
 
 const App = createAppContainer(switchNavigator)
-console.log('hello world')
 const theme = {
   colors: {
     primary: '#4d5f76'

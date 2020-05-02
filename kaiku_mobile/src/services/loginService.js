@@ -1,17 +1,17 @@
-import axios from 'axios'
+//import axios from 'axios'
 import config from '../util/config'
 const BASEURI = config.BASEURI
 const login = async (username, password) => {
   console.log(BASEURI + 'api/users/' + username )
   try {
-    const response = await axios.post(
-      BASEURI + 'api/users/' + username,
-      {
-        username,
-        password
-      }
-    )
-    return response.data;
+    // const response = await axios.post(
+    //   BASEURI + 'api/users/' + username,
+    //   {
+    //     username,
+    //     password
+    //   }
+    // )
+    // return response.data;
 
   } catch (error) {
     console.log('REST: login error', error);

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, View, ImageBackground, Image, KeyboardAvoidingView, Platform, SafeAreaView } from 'react-native'
 import { TextInput, TouchableOpacity, FlatList } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
@@ -6,48 +6,61 @@ import OutMessage from '../components/OutMessage'
 import InMessage from '../components/InMessage'
 import ChatHeader from '../components/ChatHeader'
 
-const data = [
+const d = [
   {
     id: "1",
-    message: 'Moi'
+    message: 'Moi',
+    type: 'out'
   },
   {
     id: "2",
-    message: 'Moikka'
+    message: 'Miten menee',
+    type: 'out'
   },
   {
     id: "3",
-    message: 'Morjesta'
+    message: 'Moi hyvin sulla',
+    type: 'in'
   },
   {
     id: "4",
-    message: 'Moiii'
+    message: 'hyvin',
+    type: 'out'
   },
   {
     id: "5",
-    message: 'Morjens'
+    message: 'ok',
+    type: 'in'
   }
 ]
 
-const ChatScreen = () => {
+const ChatScreen = ({ navigation }) => {
+  const [data, setData] = useState(d)
+  const [message, setMessage] = useState('')
+  const cahtObj = navigation.getParam('item')
   
-  const renderMessage = (message) => {
+  const renderMessage = (m) => {
     return (
-      (message.message.includes('orj')) ? <InMessage message={message} />: <OutMessage message={message} />
+      (m.type.includes('in')) ? <InMessage message={m} name={cahtObj.name} />: <OutMessage message={m} />
     )
+  }
+
+  const send = () => {
+    setData(data.concat({message, type: 'out'}))
+    setMessage('')
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <ChatHeader name='Marko' />
+      <ChatHeader name={cahtObj.name} />
       <Image source={require('../image/kaiku-bg.png')} style={styles.backgroundImage} />
       <FlatList keyExtractor={(e) => e.id} data={data} renderItem={({ item }) => renderMessage(item)}
         style={styles.messageContainer}/>
 
       <KeyboardAvoidingView behavior={'padding'} >
         <View style={{flexDirection: 'row', margin: 4, alignSelf: 'flex-end'}}>
-          <TextInput style={styles.input} />
-          <TouchableOpacity>
+          <TextInput style={styles.input} value={message} onChangeText={v => setMessage(v)} onSubmitEditing={() => send()}/>
+          <TouchableOpacity onPress={() => send()}>
             <Feather name="send" style={styles.sendBtn} />
           </TouchableOpacity>
         </View>
@@ -59,19 +72,6 @@ const ChatScreen = () => {
 ChatScreen.navigationOptions = ({ navigation }) => {
   return {
     headerShown: false
-    // headerRight: () => (
-    // <TouchableOpacity onPress={() => console.log('Drawer menu')}>
-    //   <Feather name='more-vertical' style={styles.menu} />
-    // </TouchableOpacity>),
-    // title: 'Mirka',
-    // headerStyle: {
-    //   backgroundColor: '#2d3f54',
-    // },
-    // headerTintColor: '#fffc',
-    // headerTitleStyle: {
-    //   fontWeight: 'bold',
-    // },
-
   }
 }
 

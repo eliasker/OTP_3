@@ -1,14 +1,11 @@
 import dataContext from './dataContext'
 import { AsyncStorage } from 'react-native'
 import { navigate } from '../navigationRef'
-import loginService from '../services/loginService'
-import userService from '../services/userService'
-import groupService from '../services/groupService'
 
 const authReducer = (state, action) => {
   switch (action.type) {
     case 'log_in':
-      return { ...state, token: action.payload.token }
+      return { ...state, token: action.payload.token, loggedUser: action.payload.user }
     case 'log_out':
       return { ...state, isLoggedIn: false }
     case 'add_error':
@@ -18,24 +15,17 @@ const authReducer = (state, action) => {
   }
 }
 
-const logIn = (dispatch) => async (credentials) => {
+const logIn = (dispatch) => async (credentials) => {  
   try {
-    console.log('loggin in with ', credentials.username, ' & ', credentials.password)
-    let user = await loginService.login(credentials.username, credentials.password)
-    const loggedUser = {
-      user_id: user.user_id,
-      name: user.name,
-      username: user.username,
-      token: user.token
+    const user = {
+      user_id: '7858962833',
+      name: 'Testikäyttäjä',
+      username: credentials.username,
+      token: 'kaiku'
     }
-    console.log(loggedUser)
-    dispatch({ type: 'log_in', payload: { token: user.token } }) //response.data.token    
+    dispatch({ type: 'log_in', payload: { token: user.token, user } }) //response.data.token    
     await AsyncStorage.setItem('token', user.token)
-    await AsyncStorage.setItem('user_id', user.user_id)
-    let allUsers = await userService.getAllUsers(loggedUser.token)
-    console.log('allUsers', allUsers)
-    let allGroups = await groupService.getAllByID(loggedUser.user_id, loggedUser.token)
-    console.log('allGroups', allGroups)
+    await AsyncStorage.setItem('user', JSON.stringify(user))
     navigate('Home')
   } catch (e) {
     dispatch({ type: 'add_error', payload: { eMessage: 'Wrong credentials' } })
@@ -55,9 +45,11 @@ const logOut = (dispatch) => async () => {
 const trySignIn = (dispatch) => async () => {
   try {
     const token = await AsyncStorage.getItem('token')
+    const user = await JSON.parse(await AsyncStorage.getItem('user'))
+
     if (!token) return navigate('Signin')
 
-    dispatch({ type: 'log_in', payload: token })
+    dispatch({ type: 'log_in', payload: {token, user} })
     navigate('Index') //enable for auto login
   } catch (e) { }
 }
@@ -65,5 +57,5 @@ const trySignIn = (dispatch) => async () => {
 export const { Context, Provider } = dataContext(
   authReducer, //reducer
   { logIn, logOut, trySignIn }, //actions
-  { token: null } //initial state
+  { token: null, loggedUser:  {name: '', username: ''} } //initial state
 )
