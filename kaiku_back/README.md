@@ -8,7 +8,7 @@ CD in to the project root directory and run the following command:
 unix: `./mvnw spring-boot:run`
 windows: `mvnw spring-boot:run`
 
-###Running the application
+### Running the application
 Starting the application requires user input via terminal.  
 kaiku_back comes with a guided setup, where:  
 1. mongo location is defined
