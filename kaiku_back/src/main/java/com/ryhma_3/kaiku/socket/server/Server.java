@@ -83,7 +83,6 @@ public class Server implements IServer {
 				//register client
 				String tokenString = client.getHandshakeData().getSingleUrlParam("Authorization");
 				
-				
 				if(SecurityTools.attachSessionToToken(tokenString, client.getSessionId())) {
 									
 					Token cloneOfToken = SecurityTools.getCloneOfToken(tokenString);
@@ -240,10 +239,10 @@ public class Server implements IServer {
 					//find correct chat
 					for(ChatObject chat : chats) {
 						if(chat.getChat_id().equals(data.getChat_id())) {
-						
+							
 							//post message to db and receive messageObj
 							MessageObject message = messageDAO.createMessage(data, chat.getChat_id());
-							debugger("Created message: " + message.getContent() + ",  to: " + message.getChat_id(), false);
+							debugger("Created message: " + message.getContent() + ",  to: " + message.getChat_id(), true);
 							
 							int d_activeusers = 0;
 							int d_inactiveusers = 0;
@@ -262,7 +261,7 @@ public class Server implements IServer {
 									e.printStackTrace();
 								}
 							}
-							debugger("Sent message to " + d_activeusers + ", skipped " + d_inactiveusers + " inactive  users", false);
+							debugger("Sent message to " + d_activeusers + ", skipped " + d_inactiveusers + " inactive  users", true);
 							break;
 						}
 					}
@@ -327,7 +326,7 @@ public class Server implements IServer {
 			for (ChatObject chatObject : chatsFromDb) {
 				chats.add(chatObject);
 			}
-			
+						
 		}catch (Exception e) {
 			debugger("SERVER INIT: FAIL", true);
 			e.printStackTrace();

@@ -1,6 +1,7 @@
 package com.ryhma_3.kaiku.resource_controllers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.ryhma_3.kaiku.model.cast_object.ChatObject;
 import com.ryhma_3.kaiku.model.cast_object.MessageObject;
@@ -12,9 +13,10 @@ import com.ryhma_3.kaiku.socket.server.IServer;
 
 public class Dummies {
 	
-	DummyChatDAO chatDAO = new DummyChatDAO();
-	DummyUserDAO userDAO = new DummyUserDAO();
-	DummyServer server = new DummyServer();
+	public DummyChatDAO chatDAO = new DummyChatDAO();
+	public DummyUserDAO userDAO = new DummyUserDAO();
+	public DummyMessageDAO messageDAO = new DummyMessageDAO();
+	public DummyServer server = new DummyServer();
 	
 	
 	class DummyChatDAO implements IChatDAO {
@@ -28,17 +30,34 @@ public class Dummies {
 				return chats.toArray(arr);
 			}
 			
-			return null;
+			ArrayList<ChatObject> filtered = new ArrayList<>();
+			for(ChatObject c : chats) {
+				try {
+					if(c.getMembers()[0].equals(userId) || c.getMembers()[1].equals(userId)) {
+						filtered.add(c);
+					}
+				} catch (Exception e) {
+				}
+			}
+			
+			if(filtered.isEmpty()) {
+				return null;
+			}
+			
+			return filtered.toArray(new ChatObject[filtered.size()]);
 		}
 
 		@Override
 		public ChatObject[] getAllChats() {
-			// TODO Auto-generated method stub
-			return null;
+			return chats.toArray(new ChatObject[chats.size()]);
 		}
 
 		@Override
 		public ChatObject createChatObject(ChatObject chatObject) {
+			if(chatObject.getChat_id()!=null) {
+				chats.add(chatObject);
+			}
+			
 			ChatObject newObj = new ChatObject("abcd", chatObject.getChatName(), chatObject.getType(), chatObject.getMembers(), new MessageObject[0]);
 			chats.add(newObj);
 			return newObj;
@@ -132,11 +151,19 @@ public class Dummies {
 	
 	
 	class DummyMessageDAO implements IMessageDAO {
+		
+		HashMap<String, ArrayList<MessageObject>> messageDB = new HashMap<>();
+		
 
 		@Override
 		public MessageObject createMessage(MessageObject messageObject, String chat_id) {
-			// TODO Auto-generated method stub
-			return null;
+			ArrayList<MessageObject> msgs =  messageDB.get(chat_id);
+			if(msgs == null) {
+				msgs = new ArrayList<MessageObject>();
+			}
+			msgs.add(messageObject);
+			messageDB.put(chat_id, msgs);
+			return messageObject;
 		}
 
 		@Override
@@ -153,7 +180,11 @@ public class Dummies {
 
 		@Override
 		public MessageObject getMessage(MessageObject messageObject, String chat_id) {
-			// TODO Auto-generated method stub
+			for(MessageObject msg : messageDB.get(chat_id)) {
+				if(msg.getMessage_id().equals(messageObject.getMessage_id())) {
+					return msg;
+				}
+			}
 			return null;
 		}
 
