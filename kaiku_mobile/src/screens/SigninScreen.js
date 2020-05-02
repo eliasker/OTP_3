@@ -22,7 +22,8 @@ const SigninScreen = () => {
   //console.log(langMeta);
 
   const handleLogIn = () => {
-    logIn({username, password})
+    //logIn({username, password})
+    logIn({username: "mirka-kissa", password: "asgakikk"})
   }
 
   const showLanguages = () => langMeta.map(l => <LanguageLink key={l.id} id={l.id} lang={langMeta[l.id]} />)
