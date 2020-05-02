@@ -1,4 +1,4 @@
-# Kaiku back-end
+# Kaiku backend
 
 Spring REST is listening by default port 8080.  
 SocketIO is by default on port 8083. 
