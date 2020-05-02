@@ -1,9 +1,13 @@
 package com.ryhma_3.kaiku;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Scanner;
+import java.util.Set;
 
 import com.ryhma_3.kaiku.model.database.ChatDAO;
 import com.ryhma_3.kaiku.model.database.IChatDAO;
@@ -25,8 +29,23 @@ import com.ryhma_3.kaiku.socket.server.Server;
  * @author Panu Lindqvist
  */
 public class BootApp {
+	
+/********************************VERSION*********************************/
+//	Version number of this boot loader that is type of { x.y } 
+//	If you are making changes that are..
+//		- NOT backwards compatable, change x
+//		- MIGHT be backwards compatable change y
+	
+	private static final double BOOT_VERSION_NUMBER = 1.0;
+	
+/************************************************************************/
+	
 	private static Scanner scanner = new Scanner(System.in);
 	private final static String FILEPATH = "secrets/bootConfig.txt";
+	
+	static final int DEFAULT_PORT = 8083;
+	static final String DEFAULT_HOSTNAME = "localhost";
+	static final String DEFAULT_ORIGIN = "*";
 	
 	
 	/**
@@ -51,25 +70,38 @@ public class BootApp {
 		case 2:
 			break;
 		}
+				
+		//Boot config version check
+		HashMap<String, String> config = readConfig();
+		checkBootVersion(config);
 		
-		String[] config = readConfig();
 		
-		if(config[0].equals("")) {
+		if(config.get("mongoURI")=="") {
 			chatDAO = new ChatDAO();
 			messageDAO = new MessageDAO();
 			userDAO = new UserDAO();
 			localizationDAO = new LocalizationDAO();
 		} else {
-			chatDAO = new ChatDAO(config[0]);
-			messageDAO = new MessageDAO(config[0]);
-			userDAO = new UserDAO(config[0]);
-			localizationDAO = new LocalizationDAO(config[0]);
+			chatDAO = new ChatDAO(config.get("mongoURI"));
+			messageDAO = new MessageDAO(config.get("mongoURI"));
+			userDAO = new UserDAO(config.get("mongoURI"));
+			localizationDAO = new LocalizationDAO(config.get("mongoURI"));
 		}
 		
-		if(config[1].equals("1")) {
-			serverInit = new ServerInitNoAuth(Integer.parseInt(config[2]), config[3]);
+		if(config.get("selectInitType").equals("1")) {
+			
+			serverInit = new ServerInitNoAuth(
+					Integer.parseInt(config.get("port"))
+					, config.get("hostname")
+					, config.get("origin")
+					);
+			
 		} else {
-			serverInit = new ServerInitAuth(Integer.parseInt(config[2]), config[3]);
+			serverInit = new ServerInitAuth(
+					Integer.parseInt(config.get("port"))
+					, config.get("hostname")
+					, config.get("origin")
+					);
 		}
 		
 		serverInit.setChatDAO(chatDAO);
@@ -83,46 +115,83 @@ public class BootApp {
 	}
 	
 	
-	private static void createNewConfiguration() {
+	private static HashMap<String, String> createNewConfiguration() {
+		HashMap<String, String> newConfig = new HashMap<>();
+		
 		String mongoURI = menuNewConfigMongo();
+		newConfig.put("mongoURI", mongoURI);
+		
 		int select = menuNewConfigServerInitType();
+		newConfig.put("selectInitType", String.valueOf(select));
 		
 		String[] conf = menuNewConfigServerInitParams();
-		int port = 8083;
-		String hostname = "localhost";
+		int port = DEFAULT_PORT;
+		String hostname = DEFAULT_HOSTNAME;
+		String origin = DEFAULT_ORIGIN;
 		if(conf!=null) {
 			port = Integer.parseInt(conf[0]);
 			hostname = conf[1];
+			origin = conf[2];
 		}
+		newConfig.put("port", String.valueOf(port));
+		newConfig.put("hostname", hostname);
+		newConfig.put("origin", origin);
 		
-		writeConfig(new String[] {mongoURI, String.valueOf(select), String.valueOf(port), hostname});
+		writeConfig(newConfig);
+		return newConfig;
 	}
 	
 	
-	private static void writeConfig(String[] params) {
-		StringBuffer file = new StringBuffer();
-		for(int i=0; i<params.length; i++) {
-			file.append(params[i] + ";");
+	private static void writeConfig(HashMap<String, String> params) {
+		File file = new File(FILEPATH);
+		StringBuffer content = new StringBuffer();
+		Set<String> keys = params.keySet();
+		
+		for(String key : keys) {
+			String value = params.get(key);
+			
+			content.append(key + "," + value + ";");
+			
 		}
 		
+		content.append("version," + BOOT_VERSION_NUMBER + ";");
+		
 		try (
-				FileOutputStream fos = new FileOutputStream(FILEPATH)
+				FileOutputStream fos = new FileOutputStream(FILEPATH, false)
 		) {
-			fos.write(file.toString().getBytes());
+			file.createNewFile();
+			fos.write(content.toString().getBytes());
 			fos.close();
 		} catch (Exception e) {}
 	}
 	
 	
-	private static String[] readConfig() {
+	private static HashMap<String, String> readConfig() {
+		
+		HashMap<String, String> config = new HashMap<>();
+		
 		try (
 			FileReader fr = new FileReader(FILEPATH);
 			BufferedReader br = new BufferedReader(fr);
 		) {
 			String line = br.readLine();
-			return line.split(";");
-		} catch(Exception e) {}
-		return null;
+			String[] pairs = line.split(";");
+						
+			for(String pair : pairs) {
+								
+				String[] separated = pair.split(",");
+				
+				try { 
+					separated[1].toString();
+				} catch(IndexOutOfBoundsException ie) {
+					separated = new String[] {separated[0], ""};
+				}
+
+				config.put(separated[0], separated[1]);
+				
+			}
+		} catch(Exception e) {e.printStackTrace();}
+		return config;
 	}
 	
 	
@@ -161,7 +230,7 @@ public class BootApp {
 	}
 	
 	private static String[] menuNewConfigServerInitParams() {
-		System.out.println("1: Write port & hostname\n2: use defaults");
+		System.out.println("1: Write port & hostname & origin \n2: use defaults");
 		int select = readInt();
 		switch(select) {
 		case 1:
@@ -171,11 +240,46 @@ public class BootApp {
 			System.out.println("Write the ip address of your server...");
 			String hn = scanner.next();
 			
-			return new String[] {port, hn};
+			System.out.println("Write the origin of front-end as 'ip:port' ie. 'http://localhost:3000' \n"
+					+ " (seems to work only on local testing)");
+			String o = scanner.next();
+			
+			return new String[] {port, hn, o};
 		case 2:
+			System.out.println();
+			
 			return null;
 		} 
 		
 		return null;
+	}
+	
+	
+	private static void checkBootVersion(HashMap<String, String> config) {
+		
+		//Null or incompatable
+		if(config.get("version")==null 
+				|| BOOT_VERSION_NUMBER - Double.parseDouble(config.get("version")) >= 1) { 
+				System.out.println("\n!!!Config version behid application (critical)!!!\nClient must update bootConfig..\n");
+				config = createNewConfiguration();
+			
+		//Might be incompatible
+		} else if (BOOT_VERSION_NUMBER - Double.parseDouble(config.get("version")) > 0) {
+				System.out.println("\n!!!Config version behind application (not critical)!!!\n"
+						+ "New boot config is recommended. type (y/n)");
+				String command = scanner.next().toLowerCase();
+				if(command.equals("y")) {
+					config = createNewConfiguration();
+				}
+			
+		//Might be incompatible
+		} else if (BOOT_VERSION_NUMBER - Double.parseDouble(config.get("version")) < 0) {
+				System.out.println("!!!Config version is ahead of the application!!!\n "
+						+ "Create new config: (y/n)");
+				String command = scanner.next().toLowerCase();
+				if(command.equals("y")) {
+					config = createNewConfiguration();
+				}
+		}
 	}
 }

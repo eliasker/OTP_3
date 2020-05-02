@@ -26,6 +26,11 @@ public class ServerInitNoAuth implements IServerInit {
 	 */
 	private String hostname = "localhost";
 	
+	/**
+	 * Origin of front-end
+	 */
+	private String origin = "*";
+	
 	private SocketIOServer server;
 	
 	private IChatDAO chatDAO = null;
@@ -49,9 +54,10 @@ public class ServerInitNoAuth implements IServerInit {
 	 * @param port {@link Integer}
 	 * @param hostname {@link String}
 	 */
-	public ServerInitNoAuth(int port, String hostname) {
+	public ServerInitNoAuth(int port, String hostname, String origin) {
 		this.port = port;
 		this.hostname = hostname;
+		this.origin = origin;
 	}
 
 	
@@ -66,7 +72,8 @@ public class ServerInitNoAuth implements IServerInit {
 		Configuration config = new Configuration();
 		config.setHostname(hostname);
 		config.setPort(port);
-		config.setOrigin(hostname + ":" + port);
+//		config.setOrigin(origin);
+		
 		
 		//confirm not null
 		chatDAO = chatDAO == null ? new ChatDAO() : chatDAO;
