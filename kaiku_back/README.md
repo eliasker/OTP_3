@@ -13,8 +13,8 @@ unix: `./mvnw spring-boot:run`
 windows: `mvnw spring-boot:run`
 
 if mvnw is undefined, run:  
-`unix: `./mvnw clean install 
-`windows: ` mvnw clean install
+unix: `./mvnw clean install` 
+windows: ` mvnw clean install`  
 
 ### Running the application
 Starting the application requires user input via terminal.  
