@@ -129,4 +129,11 @@ public class KaikuApplication {
     public static void setServer(IServer aServer) {
     	server = aServer;
     }
+
+    /**
+     * @param localizationDAO the localizationDAO to set
+     */
+    public static void setLocalizationDAO(ILocalizationDAO localizationDAO) {
+        KaikuApplication.localizationDAO = localizationDAO;
+    }
 }
