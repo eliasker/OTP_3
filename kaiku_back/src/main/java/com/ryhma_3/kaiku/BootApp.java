@@ -54,7 +54,7 @@ public class BootApp {
 	 * @param objs {@link Object}[]
 	 * @return objs {@link Object}[]
 	 */
-	public static Object[] run(Object[] objs) {
+	public static Object[] run(Object[] objs, String arg) {
 		IChatDAO chatDAO = (IChatDAO) objs[0];
 		IMessageDAO messageDAO = (IMessageDAO) objs[1];
 		IUserDAO userDAO = (IUserDAO) objs[2];
@@ -62,13 +62,20 @@ public class BootApp {
 		IServer server = (IServer) objs[4];
 		IServerInit serverInit = (IServerInit) objs[5];
 		
-		int select = menuMain();
-		switch(select) {
-		case 1:
+		if(!arg.equals("production")) {
+			int select = menuMain();
+			switch(select) {
+			case 1:
+				createNewConfiguration();
+				break;
+			case 2:
+				break;
+			}
+		}
+		
+		if(arg.equals("run-config")) {
 			createNewConfiguration();
-			break;
-		case 2:
-			break;
+			System.exit(0);
 		}
 				
 		//Boot config version check

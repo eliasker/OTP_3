@@ -28,10 +28,19 @@ public class KaikuApplication {
     static ILocalizationDAO localizationDAO = null;
 	
 	public static void main(String[] args) {
+		
+		String arg = null;
+		try {
+			arg = args[0];
+		} catch (Exception e) {
+			arg = "";
+			//no args
+		}
+		
 		Object[] objs = new Object[] {chatDAO, messageDAO, userDAO, localizationDAO, server, init};
 		
 		//run boot setup
-		objs = BootApp.run(objs);
+		objs = BootApp.run(objs, arg);
 		
 		chatDAO = (IChatDAO) objs[0];
 		messageDAO = (IMessageDAO) objs[1];
