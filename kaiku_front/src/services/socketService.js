@@ -7,6 +7,7 @@ const SocketService = () => {
   const [incMessageData, setIncMsgData] = useState(null)
   var loggedUserID = useRef()
   const [newChatData, setNewChatData] = useState(null)
+  const [initUsersOnline, setInitUsersOnline] = useState(null)
 
   const createSocketConnection = (token, id) => {
     loggedUserID = id
@@ -17,38 +18,32 @@ const SocketService = () => {
     )
 
     socketRef.current.on('connect', function (data) {
-      console.log('connect event');
-      console.log('connected users: ', data);
-    });
+     if (data !== undefined) setInitUsersOnline(data)
+    })
 
     socketRef.current.on('chatEvent', function (data) {
       if (loggedUserID === data.user_id) return
       setIncMsgData(data)
       setIncMsgData(null)
-    });
+    })
 
+    /**
+     * data has values user_id and online
+     */
     socketRef.current.on('connectionEvent', function (data) {
       console.log('user: ', data.user_id, 'isOnline=', data.online);
     })
 
-
-    /**
-     * @param data object { id: String, loggedIn: false }
-     */
     socketRef.current.on('disconnect', function (data) {
-
-      console.log('disconnect');
-    });
+      console.log('disconnect', data);
+    })
 
     socketRef.current.on('createChatEvent', function (data) {
-      console.log('createChatEvent', data);
       setNewChatData(data)
     })
-    console.log('setting socket to: _socket', socketRef.current)
   }
 
   const sendMessage = (message, user_id, chat_id) => {
-
     const obj = {
       content: message.content,
       user_id,
@@ -56,12 +51,10 @@ const SocketService = () => {
     }
 
     socketRef.current.emit('chatEvent', obj);
-    console.log('sernding message', message, 'from', user_id, 'to', chat_id)
   }
 
   const createChat = (chatName, type, members, messages) => {
     return new Promise((resolve, reject) => {
-      console.log('creating new chat', members, 'chatname', chatName, 'type', type, 'messsages', messages)
       const obj = {
         chatName,
         type,
@@ -69,17 +62,12 @@ const SocketService = () => {
         messages
       }
       socketRef.current.emit('createChatEvent', obj, function (ack) {
-        console.log('acknowledgement', ack);
         resolve(ack);
       })
     })
   }
 
-  const disconnect = () => {
-
-    socketRef.current.disconnect()
-  }
-
+  const disconnect = () => socketRef.current.disconnect()
 
   /** createchat for admin dahsboardd */
   /*
@@ -99,7 +87,7 @@ const SocketService = () => {
   */
 
 
-  return { createSocketConnection, createChat, incMessageData, newChatData, sendMessage, disconnect }
+  return { createSocketConnection, createChat, incMessageData, initUsersOnline, newChatData, sendMessage, disconnect }
 }
 
 export default SocketService

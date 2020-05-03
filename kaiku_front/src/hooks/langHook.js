@@ -35,10 +35,7 @@ const useLang = () => {
         langPack = staticLang.lang;
       }
     }
-
-    setPack(await langPack)
-    console.log(langPack);
-    
+    setPack(await langPack)    
   }
 
   return { getString, setLocale, init }

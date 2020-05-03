@@ -1,23 +1,34 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import InitialData from '../../providers/InitialData'
 import CurrentChat from '../../providers/CurrentChat'
 
 const UsersHeader = ({ chatTypeState, setDisplayProfile }) => {
-  const { initialData, loggedUser, setLoggedUser, disconnect, useLang } = useContext(InitialData)
+  const { initialData, loggedUser, setLoggedUser, disconnect, useLang, initUsersOnline } = useContext(InitialData)
   const string = (ref) => useLang.getString(ref)
   const { showModal, setShowModal, setShowLangSettings } = useContext(CurrentChat)
   const { chatType, setChatType } = chatTypeState
+  const [usersOnline, setUsersOnline] = useState(0)
 
-  const onlineUsers = initialData.users ? initialData.users.length : 0
+  const calculateOnlineUsers = (array) => {
+    let online = 0
+    if (array === null) return
+    array.forEach(u => { if (u[1] === true) online++ })
+    setUsersOnline(online)
+  }
+
+  useEffect(() => {
+    if (initUsersOnline === null) return
+    calculateOnlineUsers(Object.entries(initUsersOnline))
+  }, [initUsersOnline])
+
+  const totalUsers = initialData.users ? initialData.users.length : 0
   const handleLogout = () => {
     window.localStorage.removeItem('loggedKaikuUser')
-    console.log('logging out')
     setLoggedUser(null)
     disconnect()
   }
 
   const handleShowProfile = () => {
-    console.log('setting displayUser to \n', loggedUser)
     setDisplayProfile('')
   }
 
@@ -53,7 +64,7 @@ const UsersHeader = ({ chatTypeState, setDisplayProfile }) => {
           <span className="d-none d-lg-block">{string('u_head_users')}</span>
         </p>
       </div>
-      <p className="users-online">{string('u_head_uonline')} - {onlineUsers}</p>
+      <p className="users-online">{string('u_head_uonline')} - {usersOnline}/{totalUsers}</p>
     </div>
   )
 }

@@ -14,7 +14,7 @@ const App = () => {
   const [loggedUser, setLoggedUser] = useState(null)
   const [initialData, setInitialData] = useState([])
   const [authToken, setAuthToken] = useState()
-  const { createSocketConnection, createChat, sendMessage, disconnect, incMessageData, newChatData } = socketService()
+  const { createSocketConnection, createChat, sendMessage, disconnect, incMessageData, newChatData, initUsersOnline } = socketService()
   const useLang = langHook(); 
 
   useEffect(()=>{
@@ -55,7 +55,7 @@ const App = () => {
   return (
     <div className="App">
       <Router>
-        <InitialData.Provider value={{ initialData, incMessageData, newChatData, sendMessage, disconnect, createChat, loggedUser, setLoggedUser, setAuthToken, useLang }}>
+        <InitialData.Provider value={{ initialData, incMessageData, newChatData, initUsersOnline, sendMessage, disconnect, createChat, loggedUser, setLoggedUser, setAuthToken, useLang }}>
           <Route exact path="/" render={() => (loggedUser === null) ? <Login createSocketConnection={createSocketConnection} /> : <Chat />} />
           <Route exact path="/dashboard" render={showContent} />
         </InitialData.Provider>

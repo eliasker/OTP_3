@@ -17,7 +17,6 @@ const Chat = () => {
   const { chatState, postMessage, receiveMessage, currentChat, selectChat } = useChatHook(createChat, sendMessage, incMessageData, newChatData)
   const [showModal, setShowModal] = useState(false)
   const [showLangSettings, setShowLangSettings] = useState(false)
-  const [displayKarvalakki, setDisplayKarvalakki] = useState(false)
 
   useEffect(() => {
     const format = window.localStorage.getItem('timeFormat')
@@ -36,8 +35,6 @@ const Chat = () => {
           <HelpPanel />
           <LangSettings />
         </div>
-        <button onClick={() => setDisplayKarvalakki(!displayKarvalakki)}>Toggle Karvalakki :D</button>
-        {displayKarvalakki ? <Karvalakki /> : null}
       </CurrentChat.Provider>
     </>
   )

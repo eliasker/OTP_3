@@ -16,7 +16,6 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
     (async () => {
       const chats = await groupService.getAllByID(loggedUser.user_id, loggedUser.token)
       if (chats === undefined) return
-      console.log('setting chats to:', chats)
       setChatState(chats)
       setCurrentChat(chats[0])
     })()
@@ -48,13 +47,11 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
    * @param {*} chatID of currentChat, undefined by default
    */
   const postMessage = async (newMessage, chatID) => {
-    console.log('chatstate currently', chatState)
     var newChatState = chatState
     if (chatID === undefined) {
       const newChat = await createChat('chat', currentChat.type, currentChat.members, [newMessage])
       addNewChat(newChat)
     } else {
-      console.log('message to existing chat', newMessage, '\n', 'chatID', chatID)
       if (chatID !== undefined) {
         var newChatObject = findChatByID(chatID)
         const index = newChatState.indexOf(newChatObject)
@@ -63,7 +60,6 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
         sendMessage(newMessage, loggedUser.user_id, chatID)
       }
     }
-    console.log(chatState)
   }
 
   /**
@@ -82,10 +78,8 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
       image: currentChat.image,
       color: currentChat.color
     }
-    console.log('created new chat', newChatObject)
     newChatState.push(newChatObject)
     setChatState(newChatState)
-    console.log('new', newChatState, 'did update?', chatState)
     selectChat(newChatObject)
   }
 
@@ -100,7 +94,6 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
     if (data === null) return
     if (data.user_id === loggedUser.user_id) return
     if (data !== undefined) {
-      console.log('msg received from', data.user_id, 'loggeduserid', loggedUser.user_id, 'message', data)
       var newChatState = chatState
       var newChatObject = findChatByID(data.chat_id)
       try {
@@ -112,15 +105,12 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
         }
         newChatState[index].messages.push(newMessage)
         if (data.chat_id === currentChat.chat_id) {
-          console.log('message to currentchat', newChatState[index].messages)
           setCurrentChat(newChatState[index])
         } else if (data.chat_id !== currentChat.chat_id) {
-          console.log('message to another chat')
           newChatState[index].unreadMessages = true
         }
       } catch (e) { }
       setChatState(newChatState)
-      console.log(chatState)
     }
   }
 
@@ -130,7 +120,6 @@ const useChatHook = (createChat, sendMessage, incMessageData, newChatData) => {
    * @param {*} chat Chat that user clicks from chat column 
    */
   const selectChat = (chat) => {
-    console.log('setting chat to', chat)
     const newChatState = chatState
     const found = findChatByID(chat.chat_id)
     if (found !== undefined) {

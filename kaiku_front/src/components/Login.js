@@ -32,7 +32,7 @@ const Login = ({ createSocketConnection }) => {
         createSocketConnection(await user.token)
         window.localStorage.setItem('loggedKaikuUser', JSON.stringify(newLoggedUser))
       } catch (e) {
-        console.log('failed login', e)
+        console.error('failed login', e)
       }
     }
   }
