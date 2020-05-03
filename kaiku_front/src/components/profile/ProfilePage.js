@@ -18,8 +18,6 @@ const ProfilePage = ({ profileState }) => {
     if( password !== rePassword ) return
 
     const updatedUser = (password.length > 5) ? { name, username, password }: { name, username }
-    //RESTAPI: update user
-    console.log(updatedUser)
     setPassword('')
     setRePassword('')
     setDisplayProfile('d-none')
