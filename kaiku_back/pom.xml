@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.ryhma_3</groupId>
 	<artifactId>kaiku</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0-a</version>
 	<name>kaiku</name>
 	<description>OTP project, ryhmä 3</description>
 

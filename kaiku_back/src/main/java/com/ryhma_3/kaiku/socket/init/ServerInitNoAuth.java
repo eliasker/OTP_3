@@ -19,12 +19,17 @@ public class ServerInitNoAuth implements IServerInit {
 	/*
 	 * Default port: 9991
 	 */
-	private int port = 9991;
+	private int port = 8083;
 	
 	/*
 	 * Default hostname: "localhost"
 	 */
 	private String hostname = "localhost";
+	
+	/**
+	 * Origin of front-end
+	 */
+	private String origin = "*";
 	
 	private SocketIOServer server;
 	
@@ -46,12 +51,13 @@ public class ServerInitNoAuth implements IServerInit {
 	
 	/**
 	 * Override default port number & host name
-	 * @param port
-	 * @param hostname
+	 * @param port {@link Integer}
+	 * @param hostname {@link String}
 	 */
-	public ServerInitNoAuth(int port, String hostname) {
+	public ServerInitNoAuth(int port, String hostname, String origin) {
 		this.port = port;
 		this.hostname = hostname;
+		this.origin = origin;
 	}
 
 	
@@ -67,7 +73,7 @@ public class ServerInitNoAuth implements IServerInit {
 		config.setHostname(hostname);
 		config.setPort(port);
 //		config.setOrigin("*");
-		config.setOrigin("http://10.114.32.19:5000");
+
 		
 		//confirm not null
 		chatDAO = chatDAO == null ? new ChatDAO() : chatDAO;

@@ -21,6 +21,7 @@ const Chat = () => {
 
   useEffect(() => {
     const format = window.localStorage.getItem('timeFormat')
+    if (format == null) return
     setTimeFormat(format)
   }, [])
 

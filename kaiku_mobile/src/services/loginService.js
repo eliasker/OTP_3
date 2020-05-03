@@ -14,7 +14,7 @@ const login = async (username, password) => {
     return response.data;
 
   } catch (error) {
-    console.log('REST: login error', error);
+    console.err('REST: login error', error);
   }
 }
 

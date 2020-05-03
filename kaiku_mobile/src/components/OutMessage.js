@@ -4,7 +4,7 @@ import { StyleSheet, View, Text } from 'react-native'
 const OutMessage = ({ message }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.message}>{message.message}</Text>
+      <Text style={styles.message}>{message.content}</Text>
     </View>
   )
 }

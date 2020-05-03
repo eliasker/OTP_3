@@ -60,13 +60,15 @@ public class ChatResourceController {
 
 			}
 			
-			for(ChatObject chat : results) {
-				
-				chat.setMessages(messageDAO.getAllMessages(chat.getChat_id()));
-			
-			}
 						
 			if(results!=null) {
+				
+				for(ChatObject chat : results) {
+					
+					chat.setMessages(messageDAO.getAllMessages(chat.getChat_id()));
+				
+				}
+				
 				return results;
 			}
 			

@@ -8,6 +8,7 @@ import com.ryhma_3.kaiku.model.database.IChatDAO;
 import com.ryhma_3.kaiku.model.database.ILocalizationDAO;
 import com.ryhma_3.kaiku.model.database.IMessageDAO;
 import com.ryhma_3.kaiku.model.database.IUserDAO;
+import com.ryhma_3.kaiku.model.database.UserDAO;
 import com.ryhma_3.kaiku.socket.init.IServerInit;
 import com.ryhma_3.kaiku.socket.server.IServer;
 import com.ryhma_3.kaiku.utility.GlobalChats;
@@ -27,10 +28,19 @@ public class KaikuApplication {
     static ILocalizationDAO localizationDAO = null;
 	
 	public static void main(String[] args) {
+		
+		String arg = null;
+		try {
+			arg = args[0];
+		} catch (Exception e) {
+			arg = "";
+			//no args
+		}
+		
 		Object[] objs = new Object[] {chatDAO, messageDAO, userDAO, localizationDAO, server, init};
 		
 		//run boot setup
-		objs = BootApp.run(objs);
+		objs = BootApp.run(objs, arg);
 		
 		chatDAO = (IChatDAO) objs[0];
 		messageDAO = (IMessageDAO) objs[1];
@@ -83,12 +93,56 @@ public class KaikuApplication {
 		return chatDAO;
 	}
 	
+	/**
+	 * @return Server
+	 */
 	public static IServer getServer() {
 		return server;
 	}
 
+    /**
+     * @return LocalizationDAO
+     */
     public static ILocalizationDAO getLocalizationDAO() {
         return localizationDAO;
     }
+    
+    /**
+     * Overwrite userDAO
+     * @param ud {@link UserDAO}
+     */
+    public static void setUserDAO(IUserDAO ud) {
+    	userDAO = ud;
+    }
+    
+    /**
+     * Overwrite ChatDAO
+     * @param cd
+     */
+    public static void setChatDAO(IChatDAO cd) {
+    	chatDAO = cd;
+    }
+    
+    /**
+     * overwrite messageDAO
+     * @param md
+     */
+    public static void setMessageDAO(IMessageDAO md) {
+    	messageDAO = md;
+    }
 
+    /**
+     * Overwrite server
+     * @param aServer
+     */
+    public static void setServer(IServer aServer) {
+    	server = aServer;
+    }
+
+    /**
+     * @param localizationDAO the localizationDAO to set
+     */
+    public static void setLocalizationDAO(ILocalizationDAO localizationDAO) {
+        KaikuApplication.localizationDAO = localizationDAO;
+    }
 }

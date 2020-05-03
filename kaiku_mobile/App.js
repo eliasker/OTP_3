@@ -10,6 +10,7 @@ import { Feather } from '@expo/vector-icons'
 
 import IndexScreen from './src/screens/IndexScreen'
 import ChatScreen from './src/screens/ChatScreen'
+import GroupChatScreen from './src/screens/GroupChatScreen'
 import SigninScreen from './src/screens/SigninScreen'
 import LoadingScreen from './src/screens/LoadingScreen'
 import LogoutHandler from './src/components/LogoutHandler'
@@ -30,6 +31,7 @@ const switchNavigator = createSwitchNavigator({
       screen: createStackNavigator({
         Index: IndexScreen,
         Chat: ChatScreen,
+        Group: GroupChatScreen,
       }),
       navigationOptions: {
         drawerLabel: 'Home',
@@ -69,7 +71,7 @@ const switchNavigator = createSwitchNavigator({
 })
 
 const App = createAppContainer(switchNavigator)
-console.log('hello world')
+
 const theme = {
   colors: {
     primary: '#4d5f76'

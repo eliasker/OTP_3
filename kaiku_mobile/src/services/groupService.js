@@ -18,7 +18,7 @@ const getAllByID = async (user_id, token) => {
     const response = await axios.get(`${BASEURI}api/chats/?user_id=${user_id}`, { headers: { Authorization: token } })
     return response.data
   } catch (e) {
-    console.log('error: ', e)
+    console.err('error: ', e)
   }
 }
 
@@ -28,7 +28,7 @@ const getAllChats = async () => {
     const response = await axios.get(`${BASEURI}api/chats/?user_id`, configAsAdmin)
     return response.data
   } catch (e) {
-    console.log('error: ', e)
+    console.err('error: ', e)
   }
 }
 

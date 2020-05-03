@@ -11,6 +11,8 @@ const authReducer = (state, action) => {
       return { ...state, token: action.payload.token }
     case 'log_out':
       return { ...state, isLoggedIn: false }
+    case 'update_all':
+      return { ...state, loggedUser: action.payload.loggedUser, allUsers: action.payload.allUsers, allGroups: action.payload.allGroups }
     case 'add_error':
       return { ...state, errorText: action.payload.eMessage }
     default:
@@ -20,7 +22,6 @@ const authReducer = (state, action) => {
 
 const logIn = (dispatch) => async (credentials) => {
   try {
-    console.log('loggin in with ', credentials.username, ' & ', credentials.password)
     let user = await loginService.login(credentials.username, credentials.password)
     const loggedUser = {
       user_id: user.user_id,
@@ -28,18 +29,14 @@ const logIn = (dispatch) => async (credentials) => {
       username: user.username,
       token: user.token
     }
-    console.log(loggedUser)
     dispatch({ type: 'log_in', payload: { token: user.token } }) //response.data.token    
-    await AsyncStorage.setItem('token', user.token)
-    await AsyncStorage.setItem('user_id', user.user_id)
-    let allUsers = await userService.getAllUsers(loggedUser.token)
-    console.log('allUsers', allUsers)
-    let allGroups = await groupService.getAllByID(loggedUser.user_id, loggedUser.token)
-    console.log('allGroups', allGroups)
+    await AsyncStorage.setItem('loggedUser', JSON.stringify(loggedUser))
     navigate('Home')
   } catch (e) {
     dispatch({ type: 'add_error', payload: { eMessage: 'Wrong credentials' } })
   }
+  navigate('Home')
+
 }
 
 const logOut = (dispatch) => async () => {
@@ -54,16 +51,26 @@ const logOut = (dispatch) => async () => {
 
 const trySignIn = (dispatch) => async () => {
   try {
-    const token = await AsyncStorage.getItem('token')
-    if (!token) return navigate('Signin')
-
-    dispatch({ type: 'log_in', payload: token })
-    navigate('Index') //enable for auto login
-  } catch (e) { }
+    const loggedUser = JSON.parse(await AsyncStorage.getItem('loggedUser'))
+    if (!loggedUser) return navigate('Signin')
+    dispatch({ type: 'log_in', payload: loggedUser.token })
+    let allUsers = await userService.getAllUsers(loggedUser.token)
+    let allGroups = await groupService.getAllByID(loggedUser.user_id, loggedUser.token)
+    dispatch({ type: 'update_all', payload: { loggedUser, allGroups, allUsers } })
+  } catch (e) {
+    console.error('error in trysignin')
+    console.log(e)
+  }
+  navigate('Index') //enable for auto login
 }
 
 export const { Context, Provider } = dataContext(
   authReducer, //reducer
   { logIn, logOut, trySignIn }, //actions
-  { token: null } //initial state
+  {
+    token: null, loggedUser: null, allGroups: [], allUsers: [{
+      username: 'mirka-1',
+      name: 'omena'
+    }]
+  } //initial state
 )

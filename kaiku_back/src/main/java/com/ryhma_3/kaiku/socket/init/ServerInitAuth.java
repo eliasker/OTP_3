@@ -29,6 +29,11 @@ public class ServerInitAuth implements IServerInit {
 	 */
 	private String hostname = "10.114.32.19";
 	
+	/**
+	 * Origin of front-end
+	 */
+	private String origin = "*";
+	
 	private SocketIOServer server;
 	
 	private IChatDAO chatDAO = null;
@@ -49,9 +54,10 @@ public class ServerInitAuth implements IServerInit {
 	 * @param port
 	 * @param hostname
 	 */
-	public ServerInitAuth(int port, String hostname) {
+	public ServerInitAuth(int port, String hostname, String origin) {
 		this.port = port;
 		this.hostname = hostname;
+		this.origin = origin;
 	}
 
 	
@@ -67,7 +73,7 @@ public class ServerInitAuth implements IServerInit {
 		Configuration config = new Configuration();
 		config.setHostname(hostname);
 		config.setPort(port);
-//		config.setOrigin("http://10:114.32.19:5000");
+		config.setOrigin(origin);
 		
 		//confirm not null
 		chatDAO = chatDAO == null ? new ChatDAO() : chatDAO;
